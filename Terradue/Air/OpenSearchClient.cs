@@ -19,7 +19,6 @@ using log4net.Repository.Hierarchy;
 using log4net.Layout;
 using log4net.Core;
 using log4net.Appender;
-using Terradue.GeoJson.Feed;
 
 namespace Terradue.Shell.OpenSearch {
     //-------------------------------------------------------------------------------------------------------------------------
