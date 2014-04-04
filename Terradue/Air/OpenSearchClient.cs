@@ -33,6 +33,8 @@ namespace Terradue.Shell.OpenSearch {
         private static string outputFormatArg = "Atom";
         private static List<string> baseUrlArg = null;
         private static int timeout = 10000;
+        private static int pagination = 20;
+        private static int totalResults;
         private static List<string> metadataPaths = null;
         private static List<string> parameterArgs = new List<string>();
         private List<IOpenSearchEngineExtension> openSearchEngineExtensions;
@@ -138,15 +140,38 @@ namespace Terradue.Shell.OpenSearch {
                 entity = entities[0];
             }
 
-            parametersNvc = ResolveParameters(PrepareQueryParameters(), entity, outputFormatArg);
-             
-            // Perform the query
-            IOpenSearchResult osr = QueryOpenSearch(ose, entity, parametersNvc, outputFormatArg);
 
 
+            NameValueCollection parameters = PrepareQueryParameters();
+            string startIndex = parameters.Get("startIndex");
+            int index = 1;
+            if (startIndex != null) {
+                index = int.Parse(startIndex);
+            }
 
-            // Transform the result
-            OutputResult(osr, outputStream);
+            IOpenSearchResult osr = null;
+
+            while (totalResults > 0) {
+
+                parametersNvc = ResolveParameters(parameters, entity, outputFormatArg);
+
+                // Perform the query
+                osr = QueryOpenSearch(ose, entity, parametersNvc, outputFormatArg);
+
+                // Transform the result
+                OutputResult(osr, outputStream);
+
+                int count = CountResults(osr);
+                if (count == 0)
+                    break;
+
+                totalResults -= count;
+                index += count;
+
+                parameters.Set("startIndex", "" + index);
+            }
+
+            outputStream.Close();
 
 
         }
@@ -190,6 +215,12 @@ namespace Terradue.Shell.OpenSearch {
                         } else
                             return false;
                         break;
+                    case "--pagination": 
+                        if (argpos < args.Length - 1) {
+                            pagination = int.Parse(args[++argpos]);
+                        } else
+                            return false;
+                        break;
                     case "--list-osee": 
                         listOsee = true;
                         break;
@@ -222,6 +253,7 @@ namespace Terradue.Shell.OpenSearch {
             Console.Error.WriteLine(" -f/--format <format>    Specify the output format of the query. Format available can be listed with --list-osee.");
             Console.Error.WriteLine("                         Default: Atom");
             Console.Error.WriteLine(" -to/--time-out <file>   Specify query timeout (millisecond)");
+            Console.Error.WriteLine(" --pagination            Specify the pagination number for search loops. Default: 20");
             Console.Error.WriteLine(" --list-osee             List the OpenSearch Engine Extensions");
             Console.Error.WriteLine(" -v/--verbose            Make the operation more talkative");
             Console.Error.WriteLine();
@@ -306,15 +338,34 @@ namespace Terradue.Shell.OpenSearch {
         NameValueCollection PrepareQueryParameters() {
 
             NameValueCollection nvc = new NameValueCollection();
+            totalResults = 0;
 
             foreach (var parameter in parameterArgs) {
                 Match matchParamDef = Regex.Match(parameter, @"^(.*)=(.*)$");
                 // if martch is successful
                 if (matchParamDef.Success) {
                     // TODO filter and convert query param
+                    if (matchParamDef.Groups[1].Value == "count" ){
+                        if (matchParamDef.Groups[2].Value == "unlimited") {
+                            nvc.Add(matchParamDef.Groups[1].Value, pagination.ToString());
+                            totalResults = int.MaxValue;
+                            continue;
+                        }
+                        totalResults = int.Parse(matchParamDef.Groups[2].Value);
+                        if (totalResults > pagination) {
+                            nvc.Add(matchParamDef.Groups[1].Value, pagination.ToString());
+                            continue;
+                        }
+                    }
                     nvc.Add(matchParamDef.Groups[1].Value, matchParamDef.Groups[2].Value);
+
                 }
                
+            }
+
+            if (totalResults == 0) {
+                totalResults = pagination;
+                nvc.Add("count", pagination.ToString());
             }
 
             return nvc;
@@ -352,7 +403,7 @@ namespace Terradue.Shell.OpenSearch {
                         });
                         return false;
                     });
-                    sw.Close();
+                    sw.Flush();
                 }
 
                 if (osr.Result is SyndicationFeed) {
@@ -360,7 +411,7 @@ namespace Terradue.Shell.OpenSearch {
                     foreach (SyndicationItem item in feed.Items) {
                         sw.WriteLine(item.Id);
                     }
-                    sw.Close();
+                    sw.Flush();
                 }
 
             } else {
@@ -376,7 +427,7 @@ namespace Terradue.Shell.OpenSearch {
                         Atom10FeedFormatter atomFormatter = new Atom10FeedFormatter(feed);
                         XmlWriter xw = XmlWriter.Create(outputStream);
                         atomFormatter.WriteTo(xw);
-                        xw.Close();
+                        xw.Flush();
                     }
                 } else {
                     StreamWriter sw = new StreamWriter(outputStream);
@@ -404,7 +455,7 @@ namespace Terradue.Shell.OpenSearch {
                             }
                             sw.WriteLine();
                         }
-                        sw.Close();
+                        sw.Flush();
                     }
 
                     if (osr.Result is SyndicationFeed) {
@@ -427,7 +478,7 @@ namespace Terradue.Shell.OpenSearch {
                                 }
                             }
                         }
-                        sw.Close();
+                        sw.Flush();
                     }
                 }
 
@@ -459,6 +510,20 @@ namespace Terradue.Shell.OpenSearch {
             }
             return parameters;
 
+        }
+
+        int CountResults(IOpenSearchResult osr) {
+            if (osr.Result is IOpenSearchResultCollection) {
+                IOpenSearchResultCollection rc = (IOpenSearchResultCollection)osr.Result;
+                return rc.Items.Count;
+            }
+
+            if (osr.Result is SyndicationFeed) {
+                SyndicationFeed feed = (SyndicationFeed)osr.Result;
+                return feed.Items.Count();
+            }
+
+            return 0;
         }
     }
 }
