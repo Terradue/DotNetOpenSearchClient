@@ -26,6 +26,6 @@
 	</frameworkAssemblies>
   </metadata>
   <files>
-	  <file src="bin/*/OpenSearchClient.*" target="lib/net40" /> 
+	  <file src="bin/OpenSearchClient.*" target="lib/net40" /> 
   </files>
 </package>
