@@ -1,12 +1,7 @@
-
 .project
 packages
 bin
 obj
 *.userprefs
-
 *.nupkg
-
-*.userprefs
-
 OpenSearchClient.userprefs
