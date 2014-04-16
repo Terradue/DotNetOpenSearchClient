@@ -13,12 +13,13 @@ using Terradue.OpenSearch;
 using System.Collections.Specialized;
 using System.ServiceModel.Syndication;
 using Mono.Addins;
-using Terradue.OpenSearch.Result;
 using log4net;
 using log4net.Repository.Hierarchy;
 using log4net.Layout;
 using log4net.Core;
 using log4net.Appender;
+using Terradue.OpenSearch.Engine;
+using Terradue.OpenSearch.Result;
 
 namespace Terradue.Shell.OpenSearch {
     //-------------------------------------------------------------------------------------------------------------------------
@@ -94,7 +95,7 @@ namespace Terradue.Shell.OpenSearch {
             foreach (TypeExtensionNode node in AddinManager.GetExtensionNodes (typeof(IOpenSearchEngineExtension))) {
                 IOpenSearchEngineExtension osee = (IOpenSearchEngineExtension)node.CreateInstance();
                 foreach (string input in osee.GetInputFormatTransformPath()) {
-                    sw.WriteLine(string.Format("{0,-30}{1,-25}{2,-25}", osee.Name, input, osee.GetTransformName()));
+                    sw.WriteLine(string.Format("{0,-30}{1,-25}{2,-25}", osee.Name, input, osee.Name));
                 }
             }
 
@@ -503,9 +504,10 @@ namespace Terradue.Shell.OpenSearch {
             foreach (string key in nameValueCollection.AllKeys) {
 
                 if (osdRevParams[key] != null) {
-                    parameters.Add(osdRevParams[key], nameValueCollection[key]);
+                    foreach ( var id in osdRevParams.GetValues(key) )
+                        parameters.Set(id, nameValueCollection[key]);
                 } else {
-                    parameters.Add(key, nameValueCollection[key]);
+                    parameters.Set(key, nameValueCollection[key]);
                 }
             }
             return parameters;

@@ -22,7 +22,7 @@
     <Externalconsole>true</Externalconsole>
     <PlatformTarget>x86</PlatformTarget>
     <ConsolePause>false</ConsolePause>
-    <Commandlineparameters>-f Rdf -p count=unlimited http://eo-virtual-archive4.esa.int/search/ER01_SAR_IM__0P</Commandlineparameters>
+    <Commandlineparameters>-f Rdf -p time:start=1995-10-11T14:54:10.000Z -p time:end=1995-10-11T14:55:12.000Z -p eop:wrsLongitudeGrid=125 -p time:relation=equals http://cci-ice-velocity.terradue.int/catalogue/search/ICESHEET_CCI_SLC/description</Commandlineparameters>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
     <DebugType>full</DebugType>
@@ -42,17 +42,8 @@
     <Reference Include="log4net">
       <HintPath>packages\log4net.2.0.0\lib\net40-full\log4net.dll</HintPath>
     </Reference>
-    <Reference Include="Terradue.OpenSearch">
-      <HintPath>packages\Terradue.OpenSearch.1.4.0.0\lib\net40\Terradue.OpenSearch.dll</HintPath>
-    </Reference>
-    <Reference Include="Terradue.GeoJson">
-      <HintPath>packages\Terradue.GeoJson.1.3.1.0\lib\net40\Terradue.GeoJson.dll</HintPath>
-    </Reference>
     <Reference Include="Terradue.Metadata">
       <HintPath>packages\Terradue.Metadata.1.3.1.0\lib\net40\Terradue.Metadata.dll</HintPath>
-    </Reference>
-    <Reference Include="Terradue.OpenSearch.GeoJson">
-      <HintPath>packages\Terradue.OpenSearch.GeoJson.1.0.0.0\lib\net40\Terradue.OpenSearch.GeoJson.dll</HintPath>
     </Reference>
     <Reference Include="Terradue.Util">
       <HintPath>packages\Terradue.Util.1.3.1.0\lib\net40\Terradue.Util.dll</HintPath>
@@ -70,5 +61,15 @@
   <ItemGroup>
     <None Include="packages.config" />
     <None Include="OpenSearchClient.nuspec" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="externals\DotNetGeoJson\Terradue.GeoJson\Terradue.GeoJson.csproj">
+      <Project>{26AD29FF-862F-46D9-9F25-473E2977A7C3}</Project>
+      <Name>Terradue.GeoJson</Name>
+    </ProjectReference>
+    <ProjectReference Include="externals\DotNetOpenSearch\Terradue.OpenSearch\Terradue.OpenSearch.csproj">
+      <Project>{997A44FD-EE4A-490A-855B-88305E0CD269}</Project>
+      <Name>Terradue.OpenSearch</Name>
+    </ProjectReference>
   </ItemGroup>
 </Project>

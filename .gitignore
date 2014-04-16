@@ -8,3 +8,5 @@ obj
 *.nupkg
 
 *.userprefs
+
+OpenSearchClient.userprefs
