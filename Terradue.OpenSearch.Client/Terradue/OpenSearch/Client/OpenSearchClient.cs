@@ -11,7 +11,7 @@ using System.Linq;
 using System.Reflection;
 using Terradue.OpenSearch;
 using System.Collections.Specialized;
-using System.ServiceModel.Syndication;
+using Terradue.ServiceModel.Syndication;
 using Mono.Addins;
 using log4net;
 using log4net.Repository.Hierarchy;
@@ -20,6 +20,9 @@ using log4net.Core;
 using log4net.Appender;
 using Terradue.OpenSearch.Engine;
 using Terradue.OpenSearch.Result;
+using System.Net;
+using System.Security.Cryptography.X509Certificates;
+using System.Net.Security;
 
 namespace Terradue.Shell.OpenSearch {
     //-------------------------------------------------------------------------------------------------------------------------
@@ -31,7 +34,7 @@ namespace Terradue.Shell.OpenSearch {
         private static bool verbose;
         private static bool listOsee;
         private static string outputFilePathArg = null;
-        private static string outputFormatArg = "Atom";
+        private static string queryFormatArg = null;
         private static List<string> baseUrlArg = null;
         private static int timeout = 10000;
         private static int pagination = 20;
@@ -41,6 +44,7 @@ namespace Terradue.Shell.OpenSearch {
         private List<IOpenSearchEngineExtension> openSearchEngineExtensions;
         private static OpenSearchEngine ose;
 
+
         public static void Main(string[] args) {
 
             if (!GetArgs(args)) {
@@ -48,7 +52,9 @@ namespace Terradue.Shell.OpenSearch {
                 Environment.ExitCode = 1;
                 return;
             }
-            
+
+
+
             OpenSearchClient client = null;
             try {
                 client = new OpenSearchClient();
@@ -67,36 +73,60 @@ namespace Terradue.Shell.OpenSearch {
                 Environment.ExitCode = 1;
                 return;
             }
-            
+
         }
 
         private void Initialize() {
+
+            // Config log
+            ConfigureLog();
+
+            log.Debug("Initialize Addins registry.");
+
             AddinManager.Initialize();
             AddinManager.Registry.Update(null);
+
+            log.Debug("Initialize SSL verification.");
+            // Override automatic validation of SSL server certificates.
+            System.Net.ServicePointManager.ServerCertificateValidationCallback = (s,ce,ca,p) => true;
+
+            log.Debug("Load OpenSearch Engine.");
             ose = new OpenSearchEngine();
-            ose.LoadPlugins();
+
+            LoadOpenSearchEngineExtensions(ose);
+
+
+        }
+
+        void LoadOpenSearchEngineExtensions(OpenSearchEngine ose) {
+            if (queryFormatArg == null) {
+                ose.LoadPlugins();
+            } else {
+                foreach (TypeExtensionNode node in AddinManager.GetExtensionNodes (typeof(IOpenSearchEngineExtension))) {
+                    IOpenSearchEngineExtension osee = (IOpenSearchEngineExtension)node.CreateInstance();
+                    if (string.Compare(osee.Identifier, queryFormatArg, true) == 0)
+                        ose.RegisterExtension(osee);
+                }
+            }
         }
 
         private void ListOpenSearchEngineExtensions() {
-            // Config log
-            ConfigureLog();
+
 
             // Initialize the output stream
             Stream outputStream = InitializeOutputStream();
 
             StreamWriter sw = new StreamWriter(outputStream);
 
-            sw.WriteLine(string.Format("{0,-30}{1,-25}{2,-25}", "Extension Name", "Input Mime-Type", "Output Format"));
-            sw.WriteLine(string.Format("{0,-30}{1,-25}{2,-25}", "==============", "===============", "============="));
+            sw.WriteLine(string.Format("{0,-30}{1,-40}", "Extension Id", "Mime-Type capability"));
+            sw.WriteLine(string.Format("{0,-30}{1,-40}", "============", "===================="));
 
             AddinManager.Initialize();
             AddinManager.Registry.Update(null);
 
             foreach (TypeExtensionNode node in AddinManager.GetExtensionNodes (typeof(IOpenSearchEngineExtension))) {
                 IOpenSearchEngineExtension osee = (IOpenSearchEngineExtension)node.CreateInstance();
-                foreach (string input in osee.GetInputFormatTransformPath()) {
-                    sw.WriteLine(string.Format("{0,-30}{1,-25}{2,-25}", osee.Name, input, osee.Name));
-                }
+                sw.WriteLine(string.Format("{0,-30}{1,-40}", osee.Identifier, osee.DiscoveryContentType));
             }
 
             sw.Close();
@@ -104,8 +134,6 @@ namespace Terradue.Shell.OpenSearch {
         }
 
         private void ListOutputFormat() {
-            // Config log
-            ConfigureLog();
 
             // Initialize the output stream
             Stream outputStream = InitializeOutputStream();
@@ -154,10 +182,10 @@ namespace Terradue.Shell.OpenSearch {
 
             while (totalResults > 0) {
 
-                parametersNvc = ResolveParameters(parameters, entity, outputFormatArg);
+                parametersNvc = ResolveParameters(parameters, entity);
 
                 // Perform the query
-                osr = QueryOpenSearch(ose, entity, parametersNvc, outputFormatArg);
+                osr = QueryOpenSearch(ose, entity, parametersNvc);
 
                 // Transform the result
                 OutputResult(osr, outputStream);
@@ -180,7 +208,7 @@ namespace Terradue.Shell.OpenSearch {
         public static bool GetArgs(string[] args) {
             if (args.Length == 0)
                 return false;
-            
+
             int argpos = 0;
             while (argpos < args.Length) {
                 switch (args[argpos]) {
@@ -198,7 +226,7 @@ namespace Terradue.Shell.OpenSearch {
                     case "-f": 
                     case "--format": 
                         if (argpos < args.Length - 1) {
-                            outputFormatArg = args[++argpos];
+                            queryFormatArg = args[++argpos];
                         } else
                             return false;
                         break;
@@ -225,7 +253,7 @@ namespace Terradue.Shell.OpenSearch {
                     case "--list-osee": 
                         listOsee = true;
                         break;
-                    
+
                     default: 
                         if (baseUrlArg == null) {
                             baseUrlArg = args[argpos].Split(',').ToList();
@@ -251,8 +279,8 @@ namespace Terradue.Shell.OpenSearch {
 
             Console.Error.WriteLine(" -p/--parameter <param>  Specify a parameter for the query");
             Console.Error.WriteLine(" -o/--output <file>      Write output to <file> instead of stdout");
-            Console.Error.WriteLine(" -f/--format <format>    Specify the output format of the query. Format available can be listed with --list-osee.");
-            Console.Error.WriteLine("                         Default: Atom");
+            Console.Error.WriteLine(" -f/--format <format>    Specify the format of the query. Format available can be listed with --list-osee.");
+            Console.Error.WriteLine("                         By default, the client is automatic and uses the best format.");
             Console.Error.WriteLine(" -to/--time-out <file>   Specify query timeout (millisecond)");
             Console.Error.WriteLine(" --pagination            Specify the pagination number for search loops. Default: 20");
             Console.Error.WriteLine(" --list-osee             List the OpenSearch Engine Extensions");
@@ -331,7 +359,7 @@ namespace Terradue.Shell.OpenSearch {
         /// <param name="baseUrl">Base URL.</param>
         /// <param name="parametersNvc">Parameters nvc.</param>
         Uri PrepareQueryUrl(Uri baseUrl, NameValueCollection parametersNvc) {
-        
+
             throw new NotImplementedException();
 
         }
@@ -346,7 +374,7 @@ namespace Terradue.Shell.OpenSearch {
                 // if martch is successful
                 if (matchParamDef.Success) {
                     // TODO filter and convert query param
-                    if (matchParamDef.Groups[1].Value == "count" ){
+                    if (matchParamDef.Groups[1].Value == "count") {
                         if (matchParamDef.Groups[2].Value == "unlimited") {
                             nvc.Add(matchParamDef.Groups[1].Value, pagination.ToString());
                             totalResults = int.MaxValue;
@@ -361,7 +389,7 @@ namespace Terradue.Shell.OpenSearch {
                     nvc.Add(matchParamDef.Groups[1].Value, matchParamDef.Groups[2].Value);
 
                 }
-               
+
             }
 
             if (totalResults == 0) {
@@ -372,9 +400,9 @@ namespace Terradue.Shell.OpenSearch {
             return nvc;
         }
 
-        private IOpenSearchResult QueryOpenSearch(OpenSearchEngine ose, IOpenSearchable entity, NameValueCollection parameters, string type) {
+        private IOpenSearchResult QueryOpenSearch(OpenSearchEngine ose, IOpenSearchable entity, NameValueCollection parameters) {
 
-            IOpenSearchResult osr = ose.Query(entity, parameters, type);
+            IOpenSearchResult osr = ose.Query(entity, parameters);
 
             return osr;
 
@@ -388,10 +416,9 @@ namespace Terradue.Shell.OpenSearch {
 
         void OutputResult(IOpenSearchResult osr, Stream outputStream) {
 
-
+            StreamWriter sw = new StreamWriter(outputStream);
 
             if (metadataPaths == null) {
-                StreamWriter sw = new StreamWriter(outputStream);
                 if (osr.Result is IOpenSearchResultCollection) {
                     IOpenSearchResultCollection rc = (IOpenSearchResultCollection)osr.Result;
                     rc.Items.FirstOrDefault(i => {
@@ -407,83 +434,71 @@ namespace Terradue.Shell.OpenSearch {
                     sw.Flush();
                 }
 
-                if (osr.Result is SyndicationFeed) {
-                    SyndicationFeed feed = (SyndicationFeed)osr.Result;
-                    foreach (SyndicationItem item in feed.Items) {
-                        sw.WriteLine(item.Id);
-                    }
+                return;
+            }
+
+            if (metadataPaths[0] == "enclosure") {
+                if (osr.Result is IOpenSearchResultCollection) {
+                    IOpenSearchResultCollection rc = (IOpenSearchResultCollection)osr.Result;
+                    rc.Items.FirstOrDefault(i => {
+                        i.Links.FirstOrDefault(l => {
+                            if (l.RelationshipType == "enclosure") {
+                                sw.WriteLine(l.Uri.ToString());
+                                return true;
+                            } else
+                                return false;
+                        });
+                        return false;
+                    });
                     sw.Flush();
                 }
 
-            } else {
+                return;
+            }
 
-                if (metadataPaths[0] == "{}") {
-                    if (osr.Result is IOpenSearchResultCollection) {
-                        IOpenSearchResultCollection rc = (IOpenSearchResultCollection)osr.Result;
-                        rc.Serialize(outputStream);
-                    }
-
-                    if (osr.Result is SyndicationFeed) {
-                        SyndicationFeed feed = (SyndicationFeed)osr.Result;
-                        Atom10FeedFormatter atomFormatter = new Atom10FeedFormatter(feed);
-                        XmlWriter xw = XmlWriter.Create(outputStream);
-                        atomFormatter.WriteTo(xw);
-                        xw.Flush();
-                    }
-                } else {
-                    StreamWriter sw = new StreamWriter(outputStream);
-
-                    if (osr.Result is IOpenSearchResultCollection) {
-                        IOpenSearchResultCollection rc = (IOpenSearchResultCollection)osr.Result;
-                        foreach (IOpenSearchResultItem item in rc.Items) {
-                            string sep = "";
-                            foreach (var path in metadataPaths) {
-                                foreach (XmlNode node in item.ElementExtensions) {
-                                    XmlNamespaceManager xnsm = new XmlNamespaceManager(node.OwnerDocument.NameTable);
-                                    xnsm.AddNamespace("dclite4g", "http://xmlns.com/2008/dclite4g#");
-                                    xnsm.AddNamespace("dct", "http://purl.org/dc/terms/");
-                                    xnsm.AddNamespace("dc", "http://purl.org/dc/elements/1.1/");
-                                    sw.Write(sep);
-                                    XmlNode noder = node.ParentNode.SelectSingleNode(path, xnsm);
-                                    if (noder != null) {
-                                        if (noder.NodeType == XmlNodeType.Attribute)
-                                            sw.Write(noder.Value);
-                                        else
-                                            sw.Write(noder.InnerText);
-                                    }
-                                    sep = "\t";
-                                }
-                            }
-                            sw.WriteLine();
-                        }
-                        sw.Flush();
-                    }
-
-                    if (osr.Result is SyndicationFeed) {
-                        SyndicationFeed feed = (SyndicationFeed)osr.Result;
-                        foreach (SyndicationItem item in feed.Items) {
-                            foreach (SyndicationElementExtension ext in item.ElementExtensions) {
-                                var reader = ext.GetReader();
-                                XmlDocument doc = new XmlDocument();
-                                doc.Load(reader);
-                                XmlNamespaceManager xnsm = new XmlNamespaceManager(doc.NameTable);
-                                string sep = "";
-                                foreach (var path in metadataPaths) {
-                                    sw.Write(sep);
-                                    XmlNode node = doc.SelectSingleNode(path, xnsm);
-                                    if (node.NodeType == XmlNodeType.Attribute)
-                                        sw.Write(node.Value);
-                                    else
-                                        sw.Write(node.InnerText);
-                                    sep = "\t";
-                                }
-                            }
-                        }
-                        sw.Flush();
-                    }
+            if (metadataPaths[0] == "{}") {
+                if (osr.Result is IOpenSearchResultCollection) {
+                    IOpenSearchResultCollection rc = (IOpenSearchResultCollection)osr.Result;
+                    rc.SerializeToStream(outputStream);
                 }
 
+                if (osr.Result is SyndicationFeed) {
+                    SyndicationFeed feed = (SyndicationFeed)osr.Result;
+                    Atom10FeedFormatter atomFormatter = new Atom10FeedFormatter(feed);
+                    XmlWriter xw = XmlWriter.Create(outputStream);
+                    atomFormatter.WriteTo(xw);
+                    xw.Flush();
+                }
+                return;
             }
+
+            if (osr.Result is IOpenSearchResultCollection) {
+                IOpenSearchResultCollection rc = (IOpenSearchResultCollection)osr.Result;
+                foreach (IOpenSearchResultItem item in rc.Items) {
+                    string sep = "";
+                    XmlDocument doc = new XmlDocument();
+                    doc.Load(item.ElementExtensions.GetReaderAtExtensionWrapper());
+                    foreach (var path in metadataPaths) {
+                        XmlNamespaceManager xnsm = new XmlNamespaceManager(doc.NameTable);
+                        xnsm.AddNamespace("dclite4g", "http://xmlns.com/2008/dclite4g#");
+                        xnsm.AddNamespace("dct", "http://purl.org/dc/terms/");
+                        xnsm.AddNamespace("dc", "http://purl.org/dc/elements/1.1/");
+                        sw.Write(sep);
+                        XmlNode noder = doc.SelectSingleNode(path, xnsm);
+                        if (noder != null) {
+                            if (noder.NodeType == XmlNodeType.Attribute)
+                                sw.Write(noder.Value);
+                            else
+                                sw.Write(noder.InnerText);
+                        }
+                        sep = "\t";
+                    }
+                    sw.WriteLine();
+                }
+                sw.Flush();
+            }
+
+            return;
 
         }
 
@@ -492,10 +507,9 @@ namespace Terradue.Shell.OpenSearch {
             serializer.Serialize(outputStream, xmlDocument);
         }
 
-        NameValueCollection ResolveParameters(NameValueCollection nameValueCollection, IOpenSearchable entity, string resultName) {
+        NameValueCollection ResolveParameters(NameValueCollection nameValueCollection, IOpenSearchable entity) {
 
-            Type resultType = ose.GetTypeByExtensionName(resultName);
-            string contentType = entity.GetTransformFunction(ose, resultType).Item1;
+            string contentType = entity.DefaultMimeType;
 
             NameValueCollection osdParam = entity.GetOpenSearchParameters(contentType);
             NameValueCollection osdRevParams = OpenSearchFactory.ReverseTemplateOpenSearchParameters(osdParam);
@@ -504,7 +518,7 @@ namespace Terradue.Shell.OpenSearch {
             foreach (string key in nameValueCollection.AllKeys) {
 
                 if (osdRevParams[key] != null) {
-                    foreach ( var id in osdRevParams.GetValues(key) )
+                    foreach (var id in osdRevParams.GetValues(key))
                         parameters.Set(id, nameValueCollection[key]);
                 } else {
                     parameters.Set(key, nameValueCollection[key]);
@@ -517,7 +531,7 @@ namespace Terradue.Shell.OpenSearch {
         int CountResults(IOpenSearchResult osr) {
             if (osr.Result is IOpenSearchResultCollection) {
                 IOpenSearchResultCollection rc = (IOpenSearchResultCollection)osr.Result;
-                return rc.Items.Count;
+                return rc.Items.Count();
             }
 
             if (osr.Result is SyndicationFeed) {
@@ -527,6 +541,7 @@ namespace Terradue.Shell.OpenSearch {
 
             return 0;
         }
+
     }
 }
 

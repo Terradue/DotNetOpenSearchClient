@@ -1,3 +1,0 @@
-[submodule "Terradue.OpenSearch"]
-	path = Terradue.OpenSearch
-	url = git://github.com/Terradue/DotNetOpenSearch

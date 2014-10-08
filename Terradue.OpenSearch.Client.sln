@@ -1,8 +1,6 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 11.00
 # Visual Studio 2010
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Terradue.OpenSearch", "Terradue.OpenSearch\Terradue.OpenSearch\Terradue.OpenSearch.csproj", "{997A44FD-EE4A-490A-855B-88305E0CD269}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Terradue.OpenSearch.Client", "Terradue.OpenSearch.Client\Terradue.OpenSearch.Client.csproj", "{1FB59AA7-3878-47CD-4267-F179F56C6470}"
 EndProject
 Global
@@ -15,10 +13,6 @@ Global
 		{1FB59AA7-3878-47CD-4267-F179F56C6470}.Debug|x86.Build.0 = Debug|x86
 		{1FB59AA7-3878-47CD-4267-F179F56C6470}.Release|x86.ActiveCfg = Release|x86
 		{1FB59AA7-3878-47CD-4267-F179F56C6470}.Release|x86.Build.0 = Release|x86
-		{997A44FD-EE4A-490A-855B-88305E0CD269}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{997A44FD-EE4A-490A-855B-88305E0CD269}.Debug|x86.Build.0 = Debug|Any CPU
-		{997A44FD-EE4A-490A-855B-88305E0CD269}.Release|x86.ActiveCfg = Release|Any CPU
-		{997A44FD-EE4A-490A-855B-88305E0CD269}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(MonoDevelopProperties) = preSolution
 		StartupItem = Terradue.OpenSearch.Client\Terradue.OpenSearch.Client.csproj
