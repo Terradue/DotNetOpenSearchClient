@@ -421,16 +421,13 @@ namespace Terradue.Shell.OpenSearch {
             if (metadataPaths == null) {
                 if (osr.Result is IOpenSearchResultCollection) {
                     IOpenSearchResultCollection rc = (IOpenSearchResultCollection)osr.Result;
-                    rc.Items.FirstOrDefault(i => {
-                        i.Links.FirstOrDefault(l => {
-                            if (l.RelationshipType == "self") {
-                                sw.WriteLine(l.Uri.ToString());
-                                return true;
-                            } else
-                                return false;
-                        });
-                        return false;
-                    });
+                    foreach ( var item in rc.Items ){
+                        var link = item.Links.FirstOrDefault(l => l.RelationshipType == "self");
+                        if ( link != null )
+                            sw.WriteLine(link.Uri.ToString());
+                        else
+                            sw.WriteLine(item.Id);
+                    }
                     sw.Flush();
                 }
 
