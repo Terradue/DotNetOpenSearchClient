@@ -13,7 +13,7 @@
     <tags>OpenSearch</tags>
     <dependencies>
       <dependency id="Terradue.ServiceModel.Syndication" version="1.0.0" />
-      <dependency id="Terradue.OpenSearch" version="[1.7.4,1.8)" />
+      <dependency id="Terradue.OpenSearch" version="[1.7.7,1.8)" />
       <dependency id="Terradue.GeoJson" version="[1.4.0,1.5)" />
       <dependency id="ServiceStack.Text" version="[3.9.71,4)" />
       <dependency id="log4net" version="[2.0.0]" />
