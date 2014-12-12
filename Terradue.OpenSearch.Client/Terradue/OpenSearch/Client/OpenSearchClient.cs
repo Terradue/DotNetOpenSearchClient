@@ -101,11 +101,13 @@ namespace Terradue.Shell.OpenSearch {
         void LoadOpenSearchEngineExtensions(OpenSearchEngine ose) {
             if (queryFormatArg == null) {
                 ose.LoadPlugins();
+                return;
             } else {
                 foreach (TypeExtensionNode node in AddinManager.GetExtensionNodes (typeof(IOpenSearchEngineExtension))) {
                     IOpenSearchEngineExtension osee = (IOpenSearchEngineExtension)node.CreateInstance();
                     if (string.Compare(osee.Identifier, queryFormatArg, true) == 0)
                         ose.RegisterExtension(osee);
+
                 }
             }
         }
