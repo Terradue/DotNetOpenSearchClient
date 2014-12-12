@@ -23,6 +23,7 @@ using Terradue.OpenSearch.Result;
 using System.Net;
 using System.Security.Cryptography.X509Certificates;
 using System.Net.Security;
+using ServiceStack.Text;
 
 namespace Terradue.Shell.OpenSearch {
     //-------------------------------------------------------------------------------------------------------------------------
@@ -95,17 +96,20 @@ namespace Terradue.Shell.OpenSearch {
 
             LoadOpenSearchEngineExtensions(ose);
 
+            JsConfig.ConvertObjectTypesIntoStringDictionary = true;
 
         }
 
         void LoadOpenSearchEngineExtensions(OpenSearchEngine ose) {
             if (queryFormatArg == null) {
                 ose.LoadPlugins();
+                return;
             } else {
                 foreach (TypeExtensionNode node in AddinManager.GetExtensionNodes (typeof(IOpenSearchEngineExtension))) {
                     IOpenSearchEngineExtension osee = (IOpenSearchEngineExtension)node.CreateInstance();
                     if (string.Compare(osee.Identifier, queryFormatArg, true) == 0)
                         ose.RegisterExtension(osee);
+
                 }
             }
         }
@@ -158,8 +162,12 @@ namespace Terradue.Shell.OpenSearch {
 
             // Find OpenSearch Entity
             List<IOpenSearchable> entities = new List<IOpenSearchable>();
-            foreach (var url in baseUrls)
-                entities.Add(OpenSearchFactory.FindOpenSearchable(ose, url));
+            foreach (var url in baseUrls) {
+                if ( string.IsNullOrEmpty(queryFormatArg) )
+                    entities.Add(OpenSearchFactory.FindOpenSearchable(ose, url));
+                else
+                    entities.Add(OpenSearchFactory.FindOpenSearchable(ose, url, ose.GetExtensionByExtensionName(queryFormatArg).DiscoveryContentType));
+            }
 
             IOpenSearchable entity;
 
@@ -500,7 +508,7 @@ namespace Terradue.Shell.OpenSearch {
         }
 
         void SerializeXmlDocument(XmlDocument xmlDocument, Stream outputStream) {
-            XmlSerializer serializer = new XmlSerializer(typeof(XmlDocument));
+            System.Xml.Serialization.XmlSerializer serializer = new System.Xml.Serialization.XmlSerializer(typeof(XmlDocument));
             serializer.Serialize(outputStream, xmlDocument);
         }
 
