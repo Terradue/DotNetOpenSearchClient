@@ -2,7 +2,7 @@
 <package >
   <metadata>
     <id>Terradue.OpenSearch.Client</id>
-    <version>1.4.0</version>
+    <version>1.4.1</version>
     <authors>Terradue</authors>
     <owners>Terradue</owners>
     <licenseUrl>https://github.com/Terradue/DotNetOpenSearchClient/blob/master/LICENSE</licenseUrl>
@@ -13,8 +13,8 @@
     <tags>OpenSearch</tags>
     <dependencies>
       <dependency id="Terradue.ServiceModel.Syndication" version="1.0.0" />
-      <dependency id="Terradue.OpenSearch" version="[1.8.4,1.9)" />
-      <dependency id="Terradue.GeoJson" version="[1.4.7,1.5)" />
+      <dependency id="Terradue.OpenSearch" version="[1.8.6,1.9)" />
+      <dependency id="Terradue.GeoJson" version="[1.4.9,1.5)" />
       <dependency id="ServiceStack.Text" version="[3.9.71,4)" />
       <dependency id="log4net" version="[2.0.0]" />
       <dependency id="Mono.Addins" version="[1.2]" />
