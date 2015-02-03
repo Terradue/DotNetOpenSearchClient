@@ -24,6 +24,8 @@ using System.Net;
 using System.Security.Cryptography.X509Certificates;
 using System.Net.Security;
 using ServiceStack.Text;
+using Terradue.GeoJson.Geometry;
+using Terradue.GeoJson.Feature;
 
 namespace Terradue.Shell.OpenSearch {
     //-------------------------------------------------------------------------------------------------------------------------
@@ -89,7 +91,7 @@ namespace Terradue.Shell.OpenSearch {
 
             log.Debug("Initialize SSL verification.");
             // Override automatic validation of SSL server certificates.
-            System.Net.ServicePointManager.ServerCertificateValidationCallback = (s,ce,ca,p) => true;
+            System.Net.ServicePointManager.ServerCertificateValidationCallback = (s, ce, ca, p) => true;
 
             log.Debug("Load OpenSearch Engine.");
             ose = new OpenSearchEngine();
@@ -101,17 +103,8 @@ namespace Terradue.Shell.OpenSearch {
         }
 
         void LoadOpenSearchEngineExtensions(OpenSearchEngine ose) {
-            if (queryFormatArg == null) {
-                ose.LoadPlugins();
-                return;
-            } else {
-                foreach (TypeExtensionNode node in AddinManager.GetExtensionNodes (typeof(IOpenSearchEngineExtension))) {
-                    IOpenSearchEngineExtension osee = (IOpenSearchEngineExtension)node.CreateInstance();
-                    if (string.Compare(osee.Identifier, queryFormatArg, true) == 0)
-                        ose.RegisterExtension(osee);
-
-                }
-            }
+            ose.LoadPlugins();
+            return;
         }
 
         private void ListOpenSearchEngineExtensions() {
@@ -163,7 +156,7 @@ namespace Terradue.Shell.OpenSearch {
             // Find OpenSearch Entity
             List<IOpenSearchable> entities = new List<IOpenSearchable>();
             foreach (var url in baseUrls) {
-                if ( string.IsNullOrEmpty(queryFormatArg) )
+                if (string.IsNullOrEmpty(queryFormatArg))
                     entities.Add(OpenSearchFactory.FindOpenSearchable(ose, url));
                 else
                     entities.Add(OpenSearchFactory.FindOpenSearchable(ose, url, ose.GetExtensionByExtensionName(queryFormatArg).DiscoveryContentType));
@@ -410,7 +403,12 @@ namespace Terradue.Shell.OpenSearch {
 
         private IOpenSearchResult QueryOpenSearch(OpenSearchEngine ose, IOpenSearchable entity, NameValueCollection parameters) {
 
-            IOpenSearchResult osr = ose.Query(entity, parameters);
+            IOpenSearchResult osr;
+
+            if (queryFormatArg == null)
+                osr = ose.Query(entity, parameters);
+            else
+                osr = ose.Query(entity, parameters, queryFormatArg);
 
             return osr;
 
@@ -429,9 +427,9 @@ namespace Terradue.Shell.OpenSearch {
             if (metadataPaths == null) {
                 if (osr.Result is IOpenSearchResultCollection) {
                     IOpenSearchResultCollection rc = (IOpenSearchResultCollection)osr.Result;
-                    foreach ( var item in rc.Items ){
+                    foreach (var item in rc.Items) {
                         var link = item.Links.FirstOrDefault(l => l.RelationshipType == "self");
-                        if ( link != null )
+                        if (link != null)
                             sw.WriteLine(link.Uri.ToString());
                         else
                             sw.WriteLine(item.Id);
@@ -477,6 +475,21 @@ namespace Terradue.Shell.OpenSearch {
                 return;
             }
 
+
+            if (metadataPaths[0] == "wkt") {
+                if (osr.Result is IOpenSearchResultCollection) {
+                    foreach (var item in osr.Result.Items) {
+                        if (item is Feature)
+                            sw.WriteLine(FeatureExtensions.ToWkt((Feature)item));
+                        var feature = Terradue.Metadata.EarthObservation.OpenSearch.OpenSearchMetadataHelpers.FindFeatureFromOpenSearchResultItem(item);
+                        if ( feature != null )
+                            sw.WriteLine(feature.ToWkt());
+                    }
+                }
+                sw.Flush();
+                return;
+            }
+
             if (osr.Result is IOpenSearchResultCollection) {
                 IOpenSearchResultCollection rc = (IOpenSearchResultCollection)osr.Result;
                 foreach (IOpenSearchResultItem item in rc.Items) {
@@ -488,6 +501,7 @@ namespace Terradue.Shell.OpenSearch {
                         xnsm.AddNamespace("dclite4g", "http://xmlns.com/2008/dclite4g#");
                         xnsm.AddNamespace("dct", "http://purl.org/dc/terms/");
                         xnsm.AddNamespace("dc", "http://purl.org/dc/elements/1.1/");
+                        xnsm.AddNamespace("atom", "http://purl.org/dc/elements/1.1/");
                         sw.Write(sep);
                         XmlNode noder = doc.SelectSingleNode(path, xnsm);
                         if (noder != null) {
