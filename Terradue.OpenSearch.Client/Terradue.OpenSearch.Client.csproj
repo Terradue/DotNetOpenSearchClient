@@ -50,20 +50,20 @@
     <Reference Include="Mono.Addins">
       <HintPath>..\packages\Mono.Addins.1.2\lib\net40\Mono.Addins.dll</HintPath>
     </Reference>
-    <Reference Include="Terradue.OpenSearch.GeoJson">
-      <HintPath>..\packages\Terradue.OpenSearch.GeoJson.1.1.7\lib\net40\Terradue.OpenSearch.GeoJson.dll</HintPath>
-    </Reference>
-    <Reference Include="Terradue.OpenSearch">
-      <HintPath>..\packages\Terradue.OpenSearch.1.8.6\lib\net40\Terradue.OpenSearch.dll</HintPath>
-    </Reference>
-    <Reference Include="Terradue.OpenSearch.RdfEO">
-      <HintPath>..\packages\Terradue.OpenSearch.RdfEO.1.1.1\lib\net40\Terradue.OpenSearch.RdfEO.dll</HintPath>
-    </Reference>
-    <Reference Include="Terradue.Metadata.EarthObservation">
-      <HintPath>..\packages\Terradue.Metadata.EarthObservation.1.0.4\lib\net40\Terradue.Metadata.EarthObservation.dll</HintPath>
-    </Reference>
     <Reference Include="Terradue.GeoJson">
       <HintPath>..\packages\Terradue.GeoJson.1.4.9\lib\net40\Terradue.GeoJson.dll</HintPath>
+    </Reference>
+    <Reference Include="Terradue.OpenSearch.RdfEO">
+      <HintPath>..\packages\Terradue.OpenSearch.RdfEO.1.2\lib\net40\Terradue.OpenSearch.RdfEO.dll</HintPath>
+    </Reference>
+    <Reference Include="Terradue.OpenSearch">
+      <HintPath>..\packages\Terradue.OpenSearch.1.9.2\lib\net40\Terradue.OpenSearch.dll</HintPath>
+    </Reference>
+    <Reference Include="Terradue.Metadata.EarthObservation">
+      <HintPath>..\packages\Terradue.Metadata.EarthObservation.1.1\lib\net40\Terradue.Metadata.EarthObservation.dll</HintPath>
+    </Reference>
+    <Reference Include="Terradue.OpenSearch.GeoJson">
+      <HintPath>..\packages\Terradue.OpenSearch.GeoJson.1.2.1\lib\net40\Terradue.OpenSearch.GeoJson.dll</HintPath>
     </Reference>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />

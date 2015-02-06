@@ -14,7 +14,4 @@ Global
 		{1FB59AA7-3878-47CD-4267-F179F56C6470}.Release|x86.ActiveCfg = Release|x86
 		{1FB59AA7-3878-47CD-4267-F179F56C6470}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
-	GlobalSection(MonoDevelopProperties) = preSolution
-		StartupItem = Terradue.OpenSearch.Client\Terradue.OpenSearch.Client.csproj
-	EndGlobalSection
 EndGlobal

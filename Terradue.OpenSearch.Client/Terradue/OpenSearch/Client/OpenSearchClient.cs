@@ -158,8 +158,10 @@ namespace Terradue.Shell.OpenSearch {
             foreach (var url in baseUrls) {
                 if (string.IsNullOrEmpty(queryFormatArg))
                     entities.Add(OpenSearchFactory.FindOpenSearchable(ose, url));
-                else
-                    entities.Add(OpenSearchFactory.FindOpenSearchable(ose, url, ose.GetExtensionByExtensionName(queryFormatArg).DiscoveryContentType));
+                else {
+                    var e = OpenSearchFactory.FindOpenSearchable(ose, url, ose.GetExtensionByExtensionName(queryFormatArg).DiscoveryContentType);
+                    entities.Add(e);
+                }
             }
 
             IOpenSearchable entity;
@@ -405,7 +407,7 @@ namespace Terradue.Shell.OpenSearch {
 
             IOpenSearchResult osr;
 
-            if (queryFormatArg == null)
+            if (string.IsNullOrEmpty(queryFormatArg))
                 osr = ose.Query(entity, parameters);
             else
                 osr = ose.Query(entity, parameters, queryFormatArg);
@@ -484,6 +486,42 @@ namespace Terradue.Shell.OpenSearch {
                         var feature = Terradue.Metadata.EarthObservation.OpenSearch.OpenSearchMetadataHelpers.FindFeatureFromOpenSearchResultItem(item);
                         if ( feature != null )
                             sw.WriteLine(feature.ToWkt());
+                    }
+                }
+                sw.Flush();
+                return;
+            }
+
+            if (metadataPaths[0] == "identifier") {
+                if (osr.Result is IOpenSearchResultCollection) {
+                    foreach (var item in osr.Result.Items) {
+                        var identifier = Terradue.Metadata.EarthObservation.OpenSearch.OpenSearchMetadataHelpers.FindIdentifierFromOpenSearchResultItem(item);
+                        if ( identifier != null )
+                            sw.WriteLine(identifier);
+                    }
+                }
+                sw.Flush();
+                return;
+            }
+
+            if (metadataPaths[0] == "startdate") {
+                if (osr.Result is IOpenSearchResultCollection) {
+                    foreach (var item in osr.Result.Items) {
+                        var start = Terradue.Metadata.EarthObservation.OpenSearch.OpenSearchMetadataHelpers.FindStartDateFromOpenSearchResultItem(item);
+                        if ( start != DateTime.MinValue )
+                            sw.WriteLine(start.ToString("u").Replace(" ", "T"));
+                    }
+                }
+                sw.Flush();
+                return;
+            }
+
+            if (metadataPaths[0] == "enddate") {
+                if (osr.Result is IOpenSearchResultCollection) {
+                    foreach (var item in osr.Result.Items) {
+                        var stop = Terradue.Metadata.EarthObservation.OpenSearch.OpenSearchMetadataHelpers.FindEndDateFromOpenSearchResultItem(item);
+                        if ( stop != DateTime.MaxValue )
+                            sw.WriteLine(stop.ToString("u").Replace(" ", "T"));
                     }
                 }
                 sw.Flush();
