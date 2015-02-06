@@ -504,6 +504,30 @@ namespace Terradue.Shell.OpenSearch {
                 return;
             }
 
+            if (metadataPaths[0] == "startdate") {
+                if (osr.Result is IOpenSearchResultCollection) {
+                    foreach (var item in osr.Result.Items) {
+                        var start = Terradue.Metadata.EarthObservation.OpenSearch.OpenSearchMetadataHelpers.FindStartDateFromOpenSearchResultItem(item);
+                        if ( start != DateTime.MinValue )
+                            sw.WriteLine(start.ToString("u").Replace(" ", "T"));
+                    }
+                }
+                sw.Flush();
+                return;
+            }
+
+            if (metadataPaths[0] == "enddate") {
+                if (osr.Result is IOpenSearchResultCollection) {
+                    foreach (var item in osr.Result.Items) {
+                        var stop = Terradue.Metadata.EarthObservation.OpenSearch.OpenSearchMetadataHelpers.FindEndDateFromOpenSearchResultItem(item);
+                        if ( stop != DateTime.MaxValue )
+                            sw.WriteLine(stop.ToString("u").Replace(" ", "T"));
+                    }
+                }
+                sw.Flush();
+                return;
+            }
+
             if (osr.Result is IOpenSearchResultCollection) {
                 IOpenSearchResultCollection rc = (IOpenSearchResultCollection)osr.Result;
                 foreach (IOpenSearchResultItem item in rc.Items) {
