@@ -26,6 +26,7 @@ using System.Net.Security;
 using ServiceStack.Text;
 using Terradue.GeoJson.Geometry;
 using Terradue.GeoJson.Feature;
+using Terradue.OpenSearch.Filters;
 
 namespace Terradue.Shell.OpenSearch {
     //-------------------------------------------------------------------------------------------------------------------------
@@ -39,13 +40,14 @@ namespace Terradue.Shell.OpenSearch {
         private static string outputFilePathArg = null;
         private static string queryFormatArg = null;
         private static List<string> baseUrlArg = null;
-        private static int timeout = 10000;
+        private static uint timeout = 10000;
         private static int pagination = 20;
         private static int totalResults;
         private static List<string> metadataPaths = null;
         private static List<string> parameterArgs = new List<string>();
         private List<IOpenSearchEngineExtension> openSearchEngineExtensions;
         private static OpenSearchEngine ose;
+        private static OpenSearchMemoryCache searchCache;
 
 
         public static void Main(string[] args) {
@@ -97,6 +99,13 @@ namespace Terradue.Shell.OpenSearch {
             ose = new OpenSearchEngine();
 
             LoadOpenSearchEngineExtensions(ose);
+
+            NameValueCollection cacheSettings = new NameValueCollection();
+            cacheSettings.Add("SlidingExpiration", "600");
+
+            searchCache = new OpenSearchMemoryCache("cache", cacheSettings);
+            ose.RegisterPreSearchFilter(searchCache.TryReplaceWithCacheRequest);
+            ose.RegisterPostSearchFilter(searchCache.CacheResponse);
 
             JsConfig.ConvertObjectTypesIntoStringDictionary = true;
 
@@ -243,10 +252,19 @@ namespace Terradue.Shell.OpenSearch {
                     case "-to": 
                     case "--time-out": 
                         if (argpos < args.Length - 1) {
-                            timeout = int.Parse(args[++argpos]);
+                            try {
+                            timeout = uint.Parse(args[++argpos]);
+                            }
+                            catch ( OverflowException e ){
+                                Console.Error.WriteLine("Range timeout value allowed: 0 - 2147483647");
+                                return false;
+                            }
                         } else
                             return false;
                         break;
+                    case "-h": 
+                    case "--help":
+                        return false;
                     case "--pagination": 
                         if (argpos < args.Length - 1) {
                             pagination = int.Parse(args[++argpos]);
@@ -482,10 +500,10 @@ namespace Terradue.Shell.OpenSearch {
                 if (osr.Result is IOpenSearchResultCollection) {
                     foreach (var item in osr.Result.Items) {
                         if (item is Feature)
-                            sw.WriteLine(FeatureExtensions.ToWkt((Feature)item));
-                        var feature = Terradue.Metadata.EarthObservation.OpenSearch.OpenSearchMetadataHelpers.FindFeatureFromOpenSearchResultItem(item);
-                        if ( feature != null )
-                            sw.WriteLine(feature.ToWkt());
+                            sw.WriteLine(WktFeatureExtensions.ToWkt((Feature)item));
+                        var geometry = Terradue.Metadata.EarthObservation.OpenSearch.EarthObservationOpenSearchResultHelpers.FindGeometryFromEarthObservation(item);
+                        if ( geometry != null )
+                            sw.WriteLine(geometry.ToWkt());
                     }
                 }
                 sw.Flush();
@@ -495,7 +513,7 @@ namespace Terradue.Shell.OpenSearch {
             if (metadataPaths[0] == "identifier") {
                 if (osr.Result is IOpenSearchResultCollection) {
                     foreach (var item in osr.Result.Items) {
-                        var identifier = Terradue.Metadata.EarthObservation.OpenSearch.OpenSearchMetadataHelpers.FindIdentifierFromOpenSearchResultItem(item);
+                        var identifier = Terradue.Metadata.EarthObservation.OpenSearch.EarthObservationOpenSearchResultHelpers.FindIdentifierFromOpenSearchResultItem(item);
                         if ( identifier != null )
                             sw.WriteLine(identifier);
                     }
@@ -507,7 +525,7 @@ namespace Terradue.Shell.OpenSearch {
             if (metadataPaths[0] == "startdate") {
                 if (osr.Result is IOpenSearchResultCollection) {
                     foreach (var item in osr.Result.Items) {
-                        var start = Terradue.Metadata.EarthObservation.OpenSearch.OpenSearchMetadataHelpers.FindStartDateFromOpenSearchResultItem(item);
+                        var start = Terradue.Metadata.EarthObservation.OpenSearch.EarthObservationOpenSearchResultHelpers.FindStartDateFromOpenSearchResultItem(item);
                         if ( start != DateTime.MinValue )
                             sw.WriteLine(start.ToString("u").Replace(" ", "T"));
                     }
@@ -519,7 +537,7 @@ namespace Terradue.Shell.OpenSearch {
             if (metadataPaths[0] == "enddate") {
                 if (osr.Result is IOpenSearchResultCollection) {
                     foreach (var item in osr.Result.Items) {
-                        var stop = Terradue.Metadata.EarthObservation.OpenSearch.OpenSearchMetadataHelpers.FindEndDateFromOpenSearchResultItem(item);
+                        var stop = Terradue.Metadata.EarthObservation.OpenSearch.EarthObservationOpenSearchResultHelpers.FindStartDateFromOpenSearchResultItem(item);
                         if ( stop != DateTime.MaxValue )
                             sw.WriteLine(stop.ToString("u").Replace(" ", "T"));
                     }
