@@ -190,7 +190,7 @@ namespace Terradue.Shell.OpenSearch {
                 index = int.Parse(startIndex);
             }
 
-            IOpenSearchResult osr = null;
+            IOpenSearchResultCollection osr = null;
 
             while (totalResults > 0) {
 
@@ -421,9 +421,9 @@ namespace Terradue.Shell.OpenSearch {
             return nvc;
         }
 
-        private IOpenSearchResult QueryOpenSearch(OpenSearchEngine ose, IOpenSearchable entity, NameValueCollection parameters) {
+        private IOpenSearchResultCollection QueryOpenSearch(OpenSearchEngine ose, IOpenSearchable entity, NameValueCollection parameters) {
 
-            IOpenSearchResult osr;
+            IOpenSearchResultCollection osr;
 
             if (string.IsNullOrEmpty(queryFormatArg))
                 osr = ose.Query(entity, parameters);
@@ -440,13 +440,13 @@ namespace Terradue.Shell.OpenSearch {
 
         }
 
-        void OutputResult(IOpenSearchResult osr, Stream outputStream) {
+        void OutputResult(IOpenSearchResultCollection osr, Stream outputStream) {
 
             StreamWriter sw = new StreamWriter(outputStream);
 
             if (metadataPaths == null) {
-                if (osr.Result is IOpenSearchResultCollection) {
-                    IOpenSearchResultCollection rc = (IOpenSearchResultCollection)osr.Result;
+                if (osr is IOpenSearchResultCollection) {
+                    IOpenSearchResultCollection rc = (IOpenSearchResultCollection)osr;
                     foreach (var item in rc.Items) {
                         var link = item.Links.FirstOrDefault(l => l.RelationshipType == "self");
                         if (link != null)
@@ -461,8 +461,8 @@ namespace Terradue.Shell.OpenSearch {
             }
 
             if (metadataPaths[0] == "enclosure") {
-                if (osr.Result is IOpenSearchResultCollection) {
-                    IOpenSearchResultCollection rc = (IOpenSearchResultCollection)osr.Result;
+                if (osr is IOpenSearchResultCollection) {
+                    IOpenSearchResultCollection rc = (IOpenSearchResultCollection)osr;
                     rc.Items.FirstOrDefault(i => {
                         i.Links.FirstOrDefault(l => {
                             if (l.RelationshipType == "enclosure") {
@@ -480,13 +480,13 @@ namespace Terradue.Shell.OpenSearch {
             }
 
             if (metadataPaths[0] == "{}") {
-                if (osr.Result is IOpenSearchResultCollection) {
-                    IOpenSearchResultCollection rc = (IOpenSearchResultCollection)osr.Result;
+                if (osr is IOpenSearchResultCollection) {
+                    IOpenSearchResultCollection rc = (IOpenSearchResultCollection)osr;
                     rc.SerializeToStream(outputStream);
                 }
 
-                if (osr.Result is SyndicationFeed) {
-                    SyndicationFeed feed = (SyndicationFeed)osr.Result;
+                if (osr is SyndicationFeed) {
+                    SyndicationFeed feed = (SyndicationFeed)osr;
                     Atom10FeedFormatter atomFormatter = new Atom10FeedFormatter(feed);
                     XmlWriter xw = XmlWriter.Create(outputStream);
                     atomFormatter.WriteTo(xw);
@@ -497,8 +497,8 @@ namespace Terradue.Shell.OpenSearch {
 
 
             if (metadataPaths[0] == "wkt") {
-                if (osr.Result is IOpenSearchResultCollection) {
-                    foreach (var item in osr.Result.Items) {
+                if (osr is IOpenSearchResultCollection) {
+                    foreach (var item in osr.Items) {
                         if (item is Feature)
                             sw.WriteLine(WktFeatureExtensions.ToWkt((Feature)item));
                         var geometry = Terradue.Metadata.EarthObservation.OpenSearch.EarthObservationOpenSearchResultHelpers.FindGeometryFromEarthObservation(item);
@@ -511,8 +511,8 @@ namespace Terradue.Shell.OpenSearch {
             }
 
             if (metadataPaths[0] == "identifier") {
-                if (osr.Result is IOpenSearchResultCollection) {
-                    foreach (var item in osr.Result.Items) {
+                if (osr is IOpenSearchResultCollection) {
+                    foreach (var item in osr.Items) {
                         var identifier = Terradue.Metadata.EarthObservation.OpenSearch.EarthObservationOpenSearchResultHelpers.FindIdentifierFromOpenSearchResultItem(item);
                         if ( identifier != null )
                             sw.WriteLine(identifier);
@@ -523,8 +523,8 @@ namespace Terradue.Shell.OpenSearch {
             }
 
             if (metadataPaths[0] == "startdate") {
-                if (osr.Result is IOpenSearchResultCollection) {
-                    foreach (var item in osr.Result.Items) {
+                if (osr is IOpenSearchResultCollection) {
+                    foreach (var item in osr.Items) {
                         var start = Terradue.Metadata.EarthObservation.OpenSearch.EarthObservationOpenSearchResultHelpers.FindStartDateFromOpenSearchResultItem(item);
                         if ( start != DateTime.MinValue )
                             sw.WriteLine(start.ToString("u").Replace(" ", "T"));
@@ -535,8 +535,8 @@ namespace Terradue.Shell.OpenSearch {
             }
 
             if (metadataPaths[0] == "enddate") {
-                if (osr.Result is IOpenSearchResultCollection) {
-                    foreach (var item in osr.Result.Items) {
+                if (osr is IOpenSearchResultCollection) {
+                    foreach (var item in osr.Items) {
                         var stop = Terradue.Metadata.EarthObservation.OpenSearch.EarthObservationOpenSearchResultHelpers.FindStartDateFromOpenSearchResultItem(item);
                         if ( stop != DateTime.MaxValue )
                             sw.WriteLine(stop.ToString("u").Replace(" ", "T"));
@@ -546,8 +546,8 @@ namespace Terradue.Shell.OpenSearch {
                 return;
             }
 
-            if (osr.Result is IOpenSearchResultCollection) {
-                IOpenSearchResultCollection rc = (IOpenSearchResultCollection)osr.Result;
+            if (osr is IOpenSearchResultCollection) {
+                IOpenSearchResultCollection rc = (IOpenSearchResultCollection)osr;
                 foreach (IOpenSearchResultItem item in rc.Items) {
                     string sep = "";
                     XmlDocument doc = new XmlDocument();
@@ -603,14 +603,14 @@ namespace Terradue.Shell.OpenSearch {
 
         }
 
-        int CountResults(IOpenSearchResult osr) {
-            if (osr.Result is IOpenSearchResultCollection) {
-                IOpenSearchResultCollection rc = (IOpenSearchResultCollection)osr.Result;
+        int CountResults(IOpenSearchResultCollection osr) {
+            if (osr is IOpenSearchResultCollection) {
+                IOpenSearchResultCollection rc = (IOpenSearchResultCollection)osr;
                 return rc.Items.Count();
             }
 
-            if (osr.Result is SyndicationFeed) {
-                SyndicationFeed feed = (SyndicationFeed)osr.Result;
+            if (osr is SyndicationFeed) {
+                SyndicationFeed feed = (SyndicationFeed)osr;
                 return feed.Items.Count();
             }
 
