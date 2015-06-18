@@ -22,7 +22,7 @@
     <Externalconsole>true</Externalconsole>
     <PlatformTarget>x86</PlatformTarget>
     <ConsolePause>false</ConsolePause>
-    <Commandlineparameters>-f rdf -p time:start=1995-10-11T14:54:10.000Z -p time:end=1996-10-11T14:55:12.000Z -p eop:wrsLongitudeGrid=125 http://cci-ice-velocity.terradue.int/catalogue/search/ICESHEET_CCI_SLC/description enclosure</Commandlineparameters>
+    <Commandlineparameters>"https://data.terradue.com/gs/catalogue/tepqw/gtfeature/search?format=json&amp;uid=ASA_IM__0CNPAM20081107_204551_000000222073_00358_34981_3809.N1" enclosure </Commandlineparameters>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
     <DebugType>full</DebugType>
@@ -53,17 +53,17 @@
     <Reference Include="Terradue.GeoJson">
       <HintPath>..\packages\Terradue.GeoJson.1.4.15\lib\net40\Terradue.GeoJson.dll</HintPath>
     </Reference>
-    <Reference Include="Terradue.OpenSearch.RdfEO">
-      <HintPath>..\packages\Terradue.OpenSearch.RdfEO.1.2.1\lib\net40\Terradue.OpenSearch.RdfEO.dll</HintPath>
+    <Reference Include="Terradue.OpenSearch">
+      <HintPath>..\packages\Terradue.OpenSearch.1.10.4\lib\net40\Terradue.OpenSearch.dll</HintPath>
     </Reference>
-    <Reference Include="Terradue.OpenSearch.GeoJson">
-      <HintPath>..\packages\Terradue.OpenSearch.GeoJson.1.2.4\lib\net40\Terradue.OpenSearch.GeoJson.dll</HintPath>
+    <Reference Include="Terradue.OpenSearch.RdfEO">
+      <HintPath>..\packages\Terradue.OpenSearch.RdfEO.1.2.2\lib\net40\Terradue.OpenSearch.RdfEO.dll</HintPath>
     </Reference>
     <Reference Include="Terradue.Metadata.EarthObservation">
-      <HintPath>..\packages\Terradue.Metadata.EarthObservation.1.2.5\lib\net40\Terradue.Metadata.EarthObservation.dll</HintPath>
+      <HintPath>..\packages\Terradue.Metadata.EarthObservation.1.2.6\lib\net40\Terradue.Metadata.EarthObservation.dll</HintPath>
     </Reference>
-    <Reference Include="Terradue.OpenSearch">
-      <HintPath>..\packages\Terradue.OpenSearch.1.10.3\lib\net40\Terradue.OpenSearch.dll</HintPath>
+    <Reference Include="Terradue.OpenSearch.GeoJson">
+      <HintPath>..\packages\Terradue.OpenSearch.GeoJson.1.2.6\lib\net40\Terradue.OpenSearch.GeoJson.dll</HintPath>
     </Reference>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
