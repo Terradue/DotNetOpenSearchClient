@@ -253,9 +253,8 @@ namespace Terradue.Shell.OpenSearch {
                     case "--time-out": 
                         if (argpos < args.Length - 1) {
                             try {
-                            timeout = uint.Parse(args[++argpos]);
-                            }
-                            catch ( OverflowException e ){
+                                timeout = uint.Parse(args[++argpos]);
+                            } catch (OverflowException e) {
                                 Console.Error.WriteLine("Range timeout value allowed: 0 - 2147483647");
                                 return false;
                             }
@@ -504,9 +503,10 @@ namespace Terradue.Shell.OpenSearch {
                             geom = WktFeatureExtensions.ToWkt((Feature)item);
                         if (geom == null) {
                             foreach (SyndicationElementExtension ext in item.ElementExtensions) {
-                                if (ext.OuterName == "spatial")
+                                if (ext.OuterName == "spatial") {
                                     geom = ext.GetObject<string>();
-                                break;
+                                    break;
+                                }
                             }
                         }
                         if (geom == null) {
@@ -524,9 +524,21 @@ namespace Terradue.Shell.OpenSearch {
             if (metadataPaths[0] == "identifier") {
                 if (osr is IOpenSearchResultCollection) {
                     foreach (var item in osr.Items) {
-                        var identifier = Terradue.Metadata.EarthObservation.OpenSearch.EarthObservationOpenSearchResultHelpers.FindIdentifierFromOpenSearchResultItem(item);
-                        if ( identifier != null )
-                            sw.WriteLine(identifier);
+                        string ident = null;
+                        if (ident == null) {
+                            foreach (SyndicationElementExtension ext in item.ElementExtensions) {
+                                if (ext.OuterName == "identifier") {
+                                    ident = ext.GetObject<string>();
+                                    break;
+                                }
+                            }
+                        }
+                        if (ident == null) {
+                            var identifier = Terradue.Metadata.EarthObservation.OpenSearch.EarthObservationOpenSearchResultHelpers.FindIdentifierFromOpenSearchResultItem(item);
+                            if (identifier != null)
+                                ident = identifier;
+                        }
+                        sw.WriteLine(ident);
                     }
                 }
                 sw.Flush();
@@ -536,9 +548,25 @@ namespace Terradue.Shell.OpenSearch {
             if (metadataPaths[0] == "startdate") {
                 if (osr is IOpenSearchResultCollection) {
                     foreach (var item in osr.Items) {
+                        string date = null;
+                        if (date == null) {
+                            foreach (SyndicationElementExtension ext in item.ElementExtensions) {
+                                if (ext.OuterName == "date") {
+                                    date = ext.GetObject<string>();
+                                    if ( date.Contains("/") )
+                                        date = DateTime.Parse(date.Split('/')[0]).ToUniversalTime().ToString("O");
+                                    break;
+                                }
+                                if (ext.OuterName == "dtstart" && ext.OuterNamespace == "http://www.w3.org/2002/12/cal/ical#") {
+                                    date = DateTime.Parse(ext.GetObject<string>()).ToUniversalTime().ToString("O");
+                                    break;
+                                }
+                            }
+                        }
                         var start = Terradue.Metadata.EarthObservation.OpenSearch.EarthObservationOpenSearchResultHelpers.FindStartDateFromOpenSearchResultItem(item);
-                        if ( start != DateTime.MinValue )
-                            sw.WriteLine(start.ToString("u").Replace(" ", "T"));
+                        if (start != DateTime.MinValue)
+                            date = start.ToUniversalTime().ToString("O");
+                        sw.WriteLine(date);
                     }
                 }
                 sw.Flush();
@@ -548,9 +576,22 @@ namespace Terradue.Shell.OpenSearch {
             if (metadataPaths[0] == "enddate") {
                 if (osr is IOpenSearchResultCollection) {
                     foreach (var item in osr.Items) {
-                        var stop = Terradue.Metadata.EarthObservation.OpenSearch.EarthObservationOpenSearchResultHelpers.FindStartDateFromOpenSearchResultItem(item);
-                        if ( stop != DateTime.MaxValue )
-                            sw.WriteLine(stop.ToString("u").Replace(" ", "T"));
+                        string date = null;
+                        if (date == null) {
+                            foreach (SyndicationElementExtension ext in item.ElementExtensions) {
+                                if (ext.OuterName == "date") {
+                                    date = ext.GetObject<string>();
+                                    if ( date.Contains("/") )
+                                        date = DateTime.Parse(date.Split('/')[1]).ToUniversalTime().ToString("O");
+                                    break;
+                                }
+                                if (ext.OuterName == "dtend" && ext.OuterNamespace == "http://www.w3.org/2002/12/cal/ical#") {
+                                    date = DateTime.Parse(ext.GetObject<string>()).ToUniversalTime().ToString("O");
+                                    break;
+                                }
+                            }
+                        }
+                        sw.WriteLine(date);
                     }
                 }
                 sw.Flush();
