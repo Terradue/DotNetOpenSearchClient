@@ -499,11 +499,22 @@ namespace Terradue.Shell.OpenSearch {
             if (metadataPaths[0] == "wkt") {
                 if (osr is IOpenSearchResultCollection) {
                     foreach (var item in osr.Items) {
+                        string geom = "";
                         if (item is Feature)
-                            sw.WriteLine(WktFeatureExtensions.ToWkt((Feature)item));
-                        var geometry = Terradue.Metadata.EarthObservation.OpenSearch.EarthObservationOpenSearchResultHelpers.FindGeometryFromEarthObservation(item);
-                        if ( geometry != null )
-                            sw.WriteLine(geometry.ToWkt());
+                            geom = WktFeatureExtensions.ToWkt((Feature)item);
+                        if (geom == null) {
+                            foreach (SyndicationElementExtension ext in item.ElementExtensions) {
+                                if (ext.OuterName == "spatial")
+                                    geom = ext.GetObject<string>();
+                                break;
+                            }
+                        }
+                        if (geom == null) {
+                            var geometry = Terradue.Metadata.EarthObservation.OpenSearch.EarthObservationOpenSearchResultHelpers.FindGeometryFromEarthObservation(item);
+                            if (geometry != null)
+                                geom = geometry.ToWkt();
+                        }
+                        sw.WriteLine(geom);
                     }
                 }
                 sw.Flush();
