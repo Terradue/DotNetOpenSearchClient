@@ -499,7 +499,7 @@ namespace Terradue.Shell.OpenSearch {
             if (metadataPaths[0] == "wkt") {
                 if (osr is IOpenSearchResultCollection) {
                     foreach (var item in osr.Items) {
-                        string geom = "";
+                        string geom = null;
                         if (item is Feature)
                             geom = WktFeatureExtensions.ToWkt((Feature)item);
                         if (geom == null) {
