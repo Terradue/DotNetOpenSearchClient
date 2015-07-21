@@ -27,6 +27,7 @@ using ServiceStack.Text;
 using Terradue.GeoJson.Geometry;
 using Terradue.GeoJson.Feature;
 using Terradue.OpenSearch.Filters;
+using Terradue.OpenSearch.Client.Model;
 
 namespace Terradue.Shell.OpenSearch {
     //-------------------------------------------------------------------------------------------------------------------------
@@ -39,13 +40,14 @@ namespace Terradue.Shell.OpenSearch {
         private static bool listOsee;
         private static string outputFilePathArg = null;
         private static string queryFormatArg = null;
+        private static string queryModelArg = "GeoTime";
         private static List<string> baseUrlArg = null;
-        private static uint timeout = 10000;
+        private static uint timeout = 20000;
         private static int pagination = 20;
         private static int totalResults;
         private static List<string> metadataPaths = null;
         private static List<string> parameterArgs = new List<string>();
-        private List<IOpenSearchEngineExtension> openSearchEngineExtensions;
+        private static List<string> dataModelParameterArgs = new List<string>();
         private static OpenSearchEngine ose;
         private static OpenSearchMemoryCache searchCache;
 
@@ -71,6 +73,10 @@ namespace Terradue.Shell.OpenSearch {
 
                 if (listOsee == true)
                     client.ListOpenSearchEngineExtensions();
+
+                if (!string.IsNullOrEmpty(queryModelArg) && baseUrlArg== null){
+                    client.PrintDataModelHelp(DataModel.CreateFromArgs(queryModelArg, null, new NameValueCollection()));
+                }
 
             } catch (Exception e) {
                 log.Error(e.Message);
@@ -137,6 +143,15 @@ namespace Terradue.Shell.OpenSearch {
 
             sw.Close();
 
+        }
+
+        private void PrintDataModelHelp(DataModel dataModel) {
+
+
+            // Initialize the output stream
+            Stream outputStream = InitializeOutputStream();
+
+            dataModel.PrintHelp(outputStream);
         }
 
         private void ListOutputFormat() {
@@ -254,7 +269,7 @@ namespace Terradue.Shell.OpenSearch {
                         if (argpos < args.Length - 1) {
                             try {
                                 timeout = uint.Parse(args[++argpos]);
-                            } catch (OverflowException e) {
+                            } catch (OverflowException) {
                                 Console.Error.WriteLine("Range timeout value allowed: 0 - 2147483647");
                                 return false;
                             }
@@ -273,7 +288,20 @@ namespace Terradue.Shell.OpenSearch {
                     case "--list-osee": 
                         listOsee = true;
                         break;
-
+                    case "-m": 
+                    case "--model": 
+                        if (argpos < args.Length - 1) {
+                            queryModelArg = args[++argpos];
+                        } else
+                            return false;
+                        break;
+                    case "-dp": 
+                    case "--datamodel-parameter": 
+                        if (argpos < args.Length - 1) {
+                            dataModelParameterArgs.Add(args[++argpos]);
+                        } else
+                            return false;
+                        break;
                     default: 
                         if (baseUrlArg == null) {
                             baseUrlArg = args[argpos].Split(',').ToList();
@@ -300,10 +328,12 @@ namespace Terradue.Shell.OpenSearch {
             Console.Error.WriteLine(" -p/--parameter <param>  Specify a parameter for the query");
             Console.Error.WriteLine(" -o/--output <file>      Write output to <file> instead of stdout");
             Console.Error.WriteLine(" -f/--format <format>    Specify the format of the query. Format available can be listed with --list-osee.");
-            Console.Error.WriteLine("                         By default, the client is automatic and uses the best format.");
+            Console.Error.WriteLine("                         By default, the client is automatic and uses the default or the first format.");
             Console.Error.WriteLine(" -to/--time-out <file>   Specify query timeout (millisecond)");
             Console.Error.WriteLine(" --pagination            Specify the pagination number for search loops. Default: 20");
             Console.Error.WriteLine(" --list-osee             List the OpenSearch Engine Extensions");
+            Console.Error.WriteLine(" -m/--model <format>     Specify the data model of the results for the query. Data model give access to specific" +
+                                    "metadata extractors or transformers. By default the \"GeoTime\" model is used. Used without urls, it lists the metadata options");
             Console.Error.WriteLine(" -v/--verbose            Make the operation more talkative");
             Console.Error.WriteLine();
         }
@@ -420,6 +450,23 @@ namespace Terradue.Shell.OpenSearch {
             return nvc;
         }
 
+        NameValueCollection PrepareDataModelParameters() {
+
+            NameValueCollection nvc = new NameValueCollection();
+
+            foreach (var parameter in dataModelParameterArgs) {
+                Match matchParamDef = Regex.Match(parameter, @"^(.*)=(.*)$");
+                // if martch is successful
+                if (matchParamDef.Success) {
+                    nvc.Add(matchParamDef.Groups[1].Value, matchParamDef.Groups[2].Value);
+
+                }
+
+            }
+
+            return nvc;
+        }
+
         private IOpenSearchResultCollection QueryOpenSearch(OpenSearchEngine ose, IOpenSearchable entity, NameValueCollection parameters) {
 
             IOpenSearchResultCollection osr;
@@ -441,9 +488,9 @@ namespace Terradue.Shell.OpenSearch {
 
         void OutputResult(IOpenSearchResultCollection osr, Stream outputStream) {
 
-            StreamWriter sw = new StreamWriter(outputStream);
-
             if (metadataPaths == null) {
+
+                StreamWriter sw = new StreamWriter(outputStream);
                 if (osr is IOpenSearchResultCollection) {
                     IOpenSearchResultCollection rc = (IOpenSearchResultCollection)osr;
                     foreach (var item in rc.Items) {
@@ -455,175 +502,20 @@ namespace Terradue.Shell.OpenSearch {
                     }
                     sw.Flush();
                 }
+                sw.Close();
 
                 return;
             }
 
-            if (metadataPaths[0] == "enclosure") {
-                if (osr is IOpenSearchResultCollection) {
-                    IOpenSearchResultCollection rc = (IOpenSearchResultCollection)osr;
-                    rc.Items.FirstOrDefault(i => {
-                        i.Links.FirstOrDefault(l => {
-                            if (l.RelationshipType == "enclosure") {
-                                sw.WriteLine(l.Uri.ToString());
-                                return true;
-                            } else
-                                return false;
-                        });
-                        return false;
-                    });
-                    sw.Flush();
-                }
+            var dataModelParameters = PrepareDataModelParameters();
+            var dataModel = DataModel.CreateFromArgs(queryModelArg, osr, dataModelParameters);
 
+            if (metadataPaths.Contains("{}")) {
+                dataModel.PrintCollection(outputStream);
                 return;
             }
 
-            if (metadataPaths[0] == "{}") {
-                if (osr is IOpenSearchResultCollection) {
-                    IOpenSearchResultCollection rc = (IOpenSearchResultCollection)osr;
-                    rc.SerializeToStream(outputStream);
-                }
-
-                if (osr is SyndicationFeed) {
-                    SyndicationFeed feed = (SyndicationFeed)osr;
-                    Atom10FeedFormatter atomFormatter = new Atom10FeedFormatter(feed);
-                    XmlWriter xw = XmlWriter.Create(outputStream);
-                    atomFormatter.WriteTo(xw);
-                    xw.Flush();
-                }
-                return;
-            }
-
-
-            if (metadataPaths[0] == "wkt") {
-                if (osr is IOpenSearchResultCollection) {
-                    foreach (var item in osr.Items) {
-                        string geom = null;
-                        if (item is Feature)
-                            geom = WktFeatureExtensions.ToWkt((Feature)item);
-                        if (geom == null) {
-                            foreach (SyndicationElementExtension ext in item.ElementExtensions) {
-                                if (ext.OuterName == "spatial") {
-                                    geom = ext.GetObject<string>();
-                                    break;
-                                }
-                            }
-                        }
-                        if (geom == null) {
-                            var geometry = Terradue.Metadata.EarthObservation.OpenSearch.EarthObservationOpenSearchResultHelpers.FindGeometryFromEarthObservation(item);
-                            if (geometry != null)
-                                geom = geometry.ToWkt();
-                        }
-                        sw.WriteLine(geom);
-                    }
-                }
-                sw.Flush();
-                return;
-            }
-
-            if (metadataPaths[0] == "identifier") {
-                if (osr is IOpenSearchResultCollection) {
-                    foreach (var item in osr.Items) {
-                        string ident = null;
-                        if (ident == null) {
-                            foreach (SyndicationElementExtension ext in item.ElementExtensions) {
-                                if (ext.OuterName == "identifier") {
-                                    ident = ext.GetObject<string>();
-                                    break;
-                                }
-                            }
-                        }
-                        if (ident == null) {
-                            var identifier = Terradue.Metadata.EarthObservation.OpenSearch.EarthObservationOpenSearchResultHelpers.FindIdentifierFromOpenSearchResultItem(item);
-                            if (identifier != null)
-                                ident = identifier;
-                        }
-                        sw.WriteLine(ident);
-                    }
-                }
-                sw.Flush();
-                return;
-            }
-
-            if (metadataPaths[0] == "startdate") {
-                if (osr is IOpenSearchResultCollection) {
-                    foreach (var item in osr.Items) {
-                        string date = null;
-                        if (date == null) {
-                            foreach (SyndicationElementExtension ext in item.ElementExtensions) {
-                                if (ext.OuterName == "date") {
-                                    date = ext.GetObject<string>();
-                                    if ( date.Contains("/") )
-                                        date = DateTime.Parse(date.Split('/')[0]).ToUniversalTime().ToString("O");
-                                    break;
-                                }
-                                if (ext.OuterName == "dtstart" && ext.OuterNamespace == "http://www.w3.org/2002/12/cal/ical#") {
-                                    date = DateTime.Parse(ext.GetObject<string>()).ToUniversalTime().ToString("O");
-                                    break;
-                                }
-                            }
-                        }
-                        var start = Terradue.Metadata.EarthObservation.OpenSearch.EarthObservationOpenSearchResultHelpers.FindStartDateFromOpenSearchResultItem(item);
-                        if (start != DateTime.MinValue)
-                            date = start.ToUniversalTime().ToString("O");
-                        sw.WriteLine(date);
-                    }
-                }
-                sw.Flush();
-                return;
-            }
-
-            if (metadataPaths[0] == "enddate") {
-                if (osr is IOpenSearchResultCollection) {
-                    foreach (var item in osr.Items) {
-                        string date = null;
-                        if (date == null) {
-                            foreach (SyndicationElementExtension ext in item.ElementExtensions) {
-                                if (ext.OuterName == "date") {
-                                    date = ext.GetObject<string>();
-                                    if ( date.Contains("/") )
-                                        date = DateTime.Parse(date.Split('/')[1]).ToUniversalTime().ToString("O");
-                                    break;
-                                }
-                                if (ext.OuterName == "dtend" && ext.OuterNamespace == "http://www.w3.org/2002/12/cal/ical#") {
-                                    date = DateTime.Parse(ext.GetObject<string>()).ToUniversalTime().ToString("O");
-                                    break;
-                                }
-                            }
-                        }
-                        sw.WriteLine(date);
-                    }
-                }
-                sw.Flush();
-                return;
-            }
-
-            if (osr is IOpenSearchResultCollection) {
-                IOpenSearchResultCollection rc = (IOpenSearchResultCollection)osr;
-                foreach (IOpenSearchResultItem item in rc.Items) {
-                    string sep = "";
-                    XmlDocument doc = new XmlDocument();
-                    doc.Load(item.ElementExtensions.GetReaderAtExtensionWrapper());
-                    foreach (var path in metadataPaths) {
-                        XmlNamespaceManager xnsm = new XmlNamespaceManager(doc.NameTable);
-                        xnsm.AddNamespace("dclite4g", "http://xmlns.com/2008/dclite4g#");
-                        xnsm.AddNamespace("dct", "http://purl.org/dc/terms/");
-                        xnsm.AddNamespace("dc", "http://purl.org/dc/elements/1.1/");
-                        xnsm.AddNamespace("atom", "http://purl.org/dc/elements/1.1/");
-                        sw.Write(sep);
-                        XmlNode noder = doc.SelectSingleNode(path, xnsm);
-                        if (noder != null) {
-                            if (noder.NodeType == XmlNodeType.Attribute)
-                                sw.Write(noder.Value);
-                            else
-                                sw.Write(noder.InnerText);
-                        }
-                        sep = "\t";
-                    }
-                    sw.WriteLine();
-                }
-                sw.Flush();
-            }
+            dataModel.PrintByItem(metadataPaths, outputStream);
 
             return;
 
