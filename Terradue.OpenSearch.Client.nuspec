@@ -2,7 +2,7 @@
 <package >
   <metadata>
     <id>Terradue.OpenSearch.Client</id>
-    <version>1.5.0</version>
+    <version>1.5.1</version>
     <authors>Terradue</authors>
     <owners>Terradue</owners>
     <licenseUrl>https://github.com/Terradue/DotNetOpenSearchClient/blob/master/LICENSE</licenseUrl>
@@ -24,5 +24,7 @@
   </metadata>
   <files>
 	  <file src="Terradue.OpenSearch.Client/bin/OpenSearchClient.exe" target="lib/net40" /> 
+	  <file src="Terradue.OpenSearch.Client/bin/Terradue.OpenSearch.Model.dll" target="lib/net40" /> 
+	  <file src="Terradue.OpenSearch.Client/bin/Terradue.OpenSearch.Model.Base.dll" target="lib/net40" /> 
   </files>
 </package>
