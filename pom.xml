@@ -88,6 +88,7 @@
 					<defaultGroupname>root</defaultGroupname>
 					<defaultDirmode>755</defaultDirmode>
 					<defaultFilemode>644</defaultFilemode>
+					<autoRequires>false</autoRequires>
 					<defineStatements>
 						<defineStatement>__jar_repack 0</defineStatement>
 						<defineStatement>__os_install_post %{nil}</defineStatement>
