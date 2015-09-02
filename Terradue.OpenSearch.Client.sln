@@ -3,6 +3,10 @@ Microsoft Visual Studio Solution File, Format Version 11.00
 # Visual Studio 2010
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Terradue.OpenSearch.Client", "Terradue.OpenSearch.Client\Terradue.OpenSearch.Client.csproj", "{1FB59AA7-3878-47CD-4267-F179F56C6470}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Terradue.OpenSearch.Model", "Terradue.OpenSearch.Model\Terradue.OpenSearch.Model.csproj", "{BFFA2485-B9AC-4DE4-BABF-4DD96590F9D4}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Terradue.OpenSearch.Model.Base", "Terradue.OpenSearch.Model.Base\Terradue.OpenSearch.Model.Base.csproj", "{6222FD31-E454-4D76-9AAF-0535787A6A1B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x86 = Debug|x86
@@ -13,5 +17,13 @@ Global
 		{1FB59AA7-3878-47CD-4267-F179F56C6470}.Debug|x86.Build.0 = Debug|x86
 		{1FB59AA7-3878-47CD-4267-F179F56C6470}.Release|x86.ActiveCfg = Release|x86
 		{1FB59AA7-3878-47CD-4267-F179F56C6470}.Release|x86.Build.0 = Release|x86
+		{6222FD31-E454-4D76-9AAF-0535787A6A1B}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{6222FD31-E454-4D76-9AAF-0535787A6A1B}.Debug|x86.Build.0 = Debug|Any CPU
+		{6222FD31-E454-4D76-9AAF-0535787A6A1B}.Release|x86.ActiveCfg = Release|Any CPU
+		{6222FD31-E454-4D76-9AAF-0535787A6A1B}.Release|x86.Build.0 = Release|Any CPU
+		{BFFA2485-B9AC-4DE4-BABF-4DD96590F9D4}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{BFFA2485-B9AC-4DE4-BABF-4DD96590F9D4}.Debug|x86.Build.0 = Debug|Any CPU
+		{BFFA2485-B9AC-4DE4-BABF-4DD96590F9D4}.Release|x86.ActiveCfg = Release|Any CPU
+		{BFFA2485-B9AC-4DE4-BABF-4DD96590F9D4}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
