@@ -10,8 +10,8 @@
 
 	<artifactId>opensearch-client</artifactId>
 	<packaging>rpm</packaging>
-	<description>Application for air</description>
-	<version>1.5-SNAPSHOT</version>
+	<description>OpenSearch Client</description>
+	<version>1.5</version>
 
 	<properties>
 	</properties>
@@ -22,41 +22,32 @@
 	<build>
 		<plugins>
 			<plugin>
-				<groupId>org.apache.npanday.plugins</groupId>
-				<artifactId>library-importer-maven-plugin</artifactId>
-				<version>1.5.1-incubating-SNAPSHOT</version>
-				<extensions>true</extensions>
-				<executions>
-					<execution>
-						<phase>compile</phase>
-						<goals>
-							<goal>resolve-packages</goal>
-							<goal>extract-nuspec</goal>
-						</goals>
-					</execution>
-				</executions>
-				<configuration>
-					<frameworkVersion>4.0</frameworkVersion>
-				</configuration>
-			</plugin>
-			<plugin>
-				<groupId>org.nuiton.jredmine</groupId>
-				<artifactId>jredmine-maven-plugin</artifactId>
-				<inherited>false</inherited>
-			</plugin>
-			<plugin>
 		        <groupId>org.codehaus.mojo</groupId>
 		        <artifactId>exec-maven-plugin</artifactId>
 		        <version>1.2.1</version>
 		        <executions>
-		          <execution>
-		          	<id>copy</id>
-					<phase>prepare-package</phase>
+		           <execution>
+		          	<id>nuget</id>
+					<phase>process-resources</phase>
 		            <goals>
 		              <goal>exec</goal>
 		            </goals>
 		            <configuration>
-			          <executable>${basedir}/src/main/scripts/copydll.sh</executable>
+			          <executable>nuget</executable>
+			          <arguments>
+			          <argument>restore</argument>
+			          <argument>-NonInteractive</argument>
+			      </arguments>
+			        </configuration>
+		          </execution>
+		           <execution>
+		          	<id>compile</id>
+					<phase>compile</phase>
+		            <goals>
+		              <goal>exec</goal>
+		            </goals>
+		            <configuration>
+			          <executable>xbuild</executable>
 			        </configuration>
 		          </execution>
 		        </executions>

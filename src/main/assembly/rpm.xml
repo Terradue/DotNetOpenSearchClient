@@ -9,11 +9,11 @@
 		<format>dir</format>
 	</formats>
 	<includeBaseDirectory>false</includeBaseDirectory>
-	<baseDirectory></baseDirectory>>
+	<baseDirectory></baseDirectory>
 
 	<fileSets>
 		<fileSet>
-			<directory>${project.build.directory}/packages</directory>
+			<directory>Terradue.OpenSearch.Client/bin</directory>
 			<outputDirectory>mono</outputDirectory>
 			<includes>
 				<include>*.dll</include>
