@@ -4,23 +4,23 @@ using System.Collections.Specialized;
 using Terradue.GeoJson.Geometry;
 using Terradue.GeoJson.Feature;
 using Terradue.ServiceModel.Syndication;
+using System.Xml;
+using System.Linq;
 
-namespace Terradue.OpenSearch.Client.Model.GeoTime
-{
+namespace Terradue.OpenSearch.Client.Model.GeoTime {
     
-    class WellKnownTextMetadataExtractor : IMetadataExtractor
-	{
+    public class WellKnownTextMetadataExtractor : IMetadataExtractor {
         #region IMetadataExtractor implementation
 
-        public string Description {
+        public virtual string Description {
             get {
                 return "Well Know Text geometry";
             }
         }
 
 
-        public string GetMetadata(Terradue.OpenSearch.Result.IOpenSearchResultItem item) {
-            string geom = "";
+        public virtual string GetMetadata(Terradue.OpenSearch.Result.IOpenSearchResultItem item) {
+            string geom = null;
             if (item is Feature)
                 geom = WktFeatureExtensions.ToWkt((Feature)item);
             if (geom == null) {
@@ -32,19 +32,23 @@ namespace Terradue.OpenSearch.Client.Model.GeoTime
                 }
             }
             if (geom == null) {
-                var geometry = Terradue.Metadata.EarthObservation.OpenSearch.EarthObservationOpenSearchResultHelpers.FindGeometryFromEarthObservation(item);
-                if (geometry != null)
-                    geom = geometry.ToWkt();
-            }
+                foreach (SyndicationElementExtension ext in item.ElementExtensions.ToArray()) {
 
+                    if (ext.OuterNamespace == "http://www.georss.org/georss/10" || ext.OuterNamespace == "http://www.georss.org/georss")
+                        geom = GeometryFactory.GeoRSSToGeometry(ext.GetObject<XmlElement>()).ToWkt();
+
+                }
+                    
+            }
             return geom;
         }
+
         #endregion
 
 
 
 
-	}
+    }
 
 }
 

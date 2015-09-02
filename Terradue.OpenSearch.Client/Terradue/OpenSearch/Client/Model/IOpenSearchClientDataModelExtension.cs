@@ -4,9 +4,10 @@ using System.Collections.Generic;
 using System.IO;
 using Terradue.OpenSearch.Result;
 using System.Collections.Specialized;
+using Terradue.OpenSearch.Engine;
+using System.Net;
 
-[assembly:AddinRoot("OpenSearchDataModel", "1.0")]
-[assembly:AddinDescription("OpenSearch Data Model")]
+
 namespace Terradue.OpenSearch.Client.Model {
 
     [TypeExtensionPoint()]
@@ -27,6 +28,10 @@ namespace Terradue.OpenSearch.Client.Model {
         void ApplyParameters();
 
         IOpenSearchResultCollection GetCollection();
+
+        void SetQueryParameters(NameValueCollection nvc);
+
+        IOpenSearchable CreateOpenSearchable(List<Uri> baseUrls, string queryFormatArg, OpenSearchEngine ose, NetworkCredential netCreds);
 
     }
 

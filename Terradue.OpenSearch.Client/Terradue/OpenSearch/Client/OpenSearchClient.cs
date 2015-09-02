@@ -23,13 +23,15 @@ using Terradue.OpenSearch.Result;
 using System.Net;
 using System.Security.Cryptography.X509Certificates;
 using System.Net.Security;
-using ServiceStack.Text;
 using Terradue.GeoJson.Geometry;
 using Terradue.GeoJson.Feature;
 using Terradue.OpenSearch.Filters;
 using Terradue.OpenSearch.Client.Model;
 
-namespace Terradue.Shell.OpenSearch {
+
+[assembly:AddinRoot("OpenSearchDataModel", "1.0")]
+[assembly:AddinDescription("OpenSearch Data Model")]
+namespace Terradue.OpenSearch.Client {
     //-------------------------------------------------------------------------------------------------------------------------
     //-------------------------------------------------------------------------------------------------------------------------
     //-------------------------------------------------------------------------------------------------------------------------
@@ -50,6 +52,9 @@ namespace Terradue.Shell.OpenSearch {
         private static List<string> dataModelParameterArgs = new List<string>();
         private static OpenSearchEngine ose;
         private static OpenSearchMemoryCache searchCache;
+        private static NameValueCollection dataModelParameters;
+        private static DataModel dataModel;
+        private static NetworkCredential netCreds;
 
 
         public static void Main(string[] args) {
@@ -59,8 +64,6 @@ namespace Terradue.Shell.OpenSearch {
                 Environment.ExitCode = 1;
                 return;
             }
-
-
 
             OpenSearchClient client = null;
             try {
@@ -75,12 +78,11 @@ namespace Terradue.Shell.OpenSearch {
                     client.ListOpenSearchEngineExtensions();
 
                 if (!string.IsNullOrEmpty(queryModelArg) && baseUrlArg== null){
-                    client.PrintDataModelHelp(DataModel.CreateFromArgs(queryModelArg, null, new NameValueCollection()));
+                    client.PrintDataModelHelp(DataModel.CreateFromArgs(queryModelArg, new NameValueCollection()));
                 }
 
             } catch (Exception e) {
-                log.Error(e.Message);
-                log.Error(e.StackTrace);
+                log.Error(string.Format("{0} : {1} {2}", e.Source, e.Message, e.HelpLink));
                 Environment.ExitCode = 1;
                 return;
             }
@@ -112,8 +114,6 @@ namespace Terradue.Shell.OpenSearch {
             searchCache = new OpenSearchMemoryCache("cache", cacheSettings);
             ose.RegisterPreSearchFilter(searchCache.TryReplaceWithCacheRequest);
             ose.RegisterPostSearchFilter(searchCache.CacheResponse);
-
-            JsConfig.ConvertObjectTypesIntoStringDictionary = true;
 
         }
 
@@ -175,27 +175,14 @@ namespace Terradue.Shell.OpenSearch {
             // Initialize the output stream
             Stream outputStream = InitializeOutputStream();
 
+            // Init data Model
+            dataModelParameters = PrepareDataModelParameters();
+            dataModel = DataModel.CreateFromArgs(queryModelArg, dataModelParameters);
+
             NameValueCollection parametersNvc;
 
             // Find OpenSearch Entity
-            List<IOpenSearchable> entities = new List<IOpenSearchable>();
-            foreach (var url in baseUrls) {
-                if (string.IsNullOrEmpty(queryFormatArg))
-                    entities.Add(OpenSearchFactory.FindOpenSearchable(ose, url));
-                else {
-                    var e = OpenSearchFactory.FindOpenSearchable(ose, url, ose.GetExtensionByExtensionName(queryFormatArg).DiscoveryContentType);
-                    entities.Add(e);
-                }
-            }
-
-            IOpenSearchable entity;
-
-            if (entities.Count > 1) {
-                entity = new MultiGenericOpenSearchable(entities, ose);
-            } else {
-                entity = entities[0];
-            }
-
+            IOpenSearchable entity = dataModel.CreateOpenSearchable(baseUrls, queryFormatArg, ose, netCreds);
 
 
             NameValueCollection parameters = PrepareQueryParameters();
@@ -254,6 +241,14 @@ namespace Terradue.Shell.OpenSearch {
                     case "--format": 
                         if (argpos < args.Length - 1) {
                             queryFormatArg = args[++argpos];
+                        } else
+                            return false;
+                        break;
+                    case "-a": 
+                    case "--auth": 
+                        if (argpos < args.Length - 1) {
+                            string[] creds = args[++argpos].Split(':');
+                            netCreds = new NetworkCredential(creds[0], creds[1]);
                         } else
                             return false;
                         break;
@@ -447,6 +442,8 @@ namespace Terradue.Shell.OpenSearch {
                 nvc.Add("count", pagination.ToString());
             }
 
+            dataModel.SetQueryParameters(nvc);
+
             return nvc;
         }
 
@@ -507,8 +504,7 @@ namespace Terradue.Shell.OpenSearch {
                 return;
             }
 
-            var dataModelParameters = PrepareDataModelParameters();
-            var dataModel = DataModel.CreateFromArgs(queryModelArg, osr, dataModelParameters);
+            dataModel.LoadResults(osr);
 
             if (metadataPaths.Contains("{}")) {
                 dataModel.PrintCollection(outputStream);

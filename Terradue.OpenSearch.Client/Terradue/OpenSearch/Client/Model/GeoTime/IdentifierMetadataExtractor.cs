@@ -6,10 +6,10 @@ using Terradue.ServiceModel.Syndication;
 namespace Terradue.OpenSearch.Client.Model.GeoTime
 {
     
-    class IdentifierMetadataExtractor : IMetadataExtractor
+    public class IdentifierMetadataExtractor : IMetadataExtractor
 	{
         #region IMetadataExtractor implementation
-        public string GetMetadata(Terradue.OpenSearch.Result.IOpenSearchResultItem item) {
+        public virtual string GetMetadata(Terradue.OpenSearch.Result.IOpenSearchResultItem item) {
             string ident = null;
             if (ident == null) {
                 foreach (SyndicationElementExtension ext in item.ElementExtensions) {
@@ -19,15 +19,10 @@ namespace Terradue.OpenSearch.Client.Model.GeoTime
                     }
                 }
             }
-            if (ident == null) {
-                var identifier = Terradue.Metadata.EarthObservation.OpenSearch.EarthObservationOpenSearchResultHelpers.FindIdentifierFromOpenSearchResultItem(item);
-                if (identifier != null)
-                    ident = identifier;
-            }
 
             return ident;
         }
-        public string Description {
+        public virtual string Description {
             get {
                 return "Identifier time of the item within the collection";
             }

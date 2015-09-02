@@ -7,8 +7,10 @@ using Mono.Addins;
 using System.Linq;
 using System.Collections.ObjectModel;
 using Terradue.ServiceModel.Syndication;
+using Terradue.OpenSearch.Engine;
+using System.Net;
 
-
+[assembly:Addin]
 namespace Terradue.OpenSearch.Client.Model.GeoTime {
 
     [Extension(typeof(IOpenSearchClientDataModelExtension))]
@@ -28,6 +30,8 @@ namespace Terradue.OpenSearch.Client.Model.GeoTime {
             metadataExtractors.Add("identifier", new IdentifierMetadataExtractor());
             metadataExtractors.Add("startdate", new StartDateMetadataExtractor());
             metadataExtractors.Add("enddate", new EndDateMetadataExtractor());
+            metadataExtractors.Add("published", new PublicationDateMetadataExtractor());
+            metadataExtractors.Add("updated", new UpdatedMetadataExtractor());
 
         }
 
@@ -57,10 +61,11 @@ namespace Terradue.OpenSearch.Client.Model.GeoTime {
                 foreach (var metadata in metadataPaths) {
 
                     if (!metadataExtractors.ContainsKey(metadata))
-                        throw new NotSupportedException("metadata extractor \"{0}\" not found in the data model");
+                        throw new NotSupportedException(string.Format("metadata extractor \"{0}\" not found in the data model", metadata));
                         
                     metadataItems.Add(metadataExtractors[metadata].GetMetadata(item));
                    
+
                 }
             }
 
@@ -71,13 +76,13 @@ namespace Terradue.OpenSearch.Client.Model.GeoTime {
             this.osr = osr;
         }
 
-        public string Name {
+        public virtual string Name {
             get {
                 return "GeoTime";
             }
         }
 
-        public string Description {
+        public virtual string Description {
             get {
                 return "Data model to handle simple Geo & Time dataset according to OGC® OpenSearch Geo and Time Extensions 10-032r8\n" +
                     "Some parameters allows to ovveride or to filter metadata:" +
@@ -91,7 +96,7 @@ namespace Terradue.OpenSearch.Client.Model.GeoTime {
 
         }
 
-        public void ApplyParameters() {
+        public virtual void ApplyParameters() {
 
             foreach (var item in osr.Items.ToArray()) {
 
@@ -106,6 +111,32 @@ namespace Terradue.OpenSearch.Client.Model.GeoTime {
 
         }
 
+
+        public virtual void SetQueryParameters(NameValueCollection nvc) {
+            
+        }
+
+        public virtual IOpenSearchable CreateOpenSearchable(List<Uri> baseUrls, string queryFormatArg, OpenSearchEngine ose, NetworkCredential netCreds){
+            List<IOpenSearchable> entities = new List<IOpenSearchable>();
+            foreach (var url in baseUrls) {
+                if (string.IsNullOrEmpty(queryFormatArg))
+                    entities.Add(OpenSearchFactory.FindOpenSearchable(ose, url));
+                else {
+                    var e = OpenSearchFactory.FindOpenSearchable(ose, url, ose.GetExtensionByExtensionName(queryFormatArg).DiscoveryContentType);
+                    entities.Add(e);
+                }
+            }
+
+            IOpenSearchable entity;
+
+            if (entities.Count > 1) {
+                entity = new MultiGenericOpenSearchable(entities, ose);
+            } else {
+                entity = entities[0];
+            }
+
+            return entity;
+        }
         #endregion
     }
 }

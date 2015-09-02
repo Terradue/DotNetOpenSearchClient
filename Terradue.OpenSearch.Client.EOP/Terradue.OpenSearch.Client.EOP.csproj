@@ -9,7 +9,7 @@
     <OutputType>Library</OutputType>
     <RootNamespace>Terradue.OpenSearch.Client.EOP</RootNamespace>
     <AssemblyName>Terradue.OpenSearch.Client.EOP</AssemblyName>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <UseMSBuildEngine>False</UseMSBuildEngine>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -31,11 +31,21 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
+    <Reference Include="Terradue.ServiceModel.Syndication">
+      <HintPath>..\packages\Terradue.ServiceModel.Syndication.1.0.0.0\lib\net40\Terradue.ServiceModel.Syndication.dll</HintPath>
+    </Reference>
+    <Reference Include="ServiceStack.Text">
+      <HintPath>..\packages\ServiceStack.Text.3.9.71\lib\net35\ServiceStack.Text.dll</HintPath>
+    </Reference>
+    <Reference Include="Mono.Addins">
+      <HintPath>..\packages\Mono.Addins.1.2\lib\net40\Mono.Addins.dll</HintPath>
+    </Reference>
+    <Reference Include="log4net">
+      <HintPath>..\packages\log4net.2.0.3\lib\net40-full\log4net.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Terradue\OpenSearch\Client\Model\EarthObservation\EarthObservationDataModelExtension.cs" />
-    <Compile Include="Terradue\OpenSearch\Client\Model\EarthObservation\ProductTypeMetadataExtractor.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
@@ -43,12 +53,26 @@
     <Folder Include="Terradue\OpenSearch\" />
     <Folder Include="Terradue\OpenSearch\Client\" />
     <Folder Include="Terradue\OpenSearch\Client\Model\" />
-    <Folder Include="Terradue\OpenSearch\Client\Model\EarthObservation\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Terradue.OpenSearch.Client\Terradue.OpenSearch.Client.csproj">
       <Project>{1FB59AA7-3878-47CD-4267-F179F56C6470}</Project>
       <Name>Terradue.OpenSearch.Client</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\DotNetEarthObservation\Terradue.Metadata.EarthObservation\Terradue.Metadata.EarthObservation.csproj">
+      <Project>{E084B86A-8B40-414E-95FA-760F3C6BFDCB}</Project>
+      <Name>Terradue.Metadata.EarthObservation</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\DotNetGeoJson\Terradue.GeoJson\Terradue.GeoJson.csproj">
+      <Project>{26AD29FF-862F-46D9-9F25-473E2977A7C3}</Project>
+      <Name>Terradue.GeoJson</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\DotNetOpenSearch\Terradue.OpenSearch\Terradue.OpenSearch.csproj">
+      <Project>{997A44FD-EE4A-490A-855B-88305E0CD269}</Project>
+      <Name>Terradue.OpenSearch</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
   </ItemGroup>
 </Project>

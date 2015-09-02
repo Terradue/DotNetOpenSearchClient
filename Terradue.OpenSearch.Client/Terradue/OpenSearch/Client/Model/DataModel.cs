@@ -4,6 +4,8 @@ using System.IO;
 using System.Collections.Generic;
 using Terradue.OpenSearch.Result;
 using System.Collections.Specialized;
+using Terradue.OpenSearch.Engine;
+using System.Net;
 
 namespace Terradue.OpenSearch.Client.Model {
     public class DataModel {
@@ -17,15 +19,15 @@ namespace Terradue.OpenSearch.Client.Model {
         }
 
 
-        public static DataModel CreateFromArgs(string queryModelArg, IOpenSearchResultCollection osr, NameValueCollection parameters) {
+        public static DataModel CreateFromArgs(string queryModelArg, NameValueCollection parameters) {
 
             IOpenSearchClientDataModelExtension modelExtension = DataModel.FindPluginByName(queryModelArg);
             if (modelExtension == null)
                 throw new NotSupportedException(string.Format("No data model with name \"{0}\" found", queryModelArg));
 
             modelExtension.InitModelExtension(parameters);
-            modelExtension.LoadOpenSearchResultCollection(osr);
-            modelExtension.ApplyParameters();
+
+
 
             return new DataModel(modelExtension);
 
@@ -89,7 +91,19 @@ namespace Terradue.OpenSearch.Client.Model {
 
             }
 
+        }
 
+        public void LoadResults(IOpenSearchResultCollection osr) {
+            modelExtension.LoadOpenSearchResultCollection(osr);
+            modelExtension.ApplyParameters();
+        }
+
+        public void SetQueryParameters(NameValueCollection nvc){
+            modelExtension.SetQueryParameters(nvc);
+        }
+
+        public IOpenSearchable CreateOpenSearchable(List<Uri> baseUrls, string queryFormatArg, OpenSearchEngine ose, NetworkCredential netCreds){
+            return modelExtension.CreateOpenSearchable(baseUrls, queryFormatArg, ose, netCreds);
         }
     }
 }

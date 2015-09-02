@@ -1,26 +1,25 @@
 using System;
 using Terradue.OpenSearch.Client.Model.GeoTime;
+using Terradue.OpenSearch.Result;
 
 namespace Terradue.OpenSearch.Client.Model.EarthObservation
 {
-    class ProductTypeMetadataExtractor : IMetadataExtractor
-	{
+    class TrackMetadataExtractor : IMetadataExtractor {
+        
         #region IMetadataExtractor implementation
 
         public string GetMetadata(IOpenSearchResultItem item) {
-            throw new NotImplementedException();
+
+            return Terradue.Metadata.EarthObservation.OpenSearch.EarthObservationOpenSearchResultHelpers.FindTrackFromOpenSearchResultItem(item);
         }
 
         public string Description {
             get {
-                throw new NotImplementedException();
+                return "A number representing the acquisition orbit track";
             }
         }
 
         #endregion
-
-
-
 	}
 
 }

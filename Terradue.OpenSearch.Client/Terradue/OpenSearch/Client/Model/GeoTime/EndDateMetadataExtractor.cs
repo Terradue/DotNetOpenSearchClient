@@ -6,10 +6,10 @@ using Terradue.ServiceModel.Syndication;
 namespace Terradue.OpenSearch.Client.Model.GeoTime
 {
     
-    class EndDateMetadataExtractor : IMetadataExtractor
+    public class EndDateMetadataExtractor : IMetadataExtractor
 	{
         #region IMetadataExtractor implementation
-        public string GetMetadata(Terradue.OpenSearch.Result.IOpenSearchResultItem item) {
+        public virtual string GetMetadata(Terradue.OpenSearch.Result.IOpenSearchResultItem item) {
             string date = null;
             if (date == null) {
                 foreach (SyndicationElementExtension ext in item.ElementExtensions) {
@@ -28,7 +28,7 @@ namespace Terradue.OpenSearch.Client.Model.GeoTime
 
             return date;
         }
-        public string Description {
+        public virtual string Description {
             get {
                 return "End time of the item (UTC ISO 8601)";
             }

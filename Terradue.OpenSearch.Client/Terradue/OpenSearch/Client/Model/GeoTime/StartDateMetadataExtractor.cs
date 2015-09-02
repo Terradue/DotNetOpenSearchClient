@@ -6,10 +6,10 @@ using Terradue.ServiceModel.Syndication;
 namespace Terradue.OpenSearch.Client.Model.GeoTime
 {
     
-    class StartDateMetadataExtractor : IMetadataExtractor
+    public class StartDateMetadataExtractor : IMetadataExtractor
 	{
         #region IMetadataExtractor implementation
-        public string GetMetadata(Terradue.OpenSearch.Result.IOpenSearchResultItem item) {
+        public virtual string GetMetadata(Terradue.OpenSearch.Result.IOpenSearchResultItem item) {
             string date = null;
             if (date == null) {
                 foreach (SyndicationElementExtension ext in item.ElementExtensions) {
@@ -25,13 +25,9 @@ namespace Terradue.OpenSearch.Client.Model.GeoTime
                     }
                 }
             }
-            var start = Terradue.Metadata.EarthObservation.OpenSearch.EarthObservationOpenSearchResultHelpers.FindStartDateFromOpenSearchResultItem(item);
-            if (start != DateTime.MinValue)
-                date = start.ToUniversalTime().ToString("O");
-
             return date;
         }
-        public string Description {
+        public virtual string Description {
             get {
                 return "Start time of the item (UTC ISO 8601)";
             }
