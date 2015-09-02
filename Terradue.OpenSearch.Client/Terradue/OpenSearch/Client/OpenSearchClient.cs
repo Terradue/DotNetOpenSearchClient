@@ -26,11 +26,10 @@ using System.Net.Security;
 using Terradue.GeoJson.Geometry;
 using Terradue.GeoJson.Feature;
 using Terradue.OpenSearch.Filters;
-using Terradue.OpenSearch.Client.Model;
+using Terradue.OpenSearch.Model;
 
 
-[assembly:AddinRoot("OpenSearchDataModel", "1.0")]
-[assembly:AddinDescription("OpenSearch Data Model")]
+
 namespace Terradue.OpenSearch.Client {
     //-------------------------------------------------------------------------------------------------------------------------
     //-------------------------------------------------------------------------------------------------------------------------
