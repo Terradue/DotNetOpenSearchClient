@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<parent>
+		<groupId>com.terradue</groupId>
+		<artifactId>air</artifactId>
+		<version>1.4</version>
+	</parent>
+
+	<artifactId>opensearch-client</artifactId>
+	<packaging>rpm</packaging>
+	<description>Application for air</description>
+	<version>1.5-SNAPSHOT</version>
+
+	<properties>
+	</properties>
+
+	<dependencies>
+	</dependencies>
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.npanday.plugins</groupId>
+				<artifactId>library-importer-maven-plugin</artifactId>
+				<version>1.5.1-incubating-SNAPSHOT</version>
+				<extensions>true</extensions>
+				<executions>
+					<execution>
+						<phase>compile</phase>
+						<goals>
+							<goal>resolve-packages</goal>
+							<goal>extract-nuspec</goal>
+						</goals>
+					</execution>
+				</executions>
+				<configuration>
+					<frameworkVersion>4.0</frameworkVersion>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.nuiton.jredmine</groupId>
+				<artifactId>jredmine-maven-plugin</artifactId>
+				<inherited>false</inherited>
+			</plugin>
+			<plugin>
+		        <groupId>org.codehaus.mojo</groupId>
+		        <artifactId>exec-maven-plugin</artifactId>
+		        <version>1.2.1</version>
+		        <executions>
+		          <execution>
+		          	<id>copy</id>
+					<phase>prepare-package</phase>
+		            <goals>
+		              <goal>exec</goal>
+		            </goals>
+		            <configuration>
+			          <executable>${basedir}/src/main/scripts/copydll.sh</executable>
+			        </configuration>
+		          </execution>
+		        </executions>
+		    </plugin>
+			<plugin>
+				<artifactId>maven-assembly-plugin</artifactId>
+				<version>2.4</version>
+				<executions>
+					<execution>
+						<id>rpm</id> <!-- this is used for inheritance merges -->
+						<phase>prepare-package</phase> <!-- bind to the packaging phase -->
+						<goals>
+							<goal>single</goal>
+						</goals>
+						<configuration>
+							<attach>false</attach>
+							<descriptors>
+								<descriptor>${basedir}/src/main/assembly/rpm.xml</descriptor>
+							</descriptors>
+							<outputDirectory>${project.build.directory}/dependencies</outputDirectory>
+							<appendAssemblyId>false</appendAssemblyId>
+							<finalName>/</finalName>
+						</configuration>
+					</execution>
+
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>rpm-maven-plugin</artifactId>
+				<configuration>
+					<copyright>2015, Terradue</copyright>
+					<distribution>Terradue 2015</distribution>
+					<group>air</group>
+					<packager>Terradue</packager>
+					<name>${project.artifactId}</name>
+					<defaultUsername>root</defaultUsername>
+					<defaultGroupname>root</defaultGroupname>
+					<defaultDirmode>755</defaultDirmode>
+					<defaultFilemode>644</defaultFilemode>
+					<defineStatements>
+						<defineStatement>__jar_repack 0</defineStatement>
+						<defineStatement>__os_install_post %{nil}</defineStatement>
+					</defineStatements>
+					<mappings>
+						<mapping>
+							<directory>/usr/bin</directory>
+							<filemode>755</filemode>
+							<sources>
+								<source>
+									<location>${basedir}/src/main/scripts/opensearch-client</location>
+								</source>
+							</sources>
+						</mapping>
+						<mapping>
+							<directory>/usr/lib/opensearch-client</directory>
+							<filemode>755</filemode>
+							<sources>
+								<source>
+									<location>${project.build.directory}/dependencies/mono</location>
+								</source>
+							</sources>
+						</mapping>
+					</mappings>
+					<provides>
+						<provide>${project.artifactId}</provide>
+					</provides>
+					<requires>
+						<require>mono &gt;= 3.12</require>
+					</requires>
+					<needarch>noarch</needarch>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>com.terradue</groupId>
+				<artifactId>rpmdeploy-maven-plugin</artifactId>
+			</plugin>
+		</plugins>
+	</build>
+</project>
