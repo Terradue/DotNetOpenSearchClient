@@ -81,7 +81,7 @@ namespace Terradue.OpenSearch.Client {
                 }
 
             } catch (Exception e) {
-                log.Error(string.Format("{0} : {1} {2}", e.Source, e.Message, e.HelpLink));
+                Console.Error.WriteLine(string.Format("{0} : {1} {2}", e.Source, e.Message, e.HelpLink));
                 Environment.ExitCode = 1;
                 return;
             }
