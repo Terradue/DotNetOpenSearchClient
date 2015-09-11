@@ -8,6 +8,7 @@
 		<version>1.4</version>
 	</parent>
 
+	<groupId>com.terradue.system</groupId>
 	<artifactId>opensearch-client</artifactId>
 	<packaging>rpm</packaging>
 	<description>OpenSearch Client</description>

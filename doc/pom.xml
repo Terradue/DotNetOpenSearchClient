@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<parent>
+		<groupId>com.terradue.system</groupId>
+		<artifactId>opensearch-client</artifactId>
+		<version>1.5.2-SNAPSHOT</version>
+		<relativePath>..</relativePath> 
+	</parent>
+
+	<groupId>com.terradue.system</groupId>
+	<artifactId>opensearch-client-doc</artifactId>
+	<packaging>pom</packaging>
+	<description>OpenSearch Client documentation</description>
+	
+	<dependencies>
+		<dependency>
+			<groupId>com.terradue.infra</groupId>
+			<artifactId>corporate-doc</artifactId>
+			<type>zip</type>
+			<classifier>plantuml</classifier>
+			<version>1.1-SNAPSHOT</version>
+		</dependency>
+	</dependencies>
+
+	<properties>
+		<!-- <github.global.server>github</github.global.server> -->
+		<!-- <github.site.repositoryName>doc-tep-geohazards</github.site.repositoryName> -->
+		<!-- <github.site.repositoryOwner>Terradue</github.site.repositoryOwner> -->
+	</properties>
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-dependency-plugin</artifactId>
+				<version>2.6</version>
+				<executions>
+					<execution>
+						<id>include-plantuml</id>
+						<phase>generate-sources</phase>
+						<goals>
+							<goal>unpack-dependencies</goal>
+						</goals>
+						<configuration>
+							<classifier>plantuml</classifier>
+							<failOnMissingClassifierArtifact>false</failOnMissingClassifierArtifact>
+							<outputDirectory>includes</outputDirectory>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>exec-maven-plugin</artifactId>
+				<version>1.2.1</version>
+				<extensions>true</extensions>
+				<executions>
+					<execution>
+						<id>generate-doc</id>
+						<phase>compile</phase>
+						<goals>
+							<goal>exec</goal>
+						</goals>
+						<configuration>
+							<executable>make</executable>
+							<arguments>
+								<argument>clean</argument>
+								<argument>html</argument>
+							</arguments>
+						</configuration>
+					</execution>
+					<execution>
+						<id>generate-nojekyll</id>
+						<phase>compile</phase>
+						<goals>
+							<goal>exec</goal>
+						</goals>
+						<configuration>
+							<workingDirectory>${basedir}/_build/html</workingDirectory>
+							<executable>touch</executable>
+							<arguments>
+								<argument>.nojekyll</argument>
+							</arguments>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>exec-maven-plugin</artifactId>
+				<version>1.2.1</version>
+				<extensions>true</extensions>
+				<executions>
+					<execution>
+						<id>test</id>
+						<phase>test</phase>
+						<goals>
+							<goal>exec</goal>
+						</goals>
+						<configuration>
+							<executable>make</executable>
+							<arguments>
+								<argument>test</argument>
+							</arguments>
+							<successCodes>
+								<successCode>0</successCode>
+								<successCode>1</successCode>
+								<successCode>2</successCode>
+							</successCodes>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<artifactId>maven-assembly-plugin</artifactId>
+				<version>2.4</version>
+				<executions>
+					<execution>
+						<id>rpm</id> <!-- this is used for inheritance merges -->
+						<phase>prepare-package</phase> <!-- bind to the packaging phase -->
+						<goals>
+							<goal>single</goal>
+						</goals>
+						<configuration>
+							<descriptors>
+								<descriptor>${basedir}/source/assembly/package-html.xml</descriptor>
+							</descriptors>
+							<appendAssemblyId>true</appendAssemblyId>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+	</build>
+</project>
+
