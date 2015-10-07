@@ -27,6 +27,7 @@ using Terradue.GeoJson.Geometry;
 using Terradue.GeoJson.Feature;
 using Terradue.OpenSearch.Filters;
 using Terradue.OpenSearch.Model;
+using System.Threading;
 
 
 
@@ -76,12 +77,14 @@ namespace Terradue.OpenSearch.Client {
                 if (listOsee == true)
                     client.ListOpenSearchEngineExtensions();
 
-                if (!string.IsNullOrEmpty(queryModelArg) && baseUrlArg== null){
+                if (!string.IsNullOrEmpty(queryModelArg) && baseUrlArg == null) {
                     client.PrintDataModelHelp(DataModel.CreateFromArgs(queryModelArg, new NameValueCollection()));
                 }
 
             } catch (Exception e) {
                 Console.Error.WriteLine(string.Format("{0} : {1} {2}", e.Source, e.Message, e.HelpLink));
+                if (verbose)
+                    Console.Error.WriteLine(e.StackTrace);
                 Environment.ExitCode = 1;
                 return;
             }
@@ -107,13 +110,17 @@ namespace Terradue.OpenSearch.Client {
 
             LoadOpenSearchEngineExtensions(ose);
 
+            InitCache();
+
+        }
+
+        private void InitCache(){
             NameValueCollection cacheSettings = new NameValueCollection();
             cacheSettings.Add("SlidingExpiration", "600");
 
             searchCache = new OpenSearchMemoryCache("cache", cacheSettings);
             ose.RegisterPreSearchFilter(searchCache.TryReplaceWithCacheRequest);
             ose.RegisterPostSearchFilter(searchCache.CacheResponse);
-
         }
 
         void LoadOpenSearchEngineExtensions(OpenSearchEngine ose) {
@@ -181,8 +188,20 @@ namespace Terradue.OpenSearch.Client {
             NameValueCollection parametersNvc;
 
             // Find OpenSearch Entity
-            IOpenSearchable entity = dataModel.CreateOpenSearchable(baseUrls, queryFormatArg, ose, netCreds);
-
+            IOpenSearchable entity = null;
+            int retry = 5;
+            while (retry >= 0) {
+                // Perform the query
+                try {
+                    entity = dataModel.CreateOpenSearchable(baseUrls, queryFormatArg, ose, netCreds);
+                    break;
+                } catch (Exception e) {
+                    if (retry == 0)
+                        throw e;
+                    retry--;
+                    InitCache();
+                }
+            }
 
             NameValueCollection parameters = PrepareQueryParameters();
             string startIndex = parameters.Get("startIndex");
@@ -197,8 +216,19 @@ namespace Terradue.OpenSearch.Client {
 
                 parametersNvc = ResolveParameters(parameters, entity);
 
-                // Perform the query
-                osr = QueryOpenSearch(ose, entity, parametersNvc);
+                retry = 5;
+                while (retry >= 0) {
+                    // Perform the query
+                    try {
+                        osr = QueryOpenSearch(ose, entity, parametersNvc);
+                        break;
+                    } catch (Exception e) {
+                        if (retry == 0)
+                            throw e;
+                        retry--;
+                        InitCache();
+                    }
+                }
 
                 // Transform the result
                 OutputResult(osr, outputStream);
@@ -211,6 +241,10 @@ namespace Terradue.OpenSearch.Client {
                 index += count;
 
                 parameters.Set("startIndex", "" + index);
+
+
+
+
             }
 
             outputStream.Close();
@@ -327,7 +361,7 @@ namespace Terradue.OpenSearch.Client {
             Console.Error.WriteLine(" --pagination            Specify the pagination number for search loops. Default: 20");
             Console.Error.WriteLine(" --list-osee             List the OpenSearch Engine Extensions");
             Console.Error.WriteLine(" -m/--model <format>     Specify the data model of the results for the query. Data model give access to specific" +
-                                    "metadata extractors or transformers. By default the \"GeoTime\" model is used. Used without urls, it lists the metadata options");
+            "metadata extractors or transformers. By default the \"GeoTime\" model is used. Used without urls, it lists the metadata options");
             Console.Error.WriteLine(" -v/--verbose            Make the operation more talkative");
             Console.Error.WriteLine();
         }
@@ -498,7 +532,6 @@ namespace Terradue.OpenSearch.Client {
                     }
                     sw.Flush();
                 }
-                sw.Close();
 
                 return;
             }

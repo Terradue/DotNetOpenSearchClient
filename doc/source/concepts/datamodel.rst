@@ -121,6 +121,174 @@ Earth Observation Profile Model
 Earth Observation :term:`dataset` are generally managed within logical collections that are usually structured to contain data items derived from sensors onboard a satellite or series of satellites. The key characteristics differentiating products within the collections are date of acquisition, location as well as characteristics depending on the type of sensor, For example, key characteristics for optical imagery are the possible presence of cloud, haze, smokes or other atmospheric or on ground phenomena obscuring the image. 
 The common metadata used to distinguish EO products types are defined and analysed for generic and thematic EO products (i.e optical, radar, atmospheric, altimetry, limb-looking and synthesis and systematic products).
 
+The base of the EO data model is based on the **Earth Observation Metadata profile of Observations & Measurements** that is another OGC implementation standard. This profile is intended to provide a standard schema for encoding Earth Observation product metadata to support the description and cataloguing of products from sensors aboard EO satellites.
+
+EO daatset metadata encoded using this profile of Observations and Measurements shall produce XML documents that are fully compliant with the normative XML Schema Documents associated with this standard. Here is an example corresponding to the previous example:
+
+.. code-block:: xml
+
+    <EarthObservation xmlns="http://www.opengis.net/sar/2.1" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+		<boundedBy xmlns="http://www.opengis.net/gml/3.2" xsi:nil="true"/>
+		<phenomenonTime xmlns="http://www.opengis.net/om/2.0">
+			<TimePeriod xmlns="http://www.opengis.net/gml/3.2">
+				<beginPosition>2014-12-05T16:16:21.5300370Z</beginPosition>
+				<endPosition>2014-12-05T16:16:33.4265590Z</endPosition>
+			</TimePeriod>
+		</phenomenonTime>
+		<observedProperty xmlns="http://www.opengis.net/om/2.0" xsi:nil="true"/>
+		<metaDataProperty xmlns="http://www.opengis.net/eop/2.1">
+			<EarthObservationMetaData>
+				<identifier>S1A_IW_GRDH_1SDV_20141205T171621_20141205T171633_003587_0043C4_3406</identifier>
+				<parentIdentifier>IW_GRDH_1SDV</parentIdentifier>
+				<acquisitionType>NOMINAL</acquisitionType>
+				<productType>GRD</productType>
+				<status>ARCHIVED</status>
+				<processing>
+					<ProcessingInformation>
+						<processingCenter>ESRIN ESRIN headquarters Italy Rome</processingCenter>
+						<method>GRD Post Processing</method>
+						<processorName>Sentinel-1 IPF</processorName>
+						<processorVersion>002.36</processorVersion>
+						<processingLevel>L1</processingLevel>
+						<nativeProductFormat>Sentinel-1 IW Level-1 GRD Product</nativeProductFormat>
+					</ProcessingInformation>
+				</processing>
+				<processing>
+					<ProcessingInformation>
+						<processingCenter>ESRIN ESRIN headquarters Italy Rome</processingCenter>
+						<method>SLC Processing</method>
+						<processorName>Sentinel-1 IPF</processorName>
+						<processorVersion>002.36</processorVersion>
+						<processingLevel>L1</processingLevel>
+						<nativeProductFormat>Level-1 Intermediate SLC Product</nativeProductFormat>
+						<auxiliaryDataSetFileName>/data/localWD/468383535//S1A_AUX_PP1_V20141124T090000_G20141124T085940.SAFE</auxiliaryDataSetFileName>
+						<auxiliaryDataSetFileName>/data/localWD/468383535//S1A_AUX_CAL_V20140915T100000_G20141003T151141.SAFE</auxiliaryDataSetFileName>
+						<auxiliaryDataSetFileName>/data/localWD/468383535//S1A_AUX_INS_V20141204T130000_G20141204T123704.SAFE</auxiliaryDataSetFileName>
+						<auxiliaryDataSetFileName>/data/localWD/468383535//S1A_OPER_AUX_RESORB_OPOD_20141205T192704_V20141205T152333_20141205T184103.EOF</auxiliaryDataSetFileName>
+					</ProcessingInformation>
+				</processing>
+				<processing>
+					<ProcessingInformation>
+						<processingCenter>Airbus DS UPA_ United Kingdom Farnborough</processingCenter>
+						<method>Generation of Sentinel-1 L0 SAR Product, dual polarisation</method>
+						<processorName/>
+						<processorVersion/>
+						<processingLevel>L0</processingLevel>
+						<nativeProductFormat>Level-0 Product</nativeProductFormat>
+					</ProcessingInformation>
+				</processing>
+				<processing>
+					<ProcessingInformation>
+						<method>Generation of Sentinel-1 SAR Slice L0 product single polarisation</method>
+						<nativeProductFormat>Raw Data</nativeProductFormat>
+					</ProcessingInformation>
+				</processing>
+				<processing>
+					<ProcessingInformation>
+						<method>Raw Data Downlink Channel1 1</method>
+						<nativeProductFormat>Raw Data</nativeProductFormat>
+					</ProcessingInformation>
+				</processing>
+				<processing>
+					<ProcessingInformation>
+						<method>Generation of Sentinel-1 SAR Slice L0 product single polarisation</method>
+						<nativeProductFormat>Raw Data</nativeProductFormat>
+					</ProcessingInformation>
+				</processing>
+				<processing>
+					<ProcessingInformation>
+						<method>Raw Data Downlink Channel2 2</method>
+						<nativeProductFormat>Raw Data</nativeProductFormat>
+					</ProcessingInformation>
+				</processing>
+			</EarthObservationMetaData>
+		</metaDataProperty>
+		<result xmlns="http://www.opengis.net/om/2.0">
+			<EarthObservationResult xmlns="http://www.opengis.net/eop/2.1">
+				<boundedBy xmlns="http://www.opengis.net/gml/3.2" xsi:nil="true"/>
+				<product>
+					<ProductInformation>
+						<fileName>
+							<d7p1:ServiceReference d7p1:type="simple" d7p2:href="https://scihub.esa.int/dhus/odata/v1/Products(%277206812c-d9cf-485c-89b3-f03a214be924%27)/$value" d7p2:title="simple" xmlns="http://www.opengis.net/ows/2.0" xmlns:d7p1="http://www.opengis.net/ows/2.0" xmlns:d7p2="http://www.w3.org/1999/xlink">
+								<d7p1:Identifier>7206812c-d9cf-485c-89b3-f03a214be924</d7p1:Identifier>
+								<d7p1:Format>SAFE</d7p1:Format>
+							</d7p1:ServiceReference>
+						</fileName>
+						<size>809403257</size>
+					</ProductInformation>
+				</product>
+			</EarthObservationResult>
+		</result>
+		<featureOfInterest xmlns="http://www.opengis.net/om/2.0">
+			<Footprint xmlns="http://www.opengis.net/eop/2.1">
+				<boundedBy xmlns="http://www.opengis.net/gml/3.2" xsi:nil="true"/>
+				<multiExtentOf>
+					<MultiSurface xmlns="http://www.opengis.net/gml/3.2">
+						<surfaceMembers>
+							<Polygon>
+								<exterior>
+									<LinearRing>
+										<posList count="5" srsDimension="2">51.944363 5.898916 52.340702 9.548466 51.629356 9.728382 51.234165 6.135372 51.944363 5.898916</posList>
+									</LinearRing>
+								</exterior>
+							</Polygon>
+						</surfaceMembers>
+					</MultiSurface>
+				</multiExtentOf>
+			</Footprint>
+		</featureOfInterest>
+		<procedure xmlns="http://www.opengis.net/om/2.0">
+			<EarthObservationEquipment xmlns="http://www.opengis.net/eop/2.1">
+				<boundedBy xmlns="http://www.opengis.net/gml/3.2" xsi:nil="true"/>
+				<platform>
+					<Platform>
+						<shortName>S1A</shortName>
+						<serialIdentifier>0000-000A</serialIdentifier>
+					</Platform>
+				</platform>
+				<instrument>
+					<Instrument>
+						<shortName>SAR</shortName>
+						<description>Synthetic Aperture Radar</description>
+					</Instrument>
+				</instrument>
+				<sensor>
+					<Sensor>
+						<sensorType>RADAR</sensorType>
+						<operationalMode codeSpace="urn:eop:SEN1:sensorMode">IW_DP</operationalMode>
+						<swathIdentifier codeSpace="urn:eop:SEN1:swathIdentifier">IW</swathIdentifier>
+					</Sensor>
+				</sensor>
+				<acquisitionParameters>
+					<Acquisition xmlns="http://www.opengis.net/sar/2.1">
+						<orbitNumber xmlns="http://www.opengis.net/eop/2.1">3587</orbitNumber>
+						<lastOrbitNumber xmlns="http://www.opengis.net/eop/2.1">0</lastOrbitNumber>
+						<wrsLongitudeGrid xmlns="http://www.opengis.net/eop/2.1">15</wrsLongitudeGrid>
+						<ascendingNodeDate xmlns="http://www.opengis.net/eop/2.1">0001-01-01T00:00:00</ascendingNodeDate>
+						<startTimeFromAscendingNode xmlns="http://www.opengis.net/eop/2.1">838524.4</startTimeFromAscendingNode>
+						<completionTimeFromAscendingNode xmlns="http://www.opengis.net/eop/2.1">850420.9</completionTimeFromAscendingNode>
+						<illuminationZenithAngle xmlns="http://www.opengis.net/eop/2.1">39.078511453185818</illuminationZenithAngle>
+						<illuminationElevationAngle xmlns="http://www.opengis.net/eop/2.1">34.526525608108237</illuminationElevationAngle>
+						<incidenceAngle xmlns="http://www.opengis.net/eop/2.1">38.682110388777183</incidenceAngle>
+						<pitch xmlns="http://www.opengis.net/eop/2.1">-33.272595454981371</pitch>
+						<roll xmlns="http://www.opengis.net/eop/2.1">-45.76005650153126</roll>
+						<yaw xmlns="http://www.opengis.net/eop/2.1">-96.84402418069287</yaw>
+						<polarisationMode>D</polarisationMode>
+						<polarisationChannels>VV, VH</polarisationChannels>
+						<antennaLookDirection>RIGHT</antennaLookDirection>
+						<minimumIncidenceAngle>36.32666</minimumIncidenceAngle>
+						<maximumIncidenceAngle>45.73309</maximumIncidenceAngle>
+						<dopplerFrequency>5405000454.33435</dopplerFrequency>
+					</Acquisition>
+				</acquisitionParameters>
+			</EarthObservationEquipment>
+		</procedure>
+	</EarthObservation>
+
+
+The model allows exhaustive specifications of an EarthObservation dataset.
+
+Combined with :term:`Atom <atom>`, it is possible to include the EOP metadata in the :term:`entry` either litterally or by reference. the representation is further developed in the :ref:`media types <mediatype>` section.
 
  
 

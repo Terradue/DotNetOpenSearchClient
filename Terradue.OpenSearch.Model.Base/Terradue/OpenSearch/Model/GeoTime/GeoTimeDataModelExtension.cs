@@ -26,13 +26,15 @@ namespace Terradue.OpenSearch.Model.GeoTime {
             metadataExtractors = new Dictionary<string, IMetadataExtractor>();
 
             metadataExtractors.Add("wkt", new WellKnownTextMetadataExtractor());
+            metadataExtractors.Add("title", new TitleMetadataExtractor());
             metadataExtractors.Add("enclosure", new EnclosureMetadataExtractor(parameters));
             metadataExtractors.Add("identifier", new IdentifierMetadataExtractor());
             metadataExtractors.Add("startdate", new StartDateMetadataExtractor());
             metadataExtractors.Add("enddate", new EndDateMetadataExtractor());
             metadataExtractors.Add("published", new PublicationDateMetadataExtractor());
             metadataExtractors.Add("updated", new UpdatedMetadataExtractor());
-
+            metadataExtractors.Add("related", new RelatedMetadataExtractor(parameters));
+            metadataExtractors.Add("self", new SelfLinkMetadataExtractor(parameters));
         }
 
         #region IOpenSearchClientDataModelExtension implementation
@@ -105,6 +107,13 @@ namespace Terradue.OpenSearch.Model.GeoTime {
                 }
                 if (!string.IsNullOrEmpty(parameters["enclosure:host"])) {
                     item.Links = new Collection<SyndicationLink>(item.Links.Where(l => l.RelationshipType != "enclosure" || l.Uri.Scheme == parameters["enclosure:host"]).ToList());
+                }
+
+                if (!string.IsNullOrEmpty(parameters["related:title"])) {
+                    item.Links = new Collection<SyndicationLink>(item.Links.Where(l => l.RelationshipType != "related" || l.Title == parameters["related:title"]).ToList());
+                }
+                if (!string.IsNullOrEmpty(parameters["related:type"])) {
+                    item.Links = new Collection<SyndicationLink>(item.Links.Where(l => l.RelationshipType != "related" || l.RelationshipType == parameters["related:type"]).ToList());
                 }
 
             }
