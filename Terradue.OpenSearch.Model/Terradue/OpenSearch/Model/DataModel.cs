@@ -75,6 +75,12 @@ namespace Terradue.OpenSearch.Model {
         public void PrintCollection(System.IO.Stream outputStream) {
 
             modelExtension.GetCollection().SerializeToStream(outputStream);
+
+            StreamWriter sw = new StreamWriter(outputStream);
+
+            sw.WriteLine();
+            sw.Flush();
+
         }
 
         public void PrintByItem(List<string> metadataPaths, System.IO.Stream outputStream) {

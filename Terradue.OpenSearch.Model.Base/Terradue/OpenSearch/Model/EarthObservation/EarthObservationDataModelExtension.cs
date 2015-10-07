@@ -31,6 +31,7 @@ namespace Terradue.OpenSearch.Model.EarthObservation {
             metadataExtractors.Add("frame", new FrameMetadataExtractor());
             metadataExtractors.Add("swathIdentifier", new SwathIdentifierMetadataExtractor());
 
+
         }
 
         public override string Name {
@@ -49,6 +50,7 @@ namespace Terradue.OpenSearch.Model.EarthObservation {
         }
 
         public override void SetQueryParameters(NameValueCollection nvc) {
+            
         }
 
         public override IOpenSearchable CreateOpenSearchable(List<Uri> baseUrls, string queryFormatArg, OpenSearchEngine ose, NetworkCredential netCreds) {
