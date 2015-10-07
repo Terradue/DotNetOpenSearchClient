@@ -2,7 +2,7 @@
 <package >
   <metadata>
     <id>Terradue.OpenSearch.Client</id>
-    <version>1.5.1</version>
+    <version>1.5.2</version>
     <authors>Terradue</authors>
     <owners>Terradue</owners>
     <licenseUrl>https://github.com/Terradue/DotNetOpenSearchClient/blob/master/LICENSE</licenseUrl>
