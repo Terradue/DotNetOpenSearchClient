@@ -15,7 +15,7 @@
 	<version>1.5.2-SNAPSHOT</version>
 
 	<properties>
-		<redmine.projectID>opensearch-client</redmine.projectID<name />
+		<redmine.projectID>opensearch-client</redmine.projectID>
 	</properties>
 
 	<build>
