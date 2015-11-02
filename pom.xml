@@ -21,6 +21,11 @@
 	<build>
 		<plugins>
 			<plugin>
+				<groupId>org.nuiton.jredmine</groupId>
+				<artifactId>jredmine-maven-plugin</artifactId>
+				<inherited>false</inherited>
+			</plugin>
+			<plugin>
 		        <groupId>org.codehaus.mojo</groupId>
 		        <artifactId>exec-maven-plugin</artifactId>
 		        <version>1.2.1</version>
