@@ -13,6 +13,8 @@ namespace Terradue.OpenSearch.Model
 
         string GetMetadata(IOpenSearchResultItem item);
 
+        bool SetMetadata(IOpenSearchResultItem item, string element);
+
 	}
 
 

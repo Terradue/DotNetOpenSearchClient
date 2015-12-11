@@ -9,8 +9,11 @@ namespace Terradue.OpenSearch.Model.EarthObservation
         #region IMetadataExtractor implementation
 
         public string GetMetadata(IOpenSearchResultItem item) {
-
             return Terradue.Metadata.EarthObservation.OpenSearch.EarthObservationOpenSearchResultHelpers.FindFrameFromOpenSearchResultItem(item);
+        }
+        public bool SetMetadata(IOpenSearchResultItem item, string value){
+            //TODO
+            return false;
         }
 
         public string Description {

@@ -10,6 +10,10 @@ namespace Terradue.OpenSearch.Model.EarthObservation {
 
             return Terradue.Metadata.EarthObservation.OpenSearch.EarthObservationOpenSearchResultHelpers.FindOrbitNumberFromOpenSearchResultItem(item);
         }
+        public bool SetMetadata(IOpenSearchResultItem item, string value){
+            //TODO
+            return false;
+        }
 
         public string Description {
             get {

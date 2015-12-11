@@ -22,6 +22,18 @@ namespace Terradue.OpenSearch.Model.GeoTime
 
             return ident;
         }
+        public virtual bool SetMetadata(Terradue.OpenSearch.Result.IOpenSearchResultItem item, string value){
+            bool isSet = false;
+            foreach (SyndicationElementExtension ext in item.ElementExtensions) {
+                if (ext.OuterName == "identifier") {
+                    item.ElementExtensions.Remove(ext);
+                    item.ElementExtensions.Add(new SyndicationElementExtension("identifier", "http://purl.org/dc/elements/1.1/", value));
+                    isSet = true;
+                    break;
+                }
+            }
+            return isSet;
+        }
         public virtual string Description {
             get {
                 return "Identifier time of the item within the collection";

@@ -42,6 +42,10 @@ namespace Terradue.OpenSearch.Model.GeoTime {
             }
             return geom;
         }
+        public bool SetMetadata(Terradue.OpenSearch.Result.IOpenSearchResultItem item, string value) {
+            //TODO
+            return false;
+        }
 
         #endregion
 

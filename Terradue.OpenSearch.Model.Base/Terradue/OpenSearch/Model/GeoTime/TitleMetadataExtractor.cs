@@ -16,6 +16,10 @@ namespace Terradue.OpenSearch.Model.GeoTime
 
             return title;
         }
+        public virtual bool SetMetadata(Terradue.OpenSearch.Result.IOpenSearchResultItem item, string value){
+            item.Title = new TextSyndicationContent(value);
+            return true;
+        }
         public virtual string Description {
             get {
                 return "Title of the item (string)";

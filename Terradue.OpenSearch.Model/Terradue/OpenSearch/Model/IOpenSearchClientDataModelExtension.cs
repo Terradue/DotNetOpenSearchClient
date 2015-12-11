@@ -28,6 +28,8 @@ namespace Terradue.OpenSearch.Model {
 
         List<string> GetMetadataForItem(List<string> metadataPaths, IOpenSearchResultItem item);
 
+        void SetMetadataForItem(string metadata, string replaceValue, IOpenSearchResultItem item);
+
         void ApplyParameters();
 
         IOpenSearchResultCollection GetCollection();

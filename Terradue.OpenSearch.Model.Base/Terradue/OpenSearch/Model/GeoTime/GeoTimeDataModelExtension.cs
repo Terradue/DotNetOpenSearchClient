@@ -61,17 +61,19 @@ namespace Terradue.OpenSearch.Model.GeoTime {
             if (osr != null) {
 
                 foreach (var metadata in metadataPaths) {
-
-                    if (!metadataExtractors.ContainsKey(metadata))
-                        throw new NotSupportedException(string.Format("metadata extractor \"{0}\" not found in the data model", metadata));
-                        
+                    if (!metadataExtractors.ContainsKey(metadata)) throw new NotSupportedException(string.Format("metadata extractor \"{0}\" not found in the data model", metadata));
                     metadataItems.Add(metadataExtractors[metadata].GetMetadata(item));
-                   
-
                 }
             }
 
             return metadataItems;
+        }
+
+        public void SetMetadataForItem(string metadata, string replaceValue, IOpenSearchResultItem item){
+            if (osr != null) {
+                if (!metadataExtractors.ContainsKey(metadata)) throw new NotSupportedException(string.Format("metadata extractor \"{0}\" not found in the data model", metadata));
+                metadataExtractors[metadata].SetMetadata(item, replaceValue);
+            }
         }
 
         public void LoadOpenSearchResultCollection(Terradue.OpenSearch.Result.IOpenSearchResultCollection osr) {

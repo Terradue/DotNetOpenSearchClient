@@ -10,9 +10,11 @@ namespace Terradue.OpenSearch.Model.Scihub
 	{
         #region IMetadataExtractor implementation
         public override string GetMetadata(Terradue.OpenSearch.Result.IOpenSearchResultItem item) {
-
-
             return item.Id;
+        }
+        public override bool SetMetadata(Terradue.OpenSearch.Result.IOpenSearchResultItem item, string value) {
+            item.Id = value;
+            return true;
         }
         public override string Description {
             get {
