@@ -147,6 +147,11 @@
     <Compile Include="Terradue\OpenSearch\Model\GeoTime\RelatedMetadataExtractor.cs" />
     <Compile Include="Terradue\OpenSearch\Model\GeoTime\SelfLinkMetadataExtractor.cs" />
     <Compile Include="Terradue\OpenSearch\Model\GeoTime\TitleMetadataExtractor.cs" />
+    <Compile Include="Terradue\OpenSearch\Model\EarthObservation\PlatformShortNameMetadataExtractor.cs" />
+    <Compile Include="Terradue\OpenSearch\Model\EarthObservation\OperationalModeMetadataExtractor.cs" />
+    <Compile Include="Terradue\OpenSearch\Model\EarthObservation\PolarisationChannelsMetadataExtractor.cs" />
+    <Compile Include="Terradue\OpenSearch\Model\EarthObservation\WrsLongitudeGridMetadataExtractor.cs" />
+    <Compile Include="Terradue\OpenSearch\Model\EarthObservation\ProcessingLevelMetadataExtractor.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="..\packages\Microsoft.Bcl.Build.1.0.21\build\Microsoft.Bcl.Build.targets" Condition="Exists('..\packages\Microsoft.Bcl.Build.1.0.21\build\Microsoft.Bcl.Build.targets')" />

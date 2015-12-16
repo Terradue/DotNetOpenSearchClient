@@ -235,10 +235,19 @@ namespace Terradue.OpenSearch.Editor {
                 //Do the actual editing
                 ProcessEdit(osr, outputStream);
 
+                //output
+                StreamWriter sw = new StreamWriter(outputStream);
+                sw.Write(osr.SerializeToString());
+                sw.WriteLine();
+                sw.Flush();
+
                 int count = CountResults(osr);
                 if (count == 0)
                     break;
 
+                if (osr.TotalResults < totalResults)
+                    break;
+                
                 totalResults -= count;
                 index += count;
 
@@ -246,14 +255,6 @@ namespace Terradue.OpenSearch.Editor {
 
             }
 
-            parameters.Set("startIndex", "" + 1);
-            parametersNvc = ResolveParameters(parameters, entity);
-            osr = QueryOpenSearch(ose, entity, parametersNvc);
-
-            StreamWriter sw = new StreamWriter(outputStream);
-            sw.Write(osr.SerializeToString());
-            sw.WriteLine();
-            sw.Flush();
             outputStream.Close();
 
         }
