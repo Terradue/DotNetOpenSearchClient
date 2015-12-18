@@ -101,19 +101,12 @@ namespace Terradue.OpenSearch.Model {
 
         }
 
-        public void EditItems(string metadata, string replacement, System.IO.Stream outputStream){
-            StreamWriter sw = new StreamWriter(outputStream);
+        public void EditItems(string metadata, string replacement){
             foreach (var item in modelExtension.GetCollection().Items) {
                 var replaceValue = ProcessReplacementValue(item, replacement);
                 var metadataBefore = modelExtension.GetMetadataForItem(new List<string>{metadata}, item);
                 modelExtension.SetMetadataForItem(metadata, replaceValue, item);
                 var metadataAfter = modelExtension.GetMetadataForItem(new List<string>{metadata}, item);
-
-                sw.Write("Before : " + metadataBefore[0]);
-                sw.WriteLine();
-                sw.Write("After : " + metadataAfter[0]);
-                sw.WriteLine();
-                sw.Flush();
             }
         }
 

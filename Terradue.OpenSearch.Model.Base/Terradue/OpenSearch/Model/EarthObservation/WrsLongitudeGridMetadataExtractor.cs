@@ -10,7 +10,7 @@ namespace Terradue.OpenSearch.Model.EarthObservation
 
         public string GetMetadata(IOpenSearchResultItem item) {
 
-            return Terradue.Metadata.EarthObservation.OpenSearch.EarthObservationOpenSearchResultHelpers.FindWrsLongitudeGridMetadataExtractorFromOpenSearchResultItem(item);
+            return Terradue.Metadata.EarthObservation.OpenSearch.EarthObservationOpenSearchResultHelpers.FindWrsLongitudeGridFromOpenSearchResultItem(item);
         }
         public bool SetMetadata(IOpenSearchResultItem item, string value){
             //TODO

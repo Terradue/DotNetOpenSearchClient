@@ -31,23 +31,25 @@ using System.Threading;
 
 
 
-namespace Terradue.OpenSearch.Editor {
+namespace Terradue.OpenSearch.Data.Publisher {
     //-------------------------------------------------------------------------------------------------------------------------
     //-------------------------------------------------------------------------------------------------------------------------
     //-------------------------------------------------------------------------------------------------------------------------
-    public class OpenSearchEditor {
-        private static readonly ILog log = LogManager.GetLogger(typeof(OpenSearchEditor));
+    public class OpenSearchDataPublisher {
+        private static readonly ILog log = LogManager.GetLogger(typeof(OpenSearchDataPublisher));
         private static Version version = Assembly.GetEntryAssembly().GetName().Version;
         private static string elementToEdit = null;
         private static string replacementValue = null;
         private static bool verbose;
         private static bool listOsee;
-        private static string outputFilePathArg = null;
+        private static string outputFilePathArg = "feed.xml";
+        private static string outputDirPathArg = null;
         private static string queryFormatArg = null;
         private static string queryModelArg = "GeoTime";
         private static List<string> baseUrlArg = null;
         private static uint timeout = 20000;
         private static int pagination = 20;
+        private static int startindex = 1;
         private static int totalResults;
         private static List<string> metadataPaths = null;
         private static List<string> parameterArgs = new List<string>();
@@ -67,9 +69,9 @@ namespace Terradue.OpenSearch.Editor {
                 return;
             }
 
-            OpenSearchEditor client = null;
+            OpenSearchDataPublisher client = null;
             try {
-                client = new OpenSearchEditor();
+                client = new OpenSearchDataPublisher();
 
                 client.Initialize();
 
@@ -134,7 +136,7 @@ namespace Terradue.OpenSearch.Editor {
 
 
             // Initialize the output stream
-            Stream outputStream = InitializeOutputStream();
+            Stream outputStream = CreateOutputStream();
 
             StreamWriter sw = new StreamWriter(outputStream);
 
@@ -157,7 +159,7 @@ namespace Terradue.OpenSearch.Editor {
 
 
             // Initialize the output stream
-            Stream outputStream = InitializeOutputStream();
+            Stream outputStream = CreateOutputStream();
 
             dataModel.PrintHelp(outputStream);
         }
@@ -165,7 +167,7 @@ namespace Terradue.OpenSearch.Editor {
         private void ListOutputFormat() {
 
             // Initialize the output stream
-            Stream outputStream = InitializeOutputStream();
+            Stream outputStream = CreateOutputStream();
 
             ListFormat(outputStream);
 
@@ -179,9 +181,6 @@ namespace Terradue.OpenSearch.Editor {
 
             // Base OpenSearch URL
             List<Uri> baseUrls = InitializeUrl();
-
-            // Initialize the output stream
-            Stream outputStream = InitializeOutputStream();
 
             // Init data Model
             dataModelParameters = PrepareDataModelParameters();
@@ -233,17 +232,20 @@ namespace Terradue.OpenSearch.Editor {
                 }
 
                 //Do the actual editing
-                ProcessEdit(osr, outputStream);
-
-                //output
-                StreamWriter sw = new StreamWriter(outputStream);
-                sw.Write(osr.SerializeToString());
-                sw.WriteLine();
-                sw.Flush();
+                // Initialize the output stream
+                ProcessEdit(osr);
 
                 int count = CountResults(osr);
                 if (count == 0)
                     break;
+                
+                //output
+                Stream outputStream = CreateOutputStream(index, index + count);
+                StreamWriter sw = new StreamWriter(outputStream);
+                sw.Write(osr.SerializeToString());
+                sw.WriteLine();
+                sw.Flush();
+                outputStream.Close();
 
                 if (osr.TotalResults < totalResults)
                     break;
@@ -251,11 +253,10 @@ namespace Terradue.OpenSearch.Editor {
                 totalResults -= count;
                 index += count;
 
+                parameters.Set("count", "" + Math.Min(Int32.Parse(parameters.Get("count")), totalResults));
                 parameters.Set("startIndex", "" + index);
 
             }
-
-            outputStream.Close();
 
         }
         //---------------------------------------------------------------------------------------------------------------------
@@ -291,6 +292,13 @@ namespace Terradue.OpenSearch.Editor {
                         } else
                             return false;
                         break;
+                    case "-d": 
+                    case "--dir": 
+                        if (argpos < args.Length - 1) {
+                            outputDirPathArg = args[++argpos];
+                        } else
+                            return false;
+                        break;
                     case "-f": 
                     case "--format": 
                         if (argpos < args.Length - 1) {
@@ -309,7 +317,7 @@ namespace Terradue.OpenSearch.Editor {
                     case "-p": 
                     case "--parameter": 
                         if (argpos < args.Length - 1) {
-                            parameterArgs.Add(args[++argpos]);
+                            parameterArgs = new List<string>(args[++argpos].Split(','));
                         } else
                             return false;
                         break;
@@ -331,6 +339,12 @@ namespace Terradue.OpenSearch.Editor {
                     case "--pagination": 
                         if (argpos < args.Length - 1) {
                             pagination = int.Parse(args[++argpos]);
+                        } else
+                            return false;
+                        break;
+                    case "--startindex": 
+                        if (argpos < args.Length - 1) {
+                            startindex = int.Parse(args[++argpos]);
                         } else
                             return false;
                         break;
@@ -445,11 +459,25 @@ namespace Terradue.OpenSearch.Editor {
         /// Initializes the output stream.
         /// </summary>
         /// <returns>The output stream.</returns>
-        private Stream InitializeOutputStream() {
-            if (outputFilePathArg == null) {
+        private Stream CreateOutputStream() {
+            if (outputDirPathArg == null && outputFilePathArg == null) {
                 return Console.OpenStandardOutput();
             } else {
-                return new FileStream(outputFilePathArg, FileMode.Create);
+                if (outputFilePathArg == null) outputFilePathArg = "stream.xml";
+                var filename = (outputDirPathArg == null ? "" : outputDirPathArg + "/") + outputFilePathArg;
+                return new FileStream(filename, FileMode.Create);
+            }
+        }
+
+        private Stream CreateOutputStream(int indexstart, int indexstop) {
+            if (outputDirPathArg == null && outputFilePathArg == null) {
+                return Console.OpenStandardOutput();
+            } else {
+                if (outputFilePathArg == null) outputFilePathArg = "feed.xml";
+                var filenamebase = outputFilePathArg.Substring(0, outputFilePathArg.LastIndexOf("."));
+                var extension = outputFilePathArg.Substring(outputFilePathArg.LastIndexOf("."));
+                var filename = (outputDirPathArg == null ? "" : outputDirPathArg + "/") + filenamebase + "_" + indexstart + "-" + indexstop + extension;
+                return new FileStream(filename, FileMode.Create);
             }
         }
 
@@ -539,10 +567,10 @@ namespace Terradue.OpenSearch.Editor {
 
         }
 
-        void ProcessEdit(IOpenSearchResultCollection osr, Stream outputStream) {
+        void ProcessEdit(IOpenSearchResultCollection osr) {
 
             dataModel.LoadResults(osr);
-            dataModel.EditItems(elementToEdit, replacementValue, outputStream);
+            dataModel.EditItems(elementToEdit, replacementValue);
         }
 
         void SerializeXmlDocument(XmlDocument xmlDocument, Stream outputStream) {

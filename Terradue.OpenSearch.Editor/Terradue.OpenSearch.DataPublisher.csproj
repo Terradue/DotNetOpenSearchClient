@@ -7,7 +7,7 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{B867F054-4A52-4C9D-AFD6-098A5CC5E6E7}</ProjectGuid>
     <OutputType>Exe</OutputType>
-    <RootNamespace>Terradue.OpenSearchEditor</RootNamespace>
+    <RootNamespace>Terradue.OpenSearch.DataPublisher</RootNamespace>
     <AssemblyName>OpenSearchEditor</AssemblyName>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
@@ -21,7 +21,12 @@
     <Externalconsole>true</Externalconsole>
     <PlatformTarget>x86</PlatformTarget>
     <ConsolePause>false</ConsolePause>
-    <Commandlineparameters>-e title -v "ToTo-$&lt;updated&gt;-Toto" "https://data.terradue.com/gs/catalogue/tepqw/gtfeature/search?uid=ASA_IM__0PNPDE20120408_033429_000000813113_00262_52862_6358.N1"</Commandlineparameters>
+    <Commandlineparameters>-e title -m EOP -d /Users/enguerran/tmp -o data2.xml -v "$&lt;platform&gt; $&lt;productType&gt; $&lt;operationalMode&gt; $&lt;processingLevel&gt; $&lt;polarisationChannels&gt; $&lt;wrsLongitudeGrid&gt; $&lt;startdate&gt;-$&lt;enddate&gt;" "https://data2.terradue.com/eop/scihub/dataset/search?format=atomeop&amp;uid=S1A_IW_SLC__1SDV_20151117T163127_20151117T163155_008647_00C499_5DC1"</Commandlineparameters>
+    <CustomCommands>
+      <CustomCommands>
+        <Command type="AfterBuild" command="cp -prf ${ProjectDir}/../../DotNetEarthObservation/Terradue.Metadata.EarthObservation/Resources bin" workingdir="${ProjectDir}" />
+      </CustomCommands>
+    </CustomCommands>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
     <DebugType>full</DebugType>
@@ -120,9 +125,6 @@
       <HintPath>..\packages\NetTopologySuite.1.13.0\lib\net40-client\PowerCollections.dll</HintPath>
     </Reference>
     <Reference Include="System.Core" />
-    <Reference Include="Terradue.Metadata.EarthObservation">
-      <HintPath>..\packages\Terradue.Metadata.EarthObservation.1.3.4\lib\net40\Terradue.Metadata.EarthObservation.dll</HintPath>
-    </Reference>
     <Reference Include="Terradue.OpenSearch">
       <HintPath>..\packages\Terradue.OpenSearch.1.11.14\lib\net40\Terradue.OpenSearch.dll</HintPath>
     </Reference>
@@ -137,12 +139,12 @@
   <Import Project="..\packages\Microsoft.Bcl.Build.1.0.21\build\Microsoft.Bcl.Build.targets" Condition="Exists('..\packages\Microsoft.Bcl.Build.1.0.21\build\Microsoft.Bcl.Build.targets')" />
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Terradue\OpenSearch\Editor\OpenSearchEditor.cs" />
+    <Compile Include="Terradue\OpenSearch\DataPublisher\OpenSearchDataPublisher.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Terradue\" />
     <Folder Include="Terradue\OpenSearch\" />
-    <Folder Include="Terradue\OpenSearch\Editor\" />
+    <Folder Include="Terradue\OpenSearch\DataPublisher\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -155,6 +157,10 @@
     <ProjectReference Include="..\Terradue.OpenSearch.Model.Base\Terradue.OpenSearch.Model.Base.csproj">
       <Project>{6222FD31-E454-4D76-9AAF-0535787A6A1B}</Project>
       <Name>Terradue.OpenSearch.Model.Base</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\DotNetEarthObservation\Terradue.Metadata.EarthObservation\Terradue.Metadata.EarthObservation.csproj">
+      <Project>{E084B86A-8B40-414E-95FA-760F3C6BFDCB}</Project>
+      <Name>Terradue.Metadata.EarthObservation</Name>
     </ProjectReference>
   </ItemGroup>
 </Project>

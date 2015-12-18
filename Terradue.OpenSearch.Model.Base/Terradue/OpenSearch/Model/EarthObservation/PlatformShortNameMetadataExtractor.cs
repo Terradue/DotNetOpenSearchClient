@@ -10,7 +10,7 @@ namespace Terradue.OpenSearch.Model.EarthObservation
 
         public string GetMetadata(IOpenSearchResultItem item) {
 
-            return Terradue.Metadata.EarthObservation.OpenSearch.EarthObservationOpenSearchResultHelpers.FindPlatformShortName(item);
+            return Terradue.Metadata.EarthObservation.OpenSearch.EarthObservationOpenSearchResultHelpers.FindPlatformShortNameFromOpenSearchResultItem(item);
         }
         public bool SetMetadata(IOpenSearchResultItem item, string value){
             //TODO
