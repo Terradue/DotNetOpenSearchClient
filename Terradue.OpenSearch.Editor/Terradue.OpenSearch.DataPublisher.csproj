@@ -8,20 +8,20 @@
     <ProjectGuid>{B867F054-4A52-4C9D-AFD6-098A5CC5E6E7}</ProjectGuid>
     <OutputType>Exe</OutputType>
     <RootNamespace>Terradue.OpenSearch.DataPublisher</RootNamespace>
-    <AssemblyName>OpenSearchEditor</AssemblyName>
+    <AssemblyName>DataPublisher</AssemblyName>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>bin</OutputPath>
+    <OutputPath>..\Terradue.OpenSearch.DataPublisher\bin</OutputPath>
     <DefineConstants>DEBUG;</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <Externalconsole>true</Externalconsole>
     <PlatformTarget>x86</PlatformTarget>
     <ConsolePause>false</ConsolePause>
-    <Commandlineparameters>-e title -m EOP -d /Users/enguerran/tmp -o data2.xml -v "$&lt;platform&gt; $&lt;productType&gt; $&lt;operationalMode&gt; $&lt;processingLevel&gt; $&lt;polarisationChannels&gt; $&lt;wrsLongitudeGrid&gt; $&lt;startdate&gt;-$&lt;enddate&gt;" "https://data2.terradue.com/eop/scihub/dataset/search?format=atomeop&amp;uid=S1A_IW_SLC__1SDV_20151117T163127_20151117T163155_008647_00C499_5DC1"</Commandlineparameters>
+    <Commandlineparameters>-i -e title -m EOP -d /Users/enguerran/tmp -o data2-engue.xml -v "$&lt;platform&gt; $&lt;productType&gt; $&lt;operationalMode&gt; $&lt;processingLevel&gt; $&lt;polarisationChannels&gt; $&lt;wrsLongitudeGrid&gt; $&lt;startdate&gt;-$&lt;enddate&gt;" https://data2.terradue.com/eop/scihub/dataset/search?uid=S1A_IW_SLC__1SDV_20151117T163127_20151117T163155_008647_00C499_5DC1&amp;format=atomeop</Commandlineparameters>
     <CustomCommands>
       <CustomCommands>
         <Command type="AfterBuild" command="cp -prf ${ProjectDir}/../../DotNetEarthObservation/Terradue.Metadata.EarthObservation/Resources bin" workingdir="${ProjectDir}" />
@@ -31,7 +31,7 @@
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
     <DebugType>full</DebugType>
     <Optimize>true</Optimize>
-    <OutputPath>bin</OutputPath>
+    <OutputPath>..\Terradue.OpenSearch.DataPublisher\bin</OutputPath>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <Externalconsole>true</Externalconsole>
