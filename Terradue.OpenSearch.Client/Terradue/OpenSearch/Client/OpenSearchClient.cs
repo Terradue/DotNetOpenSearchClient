@@ -199,10 +199,12 @@ namespace Terradue.OpenSearch.Client {
             // Find OpenSearch Entity
             IOpenSearchable entity = null;
             int retry = 5;
+            int index = 1;
             while (retry >= 0) {
                 // Perform the query
                 try {
                     entity = dataModel.CreateOpenSearchable(baseUrls, queryFormatArg, ose, netCreds);
+                    index = entity.GetOpenSearchDescription().DefaultUrl.IndexOffset;
                     break;
                 } catch (Exception e) {
                     if (retry == 0)
@@ -214,7 +216,6 @@ namespace Terradue.OpenSearch.Client {
 
             NameValueCollection parameters = PrepareQueryParameters();
             string startIndex = parameters.Get("startIndex");
-            int index = 1;
             if (startIndex != null) {
                 index = int.Parse(startIndex);
             }
