@@ -191,10 +191,12 @@ namespace Terradue.OpenSearch.Data.Publisher {
             // Find OpenSearch Entity
             IOpenSearchable entity = null;
             int retry = 5;
+            int index = 1;
             while (retry >= 0) {
                 // Perform the query
                 try {
                     entity = dataModel.CreateOpenSearchable(baseUrls, queryFormatArg, ose, netCreds);
+                    index = entity.GetOpenSearchDescription().DefaultUrl.IndexOffset;
                     break;
                 } catch (Exception e) {
                     if (retry == 0)
@@ -206,7 +208,6 @@ namespace Terradue.OpenSearch.Data.Publisher {
 
             NameValueCollection parameters = PrepareQueryParameters();
             string startIndex = parameters.Get("startIndex");
-            int index = 1;
             if (startIndex != null) {
                 index = int.Parse(startIndex);
             }
@@ -252,9 +253,12 @@ namespace Terradue.OpenSearch.Data.Publisher {
                     break;
                 
                 totalResults -= count;
+                int paramCount;
+                if(Int32.TryParse(parameters.Get("count"), out paramCount) && totalResults < paramCount){
+                    parameters.Set("count", "" + totalResults);
+                }
                 index += count;
 
-                parameters.Set("count", "" + Math.Min(Int32.Parse(parameters.Get("count")), totalResults));
                 parameters.Set("startIndex", "" + index);
 
             }
@@ -318,7 +322,7 @@ namespace Terradue.OpenSearch.Data.Publisher {
                     case "-p": 
                     case "--parameter": 
                         if (argpos < args.Length - 1) {
-                            parameterArgs = new List<string>(args[++argpos].Split(','));
+                            parameterArgs.Add(args[++argpos]);
                         } else
                             return false;
                         break;
@@ -393,6 +397,9 @@ namespace Terradue.OpenSearch.Data.Publisher {
             Console.Error.WriteLine(" -e/--edit <element>     Element <element> to modify");
             Console.Error.WriteLine(" -v/--value <value>      Value to give to the element, can use $<element> to get value from other elements");
             Console.Error.WriteLine(" -o/--output <file>      Write output to <file> instead of stdout");
+            Console.Error.WriteLine(" -d/--dir <directory>    Write outputs to the directory <directory> instead of stdout");
+            Console.Error.WriteLine("                         Default directory is the current directory.");
+            Console.Error.WriteLine("                         Files are split by pagination and named with the indexes.");
             Console.Error.WriteLine(" -f/--format <format>    Specify the format of the query. Format available can be listed with --list-osee.");
             Console.Error.WriteLine("                         By default, the client is automatic and uses the default or the first format.");
             Console.Error.WriteLine(" -to/--time-out <file>   Specify query timeout (millisecond)");
