@@ -248,12 +248,12 @@ namespace Terradue.OpenSearch.Client {
                     break;
 
                 totalResults -= count;
+                int paramCount;
+                if(Int32.TryParse(parameters.Get("count"), out paramCount) && totalResults < paramCount){
+                    parameters.Set("count", "" + totalResults);
+                }
                 index += count;
-
                 parameters.Set("startIndex", "" + index);
-
-
-
 
             }
 
