@@ -81,6 +81,15 @@ namespace Terradue.OpenSearch.Client {
                     client.PrintDataModelHelp(DataModel.CreateFromArgs(queryModelArg, new NameValueCollection()));
                 }
 
+            } catch (AggregateException ae) {
+                foreach (var e in ae.InnerExceptions) {
+                    Console.Error.WriteLine(string.Format("{0} : {1} {2}", e.ToString(), e.Message, e.HelpLink));
+                    if (verbose)
+                        Console.Error.WriteLine(e.StackTrace);
+                }
+                Environment.ExitCode = 1;
+                return;
+            
             } catch (Exception e) {
                 Console.Error.WriteLine(string.Format("{0} : {1} {2}", e.Source, e.Message, e.HelpLink));
                 if (verbose)
