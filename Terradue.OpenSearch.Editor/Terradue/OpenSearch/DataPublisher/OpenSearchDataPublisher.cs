@@ -247,6 +247,7 @@ namespace Terradue.OpenSearch.Data.Publisher {
                 sw.Flush();
                 outputStream.Close();
 
+                //TODO: check this
                 if (osr.TotalResults < totalResults)
                     break;
                 
