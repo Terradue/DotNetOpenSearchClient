@@ -62,7 +62,23 @@ namespace Terradue.OpenSearch.Data.Publisher {
         public static void Main(string[] args) {
 
             if (!GetArgs(args)) {
-                PrintUsage();
+                if (action == null) PrintUsage();
+                else {
+                    switch (action) {
+                        case "add":
+                            PrintUsage_Add();
+                            break;
+                        case "edit":
+                            PrintUsage_Edit();
+                            break;
+                        case "delete":
+                            PrintUsage_Delete();
+                            break;
+                        default:
+                            PrintUsage();
+                            break;
+                    }
+                }
                 Environment.ExitCode = 1;
                 return;
             }
@@ -382,12 +398,29 @@ namespace Terradue.OpenSearch.Data.Publisher {
         //---------------------------------------------------------------------------------------------------------------------
         public static void PrintUsage() {
             Console.Error.WriteLine(String.Format("{0} (v{1}) - OpenSearch Data Publisher - (c) Terradue S.r.l.", Path.GetFileName(Environment.GetCommandLineArgs()[0]), version));
-            Console.Error.WriteLine("Usage: " + Path.GetFileName(Environment.GetCommandLineArgs()[0]) + " [action] [options...] [url1,url2,url3,...] [metadataPath1 metadataParameters1,metadatapath2 parameters2,...]");
+
+            Console.Error.WriteLine("Usage: " + Path.GetFileName(Environment.GetCommandLineArgs()[0]) + " [action] [options]");
             Console.Error.WriteLine();
             Console.Error.WriteLine("Action:");
             Console.Error.WriteLine(" add      Add items into the catalogue");
             Console.Error.WriteLine(" edit     Edit the items resulting from the query on the catalogue");
             Console.Error.WriteLine(" delete   Delete items resulting from the query from the catalogue");
+            Console.Error.WriteLine();
+            Console.Error.WriteLine("Options:");
+            Console.Error.WriteLine(" -h/--help  Prints the usage.");
+            Console.Error.WriteLine();
+        }
+
+        public static void PrintUsage_Add(){
+            Console.Error.WriteLine(String.Format("{0} (v{1}) - OpenSearch Data Publisher - (c) Terradue S.r.l.", Path.GetFileName(Environment.GetCommandLineArgs()[0]), version));
+            Console.Error.WriteLine("Sorry but this function is not yet implemented.");
+            Console.Error.WriteLine();
+        }
+
+        public static void PrintUsage_Edit(){
+            Console.Error.WriteLine(String.Format("{0} (v{1}) - OpenSearch Data Publisher - (c) Terradue S.r.l.", Path.GetFileName(Environment.GetCommandLineArgs()[0]), version));
+
+            Console.Error.WriteLine("Usage: " + Path.GetFileName(Environment.GetCommandLineArgs()[0]) + " edit [options...] [url] [metadataPath1 metadataParameters1,metadatapath2 parameters2,...]");
             Console.Error.WriteLine();
             Console.Error.WriteLine("Options:");
             Console.Error.WriteLine(" -a/--auth <auth>        Set Credentials to be used (format must be username:password).");
@@ -421,6 +454,12 @@ namespace Terradue.OpenSearch.Data.Publisher {
             Console.Error.WriteLine("example:");
             Console.Error.WriteLine(Path.GetFileName(Environment.GetCommandLineArgs()[0]) + " edit \"https://data2.terradue.com/eop/...\" enclosure -r \"https://google.com\" \"https://yahoo.com\", \"identifier\" -r \"new_id\" ");
             Console.Error.WriteLine(Path.GetFileName(Environment.GetCommandLineArgs()[0]) + " edit \"https://data2.terradue.com/eop/...\" enclosure -d -a \"https://google.com\" \"https://yahoo.com\", \"identifier\" -r \"new_id\" ");
+            Console.Error.WriteLine();
+        }
+
+        public static void PrintUsage_Delete(){
+            Console.Error.WriteLine(String.Format("{0} (v{1}) - OpenSearch Data Publisher - (c) Terradue S.r.l.", Path.GetFileName(Environment.GetCommandLineArgs()[0]), version));
+            Console.Error.WriteLine("Sorry but this function is not yet implemented.");
             Console.Error.WriteLine();
         }
 
