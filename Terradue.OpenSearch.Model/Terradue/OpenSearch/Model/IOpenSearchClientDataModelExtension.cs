@@ -28,7 +28,7 @@ namespace Terradue.OpenSearch.Model {
 
         List<string> GetMetadataForItem(List<string> metadataPaths, IOpenSearchResultItem item);
 
-        void SetMetadataForItem(string metadata, string replaceValue, IOpenSearchResultItem item);
+        void SetMetadataForItem(string metadata, List<string> parameters, IOpenSearchResultItem item);
 
         void ApplyParameters();
 
@@ -37,6 +37,8 @@ namespace Terradue.OpenSearch.Model {
         void SetQueryParameters(NameValueCollection nvc);
 
         IOpenSearchable CreateOpenSearchable(List<Uri> baseUrls, string queryFormatArg, OpenSearchEngine ose, NetworkCredential netCreds);
+
+        string ProcessTemplate(IOpenSearchResultItem item, string template);
 
     }
 

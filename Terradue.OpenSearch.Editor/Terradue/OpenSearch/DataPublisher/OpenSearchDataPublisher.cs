@@ -38,18 +38,16 @@ namespace Terradue.OpenSearch.Data.Publisher {
     public class OpenSearchDataPublisher {
         private static readonly ILog log = LogManager.GetLogger(typeof(OpenSearchDataPublisher));
         private static Version version = Assembly.GetEntryAssembly().GetName().Version;
-        private static string elementToEdit = null;
-        private static string replacementValue = null;
         private static bool verbose;
         private static bool listOsee;
-        private static string outputFilePathArg = "feed.xml";
+        private static string action = null;
+        private static string outputFilePathArg = null;
         private static string outputDirPathArg = null;
         private static string queryFormatArg = null;
         private static string queryModelArg = "GeoTime";
         private static List<string> baseUrlArg = null;
         private static uint timeout = 20000;
         private static int pagination = 20;
-        private static int startindex = 1;
         private static int totalResults;
         private static List<string> metadataPaths = null;
         private static List<string> parameterArgs = new List<string>();
@@ -272,23 +270,9 @@ namespace Terradue.OpenSearch.Data.Publisher {
             int argpos = 0;
             while (argpos < args.Length) {
                 switch (args[argpos]) {
-                    case "-i":
-                    case "--info":
+                    case "-v":
+                    case "--verbose":
                         verbose = true;
-                        break;
-                    case "-e": 
-                    case "--edit": 
-                        if (argpos < args.Length - 1) {
-                            elementToEdit = args[++argpos];
-                        } else
-                            return false;
-                        break;
-                    case "-v": 
-                    case "--value": 
-                        if (argpos < args.Length - 1) {
-                            replacementValue = args[++argpos];
-                        } else
-                            return false;
                         break;
                     case "-o": 
                     case "--output": 
@@ -347,12 +331,6 @@ namespace Terradue.OpenSearch.Data.Publisher {
                         } else
                             return false;
                         break;
-                    case "--startindex": 
-                        if (argpos < args.Length - 1) {
-                            startindex = int.Parse(args[++argpos]);
-                        } else
-                            return false;
-                        break;
                     case "--list-osee": 
                         listOsee = true;
                         break;
@@ -371,6 +349,10 @@ namespace Terradue.OpenSearch.Data.Publisher {
                             return false;
                         break;
                     default: 
+                        if (action == null) {
+                            action = args[argpos];
+                            break;
+                        }
                         if (baseUrlArg == null) {
                             baseUrlArg = args[argpos].Split(',').ToList();
                             break;
@@ -384,30 +366,61 @@ namespace Terradue.OpenSearch.Data.Publisher {
                 argpos++;
             }
 
+            if (action == null) {
+                Console.Error.WriteLine("ERROR: no action set");
+                Console.Error.WriteLine();
+                return false;
+            }
+            if (baseUrlArg == null) {
+                Console.Error.WriteLine("ERROR: no url set");
+                Console.Error.WriteLine();
+                return false;
+            }
+
             return true;
         }
         //---------------------------------------------------------------------------------------------------------------------
         public static void PrintUsage() {
-            Console.Error.WriteLine(String.Format("{0} (v{1}) - OpenSearch editor - (c) Terradue S.r.l.", Path.GetFileName(Environment.GetCommandLineArgs()[0]), version));
-            Console.Error.WriteLine("Usage: " + Path.GetFileName(Environment.GetCommandLineArgs()[0]) + " [options...] [url1,url2,url3,...] [metadatapath1,metadatapath2,...]");
+            Console.Error.WriteLine(String.Format("{0} (v{1}) - OpenSearch Data Publisher - (c) Terradue S.r.l.", Path.GetFileName(Environment.GetCommandLineArgs()[0]), version));
+            Console.Error.WriteLine("Usage: " + Path.GetFileName(Environment.GetCommandLineArgs()[0]) + " [action] [options...] [url1,url2,url3,...] [metadataPath1 metadataParameters1,metadatapath2 parameters2,...]");
+            Console.Error.WriteLine();
+            Console.Error.WriteLine("Action:");
+            Console.Error.WriteLine(" add      Add items into the catalogue");
+            Console.Error.WriteLine(" edit     Edit the items resulting from the query on the catalogue");
+            Console.Error.WriteLine(" delete   Delete items resulting from the query from the catalogue");
             Console.Error.WriteLine();
             Console.Error.WriteLine("Options:");
-
-            Console.Error.WriteLine(" -p/--parameter <param>  Specify a parameter for the query");
-            Console.Error.WriteLine(" -e/--edit <element>     Element <element> to modify");
-            Console.Error.WriteLine(" -v/--value <value>      Value to give to the element, can use $<element> to get value from other elements");
-            Console.Error.WriteLine(" -o/--output <file>      Write output to <file> instead of stdout");
-            Console.Error.WriteLine(" -d/--dir <directory>    Write outputs to the directory <directory> instead of stdout");
+            Console.Error.WriteLine(" -a/--auth <auth>        Set Credentials to be used (format must be username:password).");
+            Console.Error.WriteLine(" -d/--dir <directory>    Write outputs to the directory <directory> instead of current directory (if <file> is set).");
             Console.Error.WriteLine("                         Default directory is the current directory.");
-            Console.Error.WriteLine("                         Files are split by pagination and named with the indexes.");
             Console.Error.WriteLine(" -f/--format <format>    Specify the format of the query. Format available can be listed with --list-osee.");
             Console.Error.WriteLine("                         By default, the client is automatic and uses the default or the first format.");
-            Console.Error.WriteLine(" -to/--time-out <file>   Specify query timeout (millisecond)");
+            Console.Error.WriteLine(" -h/--help               Prints the usage.");
+            Console.Error.WriteLine(" --list-osee             List the OpenSearch Engine Extensions including the list of available metadata paths.");
+            Console.Error.WriteLine(" -m/--model <format>     Specify the data model of the results for the query. Data model give access to specific " +
+                                    "metadata extractors or transformers. By default the \"GeoTime\" model is used. Used without urls, it lists the metadata options.");
+            Console.Error.WriteLine(" -o/--output <file>      Write output to <file> instead of stdout");
+            Console.Error.WriteLine("                         Files are split by pagination and named with the indexes.");
+            Console.Error.WriteLine("                         Default filename (if <directory> is set) is feed_startindex_endindex.xml.");
+            Console.Error.WriteLine(" -p/--parameter <param>  Specify a parameter for the query");
             Console.Error.WriteLine(" --pagination            Specify the pagination number for search loops. Default: 20");
-            Console.Error.WriteLine(" --list-osee             List the OpenSearch Engine Extensions");
-            Console.Error.WriteLine(" -m/--model <format>     Specify the data model of the results for the query. Data model give access to specific" +
-            "metadata extractors or transformers. By default the \"GeoTime\" model is used. Used without urls, it lists the metadata options");
-            Console.Error.WriteLine(" -i/--info            Make the operation more talkative");
+            Console.Error.WriteLine(" -to/--time-out <file>   Specify query timeout (millisecond)");
+            Console.Error.WriteLine(" -v/--verbose            Make the operation more talkative");
+            Console.Error.WriteLine();
+            Console.Error.WriteLine("Metadatapath:");
+            Console.Error.WriteLine(" possible values can be found using --list-osee");
+            Console.Error.WriteLine();
+            Console.Error.WriteLine("Parameters:");
+            Console.Error.WriteLine(" -a <value>              Add a metadata with the value <value>");
+            Console.Error.WriteLine(" -d                      Remove all metadata");
+            Console.Error.WriteLine(" -d <value>              Remove metadata having <value> as value");
+            Console.Error.WriteLine(" -r <value> <template>   Replace metadata having <value> as value with the new <template> value");
+            Console.Error.WriteLine(" -r <template>           Replace metadata with the new <template> value");
+            Console.Error.WriteLine(" note: <template> can use $<metadata> to get value from other elements, e.g $<identifier> to use the value of the identifier in the new metadata value");
+            Console.Error.WriteLine();
+            Console.Error.WriteLine("example:");
+            Console.Error.WriteLine(Path.GetFileName(Environment.GetCommandLineArgs()[0]) + " edit \"https://data2.terradue.com/eop/...\" enclosure -r \"https://google.com\" \"https://yahoo.com\", \"identifier\" -r \"new_id\" ");
+            Console.Error.WriteLine(Path.GetFileName(Environment.GetCommandLineArgs()[0]) + " edit \"https://data2.terradue.com/eop/...\" enclosure -d -a \"https://google.com\" \"https://yahoo.com\", \"identifier\" -r \"new_id\" ");
             Console.Error.WriteLine();
         }
 
@@ -578,7 +591,7 @@ namespace Terradue.OpenSearch.Data.Publisher {
         void ProcessEdit(IOpenSearchResultCollection osr) {
 
             dataModel.LoadResults(osr);
-            dataModel.EditItems(elementToEdit, replacementValue);
+            dataModel.EditItems(metadataPaths);
         }
 
         void SerializeXmlDocument(XmlDocument xmlDocument, Stream outputStream) {

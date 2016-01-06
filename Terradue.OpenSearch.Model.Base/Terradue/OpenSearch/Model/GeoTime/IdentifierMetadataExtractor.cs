@@ -22,8 +22,10 @@ namespace Terradue.OpenSearch.Model.GeoTime
 
             return ident;
         }
-        public virtual bool SetMetadata(Terradue.OpenSearch.Result.IOpenSearchResultItem item, string value){
+        public virtual bool SetMetadata(Terradue.OpenSearch.Result.IOpenSearchResultItem item, List<string> parameters){
             bool isSet = false;
+            if (parameters.Count != 2 && !parameters[0].Equals("-r")) throw new Exception("Invalid action for identifier metadata. Allowed actions are: -r.");
+            var value = parameters[1];
             foreach (SyndicationElementExtension ext in item.ElementExtensions) {
                 if (ext.OuterName == "identifier") {
                     item.ElementExtensions.Remove(ext);

@@ -16,7 +16,9 @@ namespace Terradue.OpenSearch.Model.GeoTime
 
             return title;
         }
-        public virtual bool SetMetadata(Terradue.OpenSearch.Result.IOpenSearchResultItem item, string value){
+        public virtual bool SetMetadata(Terradue.OpenSearch.Result.IOpenSearchResultItem item, List<string> parameters){
+            if (parameters.Count != 2 && !parameters[0].Equals("-r")) throw new Exception("Invalid action for title metadata. Allowed actions are: -r.");
+            var value = parameters[1];
             item.Title = new TextSyndicationContent(value);
             return true;
         }

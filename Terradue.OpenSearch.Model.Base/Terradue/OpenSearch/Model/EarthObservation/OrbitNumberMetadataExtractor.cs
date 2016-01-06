@@ -1,6 +1,7 @@
 using System;
 using Terradue.OpenSearch.Model.GeoTime;
 using Terradue.OpenSearch.Result;
+using System.Collections.Generic;
 
 namespace Terradue.OpenSearch.Model.EarthObservation {
     class OrbitNumberMetadataExtractor: IMetadataExtractor {
@@ -10,7 +11,7 @@ namespace Terradue.OpenSearch.Model.EarthObservation {
 
             return Terradue.Metadata.EarthObservation.OpenSearch.EarthObservationOpenSearchResultHelpers.FindOrbitNumberFromOpenSearchResultItem(item);
         }
-        public bool SetMetadata(IOpenSearchResultItem item, string value){
+        public bool SetMetadata(IOpenSearchResultItem item, List<string> parameters){
             //TODO
             return false;
         }

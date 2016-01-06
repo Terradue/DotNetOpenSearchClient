@@ -42,7 +42,7 @@ namespace Terradue.OpenSearch.Model.GeoTime {
             }
             return geom;
         }
-        public bool SetMetadata(Terradue.OpenSearch.Result.IOpenSearchResultItem item, string value) {
+        public bool SetMetadata(Terradue.OpenSearch.Result.IOpenSearchResultItem item, List<string> parameters) {
             //TODO
             return false;
         }

@@ -1,0 +1,62 @@
+echo -e "opensearch-client https://data2.terradue.com/eop/scihub/dataset/search?format=rdf&uid=S1A_IW_SLC__1SDV_20151117T163127_20151117T163155_008647_00C499_5DC1 wkt"
+opensearch-client "https://data2.terradue.com/eop/scihub/dataset/search?format=rdf&uid=S1A_IW_SLC__1SDV_20151117T163127_20151117T163155_008647_00C499_5DC1" wkt
+echo -e "opensearch-client https://data2.terradue.com/eop/scihub/dataset/search?format=rdf&uid=S1A_IW_SLC__1SDV_20151117T163127_20151117T163155_008647_00C499_5DC1 enclosure"
+opensearch-client "https://data2.terradue.com/eop/scihub/dataset/search?format=rdf&uid=S1A_IW_SLC__1SDV_20151117T163127_20151117T163155_008647_00C499_5DC1" enclosure
+echo -e "opensearch-client https://data2.terradue.com/eop/scihub/dataset/search?format=rdf&uid=S1A_IW_SLC__1SDV_20151117T163127_20151117T163155_008647_00C499_5DC1 startdate"
+opensearch-client "https://data2.terradue.com/eop/scihub/dataset/search?format=rdf&uid=S1A_IW_SLC__1SDV_20151117T163127_20151117T163155_008647_00C499_5DC1" startdate
+echo -e "opensearch-client https://data2.terradue.com/eop/scihub/dataset/search?format=rdf&uid=S1A_IW_SLC__1SDV_20151117T163127_20151117T163155_008647_00C499_5DC1 enddate"
+opensearch-client "https://data2.terradue.com/eop/scihub/dataset/search?format=rdf&uid=S1A_IW_SLC__1SDV_20151117T163127_20151117T163155_008647_00C499_5DC1" enddate
+echo -e "opensearch-client https://data2.terradue.com/eop/scihub/dataset/search?format=rdf&uid=S1A_IW_SLC__1SDV_20151117T163127_20151117T163155_008647_00C499_5DC1 identifier"
+opensearch-client "https://data2.terradue.com/eop/scihub/dataset/search?format=rdf&uid=S1A_IW_SLC__1SDV_20151117T163127_20151117T163155_008647_00C499_5DC1" identifier
+echo -e "opensearch-client https://data2.terradue.com/eop/scihub/dataset/search?format=json&uid=S1A_IW_SLC__1SDV_20151117T163127_20151117T163155_008647_00C499_5DC1 wkt"
+opensearch-client "https://data2.terradue.com/eop/scihub/dataset/search?format=json&uid=S1A_IW_SLC__1SDV_20151117T163127_20151117T163155_008647_00C499_5DC1" wkt
+echo -e "opensearch-client https://data2.terradue.com/eop/scihub/dataset/search?format=json&uid=S1A_IW_SLC__1SDV_20151117T163127_20151117T163155_008647_00C499_5DC1 enclosure"
+opensearch-client "https://data2.terradue.com/eop/scihub/dataset/search?format=json&uid=S1A_IW_SLC__1SDV_20151117T163127_20151117T163155_008647_00C499_5DC1" enclosure
+echo -e "opensearch-client https://data2.terradue.com/eop/scihub/dataset/search?format=json&uid=S1A_IW_SLC__1SDV_20151117T163127_20151117T163155_008647_00C499_5DC1 startdate"
+opensearch-client "https://data2.terradue.com/eop/scihub/dataset/search?format=json&uid=S1A_IW_SLC__1SDV_20151117T163127_20151117T163155_008647_00C499_5DC1" startdate
+echo -e "opensearch-client https://data2.terradue.com/eop/scihub/dataset/search?format=json&uid=S1A_IW_SLC__1SDV_20151117T163127_20151117T163155_008647_00C499_5DC1 enddate"
+opensearch-client "https://data2.terradue.com/eop/scihub/dataset/search?format=json&uid=S1A_IW_SLC__1SDV_20151117T163127_20151117T163155_008647_00C499_5DC1" enddate
+echo -e "opensearch-client https://data2.terradue.com/eop/scihub/dataset/search?format=json&uid=S1A_IW_SLC__1SDV_20151117T163127_20151117T163155_008647_00C499_5DC1 identifier"
+opensearch-client "https://data2.terradue.com/eop/scihub/dataset/search?format=json&uid=S1A_IW_SLC__1SDV_20151117T163127_20151117T163155_008647_00C499_5DC1" identifier
+echo -e "opensearch-client https://data2.terradue.com/eop/scihub/dataset/search?format=atom&uid=S1A_IW_SLC__1SDV_20151117T163127_20151117T163155_008647_00C499_5DC1 wkt"
+opensearch-client "https://data2.terradue.com/eop/scihub/dataset/search?format=atom&uid=S1A_IW_SLC__1SDV_20151117T163127_20151117T163155_008647_00C499_5DC1" wkt
+echo -e "opensearch-client https://data2.terradue.com/eop/scihub/dataset/search?format=atom&uid=S1A_IW_SLC__1SDV_20151117T163127_20151117T163155_008647_00C499_5DC1 enclosure"
+opensearch-client "https://data2.terradue.com/eop/scihub/dataset/search?format=atom&uid=S1A_IW_SLC__1SDV_20151117T163127_20151117T163155_008647_00C499_5DC1" enclosure
+echo -e "opensearch-client https://data2.terradue.com/eop/scihub/dataset/search?format=atom&uid=S1A_IW_SLC__1SDV_20151117T163127_20151117T163155_008647_00C499_5DC1 startdate"
+opensearch-client "https://data2.terradue.com/eop/scihub/dataset/search?format=atom&uid=S1A_IW_SLC__1SDV_20151117T163127_20151117T163155_008647_00C499_5DC1" startdate
+echo -e "opensearch-client https://data2.terradue.com/eop/scihub/dataset/search?format=atom&uid=S1A_IW_SLC__1SDV_20151117T163127_20151117T163155_008647_00C499_5DC1 enddate"
+opensearch-client "https://data2.terradue.com/eop/scihub/dataset/search?format=atom&uid=S1A_IW_SLC__1SDV_20151117T163127_20151117T163155_008647_00C499_5DC1" enddate
+echo -e "opensearch-client https://data2.terradue.com/eop/scihub/dataset/search?format=atom&uid=S1A_IW_SLC__1SDV_20151117T163127_20151117T163155_008647_00C499_5DC1 identifier"
+opensearch-client "https://data2.terradue.com/eop/scihub/dataset/search?format=atom&uid=S1A_IW_SLC__1SDV_20151117T163127_20151117T163155_008647_00C499_5DC1" identifier
+echo -e "opensearch-client http://catalogue.terradue.int/catalogue/search/ASA_IM__0P/ASA_IM__0CNPDE20030611_204630_000000162017_00129_06696_0866.N1/rdf wkt"
+opensearch-client "http://catalogue.terradue.int/catalogue/search/ASA_IM__0P/ASA_IM__0CNPDE20030611_204630_000000162017_00129_06696_0866.N1/rdf" wkt
+echo -e "opensearch-client http://catalogue.terradue.int/catalogue/search/ASA_IM__0P/ASA_IM__0CNPDE20030611_204630_000000162017_00129_06696_0866.N1/rdf enclosure"
+opensearch-client "http://catalogue.terradue.int/catalogue/search/ASA_IM__0P/ASA_IM__0CNPDE20030611_204630_000000162017_00129_06696_0866.N1/rdf" enclosure
+echo -e "opensearch-client http://catalogue.terradue.int/catalogue/search/ASA_IM__0P/ASA_IM__0CNPDE20030611_204630_000000162017_00129_06696_0866.N1/rdf startdate"
+opensearch-client "http://catalogue.terradue.int/catalogue/search/ASA_IM__0P/ASA_IM__0CNPDE20030611_204630_000000162017_00129_06696_0866.N1/rdf" startdate
+echo -e "opensearch-client http://catalogue.terradue.int/catalogue/search/ASA_IM__0P/ASA_IM__0CNPDE20030611_204630_000000162017_00129_06696_0866.N1/rdf enddate"
+opensearch-client "http://catalogue.terradue.int/catalogue/search/ASA_IM__0P/ASA_IM__0CNPDE20030611_204630_000000162017_00129_06696_0866.N1/rdf" enddate
+echo -e "opensearch-client http://catalogue.terradue.int/catalogue/search/ASA_IM__0P/ASA_IM__0CNPDE20030611_204630_000000162017_00129_06696_0866.N1/rdf identifier"
+opensearch-client "http://catalogue.terradue.int/catalogue/search/ASA_IM__0P/ASA_IM__0CNPDE20030611_204630_000000162017_00129_06696_0866.N1/rdf" identifier
+echo -e "opensearch-client https://data2.terradue.com/eop/sentinel1/series/med/search?format=rdf&uid=S1A_IW_GRDH_1SDV_20150324T051221_20150324T051246_005169_00684F_DC61 wkt"
+opensearch-client "https://data2.terradue.com/eop/sentinel1/series/med/search?format=rdf&uid=S1A_IW_GRDH_1SDV_20150324T051221_20150324T051246_005169_00684F_DC61" wkt
+echo -e "opensearch-client https://data2.terradue.com/eop/sentinel1/series/med/search?format=rdf&uid=S1A_IW_GRDH_1SDV_20150324T051221_20150324T051246_005169_00684F_DC61 enclosure"
+opensearch-client "https://data2.terradue.com/eop/sentinel1/series/med/search?format=rdf&uid=S1A_IW_GRDH_1SDV_20150324T051221_20150324T051246_005169_00684F_DC61" enclosure
+echo -e "opensearch-client https://data2.terradue.com/eop/sentinel1/series/med/search?format=rdf&uid=S1A_IW_GRDH_1SDV_20150324T051221_20150324T051246_005169_00684F_DC61 startdate"
+opensearch-client "https://data2.terradue.com/eop/sentinel1/series/med/search?format=rdf&uid=S1A_IW_GRDH_1SDV_20150324T051221_20150324T051246_005169_00684F_DC61" startdate
+echo -e "opensearch-client https://data2.terradue.com/eop/sentinel1/series/med/search?format=rdf&uid=S1A_IW_GRDH_1SDV_20150324T051221_20150324T051246_005169_00684F_DC61 enddate"
+opensearch-client "https://data2.terradue.com/eop/sentinel1/series/med/search?format=rdf&uid=S1A_IW_GRDH_1SDV_20150324T051221_20150324T051246_005169_00684F_DC61" enddate
+echo -e "opensearch-client https://data2.terradue.com/eop/sentinel1/series/med/search?format=rdf&uid=S1A_IW_GRDH_1SDV_20150324T051221_20150324T051246_005169_00684F_DC61 identifier"
+opensearch-client "https://data2.terradue.com/eop/sentinel1/series/med/search?format=rdf&uid=S1A_IW_GRDH_1SDV_20150324T051221_20150324T051246_005169_00684F_DC61" identifier
+echo -e "opensearch-client https://data2.terradue.com/eop/scihub/dataset/search?format=atomeop&uid=S1A_IW_SLC__1SDV_20151117T163127_20151117T163155_008647_00C499_5DC1 wkt"
+opensearch-client "https://data2.terradue.com/eop/scihub/dataset/search?format=atomeop&uid=S1A_IW_SLC__1SDV_20151117T163127_20151117T163155_008647_00C499_5DC1" wkt
+echo -e "opensearch-client https://data2.terradue.com/eop/scihub/dataset/search?format=atomeop&uid=S1A_IW_SLC__1SDV_20151117T163127_20151117T163155_008647_00C499_5DC1 enclosure"
+opensearch-client "https://data2.terradue.com/eop/scihub/dataset/search?format=atomeop&uid=S1A_IW_SLC__1SDV_20151117T163127_20151117T163155_008647_00C499_5DC1" enclosure
+echo -e "opensearch-client https://data2.terradue.com/eop/scihub/dataset/search?format=atomeop&uid=S1A_IW_SLC__1SDV_20151117T163127_20151117T163155_008647_00C499_5DC1 startdate"
+opensearch-client "https://data2.terradue.com/eop/scihub/dataset/search?format=atomeop&uid=S1A_IW_SLC__1SDV_20151117T163127_20151117T163155_008647_00C499_5DC1" startdate
+echo -e "opensearch-client https://data2.terradue.com/eop/scihub/dataset/search?format=atomeop&uid=S1A_IW_SLC__1SDV_20151117T163127_20151117T163155_008647_00C499_5DC1 enddate"
+opensearch-client "https://data2.terradue.com/eop/scihub/dataset/search?format=atomeop&uid=S1A_IW_SLC__1SDV_20151117T163127_20151117T163155_008647_00C499_5DC1" enddate
+echo -e "opensearch-client https://data2.terradue.com/eop/scihub/dataset/search?format=atomeop&uid=S1A_IW_SLC__1SDV_20151117T163127_20151117T163155_008647_00C499_5DC1 identifier"
+opensearch-client "https://data2.terradue.com/eop/scihub/dataset/search?format=atomeop&uid=S1A_IW_SLC__1SDV_20151117T163127_20151117T163155_008647_00C499_5DC1" identifier
+
+

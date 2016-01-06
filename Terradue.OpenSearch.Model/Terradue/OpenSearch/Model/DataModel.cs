@@ -9,8 +9,7 @@ using System.Net;
 
 namespace Terradue.OpenSearch.Model {
     public class DataModel {
-
-        private static string parameterElementTag = "$";
+        
         IOpenSearchClientDataModelExtension modelExtension;
 
         
@@ -101,34 +100,21 @@ namespace Terradue.OpenSearch.Model {
 
         }
 
-        public void EditItems(string metadata, string replacement){
+        public void EditItems(List<string> metadataList){
             foreach (var item in modelExtension.GetCollection().Items) {
-                var replaceValue = ProcessReplacementValue(item, replacement);
-                var metadataBefore = modelExtension.GetMetadataForItem(new List<string>{metadata}, item);
-                modelExtension.SetMetadataForItem(metadata, replaceValue, item);
-                var metadataAfter = modelExtension.GetMetadataForItem(new List<string>{metadata}, item);
+                foreach (var metadataParams in metadataList) {
+                    var splits = metadataParams.Split(" ".ToCharArray());
+                    string metadata = null;
+                    List<string> parameters = new List<string>();
+                    foreach (var split in splits) {
+                        //metadata is the first item of the list
+                        if (metadata == null) metadata = split;
+                        //other items are the parameters
+                        else parameters.Add(split);
+                    }
+                    modelExtension.SetMetadataForItem(metadata, parameters, item);
+                }
             }
-        }
-
-        private string ProcessReplacementValue(IOpenSearchResultItem item, string replacementValue){
-            var rv = replacementValue;
-            var final = "";
-
-            while (rv.Contains(parameterElementTag)) {
-                //copy what is before parameter to replace
-                if (!rv.StartsWith(parameterElementTag)) final += rv.Substring(0, rv.IndexOf(parameterElementTag));
-
-                //get parameter name
-                var sub = rv.Substring(rv.IndexOf(parameterElementTag) + 1);
-                if (!sub.StartsWith("<")) throw new Exception("Wrong format parameter name");
-                rv = sub.Substring(sub.IndexOf(">") + 1);
-                sub = sub.Substring(1, sub.IndexOf(">") - 1);
-                var metadata = modelExtension.GetMetadataForItem(new List<string>{ sub }, item);
-                final += metadata[0];
-            }
-
-            final += rv;
-            return final;
         }
 
         public void GetMetadata(string name){

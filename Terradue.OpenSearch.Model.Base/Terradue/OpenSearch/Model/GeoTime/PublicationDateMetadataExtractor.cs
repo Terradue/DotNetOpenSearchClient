@@ -13,22 +13,11 @@ namespace Terradue.OpenSearch.Model.GeoTime
         public virtual string GetMetadata(Terradue.OpenSearch.Result.IOpenSearchResultItem item) {
             return item.PublishDate.ToUniversalTime().ToString("O");
         }
-        public virtual bool SetMetadata(Terradue.OpenSearch.Result.IOpenSearchResultItem item, string value) {
-            var dateRegEx1 = new Regex("/^\\d{4}-\\d{2}-\\d{2}$/");
-            var dateRegEx2 = new Regex("/^\\d{2}-\\d{2}-\\d{4}$/");
-            if (dateRegEx1.Match(value).Success) {
-                char[] splitter = "-".ToCharArray();
-                string[] split = value.Split(splitter);
-                item.PublishDate = new DateTime(Int32.Parse(split[0]),Int32.Parse(split[1]),Int32.Parse(split[2]));
-                return true;
-            }
-            if (dateRegEx2.Match(value).Success) {
-                char[] splitter = "-".ToCharArray();
-                string[] split = value.Split(splitter);
-                item.PublishDate = new DateTime(Int32.Parse(split[2]),Int32.Parse(split[1]),Int32.Parse(split[0]));
-                return true;
-            }
-            return false;
+        public virtual bool SetMetadata(Terradue.OpenSearch.Result.IOpenSearchResultItem item, List<string> parameters) {
+            if (parameters.Count != 2 && !parameters[0].Equals("-r")) throw new Exception("Invalid action for publication date metadata. Allowed actions are: -r.");
+            var value = parameters[1];
+            item.PublishDate = DateTime.Parse(value);
+            return true;
         }
         public virtual string Description {
             get {

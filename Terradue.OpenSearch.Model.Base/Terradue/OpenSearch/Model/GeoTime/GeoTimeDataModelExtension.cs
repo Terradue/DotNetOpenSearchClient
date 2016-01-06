@@ -69,10 +69,14 @@ namespace Terradue.OpenSearch.Model.GeoTime {
             return metadataItems;
         }
 
-        public void SetMetadataForItem(string metadata, string replaceValue, IOpenSearchResultItem item){
+        public void SetMetadataForItem(string metadata, List<string> parameters, IOpenSearchResultItem item){
             if (osr != null) {
                 if (!metadataExtractors.ContainsKey(metadata)) throw new NotSupportedException(string.Format("metadata extractor \"{0}\" not found in the data model", metadata));
-                metadataExtractors[metadata].SetMetadata(item, replaceValue);
+                //we process the template and then replace the template with the new value in the parameters
+                //we assume the template is the last parameter of the list
+                var newVal = ProcessTemplate(item, parameters[parameters.Count - 1]);
+                parameters[parameters.Count - 1] = newVal;
+                metadataExtractors[metadata].SetMetadata(item, parameters);
             }
         }
 
@@ -147,6 +151,34 @@ namespace Terradue.OpenSearch.Model.GeoTime {
             }
 
             return entity;
+        }
+
+        /// <summary>
+        /// Processes the template by replacing $<element> with their real value within the item
+        /// </summary>
+        /// <returns>The template.</returns>
+        /// <param name="item">Item.</param>
+        /// <param name="template">Template.</param>
+        public virtual string ProcessTemplate(IOpenSearchResultItem item, string template){
+            string parameterElementTag = "$";
+            var rv = template;
+            var final = "";
+
+            while (rv.Contains(parameterElementTag)) {
+                //copy what is before parameter to replace
+                if (!rv.StartsWith(parameterElementTag)) final += rv.Substring(0, rv.IndexOf(parameterElementTag));
+
+                //get parameter name
+                var sub = rv.Substring(rv.IndexOf(parameterElementTag) + 1);
+                if (!sub.StartsWith("<")) throw new Exception("Cannot process template, wrong format parameter name : " + sub);
+                rv = sub.Substring(sub.IndexOf(">") + 1);
+                sub = sub.Substring(1, sub.IndexOf(">") - 1);
+                var metadata = GetMetadataForItem(new List<string>{ sub }, item);
+                final += metadata[0];
+            }
+
+            final += rv;
+            return final;
         }
         #endregion
     }
