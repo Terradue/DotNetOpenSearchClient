@@ -81,6 +81,15 @@ namespace Terradue.OpenSearch.Client {
                     client.PrintDataModelHelp(DataModel.CreateFromArgs(queryModelArg, new NameValueCollection()));
                 }
 
+            } catch (AggregateException ae) {
+                foreach (var e in ae.InnerExceptions) {
+                    Console.Error.WriteLine(string.Format("{0} : {1} {2}", e.ToString(), e.Message, e.HelpLink));
+                    if (verbose)
+                        Console.Error.WriteLine(e.StackTrace);
+                }
+                Environment.ExitCode = 1;
+                return;
+            
             } catch (Exception e) {
                 Console.Error.WriteLine(string.Format("{0} : {1} {2}", e.Source, e.Message, e.HelpLink));
                 if (verbose)
@@ -190,10 +199,12 @@ namespace Terradue.OpenSearch.Client {
             // Find OpenSearch Entity
             IOpenSearchable entity = null;
             int retry = 5;
+            int index = 1;
             while (retry >= 0) {
                 // Perform the query
                 try {
                     entity = dataModel.CreateOpenSearchable(baseUrls, queryFormatArg, ose, netCreds);
+                    index = entity.GetOpenSearchDescription().DefaultUrl.IndexOffset;
                     break;
                 } catch (Exception e) {
                     if (retry == 0)
@@ -205,7 +216,6 @@ namespace Terradue.OpenSearch.Client {
 
             NameValueCollection parameters = PrepareQueryParameters();
             string startIndex = parameters.Get("startIndex");
-            int index = 1;
             if (startIndex != null) {
                 index = int.Parse(startIndex);
             }
@@ -238,12 +248,12 @@ namespace Terradue.OpenSearch.Client {
                     break;
 
                 totalResults -= count;
+                int paramCount;
+                if(Int32.TryParse(parameters.Get("count"), out paramCount) && totalResults < paramCount){
+                    parameters.Set("count", "" + totalResults);
+                }
                 index += count;
-
                 parameters.Set("startIndex", "" + index);
-
-
-
 
             }
 
