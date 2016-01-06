@@ -10,22 +10,9 @@ namespace Terradue.OpenSearch.Model.GeoTime
 	{
         #region IMetadataExtractor implementation
         public virtual string GetMetadata(Terradue.OpenSearch.Result.IOpenSearchResultItem item) {
-            string date = null;
-            if (date == null) {
-                foreach (SyndicationElementExtension ext in item.ElementExtensions) {
-                    if (ext.OuterName == "date") {
-                        date = ext.GetObject<string>();
-                        if (date.Contains("/"))
-                            date = DateTime.Parse(date.Split('/')[1]).ToUniversalTime().ToString("O");
-                        break;
-                    }
-                    if (ext.OuterName == "dtend" && ext.OuterNamespace == "http://www.w3.org/2002/12/cal/ical#") {
-                        date = DateTime.Parse(ext.GetObject<string>()).ToUniversalTime().ToString("O");
-                        break;
-                    }
-                }
-            }
-            return date;
+            DateTime date = Terradue.Metadata.EarthObservation.OpenSearch.EarthObservationOpenSearchResultHelpers.FindEndDateFromOpenSearchResultItem(item);
+
+            return date.ToUniversalTime().ToString("O");
         }
         public virtual bool SetMetadata(Terradue.OpenSearch.Result.IOpenSearchResultItem item, List<string> parameters){
             bool isSet = false;
