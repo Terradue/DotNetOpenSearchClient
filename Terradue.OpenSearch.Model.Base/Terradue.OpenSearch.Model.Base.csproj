@@ -116,6 +116,9 @@
     <Reference Include="Newtonsoft.Json">
       <HintPath>..\packages\Newtonsoft.Json.7.0.1\lib\net40\Newtonsoft.Json.dll</HintPath>
     </Reference>
+    <Reference Include="Terradue.Metadata.EarthObservation">
+      <HintPath>..\packages\Terradue.Metadata.EarthObservation.1.3.5\lib\net40\Terradue.Metadata.EarthObservation.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -164,10 +167,6 @@
     <ProjectReference Include="..\Terradue.OpenSearch.Model\Terradue.OpenSearch.Model.csproj">
       <Project>{BFFA2485-B9AC-4DE4-BABF-4DD96590F9D4}</Project>
       <Name>Terradue.OpenSearch.Model</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\DotNetEarthObservation\Terradue.Metadata.EarthObservation\Terradue.Metadata.EarthObservation.csproj">
-      <Project>{E084B86A-8B40-414E-95FA-760F3C6BFDCB}</Project>
-      <Name>Terradue.Metadata.EarthObservation</Name>
     </ProjectReference>
   </ItemGroup>
 </Project>

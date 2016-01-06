@@ -131,8 +131,11 @@
     <Reference Include="Terradue.OpenSearch.GeoJson">
       <HintPath>..\packages\Terradue.OpenSearch.GeoJson.1.3.3\lib\net40\Terradue.OpenSearch.GeoJson.dll</HintPath>
     </Reference>
+    <Reference Include="Terradue.Metadata.EarthObservation">
+      <HintPath>..\packages\Terradue.Metadata.EarthObservation.1.3.5\lib\net40\Terradue.Metadata.EarthObservation.dll</HintPath>
+    </Reference>
     <Reference Include="Terradue.OpenSearch.RdfEO">
-      <HintPath>..\packages\Terradue.OpenSearch.RdfEO.1.3.5\lib\net40\Terradue.OpenSearch.RdfEO.dll</HintPath>
+      <HintPath>..\packages\Terradue.OpenSearch.RdfEO.1.3.6\lib\net40\Terradue.OpenSearch.RdfEO.dll</HintPath>
     </Reference>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
@@ -157,10 +160,6 @@
     <ProjectReference Include="..\Terradue.OpenSearch.Model.Base\Terradue.OpenSearch.Model.Base.csproj">
       <Project>{6222FD31-E454-4D76-9AAF-0535787A6A1B}</Project>
       <Name>Terradue.OpenSearch.Model.Base</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\DotNetEarthObservation\Terradue.Metadata.EarthObservation\Terradue.Metadata.EarthObservation.csproj">
-      <Project>{E084B86A-8B40-414E-95FA-760F3C6BFDCB}</Project>
-      <Name>Terradue.Metadata.EarthObservation</Name>
     </ProjectReference>
   </ItemGroup>
 </Project>
