@@ -14,7 +14,15 @@
 	<fileSets>
 		<fileSet>
 			<directory>Terradue.OpenSearch.Client/bin</directory>
-			<outputDirectory>mono</outputDirectory>
+			<outputDirectory>mono/opensearch-client</outputDirectory>
+			<includes>
+				<include>*.dll</include>
+				<include>*.exe</include>
+			</includes>
+		</fileSet>
+		<fileSet>
+			<directory>Terradue.OpenSearch.DataPublisher/bin</directory>
+			<outputDirectory>mono/data-publisher</outputDirectory>
 			<includes>
 				<include>*.dll</include>
 				<include>*.exe</include>

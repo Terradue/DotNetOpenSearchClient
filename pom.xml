@@ -113,7 +113,25 @@
 							<filemode>755</filemode>
 							<sources>
 								<source>
-									<location>${project.build.directory}/dependencies/mono</location>
+									<location>${project.build.directory}/dependencies/mono/opensearch-client</location>
+								</source>
+							</sources>
+						</mapping>
+						<mapping>
+							<directory>/usr/bin</directory>
+							<filemode>755</filemode>
+							<sources>
+								<source>
+									<location>${basedir}/src/main/scripts/data-publisher</location>
+								</source>
+							</sources>
+						</mapping>
+						<mapping>
+							<directory>/usr/lib/data-publisher</directory>
+							<filemode>755</filemode>
+							<sources>
+								<source>
+									<location>${project.build.directory}/dependencies/mono/data-publisher</location>
 								</source>
 							</sources>
 						</mapping>
