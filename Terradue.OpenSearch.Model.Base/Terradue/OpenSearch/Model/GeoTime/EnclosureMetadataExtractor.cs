@@ -64,7 +64,7 @@ namespace Terradue.OpenSearch.Model.GeoTime {
                         //Delete an existing enclosure
                     case "-d":
                         if (parameters.Count == argpos + 1 || parameters[argpos + 1].StartsWith("-")) {
-                            item.Links = new System.Collections.ObjectModel.Collection<SyndicationLink>();
+                            item.Links = new System.Collections.ObjectModel.Collection<SyndicationLink>(item.Links.Where(l => l.RelationshipType != "enclosure").ToList());
                         } else {
                             link = item.Links.FirstOrDefault(l => {
                                 if (l.RelationshipType == "enclosure" && l.Uri.AbsoluteUri.Equals(parameters[++argpos])) {

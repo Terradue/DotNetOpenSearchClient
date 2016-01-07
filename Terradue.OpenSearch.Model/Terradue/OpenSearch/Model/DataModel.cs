@@ -100,13 +100,12 @@ namespace Terradue.OpenSearch.Model {
 
         }
 
-        public void EditItems(List<string> metadataList){
+        public void EditItems(List<List<string>> metadataList){
             foreach (var item in modelExtension.GetCollection().Items) {
                 foreach (var metadataParams in metadataList) {
-                    var splits = metadataParams.Split(" ".ToCharArray());
                     string metadata = null;
                     List<string> parameters = new List<string>();
-                    foreach (var split in splits) {
+                    foreach (var split in metadataParams) {
                         //metadata is the first item of the list
                         if (metadata == null) metadata = split;
                         //other items are the parameters

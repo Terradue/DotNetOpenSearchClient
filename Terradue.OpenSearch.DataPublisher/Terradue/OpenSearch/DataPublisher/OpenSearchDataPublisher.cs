@@ -45,11 +45,11 @@ namespace Terradue.OpenSearch.Data.Publisher {
         private static string outputDirPathArg = null;
         private static string queryFormatArg = null;
         private static string queryModelArg = "GeoTime";
-        private static List<string> baseUrlArg = null;
+        private static string baseUrlArg = null;
         private static uint timeout = 20000;
         private static int pagination = 20;
         private static int totalResults;
-        private static List<string> metadataPaths = null;
+        private static List<List<string>> metadataPaths = null;
         private static List<string> parameterArgs = new List<string>();
         private static List<string> dataModelParameterArgs = new List<string>();
         private static OpenSearchEngine ose;
@@ -190,8 +190,7 @@ namespace Terradue.OpenSearch.Data.Publisher {
 
          private void ProcessQuery() {
 
-            // Config log
-            ConfigureLog();
+            if (verbose) LogArgs();
 
             // Base OpenSearch URL
             List<Uri> baseUrls = InitializeUrl();
@@ -209,10 +208,11 @@ namespace Terradue.OpenSearch.Data.Publisher {
             while (retry >= 0) {
                 // Perform the query
                 try {
-                    entity = dataModel.CreateOpenSearchable(baseUrls, queryFormatArg, ose, netCreds);
+                    if(entity == null) entity = dataModel.CreateOpenSearchable(baseUrls, queryFormatArg, ose, netCreds);
                     index = entity.GetOpenSearchDescription().DefaultUrl.IndexOffset;
                     break;
                 } catch (Exception e) {
+                    log.Debug("GetOpenSearchDescription retry - " + retry);
                     if (retry == 0)
                         throw e;
                     retry--;
@@ -239,6 +239,7 @@ namespace Terradue.OpenSearch.Data.Publisher {
                         osr = QueryOpenSearch(ose, entity, parametersNvc);
                         break;
                     } catch (Exception e) {
+                        log.Debug("QueryOpenSearch retry - " + retry);
                         if (retry == 0)
                             throw e;
                         retry--;
@@ -278,11 +279,26 @@ namespace Terradue.OpenSearch.Data.Publisher {
             }
 
         }
+
+        public void LogArgs(){
+            if (outputFilePathArg != null) log.Debug("output file name: " + outputFilePathArg);
+            if (outputDirPathArg != null) log.Debug("output directory: " + outputDirPathArg);
+            if (queryFormatArg != null) log.Debug("format: " + queryFormatArg);
+            if (netCreds != null) log.Debug("auth: " + netCreds.UserName + ":" + netCreds.Password);
+            if (parameterArgs != null) foreach(var p in parameterArgs) log.Debug("query parameter: " + p);
+            log.Debug("timeout: " + timeout);
+            log.Debug("pagination: " + pagination);
+            if (dataModelParameterArgs != null) foreach(var p in dataModelParameterArgs) log.Debug("datamodel parameter: " + p);
+            if (queryModelArg != null) log.Debug("model: " + queryModelArg);
+            if (baseUrlArg != null) log.Debug("query url: " + baseUrlArg);
+            if (metadataPaths != null) foreach(var m in metadataPaths) log.Debug("metadata: " + string.Join(" ", m));
+        }
+
         //---------------------------------------------------------------------------------------------------------------------
         public static bool GetArgs(string[] args) {
             if (args.Length == 0)
                 return false;
-
+            
             int argpos = 0;
             while (argpos < args.Length) {
                 switch (args[argpos]) {
@@ -367,14 +383,33 @@ namespace Terradue.OpenSearch.Data.Publisher {
                     default: 
                         if (action == null) {
                             action = args[argpos];
+                            switch (action) {
+                                case "add":
+                                case "edit":
+                                case "delete":
+                                    break;
+                                default:
+                                    return false;
+                            }
                             break;
                         }
                         if (baseUrlArg == null) {
-                            baseUrlArg = args[argpos].Split(',').ToList();
+                            baseUrlArg = args[argpos];
                             break;
                         }
                         if (metadataPaths == null) {
-                            metadataPaths = args[argpos].Split(',').ToList();
+                            metadataPaths = new List<List<string>>();
+                            List<string> metadata = new List<string>();
+                            while (argpos < args.Length) {
+                                if (args[argpos] == ",") {
+                                    metadataPaths.Add(metadata);
+                                    metadata = new List<string>();
+                                } else {
+                                    metadata.Add(args[argpos]);
+                                }
+                                argpos++;
+                            }
+                            metadataPaths.Add(metadata);
                             break;
                         }
                         break;
@@ -382,13 +417,14 @@ namespace Terradue.OpenSearch.Data.Publisher {
                 argpos++;
             }
 
+            if (verbose) {
+                int i = 1;
+                Console.Error.WriteLine("List of arguments:");
+                foreach(var a in args) Console.Error.WriteLine("Arg " + i++ + " = " + a);
+            }
+
             if (action == null) {
                 Console.Error.WriteLine("ERROR: no action set");
-                Console.Error.WriteLine();
-                return false;
-            }
-            if (baseUrlArg == null) {
-                Console.Error.WriteLine("ERROR: no url set");
                 Console.Error.WriteLine();
                 return false;
             }
@@ -492,20 +528,16 @@ namespace Terradue.OpenSearch.Data.Publisher {
             ;
 
             if (baseUrlArg == null) {
-                baseUrlArg = new List<string>();
-                baseUrlArg.Add(Environment.GetEnvironmentVariable("_CIOP_CQI_LOCATION"));
+                baseUrlArg = Environment.GetEnvironmentVariable("_CIOP_CQI_LOCATION");
             }
 
             try {
-                foreach (var url in baseUrlArg)
-                    baseUrl.Add(new Uri(url));
+                baseUrl.Add(new Uri(baseUrlArg));
             } catch (UriFormatException) {
-                baseUrlArg.Add(string.Format("{0}/{1}", Environment.GetEnvironmentVariable("_CIOP_CQI_LOCATION"), baseUrlArg));
+                baseUrlArg = string.Format("{0}/{1}", Environment.GetEnvironmentVariable("_CIOP_CQI_LOCATION"), baseUrlArg);
                 try {
-                    foreach (var url in baseUrlArg)
-                        baseUrl.Add(new Uri(url));
+                    baseUrl.Add(new Uri(baseUrlArg));
                 } catch (UriFormatException) {
-
                     throw new UriFormatException("The format of the URI could not be determined. Please check ${_CIOP_CQI_LOCATION}");
                 }
             }

@@ -7,7 +7,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Terradue.OpenSearch.Model",
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Terradue.OpenSearch.Model.Base", "Terradue.OpenSearch.Model.Base\Terradue.OpenSearch.Model.Base.csproj", "{6222FD31-E454-4D76-9AAF-0535787A6A1B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Terradue.OpenSearch.DataPublisher", "Terradue.OpenSearch.Editor\Terradue.OpenSearch.DataPublisher.csproj", "{B867F054-4A52-4C9D-AFD6-098A5CC5E6E7}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Terradue.OpenSearch.DataPublisher", "Terradue.OpenSearch.DataPublisher\Terradue.OpenSearch.DataPublisher.csproj", "{B867F054-4A52-4C9D-AFD6-098A5CC5E6E7}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

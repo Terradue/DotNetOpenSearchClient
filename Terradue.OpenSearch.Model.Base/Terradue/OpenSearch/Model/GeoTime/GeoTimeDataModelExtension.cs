@@ -160,19 +160,19 @@ namespace Terradue.OpenSearch.Model.GeoTime {
         /// <param name="item">Item.</param>
         /// <param name="template">Template.</param>
         public virtual string ProcessTemplate(IOpenSearchResultItem item, string template){
-            string parameterElementTag = "$";
+            string parameterElementTagOpening = "@@";
+            string parameterElementTagClosure = "@@";
             var rv = template;
             var final = "";
 
-            while (rv.Contains(parameterElementTag)) {
+            while (rv.Contains(parameterElementTagOpening)) {
                 //copy what is before parameter to replace
-                if (!rv.StartsWith(parameterElementTag)) final += rv.Substring(0, rv.IndexOf(parameterElementTag));
+                if (!rv.StartsWith(parameterElementTagOpening)) final += rv.Substring(0, rv.IndexOf(parameterElementTagOpening));
 
                 //get parameter name
-                var sub = rv.Substring(rv.IndexOf(parameterElementTag) + 1);
-                if (!sub.StartsWith("<")) throw new Exception("Cannot process template, wrong format parameter name : " + sub);
-                rv = sub.Substring(sub.IndexOf(">") + 1);
-                sub = sub.Substring(1, sub.IndexOf(">") - 1);
+                var sub = rv.Substring(rv.IndexOf(parameterElementTagOpening) + parameterElementTagOpening.Length);
+                rv = sub.Substring(sub.IndexOf(parameterElementTagClosure) + parameterElementTagClosure.Length);
+                sub = sub.Substring(0, sub.IndexOf(parameterElementTagClosure));
                 var metadata = GetMetadataForItem(new List<string>{ sub }, item);
                 final += metadata[0];
             }
