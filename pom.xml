@@ -146,8 +146,9 @@
 				</configuration>
 			</plugin>
 			<plugin>
-				<groupId>com.terradue</groupId>
-				<artifactId>rpmdeploy-maven-plugin</artifactId>
+			  <groupId>com.terradue</groupId>
+			  <artifactId>rpmdeploy-maven-plugin</artifactId>
+			  <version>1.2</version>
 			</plugin>
 		</plugins>
 	</build>
