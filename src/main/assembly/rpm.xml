@@ -29,8 +29,11 @@
 			</includes>
 		</fileSet>
 		<fileSet>
-			<directory>Terradue.OpenSearch.DataPublisher/Resources/**</directory>
+			<directory>Terradue.OpenSearch.DataPublisher/Resources</directory>
 			<outputDirectory>mono/lib</outputDirectory>
+			<includes>
+				<include>**</include>
+			</includes>
 		</fileSet>
 	</fileSets>
 
