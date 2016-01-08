@@ -21,12 +21,20 @@
 			</includes>
 		</fileSet>
 		<fileSet>
+			<directory>Terradue.OpenSearch.Client/Resources</directory>
+			<outputDirectory>mono/opensearch-client</outputDirectory>
+		</fileSet>
+		<fileSet>
 			<directory>Terradue.OpenSearch.DataPublisher/bin</directory>
 			<outputDirectory>mono/data-publisher</outputDirectory>
 			<includes>
 				<include>*.dll</include>
 				<include>*.exe</include>
 			</includes>
+		</fileSet>
+		<fileSet>
+			<directory>Terradue.OpenSearch.DataPublisher/Resources</directory>
+			<outputDirectory>mono/data-publisher</outputDirectory>
 		</fileSet>
 	</fileSets>
 

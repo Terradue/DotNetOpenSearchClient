@@ -131,11 +131,11 @@
     <Reference Include="Terradue.OpenSearch.GeoJson">
       <HintPath>..\packages\Terradue.OpenSearch.GeoJson.1.3.3\lib\net40\Terradue.OpenSearch.GeoJson.dll</HintPath>
     </Reference>
-    <Reference Include="Terradue.Metadata.EarthObservation">
-      <HintPath>..\packages\Terradue.Metadata.EarthObservation.1.3.5\lib\net40\Terradue.Metadata.EarthObservation.dll</HintPath>
-    </Reference>
     <Reference Include="Terradue.OpenSearch.RdfEO">
       <HintPath>..\packages\Terradue.OpenSearch.RdfEO.1.3.6\lib\net40\Terradue.OpenSearch.RdfEO.dll</HintPath>
+    </Reference>
+    <Reference Include="Terradue.Metadata.EarthObservation">
+      <HintPath>..\packages\Terradue.Metadata.EarthObservation.1.3.6\lib\net40\Terradue.Metadata.EarthObservation.dll</HintPath>
     </Reference>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
