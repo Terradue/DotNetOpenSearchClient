@@ -135,6 +135,15 @@
 								</source>
 							</sources>
 						</mapping>
+						<mapping>
+							<directory>/usr/local/lib</directory>
+							<filemode>755</filemode>
+							<sources>
+								<source>
+									<location>${project.build.directory}/dependencies/mono/lib</location>
+								</source>
+							</sources>
+						</mapping>
 					</mappings>
 					<provides>
 						<provide>${project.artifactId}</provide>

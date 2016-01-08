@@ -21,10 +21,6 @@
 			</includes>
 		</fileSet>
 		<fileSet>
-			<directory>Terradue.OpenSearch.Client/Resources</directory>
-			<outputDirectory>mono/opensearch-client/Resources</outputDirectory>
-		</fileSet>
-		<fileSet>
 			<directory>Terradue.OpenSearch.DataPublisher/bin</directory>
 			<outputDirectory>mono/data-publisher</outputDirectory>
 			<includes>
@@ -33,8 +29,8 @@
 			</includes>
 		</fileSet>
 		<fileSet>
-			<directory>Terradue.OpenSearch.DataPublisher/Resources</directory>
-			<outputDirectory>mono/data-publisher/Resources</outputDirectory>
+			<directory>Terradue.OpenSearch.DataPublisher/Resources/**</directory>
+			<outputDirectory>mono/lib</outputDirectory>
 		</fileSet>
 	</fileSets>
 

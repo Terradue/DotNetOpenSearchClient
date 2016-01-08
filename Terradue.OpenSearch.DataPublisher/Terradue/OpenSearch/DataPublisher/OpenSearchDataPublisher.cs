@@ -417,12 +417,6 @@ namespace Terradue.OpenSearch.Data.Publisher {
                 argpos++;
             }
 
-            if (verbose) {
-                int i = 1;
-                Console.Error.WriteLine("List of arguments:");
-                foreach(var a in args) Console.Error.WriteLine("Arg " + i++ + " = " + a);
-            }
-
             if (action == null) {
                 Console.Error.WriteLine("ERROR: no action set");
                 Console.Error.WriteLine();

@@ -117,7 +117,7 @@
       <HintPath>..\packages\Terradue.OpenSearch.1.11.14\lib\net40\Terradue.OpenSearch.dll</HintPath>
     </Reference>
     <Reference Include="Terradue.Metadata.EarthObservation">
-      <HintPath>..\packages\Terradue.Metadata.EarthObservation.1.3.6\lib\net40\Terradue.Metadata.EarthObservation.dll</HintPath>
+      <HintPath>..\packages\Terradue.Metadata.EarthObservation.1.3.7\lib\net40\Terradue.Metadata.EarthObservation.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -135,5 +135,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+    <None Include="Resources\ne_110m_land\ne_110m_land.dbf" />
+    <None Include="Resources\ne_110m_land\ne_110m_land.prj" />
+    <None Include="Resources\ne_110m_land\ne_110m_land.shp" />
+    <None Include="Resources\ne_110m_land\ne_110m_land.shx" />
   </ItemGroup>
 </Project>
