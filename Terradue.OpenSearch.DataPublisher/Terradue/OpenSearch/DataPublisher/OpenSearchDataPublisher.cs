@@ -101,8 +101,13 @@ namespace Terradue.OpenSearch.Data.Publisher {
 
             } catch (Exception e) {
                 Console.Error.WriteLine(string.Format("{0} : {1} {2}", e.Source, e.Message, e.HelpLink));
-                if (verbose)
+                if (verbose) {
                     Console.Error.WriteLine(e.StackTrace);
+                    if (e.InnerException != null) {
+                        Console.Error.WriteLine(string.Format("{0} : {1} {2}", e.InnerException.Source, e.InnerException.Message, e.InnerException.HelpLink));
+                        Console.Error.WriteLine(e.InnerException.StackTrace);
+                    }
+                }
                 Environment.ExitCode = 1;
                 return;
             }

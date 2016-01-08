@@ -24,7 +24,7 @@
     <Commandlineparameters>edit -v -d /Users/enguerran/Terradue/dev/components/sugar/DotNetOpenSearchClient/test/results -o test_dp_title.xml -m EOP -p format=atomeop -p uid=S1A_IW_SLC__1SDV_20151117T163127_20151117T163155_008647_00C499_5DC1 "https://data2.terradue.com/eop/scihub/dataset/search?format=atomeop&amp;uid=S1A_IW_SLC__1SDV_20151117T163127_20151117T163155_008647_00C499_5DC1" title -r "@@platform@@ @@productType@@ @@operationalMode@@ @@processingLevel@@ @@polarisationChannels@@ @@wrsLongitudeGrid@@ @@startdate@@-@@enddate@@" , enclosure -d</Commandlineparameters>
     <CustomCommands>
       <CustomCommands>
-        <Command type="AfterBuild" command="cp -prf ${ProjectDir}/../../DotNetEarthObservation/Terradue.Metadata.EarthObservation/Resources bin" workingdir="${ProjectDir}" />
+        <Command type="AfterBuild" command="cp -prf Resources/ne_110m_land /usr/local/bin" workingdir="${ProjectDir}" />
       </CustomCommands>
     </CustomCommands>
   </PropertyGroup>
