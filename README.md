@@ -1,4 +1,3 @@
-
 [![Build Status](https://build.terradue.com/buildStatus/icon?job=opensearch-client)](https://build.terradue.com/job/opensearch-client/)
 
 # DotNetOpenSearchClient
@@ -18,6 +17,41 @@ Log on your Developer Cloud Sandbox and install the package:
 ```
 sudo yum install opensearch-client
 ```
+
+## Build
+
+DotNetOpenSearchClient is a single assembly designed to be easily deployed anywhere. 
+
+To clone it locally click the "Clone in Desktop" button above or run the 
+following git commands.
+
+```
+git clone git@github.com:Terradue/DotNetOpenSearchClient.git DotNetOpenSearchClient
+```
+
+To compile it yourself, you need to have mono 3.x.x installed (recommanded is mono 3.12.1).
+Then you can use:
+
+* Visual Studio 2012 or later, or Xamarin Studio
+* xbuild command
+ 
+Once build, simply do:
+
+```
+cp -r Terradue.OpenSearch.DataPublisher/Resources/* /usr/local/lib
+
+mkdir /usr/lib/opensearch-client
+cp Terradue.OpenSearch.Client/bin/*.exe /usr/lib/opensearch-client
+cp Terradue.OpenSearch.Client/bin/*.dll /usr/lib/opensearch-client
+./src/main/scripts/opensearch-client
+
+
+mkdir /usr/lib/data-publisher
+cp Terradue.OpenSearch.DataPublisher/bin/*.exe /usr/lib/data-publisher
+cp Terradue.OpenSearch.DataPublisher/bin/*.dll /usr/lib/data-publisher
+./src/main/scripts/data-publisher
+```
+*note: you can choose a different path than /usr/lib, but the scripts (under src/main/scripts) need to be updated accordingly*
 
 ## Usage
 
