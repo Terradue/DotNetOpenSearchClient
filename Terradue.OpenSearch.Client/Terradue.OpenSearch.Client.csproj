@@ -142,6 +142,10 @@
   <ItemGroup>
     <None Include="packages.config" />
     <None Include="Terradue.OpenSearch.Client.csproj" />
+    <None Include="Resources\ne_110m_land\ne_110m_land.dbf" />
+    <None Include="Resources\ne_110m_land\ne_110m_land.prj" />
+    <None Include="Resources\ne_110m_land\ne_110m_land.shp" />
+    <None Include="Resources\ne_110m_land\ne_110m_land.shx" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Terradue\OpenSearch\" />

@@ -99,7 +99,7 @@
 						<defineStatement>__os_install_post %{nil}</defineStatement>
 					</defineStatements>
 					<mappings>
-<!--						<mapping>
+						<mapping>
 							<directory>/usr/bin</directory>
 							<filemode>755</filemode>
 							<sources>
@@ -116,7 +116,7 @@
 									<location>${project.build.directory}/dependencies/mono/opensearch-client</location>
 								</source>
 							</sources>
-						</mapping>-->
+						</mapping>
 						<mapping>
 							<directory>/usr/bin</directory>
 							<filemode>755</filemode>
