@@ -22,7 +22,7 @@
 		</fileSet>
 		<fileSet>
 			<directory>Terradue.OpenSearch.Client/Resources</directory>
-			<outputDirectory>mono/opensearch-client</outputDirectory>
+			<outputDirectory>mono/opensearch-client/Resources</outputDirectory>
 		</fileSet>
 		<fileSet>
 			<directory>Terradue.OpenSearch.DataPublisher/bin</directory>
@@ -34,7 +34,7 @@
 		</fileSet>
 		<fileSet>
 			<directory>Terradue.OpenSearch.DataPublisher/Resources</directory>
-			<outputDirectory>mono/data-publisher</outputDirectory>
+			<outputDirectory>mono/data-publisher/Resources</outputDirectory>
 		</fileSet>
 	</fileSets>
 
