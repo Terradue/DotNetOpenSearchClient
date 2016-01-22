@@ -170,6 +170,8 @@ namespace Terradue.OpenSearch.Data.Publisher {
                 sw.WriteLine(string.Format("{0,-30}{1,-40}", osee.Identifier, osee.DiscoveryContentType));
             }
 
+            sw.WriteLine();
+
             sw.Close();
 
         }
@@ -432,7 +434,7 @@ namespace Terradue.OpenSearch.Data.Publisher {
         }
         //---------------------------------------------------------------------------------------------------------------------
         public static void PrintUsage() {
-            Console.Error.WriteLine(String.Format("{0} (v{1}) - OpenSearch Data Publisher - (c) Terradue S.r.l.", Path.GetFileName(Environment.GetCommandLineArgs()[0]), version));
+            Console.Error.WriteLine(String.Format("{0} (v{1}) - Data Publisher - (c) Terradue S.r.l.", Path.GetFileName(Environment.GetCommandLineArgs()[0]), version));
 
             Console.Error.WriteLine("Usage: " + Path.GetFileName(Environment.GetCommandLineArgs()[0]) + " [action] [options]");
             Console.Error.WriteLine();
@@ -447,13 +449,13 @@ namespace Terradue.OpenSearch.Data.Publisher {
         }
 
         public static void PrintUsage_Add(){
-            Console.Error.WriteLine(String.Format("{0} (v{1}) - OpenSearch Data Publisher - (c) Terradue S.r.l.", Path.GetFileName(Environment.GetCommandLineArgs()[0]), version));
+            Console.Error.WriteLine(String.Format("{0} (v{1}) - Data Publisher - (c) Terradue S.r.l.", Path.GetFileName(Environment.GetCommandLineArgs()[0]), version));
             Console.Error.WriteLine("Sorry but this function is not yet implemented.");
             Console.Error.WriteLine();
         }
 
         public static void PrintUsage_Edit(){
-            Console.Error.WriteLine(String.Format("{0} (v{1}) - OpenSearch Data Publisher - (c) Terradue S.r.l.", Path.GetFileName(Environment.GetCommandLineArgs()[0]), version));
+            Console.Error.WriteLine(String.Format("{0} (v{1}) - Data Publisher - (c) Terradue S.r.l.", Path.GetFileName(Environment.GetCommandLineArgs()[0]), version));
 
             Console.Error.WriteLine("Usage: " + Path.GetFileName(Environment.GetCommandLineArgs()[0]) + " edit [options...] [url] [metadataPath1 metadataParameters1,metadatapath2 parameters2,...]");
             Console.Error.WriteLine();
