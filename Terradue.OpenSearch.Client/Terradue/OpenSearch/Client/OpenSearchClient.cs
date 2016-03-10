@@ -181,9 +181,6 @@ namespace Terradue.OpenSearch.Client {
 
         private void ProcessQuery() {
 
-            // Config log
-            ConfigureLog();
-
             // Base OpenSearch URL
             List<Uri> baseUrls = InitializeUrl();
 
@@ -205,6 +202,7 @@ namespace Terradue.OpenSearch.Client {
                 try {
                     entity = dataModel.CreateOpenSearchable(baseUrls, queryFormatArg, ose, netCreds);
                     index = entity.GetOpenSearchDescription().DefaultUrl.IndexOffset;
+                    log.Debug("IndexOffset : " + index);
                     break;
                 } catch (Exception e) {
                     if (retry == 0)
@@ -222,37 +220,59 @@ namespace Terradue.OpenSearch.Client {
 
             IOpenSearchResultCollection osr = null;
 
+            log.Debug(totalResults + " entries requested");
             while (totalResults > 0) {
 
+
+                log.Debug("startIndex : " + index);
                 parametersNvc = ResolveParameters(parameters, entity);
 
                 retry = 5;
                 while (retry >= 0) {
                     // Perform the query
+                    log.Debug("Launching query...");
                     try {
                         osr = QueryOpenSearch(ose, entity, parametersNvc);
                         break;
-                    } catch (Exception e) {
+                    } 
+                    catch (AggregateException ae){
                         if (retry == 0)
-                            throw e;
+                            throw ae;
+                        foreach (Exception e in ae.InnerExceptions) {
+                            log.Debug("Exception " + e.Message);
+                        }
                         retry--;
                         InitCache();
                     }
+                    catch (Exception e) {
+                        if (retry == 0)
+                            throw e;
+                        log.Debug("Exception " + e.Message);
+                        retry--;
+                        InitCache();
+                    }
+
                 }
 
                 // Transform the result
                 OutputResult(osr, outputStream);
 
                 int count = CountResults(osr);
+                log.Debug(count + " entries found");
                 if (count == 0)
+                    break;
+                int expectedCount = count;
+                if (!string.IsNullOrEmpty(parameters["count"]) && int.TryParse(parameters["count"], out expectedCount) && count < expectedCount)
                     break;
 
                 totalResults -= count;
+                log.Debug(count + " entries found on " + totalResults + " requested");
                 int paramCount;
                 if(Int32.TryParse(parameters.Get("count"), out paramCount) && totalResults < paramCount){
                     parameters.Set("count", "" + totalResults);
                 }
                 index += count;
+
                 parameters.Set("startIndex", "" + index);
 
             }

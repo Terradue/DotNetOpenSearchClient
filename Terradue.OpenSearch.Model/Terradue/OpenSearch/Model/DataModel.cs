@@ -6,11 +6,14 @@ using Terradue.OpenSearch.Result;
 using System.Collections.Specialized;
 using Terradue.OpenSearch.Engine;
 using System.Net;
+using log4net;
 
 namespace Terradue.OpenSearch.Model {
     public class DataModel {
         
         IOpenSearchClientDataModelExtension modelExtension;
+
+        private static readonly ILog log = LogManager.GetLogger(typeof(DataModel));
 
         
         private DataModel(IOpenSearchClientDataModelExtension modelExtension) {
@@ -21,7 +24,7 @@ namespace Terradue.OpenSearch.Model {
 
         public static DataModel CreateFromArgs(string queryModelArg, NameValueCollection parameters) {
 
-
+            log.DebugFormat("loading model extension for {0}", queryModelArg);
 
             IOpenSearchClientDataModelExtension modelExtension = DataModel.FindPluginByName(queryModelArg);
             if (modelExtension == null)
