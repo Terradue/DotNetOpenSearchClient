@@ -34,7 +34,11 @@ namespace Terradue.OpenSearch.Model.EarthObservation {
             metadataExtractors.Add("track", new TrackMetadataExtractor());
             metadataExtractors.Add("frame", new FrameMetadataExtractor());
             metadataExtractors.Add("swathIdentifier", new SwathIdentifierMetadataExtractor());
-
+            metadataExtractors.Add("platform", new PlatformShortNameMetadataExtractor());
+            metadataExtractors.Add("operationalMode", new OperationalModeMetadataExtractor());
+            metadataExtractors.Add("polarisationChannels", new PolarisationChannelsMetadataExtractor());
+            metadataExtractors.Add("wrsLongitudeGrid", new WrsLongitudeGridMetadataExtractor());
+            metadataExtractors.Add("processingLevel", new ProcessingLevelMetadataExtractor());
 
         }
 
