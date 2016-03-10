@@ -6,3 +6,4 @@ obj
 *.nupkg
 OpenSearchClient.userprefs
 target
+Terradue.OpenSearch.Client/Resources

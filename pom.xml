@@ -117,6 +117,14 @@
 								</source>
 							</sources>
 						</mapping>
+						<mapping>
+							<directory>/usr/local/lib/ne_110m_land</directory>
+							<sources>
+								<source>
+									<location>${basedir}/Terradue.OpenSearch.Client/Resources/ne_110m_land</location>
+								</source>
+							</sources>
+						</mapping>
 					</mappings>
 					<provides>
 						<provide>${project.artifactId}</provide>
