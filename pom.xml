@@ -121,7 +121,7 @@
 							<directory>/usr/local/lib/ne_110m_land</directory>
 							<sources>
 								<source>
-									<location>${basedir}/Terradue.OpenSearch.Client/Resources/ne_110m_land</location>
+									<location>${basedir}/packages/Terradue.Metadata.EarthObservation.1.3.13/content/Resources/ne_110m_land</location>
 								</source>
 							</sources>
 						</mapping>
