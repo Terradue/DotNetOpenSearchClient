@@ -81,6 +81,15 @@ namespace Terradue.OpenSearch.Client {
                     client.PrintDataModelHelp(DataModel.CreateFromArgs(queryModelArg, new NameValueCollection()));
                 }
 
+            } catch (AggregateException ae) {
+                foreach (var e in ae.InnerExceptions) {
+                    Console.Error.WriteLine(string.Format("{0} : {1} {2}", e.ToString(), e.Message, e.HelpLink));
+                    if (verbose)
+                        Console.Error.WriteLine(e.StackTrace);
+                }
+                Environment.ExitCode = 1;
+                return;
+            
             } catch (Exception e) {
                 Console.Error.WriteLine(string.Format("{0} : {1} {2}", e.Source, e.Message, e.HelpLink));
                 if (verbose)
@@ -172,9 +181,6 @@ namespace Terradue.OpenSearch.Client {
 
         private void ProcessQuery() {
 
-            // Config log
-            ConfigureLog();
-
             // Base OpenSearch URL
             List<Uri> baseUrls = InitializeUrl();
 
@@ -190,10 +196,13 @@ namespace Terradue.OpenSearch.Client {
             // Find OpenSearch Entity
             IOpenSearchable entity = null;
             int retry = 5;
+            int index = 1;
             while (retry >= 0) {
                 // Perform the query
                 try {
                     entity = dataModel.CreateOpenSearchable(baseUrls, queryFormatArg, ose, netCreds);
+                    index = entity.GetOpenSearchDescription().DefaultUrl.IndexOffset;
+                    log.Debug("IndexOffset : " + index);
                     break;
                 } catch (Exception e) {
                     if (retry == 0)
@@ -205,45 +214,66 @@ namespace Terradue.OpenSearch.Client {
 
             NameValueCollection parameters = PrepareQueryParameters();
             string startIndex = parameters.Get("startIndex");
-            int index = 1;
             if (startIndex != null) {
                 index = int.Parse(startIndex);
             }
 
             IOpenSearchResultCollection osr = null;
 
+            log.Debug(totalResults + " entries requested");
             while (totalResults > 0) {
 
+
+                log.Debug("startIndex : " + index);
                 parametersNvc = ResolveParameters(parameters, entity);
 
                 retry = 5;
                 while (retry >= 0) {
                     // Perform the query
+                    log.Debug("Launching query...");
                     try {
                         osr = QueryOpenSearch(ose, entity, parametersNvc);
                         break;
-                    } catch (Exception e) {
+                    } 
+                    catch (AggregateException ae){
                         if (retry == 0)
-                            throw e;
+                            throw ae;
+                        foreach (Exception e in ae.InnerExceptions) {
+                            log.Debug("Exception " + e.Message);
+                        }
                         retry--;
                         InitCache();
                     }
+                    catch (Exception e) {
+                        if (retry == 0)
+                            throw e;
+                        log.Debug("Exception " + e.Message);
+                        retry--;
+                        InitCache();
+                    }
+
                 }
 
                 // Transform the result
                 OutputResult(osr, outputStream);
 
                 int count = CountResults(osr);
+                log.Debug(count + " entries found");
                 if (count == 0)
+                    break;
+                int expectedCount = count;
+                if (!string.IsNullOrEmpty(parameters["count"]) && int.TryParse(parameters["count"], out expectedCount) && count < expectedCount)
                     break;
 
                 totalResults -= count;
+                log.Debug(count + " entries found on " + totalResults + " requested");
+                int paramCount;
+                if(Int32.TryParse(parameters.Get("count"), out paramCount) && totalResults < paramCount){
+                    parameters.Set("count", "" + totalResults);
+                }
                 index += count;
 
                 parameters.Set("startIndex", "" + index);
-
-
-
 
             }
 

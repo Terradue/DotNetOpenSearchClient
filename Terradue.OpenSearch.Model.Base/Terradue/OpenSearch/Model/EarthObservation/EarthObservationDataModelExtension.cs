@@ -5,12 +5,16 @@ using System.Collections.Specialized;
 using System.Collections.Generic;
 using Terradue.OpenSearch.Engine;
 using System.Net;
+using Terradue.OpenSearch.Model.EarthObservation.OpenSearchable;
+using log4net;
 
 namespace Terradue.OpenSearch.Model.EarthObservation {
     
     [Extension(typeof(IOpenSearchClientDataModelExtension))]
     public class EarthObservationDataModelExtension : GeoTimeDataModelExtension, IOpenSearchClientDataModelExtension {
-        
+
+        private static readonly ILog log = LogManager.GetLogger(typeof(EarthObservationDataModelExtension));
+
         protected override void InitializeExtractors() {
 
             base.InitializeExtractors();
@@ -30,7 +34,11 @@ namespace Terradue.OpenSearch.Model.EarthObservation {
             metadataExtractors.Add("track", new TrackMetadataExtractor());
             metadataExtractors.Add("frame", new FrameMetadataExtractor());
             metadataExtractors.Add("swathIdentifier", new SwathIdentifierMetadataExtractor());
-
+            metadataExtractors.Add("platform", new PlatformShortNameMetadataExtractor());
+            metadataExtractors.Add("operationalMode", new OperationalModeMetadataExtractor());
+            metadataExtractors.Add("polarisationChannels", new PolarisationChannelsMetadataExtractor());
+            metadataExtractors.Add("wrsLongitudeGrid", new WrsLongitudeGridMetadataExtractor());
+            metadataExtractors.Add("processingLevel", new ProcessingLevelMetadataExtractor());
 
         }
 
@@ -74,6 +82,11 @@ namespace Terradue.OpenSearch.Model.EarthObservation {
                     }
                     if (!e.DefaultMimeType.Contains("xml"))
                         throw new InvalidOperationException("No Url in the OpenSearch Description Document that could fit the EOP data model");
+                }
+                // Fedeo case
+                if (url.Host == "fedeo.esa.int" && e.DefaultMimeType == "application/atom+xml" && e is Terradue.OpenSearch.GenericOpenSearchable) {
+                    log.DebugFormat("Fedeo source. Trying to get the earthobservation profile");
+                    e = FedeoOpenSearchable.CreateFrom((Terradue.OpenSearch.GenericOpenSearchable)e, ose);
                 }
                 entities.Add(e);
             }
