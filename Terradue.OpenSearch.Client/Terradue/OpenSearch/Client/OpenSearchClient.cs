@@ -37,17 +37,17 @@ namespace Terradue.OpenSearch.Client {
     //-------------------------------------------------------------------------------------------------------------------------
     public class OpenSearchClient {
         private static readonly ILog log = LogManager.GetLogger(typeof(OpenSearchClient));
-        private static Version version = Assembly.GetEntryAssembly().GetName().Version;
+        private static Version version = typeof(OpenSearchClient).Assembly.GetName().Version;
         private static bool verbose;
         private static bool listOsee;
         private static string outputFilePathArg = null;
         private static string queryFormatArg = null;
-        private static string queryModelArg = "GeoTime";
-        private static List<string> baseUrlArg = null;
+        internal static string queryModelArg = "GeoTime";
+        internal static List<string> baseUrlArg = null;
         private static uint timeout = 20000;
         private static int pagination = 20;
         private static int totalResults;
-        private static List<string> metadataPaths = null;
+        internal static List<string> metadataPaths = null;
         private static List<string> parameterArgs = new List<string>();
         private static List<string> dataModelParameterArgs = new List<string>();
         private static OpenSearchEngine ose;
@@ -100,7 +100,7 @@ namespace Terradue.OpenSearch.Client {
 
         }
 
-        private void Initialize() {
+        internal void Initialize() {
 
             // Config log
             ConfigureLog();
@@ -179,15 +179,23 @@ namespace Terradue.OpenSearch.Client {
 
         }
 
-        private void ProcessQuery() {
+        internal void ProcessQuery(Stream outputStream = null) {
+
+            bool closeOutputStream = true;
 
             // Base OpenSearch URL
+            log.Debug("Initialize urls");
             List<Uri> baseUrls = InitializeUrl();
 
             // Initialize the output stream
-            Stream outputStream = InitializeOutputStream();
+            log.Debug("Initialize output");
+            if (outputStream == null)
+                outputStream = InitializeOutputStream();
+            else
+                closeOutputStream = false;
 
             // Init data Model
+            log.Debug("Init data models");
             dataModelParameters = PrepareDataModelParameters();
             dataModel = DataModel.CreateFromArgs(queryModelArg, dataModelParameters);
 
@@ -239,7 +247,7 @@ namespace Terradue.OpenSearch.Client {
                         if (retry == 0)
                             throw ae;
                         foreach (Exception e in ae.InnerExceptions) {
-                            log.Debug("Exception " + e.Message);
+                            log.Error("Exception " + e.Message);
                         }
                         retry--;
                         InitCache();
@@ -247,7 +255,7 @@ namespace Terradue.OpenSearch.Client {
                     catch (Exception e) {
                         if (retry == 0)
                             throw e;
-                        log.Debug("Exception " + e.Message);
+                        log.Error("Exception " + e.Message);
                         retry--;
                         InitCache();
                     }
@@ -277,7 +285,7 @@ namespace Terradue.OpenSearch.Client {
 
             }
 
-            outputStream.Close();
+            if (closeOutputStream) outputStream.Close();
 
 
         }
@@ -383,16 +391,17 @@ namespace Terradue.OpenSearch.Client {
             Console.Error.WriteLine();
             Console.Error.WriteLine("Options:");
 
-            Console.Error.WriteLine(" -p/--parameter <param>  Specify a parameter for the query");
-            Console.Error.WriteLine(" -o/--output <file>      Write output to <file> instead of stdout");
-            Console.Error.WriteLine(" -f/--format <format>    Specify the format of the query. Format available can be listed with --list-osee.");
-            Console.Error.WriteLine("                         By default, the client is automatic and uses the default or the first format.");
-            Console.Error.WriteLine(" -to/--time-out <file>   Specify query timeout (millisecond)");
-            Console.Error.WriteLine(" --pagination            Specify the pagination number for search loops. Default: 20");
-            Console.Error.WriteLine(" --list-osee             List the OpenSearch Engine Extensions");
-            Console.Error.WriteLine(" -m/--model <format>     Specify the data model of the results for the query. Data model give access to specific" +
+            Console.Error.WriteLine(" -p/--parameter <param>    Specify a parameter for the query");
+            Console.Error.WriteLine(" -o/--output <file>        Write output to <file> instead of stdout");
+            Console.Error.WriteLine(" -f/--format <format>      Specify the format of the query. Format available can be listed with --list-osee.");
+            Console.Error.WriteLine("                           By default, the client is automatic and uses the default or the first format.");
+            Console.Error.WriteLine(" -to/--time-out <file>     Specify query timeout (millisecond)");
+            Console.Error.WriteLine(" --pagination              Specify the pagination number for search loops. Default: 20");
+            Console.Error.WriteLine(" --list-osee               List the OpenSearch Engine Extensions");
+            Console.Error.WriteLine(" -m/--model <format>       Specify the data model of the results for the query. Data model give access to specific" +
             "metadata extractors or transformers. By default the \"GeoTime\" model is used. Used without urls, it lists the metadata options");
-            Console.Error.WriteLine(" -v/--verbose            Make the operation more talkative");
+            Console.Error.WriteLine(" -dp/--datamodel-parameter <param> Specify a data model parameter");
+            Console.Error.WriteLine(" -v/--verbose              Make the operation more talkative");
             Console.Error.WriteLine();
         }
 

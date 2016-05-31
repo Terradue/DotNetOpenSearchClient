@@ -16,7 +16,6 @@ namespace Terradue.OpenSearch.Model.Scihub {
         protected override void InitializeExtractors() {
 
             base.InitializeExtractors();
-            metadataExtractors.Add("id", new IdMetadataExtractor());
         }
 
         public override string Name {

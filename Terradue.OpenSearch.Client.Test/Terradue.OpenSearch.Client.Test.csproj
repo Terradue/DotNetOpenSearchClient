@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{22528738-2074-43F0-BC03-92B20234B484}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <RootNamespace>Terradue.OpenSearch.Client.Test</RootNamespace>
+    <AssemblyName>Terradue.OpenSearch.Client.Test</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug</OutputPath>
+    <DefineConstants>DEBUG;</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <ConsolePause>false</ConsolePause>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>full</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release</OutputPath>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <ConsolePause>false</ConsolePause>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="nunit.framework">
+      <HintPath>..\packages\NUnit.2.6.4\lib\nunit.framework.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="BugTests.cs" />
+    <Compile Include="GeoTimeModelTests.cs" />
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Terradue.OpenSearch.Client\Terradue.OpenSearch.Client.csproj">
+      <Project>{1FB59AA7-3878-47CD-4267-F179F56C6470}</Project>
+      <Name>Terradue.OpenSearch.Client</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Terradue.OpenSearch.Model\Terradue.OpenSearch.Model.csproj">
+      <Project>{BFFA2485-B9AC-4DE4-BABF-4DD96590F9D4}</Project>
+      <Name>Terradue.OpenSearch.Model</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Terradue.OpenSearch.Model.Base\Terradue.OpenSearch.Model.Base.csproj">
+      <Project>{6222FD31-E454-4D76-9AAF-0535787A6A1B}</Project>
+      <Name>Terradue.OpenSearch.Model.Base</Name>
+    </ProjectReference>
+  </ItemGroup>
+</Project>

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Collections.Specialized;
 using Terradue.ServiceModel.Syndication;
 
-namespace Terradue.OpenSearch.Model.Scihub
+namespace Terradue.OpenSearch.Model.EarthObservation
 {
     
     class IdMetadataExtractor : Terradue.OpenSearch.Model.GeoTime.IdentifierMetadataExtractor
@@ -16,7 +16,7 @@ namespace Terradue.OpenSearch.Model.Scihub
         }
         public override string Description {
             get {
-                return "Id of the dataset within the scihub collection";
+                return "Id of the dataset within the collection";
             }
         }
         #endregion

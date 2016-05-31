@@ -39,7 +39,7 @@ namespace Terradue.OpenSearch.Model.EarthObservation {
             metadataExtractors.Add("polarisationChannels", new PolarisationChannelsMetadataExtractor());
             metadataExtractors.Add("wrsLongitudeGrid", new WrsLongitudeGridMetadataExtractor());
             metadataExtractors.Add("processingLevel", new ProcessingLevelMetadataExtractor());
-
+            metadataExtractors.Add("id", new IdMetadataExtractor());
         }
 
         public override string Name {
@@ -86,7 +86,12 @@ namespace Terradue.OpenSearch.Model.EarthObservation {
                 // Fedeo case
                 if (url.Host == "fedeo.esa.int" && e.DefaultMimeType == "application/atom+xml" && e is Terradue.OpenSearch.GenericOpenSearchable) {
                     log.DebugFormat("Fedeo source. Trying to get the earthobservation profile");
-                    e = FedeoOpenSearchable.CreateFrom((Terradue.OpenSearch.GenericOpenSearchable)e, ose);
+                    e = CwicOpenSearchable.CreateFrom((Terradue.OpenSearch.GenericOpenSearchable)e, ose);
+                }
+                // Cwic case
+                if (url.Host == "cwic.wgiss.ceos.org" && e.DefaultMimeType == "application/atom+xml" && e is Terradue.OpenSearch.GenericOpenSearchable) {
+                    log.DebugFormat("Cwic source. Trying to get the earthobservation profile");
+                    e = CwicOpenSearchable.CreateFrom((Terradue.OpenSearch.GenericOpenSearchable)e, ose);
                 }
                 entities.Add(e);
             }

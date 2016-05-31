@@ -21,3 +21,5 @@ using System.Runtime.CompilerServices;
 //[assembly: AssemblyDelaySign(false)]
 //[assembly: AssemblyKeyFile("")]
 
+[assembly: InternalsVisibleTo( "Terradue.OpenSearch.Client.Test" )]  
+

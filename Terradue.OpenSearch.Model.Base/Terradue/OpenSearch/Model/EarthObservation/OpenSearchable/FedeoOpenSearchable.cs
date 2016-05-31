@@ -18,7 +18,7 @@ namespace Terradue.OpenSearch.Model.EarthObservation.OpenSearchable
     public class FedeoOpenSearchable : GenericOpenSearchable, IOpenSearchable
 	{
 
-        private static readonly ILog log = LogManager.GetLogger(typeof(FedeoOpenSearchable));
+        private static readonly ILog log = LogManager.GetLogger(typeof(CwicOpenSearchable));
 
         public FedeoOpenSearchable(OpenSearchDescription osd, OpenSearchEngine ose): base(osd, ose){
         }
