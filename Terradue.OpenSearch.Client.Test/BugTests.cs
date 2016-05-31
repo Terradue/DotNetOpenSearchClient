@@ -22,15 +22,19 @@ namespace Terradue.OpenSearch.Client.Test {
 
             OpenSearchClient.metadataPaths = new List<string>();
 
+            OpenSearchClient.parameterArgs = new List<string>();
 
+            OpenSearchClient.dataModelParameterArgs = new List<string>();
         }
 
         [Test()]
-        public void Issue15021_1() {
+        public void Issue5() {
 
-            OpenSearchClient.baseUrlArg.Add("http://eo-virtual-archive4.esa.int/search/ASA_IM__0P/ASA_IM__0CNPDE20120407_061242_000000173113_00250_52850_6352.N1/rdf");
+            OpenSearchClient.baseUrlArg.Add("https://data2.terradue.com/eop/sentinel1/dataset/search?format=atom&uid=S1A_IW_GRDH_1SDV_20150522T154256_20150522T154321_006036_007CB1_593F");
 
-            OpenSearchClient.metadataPaths.Add("wkt");
+            OpenSearchClient.metadataPaths.Add("enclosure");
+
+            OpenSearchClient.dataModelParameterArgs.Add("enclosure:scheme=s3");
 
             MemoryStream ms = new MemoryStream();
 
@@ -38,9 +42,9 @@ namespace Terradue.OpenSearch.Client.Test {
 
             ms.Seek(0, SeekOrigin.Begin);
 
-            var wkt = Encoding.UTF8.GetString(ms.ToArray());
+            var enclosure = Encoding.UTF8.GetString(ms.ToArray());
 
-            Assert.AreEqual("MULTIPOLYGON(((-121.758523 37.489391,-120.940872 37.601472,-121.187833 38.74263,-122.004685 38.630714,-121.758523 37.489391)))\n", wkt);
+            Assert.AreEqual("s3://sentinel-1/2015/05/S1A_IW_GRDH_1SDV_20150522T154256_20150522T154321_006036_007CB1_593F.zip\n", enclosure);
 
         }
             

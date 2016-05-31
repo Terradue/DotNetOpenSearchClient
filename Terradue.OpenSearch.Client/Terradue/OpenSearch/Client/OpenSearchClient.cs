@@ -48,8 +48,8 @@ namespace Terradue.OpenSearch.Client {
         private static int pagination = 20;
         private static int totalResults;
         internal static List<string> metadataPaths = null;
-        private static List<string> parameterArgs = new List<string>();
-        private static List<string> dataModelParameterArgs = new List<string>();
+        internal static List<string> parameterArgs = new List<string>();
+        internal static List<string> dataModelParameterArgs = new List<string>();
         private static OpenSearchEngine ose;
         private static OpenSearchMemoryCache searchCache;
         private static NameValueCollection dataModelParameters;
