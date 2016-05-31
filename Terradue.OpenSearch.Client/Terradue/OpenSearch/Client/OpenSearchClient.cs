@@ -412,10 +412,23 @@ namespace Terradue.OpenSearch.Client {
             patternLayout.ConversionPattern = "[%-5level] %message%newline";
             patternLayout.ActivateOptions();
 
-            ConsoleAppender roller = new ConsoleAppender();
-            roller.Layout = patternLayout;
-            roller.ActivateOptions();
-            hierarchy.Root.AddAppender(roller);
+            ConsoleAppender consoleOutAppender = new ConsoleAppender();
+            consoleOutAppender.Layout = patternLayout;
+            consoleOutAppender.ActivateOptions();
+            log4net.Filter.LevelRangeFilter outfilter = new log4net.Filter.LevelRangeFilter();
+            outfilter.LevelMin = Level.Warn;
+            outfilter.LevelMax = Level.Debug;
+            consoleOutAppender.AddFilter(outfilter);
+            hierarchy.Root.AddAppender(consoleOutAppender);
+
+            ConsoleAppender consoleErrAppender = new ConsoleAppender();
+            consoleErrAppender.Layout = patternLayout;
+            consoleErrAppender.ActivateOptions();
+            log4net.Filter.LevelRangeFilter errfilter = new log4net.Filter.LevelRangeFilter();
+            errfilter.LevelMin = Level.Error;
+            errfilter.LevelMax = Level.Fatal;
+            consoleErrAppender.AddFilter(outfilter);
+            hierarchy.Root.AddAppender(consoleErrAppender);
 
             hierarchy.Root.Level = Level.Info;
             if (verbose == true) {
