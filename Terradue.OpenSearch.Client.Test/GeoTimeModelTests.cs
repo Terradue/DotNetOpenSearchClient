@@ -22,6 +22,10 @@ namespace Terradue.OpenSearch.Client.Test {
 
             OpenSearchClient.metadataPaths = new List<string>();
 
+            OpenSearchClient.parameterArgs = new List<string>();
+
+            OpenSearchClient.dataModelParameterArgs = new List<string>();
+
         }
 
         [Test()]
