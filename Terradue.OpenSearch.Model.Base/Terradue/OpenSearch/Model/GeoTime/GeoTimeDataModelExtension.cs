@@ -39,7 +39,7 @@ namespace Terradue.OpenSearch.Model.GeoTime {
 
         #region IOpenSearchClientDataModelExtension implementation
 
-        public void InitModelExtension(NameValueCollection parameters){
+        public void InitModelExtension(NameValueCollection parameters) {
 
             this.parameters = parameters;
             this.InitializeExtractors();
@@ -87,9 +87,9 @@ namespace Terradue.OpenSearch.Model.GeoTime {
         public virtual string Description {
             get {
                 return "Data model to handle simple Geo & Time dataset according to OGC® OpenSearch Geo and Time Extensions 10-032r8\n" +
-                    "Some parameters allows to ovveride or to filter metadata:" +
-                    "enclosure:scheme filters enclosure with corresponding scheme" +
-                    "enclosure:host filters enclosure with corresponding hostname";
+                "Some parameters allows to ovveride or to filter metadata:" +
+                "enclosure:scheme filters enclosure with corresponding scheme" +
+                "enclosure:host filters enclosure with corresponding hostname";
             }
         }
 
@@ -125,11 +125,15 @@ namespace Terradue.OpenSearch.Model.GeoTime {
             
         }
 
-        public virtual IOpenSearchable CreateOpenSearchable(List<Uri> baseUrls, string queryFormatArg, OpenSearchEngine ose, NetworkCredential netCreds){
+        public virtual IOpenSearchable CreateOpenSearchable(List<Uri> baseUrls, string queryFormatArg, OpenSearchEngine ose, NetworkCredential netCreds) {
             List<IOpenSearchable> entities = new List<IOpenSearchable>();
             foreach (var url in baseUrls) {
                 if (string.IsNullOrEmpty(queryFormatArg))
-                    entities.Add(OpenSearchFactory.FindOpenSearchable(ose, url));
+                    try {
+                        entities.Add(OpenSearchFactory.FindOpenSearchable(ose, url));
+                    } catch (Exception e) {
+                        throw e;
+                    }
                 else {
                     var e = OpenSearchFactory.FindOpenSearchable(ose, url, ose.GetExtensionByExtensionName(queryFormatArg).DiscoveryContentType);
                     entities.Add(e);
@@ -146,6 +150,7 @@ namespace Terradue.OpenSearch.Model.GeoTime {
 
             return entity;
         }
+
         #endregion
     }
 }

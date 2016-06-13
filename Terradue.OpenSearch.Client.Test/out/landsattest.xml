@@ -1,0 +1,114 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <title type="text">CWIC OpenSearch Response</title>
+  <id>urn:uuid:47fd3451-441b-4143-9db4-b74dc83c986a</id>
+  <updated>2016-06-07T08:25:29.374564Z</updated>
+  <author>
+    <name>CEOS WGISS Integrated Catalog (CWIC) - CWIC Contact - Email: cwic-help@wgiss.ceos.org - Web: http://wgiss.ceos.org/cwic</name>
+    <uri />
+    <email>cwic-help@wgiss.ceos.org</email>
+  </author>
+  <link rel="self" type="application/atom+xml" title="This Request" href="http://cwic.wgiss.ceos.org/opensearch/granules.atom?count=1&amp;timeStart=2016-05-03T00:27:10Z&amp;timeEnd=2016-05-03T00:27:40Z&amp;datasetId=Landsat_8&amp;clientId=foo&amp;startPage=1" />
+  <link rel="search" type="application/opensearchdescription+xml" title="Search this resource" href="http://cwic.wgiss.ceos.org/opensearch/datasets/Landsat_8/osdd.xml?clientId=foo" />
+  <link rel="next" type="application/atom+xml" title="Next results" href="http://cwic.wgiss.ceos.org/opensearch/granules.atom?datasetId=Landsat_8&amp;count=1&amp;startIndex=2&amp;timeStart=2016-05-03T00:27:10Z&amp;timeEnd=2016-05-03T00:27:40Z&amp;clientId=foo" />
+  <link rel="first" type="application/atom+xml" title="First result" href="http://cwic.wgiss.ceos.org/opensearch/granules.atom?datasetId=Landsat_8&amp;count=1&amp;startIndex=1&amp;timeStart=2016-05-03T00:27:10Z&amp;timeEnd=2016-05-03T00:27:40Z&amp;clientId=foo" />
+  <link rel="last" type="application/atom+xml" title="Last result" href="http://cwic.wgiss.ceos.org/opensearch/granules.atom?datasetId=Landsat_8&amp;count=1&amp;startIndex=647&amp;timeStart=2016-05-03T00:27:10Z&amp;timeEnd=2016-05-03T00:27:40Z&amp;clientId=foo" />
+  <generator>http://cwic.wgiss.ceos.org/opensearch/granules.atom/?timeStart=2016-05-03T00:27:10Z&amp;timeEnd=2016-05-03T00:27:40Z&amp;datasetId=Landsat_8</generator>
+  <entry>
+    <id>http://cwic.wgiss.ceos.org/opensearch/granules.atom?uid=Landsat_8:LC81730772016123LGN00</id>
+    <title type="text">Entity ID: LC81730772016123LGN00, Acquisition Date: 02-MAY-16, Path: 173, Row: 77</title>
+    <summary type="text">Granule metadata for Entity ID: LC81730772016123LGN00, Acquisition Date: 02-MAY-16, Path: 173, Row: 77</summary>
+    <updated>2016-05-13T00:00:00Z</updated>
+    <author>
+      <name>EROS DATA CENTER - TECHNICAL CONTACT - Customer Services; U.S. Geological Survey; EROS Data Center; 47914 252nd Street;  Sioux Falls, SD 57198-0001; USA - Email: custserv@usgs.gov - Phone: 605-594-6151 - FAX: 605-594-6589</name>
+      <uri />
+      <email>custserv@usgs.gov</email>
+    </author>
+    <link rel="via" type="text/xml" title="Original source metadata" href="http://earthexplorer.usgs.gov/metadata/xml/4923/LC81730772016123LGN00/" />
+    <link rel="alternate" type="text/xml" title="Alternate metadata URL" href="http://earthexplorer.usgs.gov/metadata/xml/4923/LC81730772016123LGN00/" />
+    <link rel="icon" type="image/jpeg" title="Browse image URL" href="http://earthexplorer.usgs.gov/browse/landsat_8/2016/173/077/LC81730772016123LGN00.jpg" />
+    <link rel="alternate" type="text/html" title="Granule ordering URL" href="http://earthexplorer.usgs.gov/order/process?dataset_name=Landsat_8&amp;ordered=LC81730772016123LGN00&amp;node=INVSVC" />
+    <link rel="enclosure" type="text/html" title="Granule download URL" href="http://earthexplorer.usgs.gov/download/external/options/Landsat_8/LC81730772016123LGN00/INVSVC/" />
+    <georss:box xmlns:georss="http://www.georss.org/georss/10">-25.60701 23.03888 -23.50115 25.3096</georss:box>
+    <georss:polygon xmlns:georss="http://www.georss.org/georss/10">-25.22843 23.03888 -23.50115 23.47106 -23.87453 25.3096 -25.60701 24.90296 -25.22843 23.03888</georss:polygon>
+    <dc:date xmlns:dc="http://purl.org/dc/elements/1.1/">2016-05-02/2016-05-02</dc:date>
+    <offering xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" code="http://www.opengis.net/spec/owc-atom/1.0/req/img" xmlns="http://www.opengis.net/owc/1.0">
+      <content href="http://earthexplorer.usgs.gov/cgi-bin/landsat_8?sceneid=lc81730772016123lgn00&amp;srs=EPSG:3857&amp;bbox=2564676.3900473,-2950488.3029821,2817451.7841814,-2692737.8153817" type="text" />
+    </offering>
+    <EarthObservation xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="http://www.opengis.net/opt/2.1">
+      <phenomenonTime xmlns="http://www.opengis.net/om/2.0">
+        <TimePeriod xmlns="http://www.opengis.net/gml/3.2">
+          <beginPosition>2016-05-02T08:19:49.8760000Z</beginPosition>
+          <endPosition>2016-05-02T08:20:21.6460000Z</endPosition>
+        </TimePeriod>
+      </phenomenonTime>
+      <procedure xmlns="http://www.opengis.net/om/2.0">
+        <EarthObservationEquipment xmlns="http://www.opengis.net/eop/2.1">
+          <platform>
+            <Platform>
+              <shortName>Landsat-8</shortName>
+            </Platform>
+          </platform>
+          <instrument>
+            <Instrument>
+              <shortName>OLI_TIRS</shortName>
+              <description>Operational Land Imager &amp; Thermal Infrared Sensor</description>
+            </Instrument>
+          </instrument>
+          <sensor>
+            <Sensor>
+              <sensorType>OPTICAL</sensorType>
+            </Sensor>
+          </sensor>
+          <acquisitionParameters>
+            <Acquisition>
+              <orbitDirection>DESCENDING</orbitDirection>
+              <wrsLongitudeGrid>173</wrsLongitudeGrid>
+              <wrsLatitudeGrid>77</wrsLatitudeGrid>
+              <illuminationAzimuthAngle>39.24031474</illuminationAzimuthAngle>
+              <illuminationElevationAngle>40.33896393</illuminationElevationAngle>
+            </Acquisition>
+          </acquisitionParameters>
+        </EarthObservationEquipment>
+      </procedure>
+      <featureOfInterest xsi:nil="true" xmlns="http://www.opengis.net/om/2.0" />
+      <result>
+        <EarthObservationResult>
+          <browse xmlns="http://www.opengis.net/eop/2.1">
+            <BrowseInformation>
+              <type>img</type>
+              <referenceSystemIdentifier>EPSG:3857</referenceSystemIdentifier>
+              <fileName>
+                <d7p1:ServiceReference d7p1:type="image/png" d7p2:href="http://earthexplorer.usgs.gov/cgi-bin/landsat_8?sceneid=lc81730772016123lgn00&amp;srs=EPSG:3857&amp;bbox=2564676.3900473,-2950488.3029821,2817451.7841814,-2692737.8153817" d7p2:title="LandsatLook &quot;Natural Color&quot; Preview Image" xmlns:d7p2="http://www.w3.org/1999/xlink" xmlns:d7p1="http://www.opengis.net/ows/2.0" xmlns="http://www.opengis.net/ows/2.0" />
+              </fileName>
+            </BrowseInformation>
+          </browse>
+          <cloudCoverPercentage>0.01</cloudCoverPercentage>
+        </EarthObservationResult>
+      </result>
+      <metaDataProperty xmlns="http://www.opengis.net/eop/2.1">
+        <EarthObservationMetaData>
+          <identifier>LC81730772016123LGN00</identifier>
+          <acquisitionType>NOMINAL</acquisitionType>
+          <imageQualityDegradation>9</imageQualityDegradation>
+          <processing>
+            <ProcessingInformation>
+              <processingLevel>L1T</processingLevel>
+              <auxiliaryDataSetFileName>LO8BPF20160502073914_20160502082349.02</auxiliaryDataSetFileName>
+              <auxiliaryDataSetFileName>LT8BPF20160422201524_20160507073029.01</auxiliaryDataSetFileName>
+              <auxiliaryDataSetFileName>L8CPF20160401_20160630.02</auxiliaryDataSetFileName>
+              <auxiliaryDataSetFileName>L8RLUT20150303_20431231v11.h5</auxiliaryDataSetFileName>
+            </ProcessingInformation>
+          </processing>
+        </EarthObservationMetaData>
+      </metaDataProperty>
+    </EarthObservation>
+    <identifier xmlns="http://purl.org/dc/elements/1.1/">Landsat_8:LC81730772016123LGN00</identifier>
+  </entry>
+  <dc:identifier xmlns:dc="http://purl.org/dc/elements/1.1/">http://cwic.wgiss.ceos.org/opensearch/granules.atom/?timeStart=2016-05-03T00:27:10Z&amp;timeEnd=2016-05-03T00:27:40Z&amp;datasetId=Landsat_8</dc:identifier>
+  <opensearch:totalResults xmlns:opensearch="http://a9.com/-/spec/opensearch/1.1/">647</opensearch:totalResults>
+  <queryTime xmlns="http://purl.org/dc/elements/1.1/">1004.2148</queryTime>
+  <startIndex xmlns="http://a9.com/-/spec/opensearch/1.1/">1</startIndex>
+  <itemsPerPage xmlns="http://a9.com/-/spec/opensearch/1.1/">1</itemsPerPage>
+  <os:Query xmlns:os="http://a9.com/-/spec/opensearch/1.1/" xmlns:param="http://a9.com/-/spec/opensearch/extensions/parameters/1.0/" xmlns:params="http://a9.com/-/spec/opensearch/extensions/parameters/1.0/" xmlns:geo="http://a9.com/-/opensearch/extensions/geo/1.0/" xmlns:time="http://a9.com/-/opensearch/extensions/time/1.0/" xmlns:cwic="http://cwic.wgiss.ceos.org/opensearch/extensions/1.0/" xmlns:esipdiscover="http://commons.esipfed.org/ns/discovery/1.2/" os:count="1" time:start="2016-05-03T00:27:10Z" time:end="2016-05-03T00:27:40Z" />
+</feed>

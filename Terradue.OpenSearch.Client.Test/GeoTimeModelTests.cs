@@ -26,6 +26,8 @@ namespace Terradue.OpenSearch.Client.Test {
 
             OpenSearchClient.dataModelParameterArgs = new List<string>();
 
+            OpenSearchClient.queryModelArg = "GeoTime";
+
         }
 
         [Test()]
