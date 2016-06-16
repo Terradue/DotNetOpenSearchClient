@@ -33,11 +33,11 @@ namespace Terradue.OpenSearch.Client.Test {
         [Test()]
         public void Issue5() {
 
-            OpenSearchClient.baseUrlArg.Add("https://data2.terradue.com/eop/sentinel1/dataset/search?format=atom&uid=S1A_IW_GRDH_1SDV_20150522T154256_20150522T154321_006036_007CB1_593F");
+            OpenSearchClient.baseUrlArg.Add("https://data2.terradue.com/eop/s1-cache/dataset/search?format=atom&uid=S1A_IW_SLC__1SDV_20160524T160839_20160524T160906_011403_011568_F048");
 
             OpenSearchClient.metadataPaths.Add("enclosure");
 
-            OpenSearchClient.dataModelParameterArgs.Add("enclosure:scheme=s3");
+            OpenSearchClient.dataModelParameterArgs.Add("enclosure:scheme=http");
 
             MemoryStream ms = new MemoryStream();
 
@@ -47,11 +47,33 @@ namespace Terradue.OpenSearch.Client.Test {
 
             var enclosure = Encoding.UTF8.GetString(ms.ToArray());
 
-            Assert.AreEqual("s3://sentinel-1/2015/05/S1A_IW_GRDH_1SDV_20150522T154256_20150522T154321_006036_007CB1_593F.zip\n", enclosure);
+            Assert.AreEqual("http://download.terradue.com/sentinel-1/2016/05/24/S1A_IW_SLC__1SDV_20160524T160839_20160524T160906_011403_011568_F048.zip\n", enclosure);
 
         }
 
-        [Test()]
+		[Test()]
+		public void Issue_19006()
+		{
+
+			OpenSearchClient.baseUrlArg.Add("https://data2.terradue.com:443/eop/landsat8/series/ecop-gran-paradiso/search?format=atom&uid=LC81950292016117LGN00");
+
+			OpenSearchClient.queryModelArg = "EOP";
+
+			OpenSearchClient.metadataPaths.Add("wrsLatitudeGrid");
+
+			MemoryStream ms = new MemoryStream();
+
+			client.ProcessQuery(ms);
+
+			ms.Seek(0, SeekOrigin.Begin);
+
+			var enclosure = Encoding.UTF8.GetString(ms.ToArray());
+
+			Assert.AreEqual("035\n", enclosure);
+
+		}
+
+        //[Test()]
         public void ValueTooLarge() {
 
             OpenSearchClient.baseUrlArg.Add("https://scihub.copernicus.eu/apihub/odata/v1");

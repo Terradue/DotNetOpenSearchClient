@@ -7,3 +7,5 @@ obj
 OpenSearchClient.userprefs
 target
 Terradue.OpenSearch.Client/Resources
+Terradue.OpenSearch.Model.Base/Resources
+Terradue.OpenSearch.Model/Resources
