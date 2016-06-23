@@ -22,7 +22,7 @@ namespace Terradue.OpenSearch.Model.GeoTime {
         public virtual string GetMetadata(Terradue.OpenSearch.Result.IOpenSearchResultItem item) {
             string geom = null;
             if (item is Feature)
-                geom = WktFeatureExtensions.ToWkt((Feature)item);
+                geom = WktExtensions.ToWkt((Feature)item);
             if (geom == null) {
                 foreach (SyndicationElementExtension ext in item.ElementExtensions) {
                     if (ext.OuterName == "spatial") {
@@ -34,8 +34,11 @@ namespace Terradue.OpenSearch.Model.GeoTime {
             if (geom == null) {
                 foreach (SyndicationElementExtension ext in item.ElementExtensions.ToArray()) {
 
-                    if (ext.OuterNamespace == "http://www.georss.org/georss/10" || ext.OuterNamespace == "http://www.georss.org/georss")
-                        geom = GeometryFactory.GeoRSSToGeometry(ext.GetObject<XmlElement>()).ToWkt();
+                    if (ext.OuterNamespace == "http://www.georss.org/georss/10" )
+                        geom = Terradue.GeoJson.GeoRss10.GeoRss10Extensions.ToGeometry(Terradue.GeoJson.GeoRss10.GeoRss10Helper.Deserialize(ext.GetReader())).ToWkt();
+
+                    if (ext.OuterNamespace == "http://www.georss.org/georss" )
+                        geom = Terradue.GeoJson.GeoRss.GeoRssExtensions.ToGeometry(Terradue.GeoJson.GeoRss.GeoRssHelper.Deserialize(ext.GetReader())).ToWkt();
 
                 }
                     

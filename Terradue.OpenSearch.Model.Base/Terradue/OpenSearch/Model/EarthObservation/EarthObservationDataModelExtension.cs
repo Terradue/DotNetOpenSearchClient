@@ -38,6 +38,7 @@ namespace Terradue.OpenSearch.Model.EarthObservation {
             metadataExtractors.Add("operationalMode", new OperationalModeMetadataExtractor());
             metadataExtractors.Add("polarisationChannels", new PolarisationChannelsMetadataExtractor());
             metadataExtractors.Add("wrsLongitudeGrid", new WrsLongitudeGridMetadataExtractor());
+			metadataExtractors.Add("wrsLatitudeGrid", new WrsLatitudeGridMetadataExtractor());
             metadataExtractors.Add("processingLevel", new ProcessingLevelMetadataExtractor());
             metadataExtractors.Add("id", new IdMetadataExtractor());
         }

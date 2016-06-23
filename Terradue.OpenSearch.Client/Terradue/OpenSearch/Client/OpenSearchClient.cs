@@ -38,7 +38,7 @@ namespace Terradue.OpenSearch.Client {
     public class OpenSearchClient {
         private static readonly ILog log = LogManager.GetLogger(typeof(OpenSearchClient));
         private static Version version = typeof(OpenSearchClient).Assembly.GetName().Version;
-        private static bool verbose;
+        internal static bool verbose;
         private static bool listOsee;
         private static string outputFilePathArg = null;
         private static string queryFormatArg = null;
@@ -54,7 +54,7 @@ namespace Terradue.OpenSearch.Client {
         private static OpenSearchMemoryCache searchCache;
         private static NameValueCollection dataModelParameters;
         private static DataModel dataModel;
-        private static NetworkCredential netCreds;
+        internal static NetworkCredential netCreds;
 
 
         public static void Main(string[] args) {
