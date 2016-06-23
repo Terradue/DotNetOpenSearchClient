@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Terradue.OpenSearch.Model",
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Terradue.OpenSearch.Model.Base", "Terradue.OpenSearch.Model.Base\Terradue.OpenSearch.Model.Base.csproj", "{6222FD31-E454-4D76-9AAF-0535787A6A1B}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Terradue.OpenSearch.Client.Test", "Terradue.OpenSearch.Client.Test\Terradue.OpenSearch.Client.Test.csproj", "{22528738-2074-43F0-BC03-92B20234B484}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x86 = Debug|x86
@@ -17,6 +19,10 @@ Global
 		{1FB59AA7-3878-47CD-4267-F179F56C6470}.Debug|x86.Build.0 = Debug|x86
 		{1FB59AA7-3878-47CD-4267-F179F56C6470}.Release|x86.ActiveCfg = Release|x86
 		{1FB59AA7-3878-47CD-4267-F179F56C6470}.Release|x86.Build.0 = Release|x86
+		{22528738-2074-43F0-BC03-92B20234B484}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{22528738-2074-43F0-BC03-92B20234B484}.Debug|x86.Build.0 = Debug|Any CPU
+		{22528738-2074-43F0-BC03-92B20234B484}.Release|x86.ActiveCfg = Release|Any CPU
+		{22528738-2074-43F0-BC03-92B20234B484}.Release|x86.Build.0 = Release|Any CPU
 		{6222FD31-E454-4D76-9AAF-0535787A6A1B}.Debug|x86.ActiveCfg = Debug|Any CPU
 		{6222FD31-E454-4D76-9AAF-0535787A6A1B}.Debug|x86.Build.0 = Debug|Any CPU
 		{6222FD31-E454-4D76-9AAF-0535787A6A1B}.Release|x86.ActiveCfg = Release|Any CPU

@@ -5,14 +5,14 @@
 	<parent>
 		<groupId>com.terradue</groupId>
 		<artifactId>t2-parent</artifactId>
-		<version>15</version>
+		<version>16</version>
 	</parent>
 
 	<groupId>com.terradue.system</groupId>
 	<artifactId>opensearch-client</artifactId>
 	<packaging>rpm</packaging>
 	<description>OpenSearch Client</description>
-	<version>1.5.2</version>
+	<version>1.6</version>
 
 	<properties>
 		<redmine.projectID>opensearch-client</redmine.projectID>
