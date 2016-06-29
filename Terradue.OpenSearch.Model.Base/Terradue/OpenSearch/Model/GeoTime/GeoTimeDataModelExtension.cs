@@ -38,6 +38,7 @@ namespace Terradue.OpenSearch.Model.GeoTime
 			metadataExtractors.Add("updated", new UpdatedMetadataExtractor());
 			metadataExtractors.Add("related", new RelatedMetadataExtractor(parameters));
 			metadataExtractors.Add("self", new SelfLinkMetadataExtractor(parameters));
+			metadataExtractors.Add("link", new LinkMetadataExtractor(parameters));
 		}
 
 		#region IOpenSearchClientDataModelExtension implementation
@@ -75,12 +76,12 @@ namespace Terradue.OpenSearch.Model.GeoTime
 						specifier = metadata.Split(':')[1];
 					}
 
-					if (!metadataExtractors.ContainsKey(metadata))
-						throw new NotSupportedException(string.Format("metadata extractor \"{0}\" not found in the data model", metadata));
+					if (!metadataExtractors.ContainsKey(path))
+						throw new NotSupportedException(string.Format("metadata extractor \"{0}\" not found in the data model", path));
 
 
 
-					metadataItems.Add(metadataExtractors[metadata].GetMetadata(item, specifier));
+					metadataItems.Add(metadataExtractors[path].GetMetadata(item, specifier));
 
 
 				}
