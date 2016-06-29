@@ -6,7 +6,7 @@ namespace Terradue.OpenSearch.Model.EarthObservation {
     class OrbitNumberMetadataExtractor: IMetadataExtractor {
         #region IMetadataExtractor implementation
 
-        public string GetMetadata(IOpenSearchResultItem item) {
+        public string GetMetadata(IOpenSearchResultItem item, string specifier) {
 
             return Terradue.Metadata.EarthObservation.OpenSearch.EarthObservationOpenSearchResultHelpers.FindOrbitNumberFromOpenSearchResultItem(item);
         }

@@ -69,7 +69,7 @@ namespace Terradue.OpenSearch.Client.Test {
 
 			var enclosure = Encoding.UTF8.GetString(ms.ToArray());
 
-			Assert.AreEqual("035\n", enclosure);
+			Assert.AreEqual("29\n", enclosure);
 
 		}
 

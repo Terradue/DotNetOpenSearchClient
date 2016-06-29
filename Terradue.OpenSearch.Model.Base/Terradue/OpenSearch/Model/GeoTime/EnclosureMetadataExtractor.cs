@@ -17,7 +17,7 @@ namespace Terradue.OpenSearch.Model.GeoTime {
 
         #region IMetadataExtractor implementation
 
-        public string GetMetadata(Terradue.OpenSearch.Result.IOpenSearchResultItem item) {
+        public string GetMetadata(Terradue.OpenSearch.Result.IOpenSearchResultItem item, string specifier) {
 
             var link = item.Links.FirstOrDefault(l => {
                 if (l.RelationshipType == "enclosure") {

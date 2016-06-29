@@ -9,7 +9,7 @@ namespace Terradue.OpenSearch.Model.GeoTime
     public class TitleMetadataExtractor : IMetadataExtractor
 	{
         #region IMetadataExtractor implementation
-        public virtual string GetMetadata(Terradue.OpenSearch.Result.IOpenSearchResultItem item) {
+        public virtual string GetMetadata(Terradue.OpenSearch.Result.IOpenSearchResultItem item, string specifier) {
             string title = "";
             if (item.Title != null)
                 title = item.Title.Text;

@@ -9,7 +9,7 @@ namespace Terradue.OpenSearch.Model.EarthObservation
     class IdMetadataExtractor : Terradue.OpenSearch.Model.GeoTime.IdentifierMetadataExtractor
 	{
         #region IMetadataExtractor implementation
-        public override string GetMetadata(Terradue.OpenSearch.Result.IOpenSearchResultItem item) {
+        public override string GetMetadata(Terradue.OpenSearch.Result.IOpenSearchResultItem item, string specifier) {
 
 
             return item.Id;

@@ -40,7 +40,7 @@ namespace Terradue.OpenSearch.Client.Test {
         [Test()]
         public void S1EOP() {
 
-            OpenSearchClient.baseUrlArg.Add("https://scihub.copernicus.eu/apihub/odata/v1");
+            OpenSearchClient.baseUrlArg.Add("http://scihub.terradue.com/apihub/odata/v1");
             OpenSearchClient.metadataPaths.Add("{}");
             OpenSearchClient.parameterArgs.Add("count=1");
             OpenSearchClient.parameterArgs.Add("profile=eop");

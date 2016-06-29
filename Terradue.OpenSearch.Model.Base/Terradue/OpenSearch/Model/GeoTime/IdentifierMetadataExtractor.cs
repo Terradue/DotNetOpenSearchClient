@@ -9,7 +9,7 @@ namespace Terradue.OpenSearch.Model.GeoTime
     public class IdentifierMetadataExtractor : IMetadataExtractor
 	{
         #region IMetadataExtractor implementation
-        public virtual string GetMetadata(Terradue.OpenSearch.Result.IOpenSearchResultItem item) {
+        public virtual string GetMetadata(Terradue.OpenSearch.Result.IOpenSearchResultItem item, string specifier) {
             string ident = null;
             if (ident == null) {
                 foreach (SyndicationElementExtension ext in item.ElementExtensions) {

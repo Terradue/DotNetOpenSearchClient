@@ -91,11 +91,11 @@
     <Reference Include="Terradue.Metadata.EarthObservation">
       <HintPath>..\packages\Terradue.Metadata.EarthObservation.1.4.6\lib\net40\Terradue.Metadata.EarthObservation.dll</HintPath>
     </Reference>
-    <Reference Include="Terradue.OpenSearch">
-      <HintPath>..\packages\Terradue.OpenSearch.1.12.3\lib\net40\Terradue.OpenSearch.dll</HintPath>
-    </Reference>
     <Reference Include="Terradue.GeoJson">
       <HintPath>..\packages\Terradue.GeoJson.1.7.4\lib\net40\Terradue.GeoJson.dll</HintPath>
+    </Reference>
+    <Reference Include="Terradue.OpenSearch">
+      <HintPath>..\packages\Terradue.OpenSearch.1.12.4\lib\net40\Terradue.OpenSearch.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -134,6 +134,7 @@
     <Compile Include="Terradue\OpenSearch\Model\Schemas\EarthExplorer.cs" />
     <Compile Include="Terradue\OpenSearch\Model\EarthObservation\IdMetadataExtractor.cs" />
     <Compile Include="Terradue\OpenSearch\Model\EarthObservation\WrsLatitudeGridMetadataExtractor.cs" />
+    <Compile Include="Terradue\OpenSearch\Model\GeoTime\LinkMetadataExtractor.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>

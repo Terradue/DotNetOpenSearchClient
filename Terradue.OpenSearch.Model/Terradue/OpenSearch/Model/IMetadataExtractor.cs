@@ -11,7 +11,7 @@ namespace Terradue.OpenSearch.Model
 
         string Description { get; }
 
-        string GetMetadata(IOpenSearchResultItem item);
+        string GetMetadata(IOpenSearchResultItem item, string specifier);
 
 	}
 

@@ -8,7 +8,7 @@ namespace Terradue.OpenSearch.Model.EarthObservation
 	{
         #region IMetadataExtractor implementation
 
-        public string GetMetadata(IOpenSearchResultItem item) {
+        public string GetMetadata(IOpenSearchResultItem item, string specifier) {
             
             return Terradue.Metadata.EarthObservation.OpenSearch.EarthObservationOpenSearchResultHelpers.FindProductTypeFromOpenSearchResultItem(item);
         }
