@@ -1,8 +1,8 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
   <title type="text">CWIC OpenSearch Response</title>
-  <id>urn:uuid:65fed2da-68a0-4a5d-9807-4e48c5bfbcb0</id>
-  <updated>2016-06-23T09:15:22.960415Z</updated>
+  <id>urn:uuid:93c58c01-3c81-462f-83c4-ad60bb78e8f5</id>
+  <updated>2016-06-29T12:34:13.261372Z</updated>
   <author>
     <name>CEOS WGISS Integrated Catalog (CWIC) - CWIC Contact - Email: cwic-help@wgiss.ceos.org - Web: http://wgiss.ceos.org/cwic</name>
     <uri />
@@ -107,7 +107,7 @@
   </entry>
   <dc:identifier xmlns:dc="http://purl.org/dc/elements/1.1/">http://cwic.wgiss.ceos.org/opensearch/granules.atom/?timeStart=2016-05-03T00:27:10Z&amp;timeEnd=2016-05-03T00:27:40Z&amp;datasetId=Landsat_8</dc:identifier>
   <opensearch:totalResults xmlns:opensearch="http://a9.com/-/spec/opensearch/1.1/">647</opensearch:totalResults>
-  <queryTime xmlns="http://purl.org/dc/elements/1.1/">4981.971</queryTime>
+  <queryTime xmlns="http://purl.org/dc/elements/1.1/">4892.8478</queryTime>
   <startIndex xmlns="http://a9.com/-/spec/opensearch/1.1/">1</startIndex>
   <itemsPerPage xmlns="http://a9.com/-/spec/opensearch/1.1/">1</itemsPerPage>
   <os:Query xmlns:os="http://a9.com/-/spec/opensearch/1.1/" xmlns:param="http://a9.com/-/spec/opensearch/extensions/parameters/1.0/" xmlns:params="http://a9.com/-/spec/opensearch/extensions/parameters/1.0/" xmlns:geo="http://a9.com/-/opensearch/extensions/geo/1.0/" xmlns:time="http://a9.com/-/opensearch/extensions/time/1.0/" xmlns:cwic="http://cwic.wgiss.ceos.org/opensearch/extensions/1.0/" xmlns:esipdiscover="http://commons.esipfed.org/ns/discovery/1.2/" os:count="1" time:start="2016-05-03T00:27:10Z" time:end="2016-05-03T00:27:40Z" />

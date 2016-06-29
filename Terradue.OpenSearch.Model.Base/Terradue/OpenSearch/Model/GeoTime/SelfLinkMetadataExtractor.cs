@@ -17,7 +17,7 @@ namespace Terradue.OpenSearch.Model.GeoTime {
 
         #region IMetadataExtractor implementation
 
-        public string GetMetadata(Terradue.OpenSearch.Result.IOpenSearchResultItem item) {
+        public string GetMetadata(Terradue.OpenSearch.Result.IOpenSearchResultItem item, string specifier) {
 
             var link = item.Links.FirstOrDefault(l => {
                 if (l.RelationshipType == "self") {
@@ -36,7 +36,7 @@ namespace Terradue.OpenSearch.Model.GeoTime {
 
         public string Description {
             get {
-                return string.Format("Link to resource that identifies a resource equivalent to the containing element (RFC 4287).");
+                return string.Format("[OBSOLETE use link:self instead] Link to resource that identifies a resource equivalent to the containing element (RFC 4287).");
             }
         }
 

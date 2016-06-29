@@ -7,9 +7,9 @@ namespace Terradue.OpenSearch.Model.EarthObservation
     class GeometryMetadataExtractor : WellKnownTextMetadataExtractor
 	{
         #region IMetadataExtractor implementation
-        public override string GetMetadata(Terradue.OpenSearch.Result.IOpenSearchResultItem item) {
+        public override string GetMetadata(Terradue.OpenSearch.Result.IOpenSearchResultItem item, string specifier) {
 
-            string geom = base.GetMetadata(item);
+            string geom = base.GetMetadata(item, specifier);
 
             if (geom == null) {
                 var geometry = Terradue.Metadata.EarthObservation.OpenSearch.EarthObservationOpenSearchResultHelpers.FindGeometryFromEarthObservation(item);

@@ -6,11 +6,11 @@ using Terradue.ServiceModel.Syndication;
 
 namespace Terradue.OpenSearch.Model.GeoTime {
     
-    class RelatedMetadataExtractor : IMetadataExtractor {
+    class LinkMetadataExtractor : IMetadataExtractor {
         
         NameValueCollection parameters;
 
-        public RelatedMetadataExtractor(NameValueCollection parameters) {
+        public LinkMetadataExtractor(NameValueCollection parameters) {
             this.parameters = parameters;
             
         }
@@ -20,7 +20,7 @@ namespace Terradue.OpenSearch.Model.GeoTime {
         public string GetMetadata(Terradue.OpenSearch.Result.IOpenSearchResultItem item, string specifier) {
 
             var link = item.Links.FirstOrDefault(l => {
-                if (l.RelationshipType == "related") {
+                if (l.RelationshipType == specifier) {
                     bool ret = true;
 
                     return ret;
@@ -36,8 +36,7 @@ namespace Terradue.OpenSearch.Model.GeoTime {
 
         public string Description {
             get {
-                return string.Format("[OBSOLETE use link:related instead] Link to resource related to the resource described by the containing element. For example, slaves feed in an correlated search. " +
-                    "This metadata takes into account the following data model parameters: related:title, related:type");
+				return string.Format("Link with a specific relationship (set link:search for link rel=search) (RFC 4287).");
             }
         }
 

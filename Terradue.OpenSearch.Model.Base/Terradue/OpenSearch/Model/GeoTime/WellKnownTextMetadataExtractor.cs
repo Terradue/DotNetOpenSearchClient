@@ -19,7 +19,7 @@ namespace Terradue.OpenSearch.Model.GeoTime {
         }
 
 
-        public virtual string GetMetadata(Terradue.OpenSearch.Result.IOpenSearchResultItem item) {
+        public virtual string GetMetadata(Terradue.OpenSearch.Result.IOpenSearchResultItem item, string specifier) {
             string geom = null;
             if (item is Feature)
                 geom = WktExtensions.ToWkt((Feature)item);

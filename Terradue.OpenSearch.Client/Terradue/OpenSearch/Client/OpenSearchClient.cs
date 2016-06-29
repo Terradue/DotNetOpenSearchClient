@@ -28,15 +28,14 @@ using Terradue.GeoJson.Feature;
 using Terradue.OpenSearch.Filters;
 using Terradue.OpenSearch.Model;
 using System.Threading;
-
-
+using log4net.Config;
 
 namespace Terradue.OpenSearch.Client {
     //-------------------------------------------------------------------------------------------------------------------------
     //-------------------------------------------------------------------------------------------------------------------------
     //-------------------------------------------------------------------------------------------------------------------------
     public class OpenSearchClient {
-        private static readonly ILog log = LogManager.GetLogger(typeof(OpenSearchClient));
+        private static ILog log = LogManager.GetLogger(typeof(OpenSearchClient));
         private static Version version = typeof(OpenSearchClient).Assembly.GetName().Version;
         internal static bool verbose;
         private static bool listOsee;
@@ -103,7 +102,7 @@ namespace Terradue.OpenSearch.Client {
         internal void Initialize() {
 
             // Config log
-            ConfigureLog();
+            log = ConfigureLog();
 
             log.Debug("Initialize Addins registry.");
 
@@ -213,10 +212,11 @@ namespace Terradue.OpenSearch.Client {
                     log.Debug("IndexOffset : " + index);
                     break;
                 } catch (Exception e) {
+					log.Warn(e.Message);
                     if (retry == 0)
                         throw e;
                     retry--;
-                    InitCache();
+					searchCache.ClearCache(".*");
                 }
             }
 
@@ -247,17 +247,17 @@ namespace Terradue.OpenSearch.Client {
                         if (retry == 0)
                             throw ae;
                         foreach (Exception e in ae.InnerExceptions) {
-                            log.Error("Exception " + e.Message);
+                            log.Warn("Exception " + e.Message);
                         }
                         retry--;
-                        InitCache();
+                        searchCache.ClearCache(".*");
                     }
                     catch (Exception e) {
                         if (retry == 0)
                             throw e;
-                        log.Error("Exception " + e.Message);
+                        log.Warn("Exception " + e.Message);
                         retry--;
-                        InitCache();
+                        searchCache.ClearCache(".*");
                     }
 
                 }
@@ -405,29 +405,31 @@ namespace Terradue.OpenSearch.Client {
             Console.Error.WriteLine();
         }
 
-        void ConfigureLog() {
+        ILog ConfigureLog() {
             Hierarchy hierarchy = (Hierarchy)LogManager.GetRepository();
+			hierarchy.Root.RemoveAllAppenders();
 
             PatternLayout patternLayout = new PatternLayout();
-            patternLayout.ConversionPattern = "[%-5level] %message%newline";
+            patternLayout.ConversionPattern = "%date [%thread] %-5level %logger - %message%newline";
             patternLayout.ActivateOptions();
 
             ConsoleAppender consoleOutAppender = new ConsoleAppender();
             consoleOutAppender.Layout = patternLayout;
             consoleOutAppender.ActivateOptions();
             log4net.Filter.LevelRangeFilter outfilter = new log4net.Filter.LevelRangeFilter();
-            outfilter.LevelMin = Level.Warn;
-            outfilter.LevelMax = Level.Debug;
+            outfilter.LevelMax = Level.Warn;
+            outfilter.LevelMin = Level.Debug;
             consoleOutAppender.AddFilter(outfilter);
             hierarchy.Root.AddAppender(consoleOutAppender);
 
             ConsoleAppender consoleErrAppender = new ConsoleAppender();
             consoleErrAppender.Layout = patternLayout;
             consoleErrAppender.ActivateOptions();
+			consoleErrAppender.Target = "Console.Error";
             log4net.Filter.LevelRangeFilter errfilter = new log4net.Filter.LevelRangeFilter();
             errfilter.LevelMin = Level.Error;
             errfilter.LevelMax = Level.Fatal;
-            consoleErrAppender.AddFilter(outfilter);
+            consoleErrAppender.AddFilter(errfilter);
             hierarchy.Root.AddAppender(consoleErrAppender);
 
             hierarchy.Root.Level = Level.Info;
@@ -435,6 +437,11 @@ namespace Terradue.OpenSearch.Client {
                 hierarchy.Root.Level = Level.Debug;
             }
             hierarchy.Configured = true;
+
+
+			BasicConfigurator.Configure(new ConsoleAppender[] {consoleOutAppender, consoleErrAppender });
+
+			return LogManager.GetLogger(typeof(OpenSearchClient));
         }
         //---------------------------------------------------------------------------------------------------------------------
         /// <summary>

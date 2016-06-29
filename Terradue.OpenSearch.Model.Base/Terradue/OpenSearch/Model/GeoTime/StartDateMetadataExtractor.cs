@@ -9,7 +9,7 @@ namespace Terradue.OpenSearch.Model.GeoTime
     public class StartDateMetadataExtractor : IMetadataExtractor
 	{
         #region IMetadataExtractor implementation
-        public virtual string GetMetadata(Terradue.OpenSearch.Result.IOpenSearchResultItem item) {
+        public virtual string GetMetadata(Terradue.OpenSearch.Result.IOpenSearchResultItem item, string specifier) {
             DateTime date = Terradue.Metadata.EarthObservation.OpenSearch.EarthObservationOpenSearchResultHelpers.FindStartDateFromOpenSearchResultItem(item);
 
             return date.ToUniversalTime().ToString("O");
