@@ -21,7 +21,7 @@
     <Externalconsole>true</Externalconsole>
     <PlatformTarget>x86</PlatformTarget>
     <ConsolePause>true</ConsolePause>
-    <Commandlineparameters>-v -p count=50 -p startIndex=1601 https://data.terradue.com/gs/catalogue/aux/gtfeature/search {}</Commandlineparameters>
+    <Commandlineparameters>"https://data2.terradue.com/eop/sentinel1/series/med/search?format=json&amp;bbox=-36.73828124999999,28.767659105691255,87.01171875,70.90226826757711","data","manu"</Commandlineparameters>
     <ExternalConsole>true</ExternalConsole>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">

@@ -32,4 +32,38 @@ Global
 		{BFFA2485-B9AC-4DE4-BABF-4DD96590F9D4}.Release|x86.ActiveCfg = Release|Any CPU
 		{BFFA2485-B9AC-4DE4-BABF-4DD96590F9D4}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
+	GlobalSection(MonoDevelopProperties) = preSolution
+		Policies = $0
+		$0.TextStylePolicy = $1
+		$1.inheritsSet = VisualStudio
+		$1.inheritsScope = text/plain
+		$1.scope = text/x-csharp
+		$0.CSharpFormattingPolicy = $2
+		$2.IndentSwitchSection = True
+		$2.NewLinesForBracesInProperties = True
+		$2.NewLinesForBracesInAccessors = True
+		$2.NewLinesForBracesInAnonymousMethods = True
+		$2.NewLinesForBracesInControlBlocks = True
+		$2.NewLinesForBracesInAnonymousTypes = True
+		$2.NewLinesForBracesInObjectCollectionArrayInitializers = True
+		$2.NewLinesForBracesInLambdaExpressionBody = True
+		$2.NewLineForElse = True
+		$2.NewLineForCatch = True
+		$2.NewLineForFinally = True
+		$2.NewLineForMembersInObjectInit = True
+		$2.NewLineForMembersInAnonymousTypes = True
+		$2.NewLineForClausesInQuery = True
+		$2.SpacingAfterMethodDeclarationName = False
+		$2.SpaceAfterMethodCallName = False
+		$2.SpaceBeforeOpenSquareBracket = False
+		$2.inheritsSet = Mono
+		$2.inheritsScope = text/x-csharp
+		$2.scope = text/x-csharp
+		$0.TextStylePolicy = $3
+		$3.inheritsSet = null
+		$3.scope = application/x-csproject
+		$0.XmlFormattingPolicy = $4
+		$4.inheritsSet = null
+		$4.scope = application/x-csproject
+	EndGlobalSection
 EndGlobal
