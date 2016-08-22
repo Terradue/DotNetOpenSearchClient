@@ -94,6 +94,9 @@
     <Reference Include="Terradue.OpenSearch.SciHub">
       <HintPath>..\packages\Terradue.OpenSearch.SciHub.1.2.0\lib\net40\Terradue.OpenSearch.SciHub.dll</HintPath>
     </Reference>
+    <Reference Include="Terradue.OpenSearch">
+      <HintPath>..\packages\Terradue.OpenSearch.1.12.11\lib\net40\Terradue.OpenSearch.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -155,10 +158,6 @@
     <ProjectReference Include="..\Terradue.OpenSearch.Model\Terradue.OpenSearch.Model.csproj">
       <Project>{BFFA2485-B9AC-4DE4-BABF-4DD96590F9D4}</Project>
       <Name>Terradue.OpenSearch.Model</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\DotNetOpenSearch\Terradue.OpenSearch\Terradue.OpenSearch.csproj">
-      <Project>{997A44FD-EE4A-490A-855B-88305E0CD269}</Project>
-      <Name>Terradue.OpenSearch</Name>
     </ProjectReference>
   </ItemGroup>
 </Project>
