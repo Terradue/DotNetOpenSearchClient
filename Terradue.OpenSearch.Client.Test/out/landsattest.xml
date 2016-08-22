@@ -1,21 +1,21 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
   <title type="text">CWIC OpenSearch Response</title>
-  <id>urn:uuid:c26f1d34-d071-4a71-bddc-0937eb3dfb82</id>
-  <updated>2016-06-29T15:34:33.518894Z</updated>
+  <id>urn:uuid:c70a3308-d3cc-4d22-832e-11a1e43d5172</id>
+  <updated>2016-08-03T09:14:33.11566Z</updated>
   <author>
     <name>CEOS WGISS Integrated Catalog (CWIC) - CWIC Contact - Email: cwic-help@wgiss.ceos.org - Web: http://wgiss.ceos.org/cwic</name>
     <uri />
     <email>cwic-help@wgiss.ceos.org</email>
   </author>
-  <link rel="self" type="application/atom+xml" title="This Request" href="http://cwic.wgiss.ceos.org/opensearch/granules.atom?count=1&amp;timeStart=2016-05-03T00:27:10Z&amp;timeEnd=2016-05-03T00:27:40Z&amp;datasetId=Landsat_8&amp;clientId=foo&amp;startPage=1" />
-  <link rel="search" type="application/opensearchdescription+xml" title="Search this resource" href="http://cwic.wgiss.ceos.org/opensearch/datasets/Landsat_8/osdd.xml?clientId=foo" />
-  <link rel="next" type="application/atom+xml" title="Next results" href="http://cwic.wgiss.ceos.org/opensearch/granules.atom?datasetId=Landsat_8&amp;count=1&amp;startIndex=2&amp;timeStart=2016-05-03T00:27:10Z&amp;timeEnd=2016-05-03T00:27:40Z&amp;clientId=foo" />
-  <link rel="first" type="application/atom+xml" title="First result" href="http://cwic.wgiss.ceos.org/opensearch/granules.atom?datasetId=Landsat_8&amp;count=1&amp;startIndex=1&amp;timeStart=2016-05-03T00:27:10Z&amp;timeEnd=2016-05-03T00:27:40Z&amp;clientId=foo" />
-  <link rel="last" type="application/atom+xml" title="Last result" href="http://cwic.wgiss.ceos.org/opensearch/granules.atom?datasetId=Landsat_8&amp;count=1&amp;startIndex=647&amp;timeStart=2016-05-03T00:27:10Z&amp;timeEnd=2016-05-03T00:27:40Z&amp;clientId=foo" />
-  <generator>http://cwic.wgiss.ceos.org/opensearch/granules.atom/?timeStart=2016-05-03T00:27:10Z&amp;timeEnd=2016-05-03T00:27:40Z&amp;datasetId=Landsat_8</generator>
+  <link rel="self" type="application/atom+xml" title="This Request" href="http://cwic.wgiss.ceos.org/opensearch/granules.atom?count=1&amp;timeStart=2016-05-03T00:27:10Z&amp;timeEnd=2016-05-03T00:27:40Z&amp;datasetId=C1235542031-USGS_LTA&amp;clientId=foo&amp;startPage=1" />
+  <link rel="search" type="application/opensearchdescription+xml" title="Search this resource" href="http://cwic.wgiss.ceos.org/opensearch/datasets/C1235542031-USGS_LTA/osdd.xml?clientId=foo" />
+  <link rel="next" type="application/atom+xml" title="Next results" href="http://cwic.wgiss.ceos.org/opensearch/granules.atom?datasetId=C1235542031-USGS_LTA&amp;count=1&amp;startIndex=2&amp;timeStart=2016-05-03T00:27:10Z&amp;timeEnd=2016-05-03T00:27:40Z&amp;clientId=foo" />
+  <link rel="first" type="application/atom+xml" title="First result" href="http://cwic.wgiss.ceos.org/opensearch/granules.atom?datasetId=C1235542031-USGS_LTA&amp;count=1&amp;startIndex=1&amp;timeStart=2016-05-03T00:27:10Z&amp;timeEnd=2016-05-03T00:27:40Z&amp;clientId=foo" />
+  <link rel="last" type="application/atom+xml" title="Last result" href="http://cwic.wgiss.ceos.org/opensearch/granules.atom?datasetId=C1235542031-USGS_LTA&amp;count=1&amp;startIndex=647&amp;timeStart=2016-05-03T00:27:10Z&amp;timeEnd=2016-05-03T00:27:40Z&amp;clientId=foo" />
+  <generator>http://cwic.wgiss.ceos.org/opensearch/granules.atom/?timeStart=2016-05-03T00:27:10Z&amp;timeEnd=2016-05-03T00:27:40Z&amp;datasetId=C1235542031-USGS_LTA</generator>
   <entry>
-    <id>http://cwic.wgiss.ceos.org/opensearch/granules.atom?uid=Landsat_8:LC80930832016123LGN00</id>
+    <id>http://cwic.wgiss.ceos.org/opensearch/granules.atom?uid=C1235542031-USGS_LTA:LC80930832016123LGN00</id>
     <title type="text">Entity ID: LC80930832016123LGN00, Acquisition Date: 02-MAY-16, Path: 93, Row: 83</title>
     <summary type="text">Granule metadata for Entity ID: LC80930832016123LGN00, Acquisition Date: 02-MAY-16, Path: 93, Row: 83</summary>
     <updated>2016-05-13T00:00:00Z</updated>
@@ -24,7 +24,6 @@
       <uri />
       <email>custserv@usgs.gov</email>
     </author>
-    <link rel="via" type="text/xml" title="Original source metadata" href="http://earthexplorer.usgs.gov/metadata/xml/4923/LC80930832016123LGN00/" />
     <link rel="alternate" type="text/xml" title="Alternate metadata URL" href="http://earthexplorer.usgs.gov/metadata/xml/4923/LC80930832016123LGN00/" />
     <link rel="icon" type="image/jpeg" title="Browse image URL" href="http://earthexplorer.usgs.gov/browse/landsat_8/2016/093/083/LC80930832016123LGN00.jpg" />
     <link rel="alternate" type="text/html" title="Granule ordering URL" href="http://earthexplorer.usgs.gov/order/process?dataset_name=Landsat_8&amp;ordered=LC80930832016123LGN00&amp;node=INVSVC" />
@@ -103,11 +102,11 @@
         </EarthObservationMetaData>
       </metaDataProperty>
     </EarthObservation>
-    <identifier xmlns="http://purl.org/dc/elements/1.1/">Landsat_8:LC80930832016123LGN00</identifier>
+    <identifier xmlns="http://purl.org/dc/elements/1.1/">C1235542031-USGS_LTA:LC80930832016123LGN00</identifier>
   </entry>
-  <dc:identifier xmlns:dc="http://purl.org/dc/elements/1.1/">http://cwic.wgiss.ceos.org/opensearch/granules.atom/?timeStart=2016-05-03T00:27:10Z&amp;timeEnd=2016-05-03T00:27:40Z&amp;datasetId=Landsat_8</dc:identifier>
+  <dc:identifier xmlns:dc="http://purl.org/dc/elements/1.1/">http://cwic.wgiss.ceos.org/opensearch/granules.atom/?timeStart=2016-05-03T00:27:10Z&amp;timeEnd=2016-05-03T00:27:40Z&amp;datasetId=C1235542031-USGS_LTA</dc:identifier>
   <opensearch:totalResults xmlns:opensearch="http://a9.com/-/spec/opensearch/1.1/">647</opensearch:totalResults>
-  <queryTime xmlns="http://purl.org/dc/elements/1.1/">4322.7238</queryTime>
+  <queryTime xmlns="http://purl.org/dc/elements/1.1/">5195.6671</queryTime>
   <startIndex xmlns="http://a9.com/-/spec/opensearch/1.1/">1</startIndex>
   <itemsPerPage xmlns="http://a9.com/-/spec/opensearch/1.1/">1</itemsPerPage>
   <os:Query xmlns:os="http://a9.com/-/spec/opensearch/1.1/" xmlns:param="http://a9.com/-/spec/opensearch/extensions/parameters/1.0/" xmlns:params="http://a9.com/-/spec/opensearch/extensions/parameters/1.0/" xmlns:geo="http://a9.com/-/opensearch/extensions/geo/1.0/" xmlns:time="http://a9.com/-/opensearch/extensions/time/1.0/" xmlns:cwic="http://cwic.wgiss.ceos.org/opensearch/extensions/1.0/" xmlns:esipdiscover="http://commons.esipfed.org/ns/discovery/1.2/" os:count="1" time:start="2016-05-03T00:27:10Z" time:end="2016-05-03T00:27:40Z" />

@@ -87,7 +87,7 @@ namespace Terradue.OpenSearch.Model.EarthObservation {
                 // Fedeo case
                 if (url.Host == "fedeo.esa.int" && e.DefaultMimeType == "application/atom+xml" && e is Terradue.OpenSearch.GenericOpenSearchable) {
                     log.DebugFormat("Fedeo source. Trying to get the earthobservation profile");
-                    e = CwicOpenSearchable.CreateFrom((Terradue.OpenSearch.GenericOpenSearchable)e, ose);
+                    e = FedeoOpenSearchable.CreateFrom(url, ose);
                 }
                 // Cwic case
                 if (url.Host == "cwic.wgiss.ceos.org" && e.DefaultMimeType == "application/atom+xml" && e is Terradue.OpenSearch.GenericOpenSearchable) {

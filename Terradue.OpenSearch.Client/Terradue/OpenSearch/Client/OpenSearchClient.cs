@@ -424,6 +424,7 @@ namespace Terradue.OpenSearch.Client
                     default:
                         if (baseUrlArg == null)
                         {
+                            baseUrlArg = new List<string>();
                             Regex csvSplit = new Regex("(?:^|,)(\"(?:[^\"]+|\"\")*\"|[^,]*)", RegexOptions.Compiled);
                             foreach (Match match in csvSplit.Matches(args[argpos]))
                             {
@@ -490,8 +491,7 @@ namespace Terradue.OpenSearch.Client
                 hierarchy.Root.Level = Level.Debug;
             }
             hierarchy.Configured = true;
-
-
+            
             BasicConfigurator.Configure(new ConsoleAppender[] { consoleErrAppender });
 
             return LogManager.GetLogger(typeof(OpenSearchClient));

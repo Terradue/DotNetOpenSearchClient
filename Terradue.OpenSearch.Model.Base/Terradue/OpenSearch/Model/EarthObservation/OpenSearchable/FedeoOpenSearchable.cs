@@ -20,11 +20,11 @@ namespace Terradue.OpenSearch.Model.EarthObservation.OpenSearchable
 
         private static readonly ILog log = LogManager.GetLogger(typeof(CwicOpenSearchable));
 
-        public FedeoOpenSearchable(OpenSearchDescription osd, OpenSearchEngine ose): base(osd, ose){
+        public FedeoOpenSearchable(OpenSearchUrl url, OpenSearchEngine ose): base(url, ose){
         }
 
-        public static FedeoOpenSearchable CreateFrom(GenericOpenSearchable e,  OpenSearchEngine ose) {
-            return new FedeoOpenSearchable(e.GetOpenSearchDescription(), ose);
+        public static FedeoOpenSearchable CreateFrom(Uri url,  OpenSearchEngine ose) {
+            return new FedeoOpenSearchable(new OpenSearchUrl(url), ose);
         }
 
         public new void ApplyResultFilters(OpenSearchRequest request, ref IOpenSearchResultCollection osr, string finalContentType) {
@@ -43,15 +43,27 @@ namespace Terradue.OpenSearch.Model.EarthObservation.OpenSearchable
 
                 log.DebugFormat("Searching for alternate link to om for item {0}", item.Identifier);
 
-                var omlink = item.Links.FirstOrDefault(l => l.RelationshipType == "alternate" && l.Title == "O&M 1.1 format" );
+                var eo = Terradue.Metadata.EarthObservation.MetadataHelpers.GetEarthObservationFromIOpenSearchResultItem(item);
 
-                if (omlink != null) {
-                    log.DebugFormat("Link found at {0}", omlink.Uri);
-                    var req = HttpWebRequest.Create(omlink.Uri);
-                    var response = req.GetResponse();
-                    var xr = XmlReader.Create(response.GetResponseStream());
-                    item.ElementExtensions.Add(xr);
+                if (eo != null && eo is ServiceModel.Ogc.Eop20.EarthObservationType) {
+                    AddOrReplaceEarthObservation((ServiceModel.Ogc.Eop20.EarthObservationType)eo, item);
                 }
+            }
+        }
+
+        public static void AddOrReplaceEarthObservation(ServiceModel.Ogc.Eop20.EarthObservationType eo, IOpenSearchResultItem item)
+        {
+            if (eo != null)
+            {
+                foreach (var ext in item.ElementExtensions.ToArray())
+                {
+                    if (ext.OuterName == "EarthObservation")
+                    {
+                        item.ElementExtensions.Remove(ext);
+                    }
+                }
+
+                item.ElementExtensions.Add(Terradue.ServiceModel.Ogc.OgcHelpers.CreaterReader(eo));
             }
         }
 	}

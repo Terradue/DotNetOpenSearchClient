@@ -21,7 +21,7 @@
     <Externalconsole>true</Externalconsole>
     <PlatformTarget>x86</PlatformTarget>
     <ConsolePause>true</ConsolePause>
-    <Commandlineparameters>"https://data2.terradue.com/eop/sentinel1/series/med/search?format=json&amp;bbox=-36.73828124999999,28.767659105691255,87.01171875,70.90226826757711","data","manu"</Commandlineparameters>
+    <Commandlineparameters>https://data2.terradue.com/eop/sentinel2/dataset/description</Commandlineparameters>
     <ExternalConsole>true</ExternalConsole>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
@@ -93,22 +93,19 @@
       <HintPath>..\packages\Terradue.OpenSearch.RdfEO.1.3.8\lib\net40\Terradue.OpenSearch.RdfEO.dll</HintPath>
     </Reference>
     <Reference Include="Terradue.ServiceModel.Ogc">
-      <HintPath>..\packages\Terradue.ServiceModel.Ogc.1.1.4\lib\net40\Terradue.ServiceModel.Ogc.dll</HintPath>
-    </Reference>
-    <Reference Include="Terradue.Metadata.EarthObservation">
-      <HintPath>..\packages\Terradue.Metadata.EarthObservation.1.4.6\lib\net40\Terradue.Metadata.EarthObservation.dll</HintPath>
-    </Reference>
-    <Reference Include="Terradue.OpenSearch.GeoJson">
-      <HintPath>..\packages\Terradue.OpenSearch.GeoJson.1.3.7\lib\net40\Terradue.OpenSearch.GeoJson.dll</HintPath>
-    </Reference>
-    <Reference Include="Terradue.OpenSearch">
-      <HintPath>..\packages\Terradue.OpenSearch.1.12.4\lib\net40\Terradue.OpenSearch.dll</HintPath>
+      <HintPath>..\packages\Terradue.ServiceModel.Ogc.1.1.5\lib\net40\Terradue.ServiceModel.Ogc.dll</HintPath>
     </Reference>
     <Reference Include="Terradue.GeoJson">
-      <HintPath>..\packages\Terradue.GeoJson.1.7.5\lib\net40\Terradue.GeoJson.dll</HintPath>
+      <HintPath>..\packages\Terradue.GeoJson.1.7.8\lib\net40\Terradue.GeoJson.dll</HintPath>
+    </Reference>
+    <Reference Include="Terradue.Metadata.EarthObservation">
+      <HintPath>..\packages\Terradue.Metadata.EarthObservation.1.4.8\lib\net40\Terradue.Metadata.EarthObservation.dll</HintPath>
     </Reference>
     <Reference Include="Terradue.OpenSearch.SciHub">
-      <HintPath>..\packages\Terradue.OpenSearch.SciHub.1.1.1\lib\net40\Terradue.OpenSearch.SciHub.dll</HintPath>
+      <HintPath>..\packages\Terradue.OpenSearch.SciHub.1.2.0\lib\net40\Terradue.OpenSearch.SciHub.dll</HintPath>
+    </Reference>
+    <Reference Include="Terradue.OpenSearch.GeoJson">
+      <HintPath>..\packages\Terradue.OpenSearch.GeoJson.1.3.8\lib\net40\Terradue.OpenSearch.GeoJson.dll</HintPath>
     </Reference>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
@@ -138,6 +135,10 @@
     <ProjectReference Include="..\Terradue.OpenSearch.Model.Base\Terradue.OpenSearch.Model.Base.csproj">
       <Project>{6222FD31-E454-4D76-9AAF-0535787A6A1B}</Project>
       <Name>Terradue.OpenSearch.Model.Base</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\DotNetOpenSearch\Terradue.OpenSearch\Terradue.OpenSearch.csproj">
+      <Project>{997A44FD-EE4A-490A-855B-88305E0CD269}</Project>
+      <Name>Terradue.OpenSearch</Name>
     </ProjectReference>
   </ItemGroup>
 </Project>
