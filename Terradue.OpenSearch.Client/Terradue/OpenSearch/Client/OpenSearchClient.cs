@@ -529,7 +529,7 @@ namespace Terradue.OpenSearch.Client
                 catch (UriFormatException)
                 {
 
-                    throw new UriFormatException("The format of the URI could not be determined. Please check ${_CIOP_CQI_LOCATION}");
+                    throw new UriFormatException("The format of the URI could not be determined. Please check that the urls passed as argument do not contain any unencoded field separator (,). Replace them with %2C encoding character.");
                 }
             }
 
