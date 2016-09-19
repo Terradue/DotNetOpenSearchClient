@@ -606,6 +606,11 @@ namespace Terradue.OpenSearch.Client
                 nvc.Add("count", pagination.ToString());
             }
 
+            if (nvc["do"] == null)
+            {
+                nvc["do"] = Dns.GetHostName();
+            }
+
             dataModel.SetQueryParameters(nvc);
 
             return nvc;

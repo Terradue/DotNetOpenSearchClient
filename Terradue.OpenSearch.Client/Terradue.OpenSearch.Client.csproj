@@ -95,20 +95,20 @@
     <Reference Include="Terradue.ServiceModel.Ogc">
       <HintPath>..\packages\Terradue.ServiceModel.Ogc.1.1.5\lib\net40\Terradue.ServiceModel.Ogc.dll</HintPath>
     </Reference>
-    <Reference Include="Terradue.GeoJson">
-      <HintPath>..\packages\Terradue.GeoJson.1.7.8\lib\net40\Terradue.GeoJson.dll</HintPath>
-    </Reference>
-    <Reference Include="Terradue.Metadata.EarthObservation">
-      <HintPath>..\packages\Terradue.Metadata.EarthObservation.1.4.8\lib\net40\Terradue.Metadata.EarthObservation.dll</HintPath>
-    </Reference>
     <Reference Include="Terradue.OpenSearch.SciHub">
       <HintPath>..\packages\Terradue.OpenSearch.SciHub.1.2.0\lib\net40\Terradue.OpenSearch.SciHub.dll</HintPath>
     </Reference>
     <Reference Include="Terradue.OpenSearch.GeoJson">
       <HintPath>..\packages\Terradue.OpenSearch.GeoJson.1.3.8\lib\net40\Terradue.OpenSearch.GeoJson.dll</HintPath>
     </Reference>
+    <Reference Include="Terradue.GeoJson">
+      <HintPath>..\packages\Terradue.GeoJson.1.7.9\lib\net40\Terradue.GeoJson.dll</HintPath>
+    </Reference>
+    <Reference Include="Terradue.Metadata.EarthObservation">
+      <HintPath>..\packages\Terradue.Metadata.EarthObservation.1.4.11\lib\net40\Terradue.Metadata.EarthObservation.dll</HintPath>
+    </Reference>
     <Reference Include="Terradue.OpenSearch">
-      <HintPath>..\packages\Terradue.OpenSearch.1.12.11\lib\net40\Terradue.OpenSearch.dll</HintPath>
+      <HintPath>..\packages\Terradue.OpenSearch.1.12.12\lib\net40\Terradue.OpenSearch.dll</HintPath>
     </Reference>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
@@ -119,10 +119,10 @@
   <ItemGroup>
     <None Include="packages.config" />
     <None Include="Terradue.OpenSearch.Client.csproj" />
-    <None Include="Resources\ne_110m_land\ne_110m_land.dbf" />
-    <None Include="Resources\ne_110m_land\ne_110m_land.prj" />
-    <None Include="Resources\ne_110m_land\ne_110m_land.shp" />
     <None Include="Resources\ne_110m_land\ne_110m_land.shx" />
+    <None Include="Resources\ne_110m_land\ne_110m_land.shp" />
+    <None Include="Resources\ne_110m_land\ne_110m_land.prj" />
+    <None Include="Resources\ne_110m_land\ne_110m_land.dbf" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Terradue\OpenSearch\" />
