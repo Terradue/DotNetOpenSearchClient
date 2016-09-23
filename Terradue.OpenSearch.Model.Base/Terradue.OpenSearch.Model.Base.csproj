@@ -86,16 +86,16 @@
       <HintPath>..\packages\Terradue.ServiceModel.Ogc.1.1.5\lib\net40\Terradue.ServiceModel.Ogc.dll</HintPath>
     </Reference>
     <Reference Include="Terradue.GeoJson">
-      <HintPath>..\packages\Terradue.GeoJson.1.7.8\lib\net40\Terradue.GeoJson.dll</HintPath>
+      <HintPath>..\packages\Terradue.GeoJson.1.7.9\lib\net40\Terradue.GeoJson.dll</HintPath>
     </Reference>
     <Reference Include="Terradue.Metadata.EarthObservation">
-      <HintPath>..\packages\Terradue.Metadata.EarthObservation.1.4.8\lib\net40\Terradue.Metadata.EarthObservation.dll</HintPath>
+      <HintPath>..\packages\Terradue.Metadata.EarthObservation.1.4.12\lib\net40\Terradue.Metadata.EarthObservation.dll</HintPath>
     </Reference>
     <Reference Include="Terradue.OpenSearch.SciHub">
-      <HintPath>..\packages\Terradue.OpenSearch.SciHub.1.2.0\lib\net40\Terradue.OpenSearch.SciHub.dll</HintPath>
+      <HintPath>..\packages\Terradue.OpenSearch.SciHub.1.2.1\lib\net40\Terradue.OpenSearch.SciHub.dll</HintPath>
     </Reference>
     <Reference Include="Terradue.OpenSearch">
-      <HintPath>..\packages\Terradue.OpenSearch.1.12.11\lib\net40\Terradue.OpenSearch.dll</HintPath>
+      <HintPath>..\packages\Terradue.OpenSearch.1.13.0\lib\net40\Terradue.OpenSearch.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -149,10 +149,10 @@
     <None Include="packages.config" />
     <None Include="Resources\.DS_Store" />
     <None Include="Resources\ne_110m_land\.DS_Store" />
-    <None Include="Resources\ne_110m_land\ne_110m_land.dbf" />
-    <None Include="Resources\ne_110m_land\ne_110m_land.prj" />
-    <None Include="Resources\ne_110m_land\ne_110m_land.shp" />
     <None Include="Resources\ne_110m_land\ne_110m_land.shx" />
+    <None Include="Resources\ne_110m_land\ne_110m_land.shp" />
+    <None Include="Resources\ne_110m_land\ne_110m_land.prj" />
+    <None Include="Resources\ne_110m_land\ne_110m_land.dbf" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Terradue.OpenSearch.Model\Terradue.OpenSearch.Model.csproj">

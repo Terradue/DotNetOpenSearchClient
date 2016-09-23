@@ -40,6 +40,7 @@ namespace Terradue.OpenSearch.Client
         private static ILog log = LogManager.GetLogger(typeof(OpenSearchClient));
         private static Version version = typeof(OpenSearchClient).Assembly.GetName().Version;
         internal static bool verbose;
+        internal static bool lax = false;
         private static bool listOsee;
         private static string outputFilePathArg = null;
         private static string queryFormatArg = null;
@@ -228,7 +229,7 @@ namespace Terradue.OpenSearch.Client
                 // Perform the query
                 try
                 {
-                    entity = dataModel.CreateOpenSearchable(baseUrls, queryFormatArg, ose, netCreds);
+                    entity = dataModel.CreateOpenSearchable(baseUrls, queryFormatArg, ose, netCreds, lax);
                     index = entity.GetOpenSearchDescription().DefaultUrl.IndexOffset;
                     log.Debug("IndexOffset : " + index);
                     break;
@@ -243,7 +244,7 @@ namespace Terradue.OpenSearch.Client
                 }
             }
 
-            NameValueCollection parameters = PrepareQueryParameters();
+            NameValueCollection parameters = PrepareQueryParameters(entity);
             string startIndex = parameters.Get("startIndex");
             if (startIndex != null)
             {
@@ -421,6 +422,9 @@ namespace Terradue.OpenSearch.Client
                         else
                             return false;
                         break;
+                    case "--lax":
+                        lax = true;
+                        break;
                     default:
                         if (baseUrlArg == null)
                         {
@@ -462,6 +466,7 @@ namespace Terradue.OpenSearch.Client
             Console.Error.WriteLine(" -m/--model <format>       Specify the data model of the results for the query. Data model give access to specific" +
             "metadata extractors or transformers. By default the \"GeoTime\" model is used. Used without urls, it lists the metadata options");
             Console.Error.WriteLine(" -dp/--datamodel-parameter <param> Specify a data model parameter");
+            Console.Error.WriteLine(" --lax                     Lax query: assign parameters even if not described by the opensearch server.");
             Console.Error.WriteLine(" -v/--verbose              Make the operation more talkative");
             Console.Error.WriteLine();
         }
@@ -566,7 +571,7 @@ namespace Terradue.OpenSearch.Client
 
         }
 
-        NameValueCollection PrepareQueryParameters()
+        NameValueCollection PrepareQueryParameters(IOpenSearchable entity)
         {
 
             NameValueCollection nvc = new NameValueCollection();
@@ -606,7 +611,9 @@ namespace Terradue.OpenSearch.Client
                 nvc.Add("count", pagination.ToString());
             }
 
-            if (nvc["do"] == null)
+            var remoteParams = entity.GetOpenSearchParameters(entity.DefaultMimeType);
+
+            if (remoteParams["do"] != null && nvc["do"] == null)
             {
                 nvc["do"] = Dns.GetHostName();
             }
