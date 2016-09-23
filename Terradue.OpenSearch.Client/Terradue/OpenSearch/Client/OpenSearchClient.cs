@@ -30,14 +30,17 @@ using Terradue.OpenSearch.Model;
 using System.Threading;
 using log4net.Config;
 
-namespace Terradue.OpenSearch.Client {
+namespace Terradue.OpenSearch.Client
+{
     //-------------------------------------------------------------------------------------------------------------------------
     //-------------------------------------------------------------------------------------------------------------------------
     //-------------------------------------------------------------------------------------------------------------------------
-    public class OpenSearchClient {
+    public class OpenSearchClient
+    {
         private static ILog log = LogManager.GetLogger(typeof(OpenSearchClient));
         private static Version version = typeof(OpenSearchClient).Assembly.GetName().Version;
         internal static bool verbose;
+        internal static bool lax = false;
         private static bool listOsee;
         private static string outputFilePathArg = null;
         private static string queryFormatArg = null;
@@ -56,16 +59,19 @@ namespace Terradue.OpenSearch.Client {
         internal static NetworkCredential netCreds;
 
 
-        public static void Main(string[] args) {
+        public static void Main(string[] args)
+        {
 
-            if (!GetArgs(args)) {
+            if (!GetArgs(args))
+            {
                 PrintUsage();
                 Environment.ExitCode = 1;
                 return;
             }
 
             OpenSearchClient client = null;
-            try {
+            try
+            {
                 client = new OpenSearchClient();
 
                 client.Initialize();
@@ -76,20 +82,26 @@ namespace Terradue.OpenSearch.Client {
                 if (listOsee == true)
                     client.ListOpenSearchEngineExtensions();
 
-                if (!string.IsNullOrEmpty(queryModelArg) && baseUrlArg == null) {
+                if (!string.IsNullOrEmpty(queryModelArg) && baseUrlArg == null)
+                {
                     client.PrintDataModelHelp(DataModel.CreateFromArgs(queryModelArg, new NameValueCollection()));
                 }
 
-            } catch (AggregateException ae) {
-                foreach (var e in ae.InnerExceptions) {
+            }
+            catch (AggregateException ae)
+            {
+                foreach (var e in ae.InnerExceptions)
+                {
                     Console.Error.WriteLine(string.Format("{0} : {1} {2}", e.ToString(), e.Message, e.HelpLink));
                     if (verbose)
                         Console.Error.WriteLine(e.StackTrace);
                 }
                 Environment.ExitCode = 1;
                 return;
-            
-            } catch (Exception e) {
+
+            }
+            catch (Exception e)
+            {
                 Console.Error.WriteLine(string.Format("{0} : {1} {2}", e.Source, e.Message, e.HelpLink));
                 if (verbose)
                     Console.Error.WriteLine(e.StackTrace);
@@ -99,7 +111,8 @@ namespace Terradue.OpenSearch.Client {
 
         }
 
-        internal void Initialize() {
+        internal void Initialize()
+        {
 
             // Config log
             log = ConfigureLog();
@@ -122,7 +135,8 @@ namespace Terradue.OpenSearch.Client {
 
         }
 
-        private void InitCache(){
+        private void InitCache()
+        {
             NameValueCollection cacheSettings = new NameValueCollection();
             cacheSettings.Add("SlidingExpiration", "600");
 
@@ -131,12 +145,14 @@ namespace Terradue.OpenSearch.Client {
             ose.RegisterPostSearchFilter(searchCache.CacheResponse);
         }
 
-        void LoadOpenSearchEngineExtensions(OpenSearchEngine ose) {
+        void LoadOpenSearchEngineExtensions(OpenSearchEngine ose)
+        {
             ose.LoadPlugins();
             return;
         }
 
-        private void ListOpenSearchEngineExtensions() {
+        private void ListOpenSearchEngineExtensions()
+        {
 
 
             // Initialize the output stream
@@ -150,7 +166,8 @@ namespace Terradue.OpenSearch.Client {
             AddinManager.Initialize();
             AddinManager.Registry.Update(null);
 
-            foreach (TypeExtensionNode node in AddinManager.GetExtensionNodes (typeof(IOpenSearchEngineExtension))) {
+            foreach (TypeExtensionNode node in AddinManager.GetExtensionNodes(typeof(IOpenSearchEngineExtension)))
+            {
                 IOpenSearchEngineExtension osee = (IOpenSearchEngineExtension)node.CreateInstance();
                 sw.WriteLine(string.Format("{0,-30}{1,-40}", osee.Identifier, osee.DiscoveryContentType));
             }
@@ -159,7 +176,8 @@ namespace Terradue.OpenSearch.Client {
 
         }
 
-        private void PrintDataModelHelp(DataModel dataModel) {
+        private void PrintDataModelHelp(DataModel dataModel)
+        {
 
 
             // Initialize the output stream
@@ -168,7 +186,8 @@ namespace Terradue.OpenSearch.Client {
             dataModel.PrintHelp(outputStream);
         }
 
-        private void ListOutputFormat() {
+        private void ListOutputFormat()
+        {
 
             // Initialize the output stream
             Stream outputStream = InitializeOutputStream();
@@ -178,7 +197,8 @@ namespace Terradue.OpenSearch.Client {
 
         }
 
-        internal void ProcessQuery(Stream outputStream = null) {
+        internal void ProcessQuery(Stream outputStream = null)
+        {
 
             bool closeOutputStream = true;
 
@@ -204,55 +224,66 @@ namespace Terradue.OpenSearch.Client {
             IOpenSearchable entity = null;
             int retry = 5;
             int index = 1;
-            while (retry >= 0) {
+            while (retry >= 0)
+            {
                 // Perform the query
-                try {
-                    entity = dataModel.CreateOpenSearchable(baseUrls, queryFormatArg, ose, netCreds);
+                try
+                {
+                    entity = dataModel.CreateOpenSearchable(baseUrls, queryFormatArg, ose, netCreds, lax);
                     index = entity.GetOpenSearchDescription().DefaultUrl.IndexOffset;
                     log.Debug("IndexOffset : " + index);
                     break;
-                } catch (Exception e) {
-					log.Warn(e.Message);
+                }
+                catch (Exception e)
+                {
+                    log.Warn(e.Message);
                     if (retry == 0)
                         throw e;
                     retry--;
-					searchCache.ClearCache(".*");
+                    searchCache.ClearCache(".*");
                 }
             }
 
-            NameValueCollection parameters = PrepareQueryParameters();
+            NameValueCollection parameters = PrepareQueryParameters(entity);
             string startIndex = parameters.Get("startIndex");
-            if (startIndex != null) {
+            if (startIndex != null)
+            {
                 index = int.Parse(startIndex);
             }
 
             IOpenSearchResultCollection osr = null;
 
             log.Debug(totalResults + " entries requested");
-            while (totalResults > 0) {
+            while (totalResults > 0)
+            {
 
 
                 log.Debug("startIndex : " + index);
                 parametersNvc = ResolveParameters(parameters, entity);
 
                 retry = 5;
-                while (retry >= 0) {
+                while (retry >= 0)
+                {
                     // Perform the query
                     log.Debug("Launching query...");
-                    try {
+                    try
+                    {
                         osr = QueryOpenSearch(ose, entity, parametersNvc);
                         break;
-                    } 
-                    catch (AggregateException ae){
+                    }
+                    catch (AggregateException ae)
+                    {
                         if (retry == 0)
                             throw ae;
-                        foreach (Exception e in ae.InnerExceptions) {
+                        foreach (Exception e in ae.InnerExceptions)
+                        {
                             log.Warn("Exception " + e.Message);
                         }
                         retry--;
                         searchCache.ClearCache(".*");
                     }
-                    catch (Exception e) {
+                    catch (Exception e)
+                    {
                         if (retry == 0)
                             throw e;
                         log.Warn("Exception " + e.Message);
@@ -276,7 +307,8 @@ namespace Terradue.OpenSearch.Client {
                 totalResults -= count;
                 log.Debug(count + " entries found on " + totalResults + " requested");
                 int paramCount;
-                if(Int32.TryParse(parameters.Get("count"), out paramCount) && totalResults < paramCount){
+                if (Int32.TryParse(parameters.Get("count"), out paramCount) && totalResults < paramCount)
+                {
                     parameters.Set("count", "" + totalResults);
                 }
                 index += count;
@@ -290,90 +322,122 @@ namespace Terradue.OpenSearch.Client {
 
         }
         //---------------------------------------------------------------------------------------------------------------------
-        public static bool GetArgs(string[] args) {
+        public static bool GetArgs(string[] args)
+        {
             if (args.Length == 0)
                 return false;
 
             int argpos = 0;
-            while (argpos < args.Length) {
-                switch (args[argpos]) {
+            while (argpos < args.Length)
+            {
+                switch (args[argpos])
+                {
                     case "-v":
                     case "--verbose":
                         verbose = true;
                         break;
-                    case "-o": 
-                    case "--output": 
-                        if (argpos < args.Length - 1) {
+                    case "-o":
+                    case "--output":
+                        if (argpos < args.Length - 1)
+                        {
                             outputFilePathArg = args[++argpos];
-                        } else
+                        }
+                        else
                             return false;
                         break;
-                    case "-f": 
-                    case "--format": 
-                        if (argpos < args.Length - 1) {
+                    case "-f":
+                    case "--format":
+                        if (argpos < args.Length - 1)
+                        {
                             queryFormatArg = args[++argpos];
-                        } else
+                        }
+                        else
                             return false;
                         break;
-                    case "-a": 
-                    case "--auth": 
-                        if (argpos < args.Length - 1) {
+                    case "-a":
+                    case "--auth":
+                        if (argpos < args.Length - 1)
+                        {
                             string[] creds = args[++argpos].Split(':');
                             netCreds = new NetworkCredential(creds[0], creds[1]);
-                        } else
+                        }
+                        else
                             return false;
                         break;
-                    case "-p": 
-                    case "--parameter": 
-                        if (argpos < args.Length - 1) {
+                    case "-p":
+                    case "--parameter":
+                        if (argpos < args.Length - 1)
+                        {
                             parameterArgs.Add(args[++argpos]);
-                        } else
+                        }
+                        else
                             return false;
                         break;
-                    case "-to": 
-                    case "--time-out": 
-                        if (argpos < args.Length - 1) {
-                            try {
+                    case "-to":
+                    case "--time-out":
+                        if (argpos < args.Length - 1)
+                        {
+                            try
+                            {
                                 timeout = uint.Parse(args[++argpos]);
-                            } catch (OverflowException) {
+                            }
+                            catch (OverflowException)
+                            {
                                 Console.Error.WriteLine("Range timeout value allowed: 0 - 2147483647");
                                 return false;
                             }
-                        } else
+                        }
+                        else
                             return false;
                         break;
-                    case "-h": 
+                    case "-h":
                     case "--help":
                         return false;
-                    case "--pagination": 
-                        if (argpos < args.Length - 1) {
+                    case "--pagination":
+                        if (argpos < args.Length - 1)
+                        {
                             pagination = int.Parse(args[++argpos]);
-                        } else
+                        }
+                        else
                             return false;
                         break;
-                    case "--list-osee": 
+                    case "--list-osee":
                         listOsee = true;
                         break;
-                    case "-m": 
-                    case "--model": 
-                        if (argpos < args.Length - 1) {
+                    case "-m":
+                    case "--model":
+                        if (argpos < args.Length - 1)
+                        {
                             queryModelArg = args[++argpos];
-                        } else
+                        }
+                        else
                             return false;
                         break;
-                    case "-dp": 
-                    case "--datamodel-parameter": 
-                        if (argpos < args.Length - 1) {
+                    case "-dp":
+                    case "--datamodel-parameter":
+                        if (argpos < args.Length - 1)
+                        {
                             dataModelParameterArgs.Add(args[++argpos]);
-                        } else
+                        }
+                        else
                             return false;
                         break;
-                    default: 
-                        if (baseUrlArg == null) {
-                            baseUrlArg = args[argpos].Split(',').ToList();
+                    case "--lax":
+                        lax = true;
+                        break;
+                    default:
+                        if (baseUrlArg == null)
+                        {
+                            baseUrlArg = new List<string>();
+                            Regex csvSplit = new Regex("(?:^|,)(\"(?:[^\"]+|\"\")*\"|[^,]*)", RegexOptions.Compiled);
+                            foreach (Match match in csvSplit.Matches(args[argpos]))
+                            {
+                                baseUrlArg.Add(match.Value.TrimStart(','));
+                            }
                             break;
                         }
-                        if (metadataPaths == null) {
+                        if (metadataPaths == null)
+                        {
                             metadataPaths = args[argpos].Split(',').ToList();
                             break;
                         }
@@ -385,7 +449,8 @@ namespace Terradue.OpenSearch.Client {
             return true;
         }
         //---------------------------------------------------------------------------------------------------------------------
-        public static void PrintUsage() {
+        public static void PrintUsage()
+        {
             Console.Error.WriteLine(String.Format("{0} (v{1}) - OpenSearch client - (c) Terradue S.r.l.", Path.GetFileName(Environment.GetCommandLineArgs()[0]), version));
             Console.Error.WriteLine("Usage: " + Path.GetFileName(Environment.GetCommandLineArgs()[0]) + " [options...] [url1,url2,url3,...] [metadatapath1,metadatapath2,...]");
             Console.Error.WriteLine();
@@ -401,74 +466,75 @@ namespace Terradue.OpenSearch.Client {
             Console.Error.WriteLine(" -m/--model <format>       Specify the data model of the results for the query. Data model give access to specific" +
             "metadata extractors or transformers. By default the \"GeoTime\" model is used. Used without urls, it lists the metadata options");
             Console.Error.WriteLine(" -dp/--datamodel-parameter <param> Specify a data model parameter");
+            Console.Error.WriteLine(" --lax                     Lax query: assign parameters even if not described by the opensearch server.");
             Console.Error.WriteLine(" -v/--verbose              Make the operation more talkative");
             Console.Error.WriteLine();
         }
 
-        ILog ConfigureLog() {
+        ILog ConfigureLog()
+        {
             Hierarchy hierarchy = (Hierarchy)LogManager.GetRepository();
-			hierarchy.Root.RemoveAllAppenders();
+            hierarchy.Root.RemoveAllAppenders();
 
             PatternLayout patternLayout = new PatternLayout();
             patternLayout.ConversionPattern = "%date [%thread] %-5level %logger - %message%newline";
             patternLayout.ActivateOptions();
 
-            ConsoleAppender consoleOutAppender = new ConsoleAppender();
-            consoleOutAppender.Layout = patternLayout;
-            consoleOutAppender.ActivateOptions();
-            log4net.Filter.LevelRangeFilter outfilter = new log4net.Filter.LevelRangeFilter();
-            outfilter.LevelMax = Level.Warn;
-            outfilter.LevelMin = Level.Debug;
-            consoleOutAppender.AddFilter(outfilter);
-            hierarchy.Root.AddAppender(consoleOutAppender);
-
             ConsoleAppender consoleErrAppender = new ConsoleAppender();
             consoleErrAppender.Layout = patternLayout;
             consoleErrAppender.ActivateOptions();
-			consoleErrAppender.Target = "Console.Error";
+            consoleErrAppender.Target = "Console.Error";
             log4net.Filter.LevelRangeFilter errfilter = new log4net.Filter.LevelRangeFilter();
-            errfilter.LevelMin = Level.Error;
-            errfilter.LevelMax = Level.Fatal;
+            errfilter.LevelMin = Level.Verbose;
+            errfilter.LevelMax = Level.Emergency;
             consoleErrAppender.AddFilter(errfilter);
             hierarchy.Root.AddAppender(consoleErrAppender);
 
             hierarchy.Root.Level = Level.Info;
-            if (verbose == true) {
+            if (verbose == true)
+            {
                 hierarchy.Root.Level = Level.Debug;
             }
             hierarchy.Configured = true;
+            
+            BasicConfigurator.Configure(new ConsoleAppender[] { consoleErrAppender });
 
-
-			BasicConfigurator.Configure(new ConsoleAppender[] {consoleOutAppender, consoleErrAppender });
-
-			return LogManager.GetLogger(typeof(OpenSearchClient));
+            return LogManager.GetLogger(typeof(OpenSearchClient));
         }
         //---------------------------------------------------------------------------------------------------------------------
         /// <summary>
         /// Initializes the OpenSearch URL to query
         /// </summary>
 
-        private List<Uri> InitializeUrl() {
+        private List<Uri> InitializeUrl()
+        {
 
             List<Uri> baseUrl = new List<Uri>();
             ;
 
-            if (baseUrlArg == null) {
+            if (baseUrlArg == null)
+            {
                 baseUrlArg = new List<string>();
                 baseUrlArg.Add(Environment.GetEnvironmentVariable("_CIOP_CQI_LOCATION"));
             }
 
-            try {
+            try
+            {
                 foreach (var url in baseUrlArg)
                     baseUrl.Add(new Uri(url));
-            } catch (UriFormatException) {
+            }
+            catch (UriFormatException)
+            {
                 baseUrlArg.Add(string.Format("{0}/{1}", Environment.GetEnvironmentVariable("_CIOP_CQI_LOCATION"), baseUrlArg));
-                try {
+                try
+                {
                     foreach (var url in baseUrlArg)
                         baseUrl.Add(new Uri(url));
-                } catch (UriFormatException) {
+                }
+                catch (UriFormatException)
+                {
 
-                    throw new UriFormatException("The format of the URI could not be determined. Please check ${_CIOP_CQI_LOCATION}");
+                    throw new UriFormatException("The format of the URI could not be determined. Please check that the urls passed as argument do not contain any unencoded field separator (,). Replace them with %2C encoding character.");
                 }
             }
 
@@ -481,10 +547,13 @@ namespace Terradue.OpenSearch.Client {
         /// Initializes the output stream.
         /// </summary>
         /// <returns>The output stream.</returns>
-        private Stream InitializeOutputStream() {
-            if (outputFilePathArg == null) {
+        private Stream InitializeOutputStream()
+        {
+            if (outputFilePathArg == null)
+            {
                 return Console.OpenStandardOutput();
-            } else {
+            }
+            else {
                 return new FileStream(outputFilePathArg, FileMode.Create);
             }
         }
@@ -495,30 +564,37 @@ namespace Terradue.OpenSearch.Client {
         /// <returns>The query URL.</returns>
         /// <param name="baseUrl">Base URL.</param>
         /// <param name="parametersNvc">Parameters nvc.</param>
-        Uri PrepareQueryUrl(Uri baseUrl, NameValueCollection parametersNvc) {
+        Uri PrepareQueryUrl(Uri baseUrl, NameValueCollection parametersNvc)
+        {
 
             throw new NotImplementedException();
 
         }
 
-        NameValueCollection PrepareQueryParameters() {
+        NameValueCollection PrepareQueryParameters(IOpenSearchable entity)
+        {
 
             NameValueCollection nvc = new NameValueCollection();
             totalResults = 0;
 
-            foreach (var parameter in parameterArgs) {
+            foreach (var parameter in parameterArgs)
+            {
                 Match matchParamDef = Regex.Match(parameter, @"^(.*)=(.*)$");
                 // if martch is successful
-                if (matchParamDef.Success) {
+                if (matchParamDef.Success)
+                {
                     // TODO filter and convert query param
-                    if (matchParamDef.Groups[1].Value == "count") {
-                        if (matchParamDef.Groups[2].Value == "unlimited") {
+                    if (matchParamDef.Groups[1].Value == "count")
+                    {
+                        if (matchParamDef.Groups[2].Value == "unlimited")
+                        {
                             nvc.Add(matchParamDef.Groups[1].Value, pagination.ToString());
                             totalResults = int.MaxValue;
                             continue;
                         }
                         totalResults = int.Parse(matchParamDef.Groups[2].Value);
-                        if (totalResults > pagination) {
+                        if (totalResults > pagination)
+                        {
                             nvc.Add(matchParamDef.Groups[1].Value, pagination.ToString());
                             continue;
                         }
@@ -529,9 +605,17 @@ namespace Terradue.OpenSearch.Client {
 
             }
 
-            if (totalResults == 0) {
+            if (totalResults == 0)
+            {
                 totalResults = pagination;
                 nvc.Add("count", pagination.ToString());
+            }
+
+            var remoteParams = entity.GetOpenSearchParameters(entity.DefaultMimeType);
+
+            if (remoteParams["do"] != null && nvc["do"] == null)
+            {
+                nvc["do"] = Dns.GetHostName();
             }
 
             dataModel.SetQueryParameters(nvc);
@@ -539,14 +623,17 @@ namespace Terradue.OpenSearch.Client {
             return nvc;
         }
 
-        NameValueCollection PrepareDataModelParameters() {
+        NameValueCollection PrepareDataModelParameters()
+        {
 
             NameValueCollection nvc = new NameValueCollection();
 
-            foreach (var parameter in dataModelParameterArgs) {
+            foreach (var parameter in dataModelParameterArgs)
+            {
                 Match matchParamDef = Regex.Match(parameter, @"^(.*)=(.*)$");
                 // if martch is successful
-                if (matchParamDef.Success) {
+                if (matchParamDef.Success)
+                {
                     nvc.Add(matchParamDef.Groups[1].Value, matchParamDef.Groups[2].Value);
 
                 }
@@ -556,7 +643,8 @@ namespace Terradue.OpenSearch.Client {
             return nvc;
         }
 
-        private IOpenSearchResultCollection QueryOpenSearch(OpenSearchEngine ose, IOpenSearchable entity, NameValueCollection parameters) {
+        private IOpenSearchResultCollection QueryOpenSearch(OpenSearchEngine ose, IOpenSearchable entity, NameValueCollection parameters)
+        {
 
             IOpenSearchResultCollection osr;
 
@@ -569,20 +657,25 @@ namespace Terradue.OpenSearch.Client {
 
         }
 
-        void ListFormat(Stream outputStream) {
+        void ListFormat(Stream outputStream)
+        {
 
 
 
         }
 
-        void OutputResult(IOpenSearchResultCollection osr, Stream outputStream) {
+        void OutputResult(IOpenSearchResultCollection osr, Stream outputStream)
+        {
 
-            if (metadataPaths == null) {
+            if (metadataPaths == null)
+            {
 
                 StreamWriter sw = new StreamWriter(outputStream);
-                if (osr is IOpenSearchResultCollection) {
+                if (osr is IOpenSearchResultCollection)
+                {
                     IOpenSearchResultCollection rc = (IOpenSearchResultCollection)osr;
-                    foreach (var item in rc.Items) {
+                    foreach (var item in rc.Items)
+                    {
                         var link = item.Links.FirstOrDefault(l => l.RelationshipType == "self");
                         if (link != null)
                             sw.WriteLine(link.Uri.ToString());
@@ -597,7 +690,8 @@ namespace Terradue.OpenSearch.Client {
 
             dataModel.LoadResults(osr);
 
-            if (metadataPaths.Contains("{}")) {
+            if (metadataPaths.Contains("{}"))
+            {
                 dataModel.PrintCollection(outputStream);
                 return;
             }
@@ -608,12 +702,14 @@ namespace Terradue.OpenSearch.Client {
 
         }
 
-        void SerializeXmlDocument(XmlDocument xmlDocument, Stream outputStream) {
+        void SerializeXmlDocument(XmlDocument xmlDocument, Stream outputStream)
+        {
             System.Xml.Serialization.XmlSerializer serializer = new System.Xml.Serialization.XmlSerializer(typeof(XmlDocument));
             serializer.Serialize(outputStream, xmlDocument);
         }
 
-        NameValueCollection ResolveParameters(NameValueCollection nameValueCollection, IOpenSearchable entity) {
+        NameValueCollection ResolveParameters(NameValueCollection nameValueCollection, IOpenSearchable entity)
+        {
 
             string contentType = entity.DefaultMimeType;
 
@@ -621,12 +717,15 @@ namespace Terradue.OpenSearch.Client {
             NameValueCollection osdRevParams = OpenSearchFactory.ReverseTemplateOpenSearchParameters(osdParam);
             NameValueCollection parameters = new NameValueCollection();
 
-            foreach (string key in nameValueCollection.AllKeys) {
+            foreach (string key in nameValueCollection.AllKeys)
+            {
 
-                if (osdRevParams[key] != null) {
+                if (osdRevParams[key] != null)
+                {
                     foreach (var id in osdRevParams.GetValues(key))
                         parameters.Set(id, nameValueCollection[key]);
-                } else {
+                }
+                else {
                     parameters.Set(key, nameValueCollection[key]);
                 }
             }
@@ -634,13 +733,16 @@ namespace Terradue.OpenSearch.Client {
 
         }
 
-        int CountResults(IOpenSearchResultCollection osr) {
-            if (osr is IOpenSearchResultCollection) {
+        int CountResults(IOpenSearchResultCollection osr)
+        {
+            if (osr is IOpenSearchResultCollection)
+            {
                 IOpenSearchResultCollection rc = (IOpenSearchResultCollection)osr;
                 return rc.Items.Count();
             }
 
-            if (osr is SyndicationFeed) {
+            if (osr is SyndicationFeed)
+            {
                 SyndicationFeed feed = (SyndicationFeed)osr;
                 return feed.Items.Count();
             }

@@ -82,19 +82,19 @@
       <HintPath>..\packages\Terradue.ServiceModel.Ogc.OwsContext.1.0.6\lib\net40\Terradue.ServiceModel.Ogc.OwsContext.dll</HintPath>
     </Reference>
     <Reference Include="Terradue.ServiceModel.Ogc">
-      <HintPath>..\packages\Terradue.ServiceModel.Ogc.1.1.4\lib\net40\Terradue.ServiceModel.Ogc.dll</HintPath>
-    </Reference>
-    <Reference Include="Terradue.Metadata.EarthObservation">
-      <HintPath>..\packages\Terradue.Metadata.EarthObservation.1.4.6\lib\net40\Terradue.Metadata.EarthObservation.dll</HintPath>
-    </Reference>
-    <Reference Include="Terradue.OpenSearch">
-      <HintPath>..\packages\Terradue.OpenSearch.1.12.4\lib\net40\Terradue.OpenSearch.dll</HintPath>
+      <HintPath>..\packages\Terradue.ServiceModel.Ogc.1.1.5\lib\net40\Terradue.ServiceModel.Ogc.dll</HintPath>
     </Reference>
     <Reference Include="Terradue.GeoJson">
-      <HintPath>..\packages\Terradue.GeoJson.1.7.5\lib\net40\Terradue.GeoJson.dll</HintPath>
+      <HintPath>..\packages\Terradue.GeoJson.1.7.9\lib\net40\Terradue.GeoJson.dll</HintPath>
+    </Reference>
+    <Reference Include="Terradue.Metadata.EarthObservation">
+      <HintPath>..\packages\Terradue.Metadata.EarthObservation.1.4.12\lib\net40\Terradue.Metadata.EarthObservation.dll</HintPath>
+    </Reference>
+    <Reference Include="Terradue.OpenSearch">
+      <HintPath>..\packages\Terradue.OpenSearch.1.13.0\lib\net40\Terradue.OpenSearch.dll</HintPath>
     </Reference>
     <Reference Include="Terradue.OpenSearch.SciHub">
-      <HintPath>..\packages\Terradue.OpenSearch.SciHub.1.1.1\lib\net40\Terradue.OpenSearch.SciHub.dll</HintPath>
+      <HintPath>..\packages\Terradue.OpenSearch.SciHub.1.2.2\lib\net40\Terradue.OpenSearch.SciHub.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -111,9 +111,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
-    <None Include="Resources\ne_110m_land\ne_110m_land.dbf" />
-    <None Include="Resources\ne_110m_land\ne_110m_land.prj" />
-    <None Include="Resources\ne_110m_land\ne_110m_land.shp" />
     <None Include="Resources\ne_110m_land\ne_110m_land.shx" />
+    <None Include="Resources\ne_110m_land\ne_110m_land.shp" />
+    <None Include="Resources\ne_110m_land\ne_110m_land.prj" />
+    <None Include="Resources\ne_110m_land\ne_110m_land.dbf" />
   </ItemGroup>
 </Project>
