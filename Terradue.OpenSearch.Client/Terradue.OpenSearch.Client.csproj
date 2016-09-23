@@ -129,8 +129,6 @@
   <ItemGroup>
     <Folder Include="Terradue\OpenSearch\" />
     <Folder Include="Terradue\OpenSearch\Client\" />
-    <Folder Include="Terradue\OpenSearch\Client\Model\" />
-    <Folder Include="Terradue\OpenSearch\Model\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Terradue.OpenSearch.Model\Terradue.OpenSearch.Model.csproj">
