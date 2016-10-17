@@ -39,7 +39,10 @@ test_enclosure()
   for format in ${formats}
   do
     local output=$( opensearch-client "${reference}&format=${format}" enclosure )
-    assertTrue "test failed" "[ \"http://\" = \"${output:0:7}\" -o  \"s3://\" = \"${output:0:5}\" -o  \"https://\" = \"${output:0:8}\" -o  \"ftp://\" = \"${output:0:6}\" ]"
+    assertTrue '"http" = "${output:0:4}" -o \
+                "https" = ${output:0:5}" -o \
+                "s3" = "${output:0:2}" -o \
+                "ftp" = "${output:0:3}"'
   done
 }
 
