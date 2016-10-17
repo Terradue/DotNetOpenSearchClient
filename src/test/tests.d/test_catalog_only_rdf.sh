@@ -27,8 +27,8 @@ test_wkt()
 
 test_enclosure()
 {
-    local output=$( opensearch-client "${reference/${format}" enclosure )
-    assertTrue 'test failed' '[ "http://" = "${output:0:7}" -o  "s3://" = "${output:0:5}" ]'
+    local output=$( opensearch-client "${reference}/${format}" enclosure )
+    assertTrue "test failed" "[ \"http://\" = \"${output:0:7}\" -o  \"s3://\" = \"${output:0:5}\" ]"
 }
 
 test_identifier()
