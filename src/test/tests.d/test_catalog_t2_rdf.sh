@@ -2,7 +2,7 @@
 
 source ./test_common.sh
 
-echo "=====  test_catalog_only_rdf  ====="
+echo "=====  test_catalog_t2_rdf  ====="
 
 reference="http://catalogue.terradue.int/catalogue/search/ASA_IM__0P/ASA_IM__0CNPDE20030611_204630_000000162017_00129_06696_0866.N1"
 format="rdf"
@@ -28,7 +28,7 @@ test_wkt()
 test_enclosure()
 {
     local output=$( opensearch-client "${reference}/${format}" enclosure )
-    assertTrue "test failed" "[ \"http://\" = \"${output:0:7}\" -o  \"s3://\" = \"${output:0:5}\" ]"
+    assertTrue "test failed" "[ \"http://\" = \"${output:0:7}\" -o  \"s3://\" = \"${output:0:5}\" -o  \"https://\" = \"${output:0:8}\" -o  \"ftp://\" = \"${output:0:6}\" ]"
 }
 
 test_identifier()
