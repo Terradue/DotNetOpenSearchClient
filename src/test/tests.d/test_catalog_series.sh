@@ -2,10 +2,9 @@
 
 source ./test_common.sh
 
-echo "===== test_catalog_series (TO UPDATE) ====="
+echo "===== test_catalog_series  ====="
 
-# This test shall be updated with a proper series reference pointing to catalog.terradue.com
-reference="https://data2.terradue.com/eop/sentinel1/series/med/search&uid=S1A_IW_GRDH_1SDV_20150324T051221_20150324T051246_005169_00684F_DC61"
+reference="https://catalog.terradue.com/sentinel1/series/italy/search?uid=S1B_IW_RAW__0SDV_20161017T053650_20161017T053722_002542_0044B5_E4F8"
 formats="json atom rdf"
 
 test_startdate()
@@ -13,7 +12,7 @@ test_startdate()
   for format in ${formats}
   do
     local output=$( opensearch-client "${reference}&format=${format}" startdate )
-    assertEquals "2015-03-24T05:12:21.2441820Z" "${output}"
+    assertEquals "2016-10-17T05:36:50.0280230Z" "${output}"
   done
 }
 
@@ -22,7 +21,7 @@ test_enddate()
   for format in ${formats}
   do
     local output=$( opensearch-client "${reference}&format=${format}" enddate )
-    assertEquals "2015-03-24T05:12:46.2438890Z" "${output}"
+    assertEquals "2016-10-17T05:37:22.4275890Z" "${output}"
   done
 }
 
@@ -31,7 +30,7 @@ test_wkt()
   for format in ${formats}
   do
     local output=$( opensearch-client "${reference}&format=${format}" wkt )
-    assertEquals "POLYGON((13.997004 37.217716,11.114591 37.62225,11.426163 39.123463,14.368804 38.720371,13.997004 37.217716))" "${output}"
+    assertEquals "POLYGON((5.264 37.9473,4.87 35.992,7.5762 35.7226,8.0415 37.6769,5.264 37.9473))" "${output}"
   done
 }
 
@@ -40,7 +39,7 @@ test_enclosure()
   for format in ${formats}
   do
     local output=$( opensearch-client "${reference}&format=${format}" enclosure )
-    assertTrue "test_enclosure failed" "[ \"http\" = \"${output:0:4}\" -o \"https\" = \"${output:0:5}\" -o \"s3\" = \"${output:0:2}\" -o \"ftp\" = \"${output:0:3}\" ]"
+    assertEquals "https://store.terradue.com/download/sentinel1/files/v1/S1B_IW_RAW__0SDV_20161017T053650_20161017T053722_002542_0044B5_E4F8" "${output}"
   done
 }
 
@@ -49,7 +48,7 @@ test_identifier()
   for format in ${formats}
   do
     local output=$( opensearch-client "${reference}&format=${format}" identifier )
-    assertEquals "S1A_IW_GRDH_1SDV_20150324T051221_20150324T051246_005169_00684F_DC61" "${output}"
+    assertEquals "S1B_IW_RAW__0SDV_20161017T053650_20161017T053722_002542_0044B5_E4F8" "${output}"
   done
 }
 
