@@ -2,7 +2,7 @@
 
 source ./test_common.sh
 
-echo "===== test_metadata_retrieval group ====="
+echo "===== test_catalog_geotime ====="
 
 reference="https://catalog.terradue.com/sentinel2/search?uid=S2A_OPER_PRD_MSIL1C_PDMC_20161017T015607_R011_V20161015T154222_20161015T154519"
 formats="json atom rdf"
@@ -48,7 +48,7 @@ test_identifier()
 {
   for format in ${formats}
   do
-    local output=$( opensearch-client "${reference}&format=${format}" enclosure )
+    local output=$( opensearch-client "${reference}&format=${format}" identifier )
     assertEquals "S2A_OPER_PRD_MSIL1C_PDMC_20161017T015607_R011_V20161015T154222_20161015T154519" "${output}"
   done
 }
