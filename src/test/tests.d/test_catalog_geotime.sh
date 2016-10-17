@@ -43,6 +43,15 @@ test_enclosure()
   done
 }
 
+test_enclosure_do()
+{
+  for format in ${formats}
+  do
+    local output=$( opensearch-client do=sandbox.terradue.int "${reference}&format=${format}" enclosure )
+    assertEquals "https://store.terradue.com/download/sentinel2/files/v1/S2A_OPER_PRD_MSIL1C_PDMC_20161017T015607_R011_V20161015T154222_20161015T154519" "${output}"
+  done
+}
+
 test_identifier()
 {
   for format in ${formats}
@@ -51,5 +60,7 @@ test_identifier()
     assertEquals "S2A_OPER_PRD_MSIL1C_PDMC_20161017T015607_R011_V20161015T154222_20161015T154519" "${output}"
   done
 }
+
+
 
 . ${SHUNIT2_HOME}/shunit2
