@@ -69,7 +69,7 @@
               </environmentVariables>
               <workingDirectory>${basedir}/src/test/</workingDirectory>
             </configuration>
-            <id>shunit-test</id>
+            <id>shunit2-test</id>
             <phase>integration-test</phase>
             <goals>
               <goal>exec</goal>
