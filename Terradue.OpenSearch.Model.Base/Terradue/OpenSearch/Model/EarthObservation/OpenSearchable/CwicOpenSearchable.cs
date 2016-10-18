@@ -18,22 +18,27 @@ using System.Text;
 using Terradue.ServiceModel.Ogc.OwsContext;
 using Terradue.ServiceModel.Ogc;
 
-namespace Terradue.OpenSearch.Model.EarthObservation.OpenSearchable {
-    
-    public class CwicOpenSearchable : GenericOpenSearchable, IOpenSearchable {
+namespace Terradue.OpenSearch.Model.EarthObservation.OpenSearchable
+{
+
+    public class CwicOpenSearchable : SoftGenericOpenSearchable, IOpenSearchable
+    {
 
         XmlSerializer eeSer = new XmlSerializer(typeof(Terradue.OpenSearch.Model.Schemas.EarthExplorer.scene));
 
         private static readonly ILog log = LogManager.GetLogger(typeof(CwicOpenSearchable));
 
-        public CwicOpenSearchable(OpenSearchDescription osd, OpenSearchEngine ose) : base(osd, ose) {
+        public CwicOpenSearchable(OpenSearchDescription osd, OpenSearchEngine ose) : base(osd, ose)
+        {
         }
 
-        public static CwicOpenSearchable CreateFrom(GenericOpenSearchable e, OpenSearchEngine ose) {
+        public static CwicOpenSearchable CreateFrom(GenericOpenSearchable e, OpenSearchEngine ose)
+        {
             return new CwicOpenSearchable(e.GetOpenSearchDescription(), ose);
         }
 
-        public new void ApplyResultFilters(OpenSearchRequest request, ref IOpenSearchResultCollection osr, string finalContentType) {
+        public new void ApplyResultFilters(OpenSearchRequest request, ref IOpenSearchResultCollection osr, string finalContentType)
+        {
             log.DebugFormat("Applying Cwic source harvesting");
 
             base.ApplyResultFilters(request, ref osr, finalContentType);
@@ -42,59 +47,91 @@ namespace Terradue.OpenSearch.Model.EarthObservation.OpenSearchable {
 
         }
 
-        private void QueryEarthObservationResult(ref IOpenSearchResultCollection osr) {
+        private void QueryEarthObservationResult(ref IOpenSearchResultCollection osr)
+        {
 
 
-            foreach (var item in osr.Items) {
+            foreach (var item in osr.Items)
+            {
 
                 log.DebugFormat("Searching for alternate link to metadata URL for item {0}", item.Identifier);
 
-                var altlink = item.Links.FirstOrDefault(l => l.RelationshipType == "alternate" && l.Title == "Alternate metadata URL");
+                var altlink = item.Links.FirstOrDefault(l => l.RelationshipType == "via" && l.Title == "Original source metadata");
 
-                if (altlink != null) {
+                string identifier = null;
+
+                if (altlink != null)
+                {
                     log.DebugFormat("Link found at {0}", altlink.Uri);
                     var req = HttpWebRequest.Create(altlink.Uri);
                     log.DebugFormat("Query {0}...", altlink.Uri);
                     var response = req.GetResponse();
-                    var xr = XmlReader.Create(response.GetResponseStream());
-                    while (xr.Read()) {
-                        if (xr.LocalName == "scene" && xr.NamespaceURI == "http://earthexplorer.usgs.gov/eemetadata.xsd") {
-                            log.DebugFormat("Found scene metadata, harvesting {0} ...", altlink.Uri);
-                            Terradue.OpenSearch.Model.Schemas.EarthExplorer.scene eescene = (Terradue.OpenSearch.Model.Schemas.EarthExplorer.scene)eeSer.Deserialize(xr);
-                            Terradue.ServiceModel.Ogc.Eop21.EarthObservationType eo = EarthExplorerToEo(eescene);
-                            AddIMGOffering(eo, item);
-                            if (eo != null) {
-                                log.DebugFormat("EOP extension created from {0}", altlink.Uri);
-                                MemoryStream stream = new MemoryStream();
-                                XmlWriter writer = XmlWriter.Create(stream);
-                                var ser = OgcHelpers.GetXmlSerializerFromType(eo.GetType());
-                                ser.Serialize(stream, eo);
-                                writer.Flush();
-                                stream.Seek(0, SeekOrigin.Begin);
+                    using (var xr = XmlReader.Create(response.GetResponseStream()))
+                    {
+                        while (xr.Read())
+                        {
+                            if (xr.LocalName == "scene" && xr.NamespaceURI == "http://earthexplorer.usgs.gov/eemetadata.xsd")
+                            {
+                                log.DebugFormat("Found scene metadata, harvesting {0} ...", altlink.Uri);
+                                Terradue.OpenSearch.Model.Schemas.EarthExplorer.scene eescene = (Terradue.OpenSearch.Model.Schemas.EarthExplorer.scene)eeSer.Deserialize(xr);
+                                Terradue.ServiceModel.Ogc.Eop21.EarthObservationType eo = EarthExplorerToEo(eescene);
+                                AddIMGOffering(eo, item);
+                                if (eo != null)
+                                {
+                                    log.DebugFormat("EOP extension created from {0}", altlink.Uri);
+                                    using (MemoryStream stream = new MemoryStream())
+                                    {
+                                        XmlWriter writer = XmlWriter.Create(stream);
+                                        var ser = OgcHelpers.GetXmlSerializerFromType(eo.GetType());
+                                        ser.Serialize(stream, eo);
+                                        writer.Flush();
+                                        stream.Seek(0, SeekOrigin.Begin);
 
-                                item.ElementExtensions.Add(XmlReader.Create(stream));
+                                        item.ElementExtensions.Add(XmlReader.Create(stream));
+                                    }
+                                    identifier = eo.EopMetaDataProperty.EarthObservationMetaData.identifier;
+                                    item.Title = new ServiceModel.Syndication.TextSyndicationContent(
+                                        string.Format("{0}, {1}, Path: {2}, Row: {3}",
+                                                      identifier,
+                                                      DateTime.Parse(eo.phenomenonTime.GmlTimePeriod.beginPosition.Value).ToString("yy-MMM-dd hh:mm:ss"),
+                                                      eo.procedure.Eop21EarthObservationEquipment.acquisitionParameters.Acquisition.wrsLongitudeGrid.Value,
+                                                      eo.procedure.Eop21EarthObservationEquipment.acquisitionParameters.Acquisition.wrsLatitudeGrid.Value
+                                                     ));
+                                }
+                                continue;
                             }
-                            continue;
                         }
-                            
+
                     }
 
                 }
 
-                var identifierext = item.ElementExtensions.FirstOrDefault(e => e.OuterName == "identifier" && e.OuterNamespace ==  "http://purl.org/dc/elements/1.1/");
-                string identifier = identifierext.GetObject<string>().Replace("http://cwic.wgiss.ceos.org/opensearch/granules.atom?uid=", "");
+                var identifierext = item.ElementExtensions.FirstOrDefault(e => e.OuterName == "identifier" && e.OuterNamespace == "http://purl.org/dc/elements/1.1/");
+                if (identifier == null)
+                {
+                    UriBuilder url = new UriBuilder(identifierext.GetObject<string>());
+                    NameValueCollection nvc = System.Web.HttpUtility.ParseQueryString(url.Query);
+                    identifier = nvc["uid"];
+                    if (identifier.Contains(":"))
+                        identifier = identifier.Split(':')[1];
+                    
+                }
                 item.ElementExtensions.Remove(identifierext);
                 item.ElementExtensions.Add("identifier", "http://purl.org/dc/elements/1.1/", identifier);
             }
         }
 
-        private static void AddIMGOffering(Terradue.ServiceModel.Ogc.Eop21.EarthObservationType eo, IOpenSearchResultItem item) {
+        private static void AddIMGOffering(Terradue.ServiceModel.Ogc.Eop21.EarthObservationType eo, IOpenSearchResultItem item)
+        {
             Terradue.ServiceModel.Ogc.Eop21.BrowseInformationPropertyType[] bi = null;
-            if (eo.result != null && eo.result.Eop21EarthObservationResult.browse != null) {
+            if (eo.result != null && eo.result.Eop21EarthObservationResult.browse != null)
+            {
                 bi = eo.result.Eop21EarthObservationResult.browse;
             }
-            if (bi != null) {
-                foreach (var browse in bi) {
+            if (bi != null)
+            {
+                foreach (var browse in bi)
+                {
 
                     if (browse.BrowseInformation.type != "img")
                         continue;
@@ -111,13 +148,16 @@ namespace Terradue.OpenSearch.Model.EarthObservation.OpenSearchable {
             }
         }
 
-        public static Terradue.ServiceModel.Ogc.Eop21.EarthObservationType EarthExplorerToEo(Terradue.OpenSearch.Model.Schemas.EarthExplorer.scene scene) {
+        public static Terradue.ServiceModel.Ogc.Eop21.EarthObservationType EarthExplorerToEo(Terradue.OpenSearch.Model.Schemas.EarthExplorer.scene scene)
+        {
 
-            if (scene.metadataFields.FirstOrDefault(m => m.name == "Landsat Scene Identifier") != null) {
+            if (scene.metadataFields.FirstOrDefault(m => m.name == "Landsat Scene Identifier") != null)
+            {
                 return LandsatToEo(scene);
             }
 
-            if (scene.metadataFields.FirstOrDefault(m => m.name == "Entity ID" && m.metadataValue.StartsWith("SRTM")) != null) {
+            if (scene.metadataFields.FirstOrDefault(m => m.name == "Entity ID" && m.metadataValue.StartsWith("SRTM")) != null)
+            {
                 return SRTMToEo(scene);
             }
 
@@ -125,7 +165,8 @@ namespace Terradue.OpenSearch.Model.EarthObservation.OpenSearchable {
 
         }
 
-        public static Terradue.ServiceModel.Ogc.Opt21.OptEarthObservationType LandsatToEo(Terradue.OpenSearch.Model.Schemas.EarthExplorer.scene scene) {
+        public static Terradue.ServiceModel.Ogc.Opt21.OptEarthObservationType LandsatToEo(Terradue.OpenSearch.Model.Schemas.EarthExplorer.scene scene)
+        {
 
             Terradue.ServiceModel.Ogc.Opt21.OptEarthObservationType optEo = new Terradue.ServiceModel.Ogc.Opt21.OptEarthObservationType();
 
@@ -144,16 +185,17 @@ namespace Terradue.OpenSearch.Model.EarthObservation.OpenSearchable {
             optEo.procedure.Eop21EarthObservationEquipment.platform.Platform.orbitType = Terradue.ServiceModel.Ogc.Eop21.OrbitTypeValueType.LEO;
             optEo.procedure.Eop21EarthObservationEquipment.instrument = new Terradue.ServiceModel.Ogc.Eop21.InstrumentPropertyType();
             optEo.procedure.Eop21EarthObservationEquipment.instrument.Instrument = new Terradue.ServiceModel.Ogc.Eop21.InstrumentType();
-            switch (identifier.metadataValue.Substring(1, 1)) {
-                case "T": 
+            switch (identifier.metadataValue.Substring(1, 1))
+            {
+                case "T":
                     optEo.procedure.Eop21EarthObservationEquipment.instrument.Instrument.shortName = "TIRS";
                     optEo.procedure.Eop21EarthObservationEquipment.instrument.Instrument.description = "Thermal Infrared Sensor";
                     break;
-                case "O": 
+                case "O":
                     optEo.procedure.Eop21EarthObservationEquipment.instrument.Instrument.shortName = "OLI";
                     optEo.procedure.Eop21EarthObservationEquipment.instrument.Instrument.description = "Operational Land Imager";
                     break;
-                case "C": 
+                case "C":
                     optEo.procedure.Eop21EarthObservationEquipment.instrument.Instrument.shortName = "OLI_TIRS";
                     optEo.procedure.Eop21EarthObservationEquipment.instrument.Instrument.description = "Operational Land Imager & Thermal Infrared Sensor";
                     break;
@@ -165,7 +207,8 @@ namespace Terradue.OpenSearch.Model.EarthObservation.OpenSearchable {
             optEo.procedure.Eop21EarthObservationEquipment.acquisitionParameters = new Terradue.ServiceModel.Ogc.Eop21.AcquisitionPropertyType();
             optEo.procedure.Eop21EarthObservationEquipment.acquisitionParameters.Acquisition = new Terradue.ServiceModel.Ogc.Eop21.AcquisitionType();
             var swrsRow = scene.metadataFields.FirstOrDefault(m => m.name == "Target WRS Row");
-            if (swrsRow != null) {
+            if (swrsRow != null)
+            {
                 int wrsRow = int.Parse(swrsRow.metadataValue);
                 if (wrsRow > 1 && wrsRow <= 122)
                     optEo.procedure.Eop21EarthObservationEquipment.acquisitionParameters.Acquisition.orbitDirection = Terradue.ServiceModel.Ogc.Eop21.OrbitDirectionValueType.DESCENDING;
@@ -178,13 +221,15 @@ namespace Terradue.OpenSearch.Model.EarthObservation.OpenSearchable {
                 optEo.procedure.Eop21EarthObservationEquipment.acquisitionParameters.Acquisition.wrsLatitudeGrid.Value = wrsRow.ToString();
             }
             var swrsPath = scene.metadataFields.FirstOrDefault(m => m.name == "Target WRS Path");
-            if (swrsPath != null) {
+            if (swrsPath != null)
+            {
                 optEo.procedure.Eop21EarthObservationEquipment.acquisitionParameters.Acquisition.wrsLongitudeGrid = new Terradue.ServiceModel.Ogc.Gml321.CodeWithAuthorityType();
                 optEo.procedure.Eop21EarthObservationEquipment.acquisitionParameters.Acquisition.wrsLongitudeGrid.Value = swrsPath.metadataValue.Trim();
             }
 
             var fullscene = scene.metadataFields.FirstOrDefault(m => m.name == "Full or Partial Scene");
-            if (fullscene != null) {
+            if (fullscene != null)
+            {
                 Terradue.ServiceModel.Ogc.Eop21.SpecificInformationPropertyType vss = new Terradue.ServiceModel.Ogc.Eop21.SpecificInformationPropertyType();
                 vss.SpecificInformation = new Terradue.ServiceModel.Ogc.Eop21.SpecificInformationType();
                 vss.SpecificInformation.localAttribute = "full_partial_scene";
@@ -192,8 +237,10 @@ namespace Terradue.OpenSearch.Model.EarthObservation.OpenSearchable {
             }
 
             var dataCat = scene.metadataFields.FirstOrDefault(m => m.name == "Data Category");
-            if (dataCat != null) {
-                switch (dataCat.metadataValue) {
+            if (dataCat != null)
+            {
+                switch (dataCat.metadataValue)
+                {
                     case "NOMINAL":
                         optEo.EopMetaDataProperty.EarthObservationMetaData.acquisitionType = Terradue.ServiceModel.Ogc.Eop21.AcquisitionTypeValueType.NOMINAL;
                         break;
@@ -217,7 +264,8 @@ namespace Terradue.OpenSearch.Model.EarthObservation.OpenSearchable {
             optEo.EopMetaDataProperty.EarthObservationMetaData.processing[0].ProcessingInformation = new Terradue.ServiceModel.Ogc.Eop21.ProcessingInformationType();
 
             var level1 = scene.metadataFields.FirstOrDefault(m => m.name == "Data Type Level 1");
-            if (level1 != null) {
+            if (level1 != null)
+            {
                 optEo.EopMetaDataProperty.EarthObservationMetaData.processing[0].ProcessingInformation.processingLevel = level1.metadataValue;
             }
 
@@ -226,19 +274,23 @@ namespace Terradue.OpenSearch.Model.EarthObservation.OpenSearchable {
             List<string> aux = new List<string>();
 
             var bpfoli = scene.metadataFields.FirstOrDefault(m => m.name == "Bias Parameter File Name OLI");
-            if (bpfoli != null) {
+            if (bpfoli != null)
+            {
                 aux.Add(bpfoli.metadataValue);
             }
             var bpftirs = scene.metadataFields.FirstOrDefault(m => m.name == "Bias Parameter File Name TIRS");
-            if (bpftirs != null) {
+            if (bpftirs != null)
+            {
                 aux.Add(bpftirs.metadataValue);
             }
             var bpfcal = scene.metadataFields.FirstOrDefault(m => m.name == "Calibration Parameter File");
-            if (bpfcal != null) {
+            if (bpfcal != null)
+            {
                 aux.Add(bpfcal.metadataValue);
             }
             var bpfrlut = scene.metadataFields.FirstOrDefault(m => m.name == "RLUT File Name");
-            if (bpfrlut != null) {
+            if (bpfrlut != null)
+            {
                 aux.Add(bpfrlut.metadataValue);
             }
 
@@ -248,12 +300,14 @@ namespace Terradue.OpenSearch.Model.EarthObservation.OpenSearchable {
             optEo.phenomenonTime.GmlTimePeriod = new Terradue.ServiceModel.Ogc.Gml321.TimePeriodType();
             var start = scene.metadataFields.FirstOrDefault(m => m.name == "Start Time");
             var stop = scene.metadataFields.FirstOrDefault(m => m.name == "Stop Time");
-            if (start != null) {
+            if (start != null)
+            {
                 DateTime startdate = ParseDateTime(start.metadataValue);
                 optEo.phenomenonTime.GmlTimePeriod.beginPosition = new Terradue.ServiceModel.Ogc.Gml321.TimePositionType();
                 optEo.phenomenonTime.GmlTimePeriod.beginPosition.Value = startdate.ToString("O");
             }
-            if (stop != null) {
+            if (stop != null)
+            {
                 DateTime stopdate = ParseDateTime(stop.metadataValue);
                 optEo.phenomenonTime.GmlTimePeriod.endPosition = new Terradue.ServiceModel.Ogc.Gml321.TimePositionType();
                 optEo.phenomenonTime.GmlTimePeriod.endPosition.Value = stopdate.ToString("O");
@@ -262,7 +316,8 @@ namespace Terradue.OpenSearch.Model.EarthObservation.OpenSearchable {
             optEo.EopMetaDataProperty.EarthObservationMetaData.vendorSpecific = vs.ToArray();
 
             var qua = scene.metadataFields.FirstOrDefault(m => m.name == "Image Quality");
-            if (qua != null) {
+            if (qua != null)
+            {
                 optEo.EopMetaDataProperty.EarthObservationMetaData.imageQualityDegradation = new Terradue.ServiceModel.Ogc.Gml321.MeasureType();
                 optEo.EopMetaDataProperty.EarthObservationMetaData.imageQualityDegradation.Value = double.Parse(qua.metadataValue);
             }
@@ -273,35 +328,42 @@ namespace Terradue.OpenSearch.Model.EarthObservation.OpenSearchable {
 
             var cc = scene.metadataFields.FirstOrDefault(m => m.name == "Scene Cloud Cover");
             double ccd;
-            if (cc != null && double.TryParse(cc.metadataValue, out ccd)) {
+            if (cc != null && double.TryParse(cc.metadataValue, out ccd))
+            {
                 optEo.result.Opt21EarthObservationResult.cloudCoverPercentage = new Terradue.ServiceModel.Ogc.Gml321.MeasureType();
                 optEo.result.Opt21EarthObservationResult.cloudCoverPercentage.Value = ccd;
             }
 
             var sunelev = scene.metadataFields.FirstOrDefault(m => m.name == "Sun Elevation");
-            if (sunelev != null) {
+            if (sunelev != null)
+            {
                 optEo.procedure.Eop21EarthObservationEquipment.acquisitionParameters.Acquisition.illuminationElevationAngle = new Terradue.ServiceModel.Ogc.Gml321.AngleType();
                 optEo.procedure.Eop21EarthObservationEquipment.acquisitionParameters.Acquisition.illuminationElevationAngle.Value = double.Parse(sunelev.metadataValue);
             }
 
             var sunazimuth = scene.metadataFields.FirstOrDefault(m => m.name == "Sun Azimuth");
-            if (sunazimuth != null) {
+            if (sunazimuth != null)
+            {
                 optEo.procedure.Eop21EarthObservationEquipment.acquisitionParameters.Acquisition.illuminationAzimuthAngle = new Terradue.ServiceModel.Ogc.Gml321.AngleType();
                 optEo.procedure.Eop21EarthObservationEquipment.acquisitionParameters.Acquisition.illuminationAzimuthAngle.Value = double.Parse(sunazimuth.metadataValue);
             }
 
             var brwexist = scene.metadataFields.FirstOrDefault(m => m.name == "Browse Exists");
-            if (brwexist != null && brwexist.metadataValue == "Y") {
+            if (brwexist != null && brwexist.metadataValue == "Y")
+            {
 
-                if (scene.overlayLinks.Count() > 0) {
+                if (scene.overlayLinks.Count() > 0)
+                {
 
                     var overlay = scene.overlayLinks.FirstOrDefault(l => l.caption.Contains("Natural"));
-                    if (overlay != null) {
+                    if (overlay != null)
+                    {
                         optEo.result.Opt21EarthObservationResult.browse = new Terradue.ServiceModel.Ogc.Eop21.BrowseInformationPropertyType[1];
                         optEo.result.Opt21EarthObservationResult.browse[0] = new Terradue.ServiceModel.Ogc.Eop21.BrowseInformationPropertyType();
                         optEo.result.Opt21EarthObservationResult.browse[0].BrowseInformation = new Terradue.ServiceModel.Ogc.Eop21.BrowseInformationType();
                         var wmsparams = overlay.overlayLink.Split('&');
-                        if (wmsparams.Count() > 0 && wmsparams.FirstOrDefault(p => p.StartsWith("srs=")) != null) {
+                        if (wmsparams.Count() > 0 && wmsparams.FirstOrDefault(p => p.StartsWith("srs=")) != null)
+                        {
                             optEo.result.Opt21EarthObservationResult.browse[0].BrowseInformation.referenceSystemIdentifier = new Terradue.ServiceModel.Ogc.Gml321.CodeWithAuthorityType();
                             optEo.result.Opt21EarthObservationResult.browse[0].BrowseInformation.referenceSystemIdentifier.Value = wmsparams.FirstOrDefault(p => p.StartsWith("srs=")).Split('=')[1];
                         }
@@ -316,26 +378,28 @@ namespace Terradue.OpenSearch.Model.EarthObservation.OpenSearchable {
             }
 
             return optEo;
-            
+
         }
 
-        public static Terradue.ServiceModel.Ogc.Eop21.EarthObservationType SRTMToEo(Terradue.OpenSearch.Model.Schemas.EarthExplorer.scene scene) {
+        public static Terradue.ServiceModel.Ogc.Eop21.EarthObservationType SRTMToEo(Terradue.OpenSearch.Model.Schemas.EarthExplorer.scene scene)
+        {
 
             throw new NotImplementedException();
         }
 
-        private static DateTime ParseDateTime(string date) {
+        private static DateTime ParseDateTime(string date)
+        {
 
             var dateelem = date.Split(':');
 
             DateTime doy = DateTime.Parse("2000-01-01T00:00:00");
-            doy = doy.AddDays(double.Parse(dateelem[1])-1);
+            doy = doy.AddDays(double.Parse(dateelem[1]) - 1);
 
             var sec = dateelem[4].Split('.');
 
             double div = 100.0 / double.Parse(new StringBuilder("1").Append('0', sec[1].Length - 1).ToString());
             double milli = double.Parse(sec[1]) * div;
-            return new DateTime(int.Parse(dateelem[0]), doy.Month, doy.Day, int.Parse(dateelem[2]), int.Parse(dateelem[3]), int.Parse(sec[0]), (int)milli, DateTimeKind.Utc); 
+            return new DateTime(int.Parse(dateelem[0]), doy.Month, doy.Day, int.Parse(dateelem[2]), int.Parse(dateelem[3]), int.Parse(sec[0]), (int)milli, DateTimeKind.Utc);
 
         }
     }

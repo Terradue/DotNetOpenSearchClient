@@ -74,12 +74,21 @@ namespace Terradue.OpenSearch.Model.EarthObservation {
             }
 
             foreach (var url in baseUrls) {
-                var e = OpenSearchFactory.FindOpenSearchable(ose, url, ext.DiscoveryContentType);
+                IOpenSearchable e = null;
+                // QC Sentinel1 case
+                if (url.Host == "qc.sentinel1.eo.esa.int")
+                {
+                    log.DebugFormat("QC Sentinel1 source. Trying to get the earthobservation profile");
+                    e = new Sentinel1QcOpenSearchable(url, ose);
+                    entities.Add(e);
+                    continue;
+                }
+                e = OpenSearchFactory.FindOpenSearchable(ose, url, ext.DiscoveryContentType, lax);
                 if (!e.DefaultMimeType.Contains("profile=http://earth.esa.int/eop")) {
                     try {
-                        e = OpenSearchFactory.FindOpenSearchable(ose, url, "application/atom+xml; profile=http://earth.esa.int/eop/2.1");
+                        e = OpenSearchFactory.FindOpenSearchable(ose, url, "application/atom+xml; profile=http://earth.esa.int/eop/2.1", lax);
                     } catch (InvalidOperationException){
-                        e = OpenSearchFactory.FindOpenSearchable(ose, url, "application/atom+xml");
+                        e = OpenSearchFactory.FindOpenSearchable(ose, url, "application/atom+xml", lax);
                     }
                     if (!e.DefaultMimeType.Contains("xml"))
                         throw new InvalidOperationException("No Url in the OpenSearch Description Document that could fit the EOP data model");
@@ -94,6 +103,7 @@ namespace Terradue.OpenSearch.Model.EarthObservation {
                     log.DebugFormat("Cwic source. Trying to get the earthobservation profile");
                     e = CwicOpenSearchable.CreateFrom((Terradue.OpenSearch.GenericOpenSearchable)e, ose);
                 }
+
                 entities.Add(e);
             }
 
