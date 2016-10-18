@@ -2,7 +2,7 @@
 
 source ./test_common.sh
 
-echo "===== test_catalog_series  ====="
+echo "===== test_catalog_series_S1  ====="
 
 reference="https://catalog.terradue.com/sentinel1/series/italy/search?uid=S1B_IW_RAW__0SDV_20161017T053650_20161017T053722_002542_0044B5_E4F8"
 formats="json atom rdf"
