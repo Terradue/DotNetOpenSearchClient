@@ -15,7 +15,6 @@ using System.Xml.Serialization;
 using Terradue.Metadata.EarthObservation;
 using System.IO;
 using System.Text;
-using Terradue.ServiceModel.Ogc.OwsContext;
 using Terradue.ServiceModel.Ogc;
 using Terradue.OpenSearch.Engine.Extensions;
 using System.Web;

@@ -7,6 +7,7 @@ using Terradue.OpenSearch.Engine;
 using Terradue.OpenSearch.Model.EarthObservation;
 using Terradue.OpenSearch.SciHub;
 using System.Net;
+using System.Linq;
 
 namespace Terradue.OpenSearch.Model.Scihub {
     
@@ -33,9 +34,9 @@ namespace Terradue.OpenSearch.Model.Scihub {
             }
         }
 
-        public override IOpenSearchable CreateOpenSearchable(List<Uri> baseUrls, string queryFormatArg, OpenSearchEngine ose, NetworkCredential netCreds, bool lax) {
+        public override IOpenSearchable CreateOpenSearchable(IEnumerable<Uri> baseUrls, string queryFormatArg, OpenSearchEngine ose, IEnumerable<NetworkCredential> netCreds, bool lax) {
             
-            SciHubOpenSearchable entity = new SciHubOpenSearchable(baseUrls[0], netCreds);
+            SciHubOpenSearchable entity = new SciHubOpenSearchable(baseUrls.First(), netCreds.First());
             if (queryFormatArg == "eop") {
                 entity.DefaultMimeType = "application/atom+xml; profile=http://earth.esa.int/eop/2.1";
             }

@@ -145,7 +145,7 @@ namespace Terradue.OpenSearch.Model.GeoTime
 
 		}
 
-		public virtual IOpenSearchable CreateOpenSearchable(List<Uri> baseUrls, string queryFormatArg, OpenSearchEngine ose, NetworkCredential netCreds, bool lax)
+		public virtual IOpenSearchable CreateOpenSearchable(IEnumerable<Uri> baseUrls, string queryFormatArg, OpenSearchEngine ose, IEnumerable<NetworkCredential> netCreds, bool lax)
 		{
 			List<IOpenSearchable> entities = new List<IOpenSearchable>();
 			foreach (var url in baseUrls) {
