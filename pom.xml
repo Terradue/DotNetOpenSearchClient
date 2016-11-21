@@ -143,7 +143,7 @@
               <directory>/usr/local/lib/ne_110m_land</directory>
               <sources>
                 <source>
-                  <location>${basedir}/packages/Terradue.Metadata.EarthObservation.1.4.12/content/Resources/ne_110m_land</location>
+                  <location>${basedir}/packages/Terradue.Metadata.EarthObservation.1.4.14/content/Resources/ne_110m_land</location>
                 </source>
               </sources>
             </mapping>
