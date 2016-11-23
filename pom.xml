@@ -152,7 +152,6 @@
             <provide>${project.artifactId}</provide>
           </provides>
           <requires>
-            <require>mono &gt;= 3.12</require>
           </requires>
           <needarch>noarch</needarch>
         </configuration>
