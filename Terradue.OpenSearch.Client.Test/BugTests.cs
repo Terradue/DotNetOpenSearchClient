@@ -89,7 +89,7 @@ namespace Terradue.OpenSearch.Client.Test {
             OpenSearchClient.queryModelArg = "Scihub";
 
             string[] creds = "t2da:t2da".Split(':');
-            OpenSearchClient.netCreds = new NetworkCredential(creds[0], creds[1]);
+            OpenSearchClient.netCreds = new List<NetworkCredential> { new NetworkCredential(creds[0], creds[1])};
 
             MemoryStream ms = new MemoryStream();
 

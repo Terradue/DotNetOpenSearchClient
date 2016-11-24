@@ -41,6 +41,7 @@ namespace Terradue.OpenSearch.Client
         private static Version version = typeof(OpenSearchClient).Assembly.GetName().Version;
         internal static bool verbose;
         internal static bool lax = false;
+        internal static bool alternative = false;
         private static bool listOsee;
         private static string outputFilePathArg = null;
         private static string queryFormatArg = null;
@@ -56,7 +57,7 @@ namespace Terradue.OpenSearch.Client
         private static OpenSearchMemoryCache searchCache;
         private static NameValueCollection dataModelParameters;
         private static DataModel dataModel;
-        internal static NetworkCredential netCreds;
+        internal static List<NetworkCredential> netCreds;
 
 
         public static void Main(string[] args)
@@ -220,101 +221,149 @@ namespace Terradue.OpenSearch.Client
 
             NameValueCollection parametersNvc;
 
-            // Find OpenSearch Entity
-            IOpenSearchable entity = null;
-            int retry = 5;
-            int index = 1;
-            while (retry >= 0)
+            List<List<Uri>> altBaseUrlLists = alternative ?
+                new List<List<Uri>>(baseUrls.Select(u => new List<Uri>() { u })) :
+                new List<List<Uri>>() { baseUrls };
+
+            List<List<NetworkCredential>> altNetCredsLists = alternative ?
+                new List<List<NetworkCredential>>(netCreds.Select(u => new List<NetworkCredential>() { u })) :
+                new List<List<NetworkCredential>>() { netCreds };
+
+            for (int i = 0; i < altBaseUrlLists.Count(); i++)
             {
-                // Perform the query
+                bool outputStarted = false;
+
                 try
                 {
-                    entity = dataModel.CreateOpenSearchable(baseUrls, queryFormatArg, ose, netCreds, lax);
-                    index = entity.GetOpenSearchDescription().DefaultUrl.IndexOffset;
-                    log.Debug("IndexOffset : " + index);
-                    break;
+
+                    log.DebugFormat("Alternative #{0} : {1}", i, string.Join(",", altBaseUrlLists[i]));
+
+
+
+                    // Find OpenSearch Entity
+                    IOpenSearchable entity = null;
+                    int retry = 5;
+                    int index = 1;
+                    while (retry >= 0)
+                    {
+                        // Perform the query
+                        try
+                        {
+                            entity = dataModel.CreateOpenSearchable(altBaseUrlLists[i], queryFormatArg, ose, altNetCredsLists[i], lax);
+                            index = entity.GetOpenSearchDescription().DefaultUrl.IndexOffset;
+                            log.Debug("IndexOffset : " + index);
+                            break;
+                        }
+                        catch (Exception e)
+                        {
+                            log.Warn(e.Message);
+                            if (retry == 0)
+                                throw e;
+                            retry--;
+                            searchCache.ClearCache(".*", DateTime.MinValue);
+                        }
+                    }
+
+                    NameValueCollection parameters = PrepareQueryParameters(entity);
+                    string startIndex = parameters.Get("startIndex");
+                    if (startIndex != null)
+                    {
+                        index = int.Parse(startIndex);
+                    }
+
+                    IOpenSearchResultCollection osr = null;
+                    long totalCount = 0;
+                    log.Debug(totalResults + " entries requested");
+                    while (totalResults > 0)
+                    {
+
+                        log.Debug("startIndex : " + index);
+                        parametersNvc = ResolveParameters(parameters, entity);
+
+                        retry = 5;
+                        while (retry >= 0)
+                        {
+                            // Perform the query
+                            log.Debug("Launching query...");
+                            try
+                            {
+                                osr = QueryOpenSearch(ose, entity, parametersNvc);
+                                break;
+                            }
+                            catch (AggregateException ae)
+                            {
+                                if (retry == 0)
+                                {
+                                    throw ae;
+                                }
+                                foreach (Exception e in ae.InnerExceptions)
+                                {
+                                    log.Warn("Exception " + e.Message);
+                                }
+                                retry--;
+                                searchCache.ClearCache(".*", DateTime.MinValue);
+                            }
+                            catch (KeyNotFoundException e)
+                            {
+                                log.Error("Query not found : " + e.Message);
+                                throw e;
+                            }
+                            catch (Exception e)
+                            {
+                                if (retry == 0)
+                                {
+                                    throw e;
+                                }
+
+                                log.Warn("Exception " + e.Message);
+                                retry--;
+                                searchCache.ClearCache(".*", DateTime.MinValue);
+                            }
+
+                        }
+
+                        int count = CountResults(osr);
+                        if (alternative && totalCount == 0 && count == 0)
+                            throw new Exception("No results found");
+
+                        // Transform the result
+                        OutputResult(osr, outputStream);
+
+                        outputStarted = true;
+
+
+                        log.Debug(count + " entries found");
+                        if (count == 0)
+                            break;
+                        int expectedCount = count;
+                        if (!string.IsNullOrEmpty(parameters["count"]) && int.TryParse(parameters["count"], out expectedCount) && count < expectedCount)
+                            break;
+
+                        totalResults -= count;
+                        totalCount += count;
+                        log.Debug(count + " entries found on " + totalResults + " requested");
+                        int paramCount;
+                        if (Int32.TryParse(parameters.Get("count"), out paramCount) && totalResults < paramCount)
+                        {
+                            parameters.Set("count", "" + totalResults);
+                        }
+                        index += count;
+
+                        parameters.Set("startIndex", "" + index);
+
+                    }
+
+                    if (alternative && totalCount > 0)
+                        break;
+
                 }
                 catch (Exception e)
                 {
-                    log.Warn(e.Message);
-                    if (retry == 0)
+                    if (outputStarted || i + 1 == altBaseUrlLists.Count())
                         throw e;
-                    retry--;
-                    searchCache.ClearCache(".*");
+                    searchCache.ClearCache(".*", DateTime.MinValue);
+                    continue;
                 }
-            }
-
-            NameValueCollection parameters = PrepareQueryParameters(entity);
-            string startIndex = parameters.Get("startIndex");
-            if (startIndex != null)
-            {
-                index = int.Parse(startIndex);
-            }
-
-            IOpenSearchResultCollection osr = null;
-
-            log.Debug(totalResults + " entries requested");
-            while (totalResults > 0)
-            {
-
-
-                log.Debug("startIndex : " + index);
-                parametersNvc = ResolveParameters(parameters, entity);
-
-                retry = 5;
-                while (retry >= 0)
-                {
-                    // Perform the query
-                    log.Debug("Launching query...");
-                    try
-                    {
-                        osr = QueryOpenSearch(ose, entity, parametersNvc);
-                        break;
-                    }
-                    catch (AggregateException ae)
-                    {
-                        if (retry == 0)
-                            throw ae;
-                        foreach (Exception e in ae.InnerExceptions)
-                        {
-                            log.Warn("Exception " + e.Message);
-                        }
-                        retry--;
-                        searchCache.ClearCache(".*");
-                    }
-                    catch (Exception e)
-                    {
-                        if (retry == 0)
-                            throw e;
-                        log.Warn("Exception " + e.Message);
-                        retry--;
-                        searchCache.ClearCache(".*");
-                    }
-
-                }
-
-                // Transform the result
-                OutputResult(osr, outputStream);
-
-                int count = CountResults(osr);
-                log.Debug(count + " entries found");
-                if (count == 0)
-                    break;
-                int expectedCount = count;
-                if (!string.IsNullOrEmpty(parameters["count"]) && int.TryParse(parameters["count"], out expectedCount) && count < expectedCount)
-                    break;
-
-                totalResults -= count;
-                log.Debug(count + " entries found on " + totalResults + " requested");
-                int paramCount;
-                if (Int32.TryParse(parameters.Get("count"), out paramCount) && totalResults < paramCount)
-                {
-                    parameters.Set("count", "" + totalResults);
-                }
-                index += count;
-
-                parameters.Set("startIndex", "" + index);
-
             }
 
             if (closeOutputStream) outputStream.Close();
@@ -358,8 +407,11 @@ namespace Terradue.OpenSearch.Client
                     case "--auth":
                         if (argpos < args.Length - 1)
                         {
-                            string[] creds = args[++argpos].Split(':');
-                            netCreds = new NetworkCredential(creds[0], creds[1]);
+                            netCreds = Array.ConvertAll<string, NetworkCredential>(args[++argpos].Split(','), c =>
+                            {
+                                string[] creds = c.Split(':');
+                                return new NetworkCredential(creds[0], creds[1]);
+                            }).ToList();
                         }
                         else
                             return false;
@@ -425,6 +477,9 @@ namespace Terradue.OpenSearch.Client
                     case "--lax":
                         lax = true;
                         break;
+                    case "--alternative":
+                        alternative = true;
+                        break;
                     default:
                         if (baseUrlArg == null)
                         {
@@ -466,7 +521,9 @@ namespace Terradue.OpenSearch.Client
             Console.Error.WriteLine(" -m/--model <format>       Specify the data model of the results for the query. Data model give access to specific" +
             "metadata extractors or transformers. By default the \"GeoTime\" model is used. Used without urls, it lists the metadata options");
             Console.Error.WriteLine(" -dp/--datamodel-parameter <param> Specify a data model parameter");
+            Console.Error.WriteLine(" -a/--auth <creds>         Authentication credentials. A string representing the credentials, usually username:password.");
             Console.Error.WriteLine(" --lax                     Lax query: assign parameters even if not described by the opensearch server.");
+            Console.Error.WriteLine(" --alternative             Altenative query: Instead of making a parallel multi search in case of multiple URL, it tries the URL until 1 returns results");
             Console.Error.WriteLine(" -v/--verbose              Make the operation more talkative");
             Console.Error.WriteLine();
         }
@@ -496,7 +553,7 @@ namespace Terradue.OpenSearch.Client
                 hierarchy.Root.Level = Level.Debug;
             }
             hierarchy.Configured = true;
-            
+
             BasicConfigurator.Configure(new ConsoleAppender[] { consoleErrAppender });
 
             return LogManager.GetLogger(typeof(OpenSearchClient));

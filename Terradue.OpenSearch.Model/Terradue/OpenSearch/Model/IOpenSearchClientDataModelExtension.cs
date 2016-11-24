@@ -34,7 +34,7 @@ namespace Terradue.OpenSearch.Model {
 
         void SetQueryParameters(NameValueCollection nvc);
 
-        IOpenSearchable CreateOpenSearchable(List<Uri> baseUrls, string queryFormatArg, OpenSearchEngine ose, NetworkCredential netCreds, bool lax);
+        IOpenSearchable CreateOpenSearchable(IEnumerable<Uri> baseUrls, string queryFormatArg, OpenSearchEngine ose, IEnumerable<NetworkCredential> netCreds, bool lax);
 
     }
 

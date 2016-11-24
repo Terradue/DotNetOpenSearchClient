@@ -62,7 +62,7 @@ namespace Terradue.OpenSearch.Model.EarthObservation {
             
         }
 
-        public override IOpenSearchable CreateOpenSearchable(List<Uri> baseUrls, string queryFormatArg, OpenSearchEngine ose, NetworkCredential netCreds, bool lax) {
+        public override IOpenSearchable CreateOpenSearchable(IEnumerable<Uri> baseUrls, string queryFormatArg, OpenSearchEngine ose, IEnumerable<NetworkCredential> netCreds, bool lax) {
             List<IOpenSearchable> entities = new List<IOpenSearchable>();
 
             IOpenSearchEngineExtension ext;

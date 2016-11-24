@@ -15,8 +15,8 @@ using System.Xml.Serialization;
 using Terradue.Metadata.EarthObservation;
 using System.IO;
 using System.Text;
-using Terradue.ServiceModel.Ogc.OwsContext;
 using Terradue.ServiceModel.Ogc;
+using Terradue.ServiceModel.Ogc.Owc.AtomEncoding;
 
 namespace Terradue.OpenSearch.Model.EarthObservation.OpenSearchable
 {
@@ -140,7 +140,7 @@ namespace Terradue.OpenSearch.Model.EarthObservation.OpenSearchable
                     offering.Code = "http://www.opengis.net/spec/owc-atom/1.0/req/img";
                     offering.Contents = new OwcContent[1];
                     offering.Contents[0] = new OwcContent();
-                    offering.Contents[0].Href = new Uri(browse.BrowseInformation.fileName.ServiceReference.href);
+                    offering.Contents[0].Url = new Uri(browse.BrowseInformation.fileName.ServiceReference.href);
 
                     item.ElementExtensions.Add(offering, new XmlSerializer(typeof(OwcOffering)));
 
@@ -392,7 +392,7 @@ namespace Terradue.OpenSearch.Model.EarthObservation.OpenSearchable
 
             var dateelem = date.Split(':');
 
-            DateTime doy = DateTime.Parse("2000-01-01T00:00:00");
+            DateTime doy = DateTime.Parse(dateelem[0] + "-01-01T00:00:00");
             doy = doy.AddDays(double.Parse(dateelem[1]) - 1);
 
             var sec = dateelem[4].Split('.');
