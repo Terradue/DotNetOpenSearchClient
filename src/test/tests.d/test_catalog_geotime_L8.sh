@@ -40,7 +40,7 @@ test_enclosure()
 {
   for format in ${formats}
   do
-    local output=$( opensearch-client "${reference}&format=${format}" enclosure )
+    local output=$( opensearch-client -p do=terradue "${reference}&format=${format}" enclosure )
     # Here the do parameter shall be set automatically, so we expect always store.terradue.com
     assertEquals "https://store.terradue.com/download/landsat8/files/v1/LC81422132016290LGN00" "${output}"
   done

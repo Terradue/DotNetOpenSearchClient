@@ -38,7 +38,7 @@ test_enclosure()
 {
   for format in ${formats}
   do
-    local output=$( opensearch-client "${reference}&format=${format}" enclosure )
+    local output=$( opensearch-client -p do=terradue "${reference}&format=${format}" enclosure )
     assertEquals "https://store.terradue.com/download/sentinel1/files/v1/S1B_IW_RAW__0SDV_20161017T053650_20161017T053722_002542_0044B5_E4F8" "${output}"
   done
 }

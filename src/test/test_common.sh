@@ -4,6 +4,8 @@
 function setUp() {
 
   export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:${OPENSEARCH_CLIENT_PATH}
+
+
 } 
 
 function opensearch-client() {
