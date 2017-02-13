@@ -52,7 +52,7 @@ namespace Terradue.OpenSearch.Model {
                 foreach (var cl in assembly.GetTypes())
                 {
                     var dnAttributes = cl.GetCustomAttributes(typeof(OpenSearchClientExtensionAttribute), true);
-                    foreach (OpenSearchEngineExtensionAttribute dnAttribute in dnAttributes)
+                    foreach (OpenSearchClientExtensionAttribute dnAttribute in dnAttributes)
                     {
                         log.Debug(String.Format("Found {0} [{1}] in class {2}", dnAttribute.NodeName, dnAttribute.Description, cl.Name));
                         try
