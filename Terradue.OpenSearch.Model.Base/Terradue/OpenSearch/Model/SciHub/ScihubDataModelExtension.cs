@@ -1,6 +1,5 @@
 ﻿using System;
 using Terradue.OpenSearch.Model.GeoTime;
-using Mono.Addins;
 using System.Collections.Specialized;
 using System.Collections.Generic;
 using Terradue.OpenSearch.Engine;
@@ -11,7 +10,7 @@ using System.Linq;
 
 namespace Terradue.OpenSearch.Model.Scihub {
     
-    [Extension(typeof(IOpenSearchClientDataModelExtension))]
+   [OpenSearchClientExtension("Scihub", "SciHub Client extension")]
     public class ScihubDataModelExtension : EarthObservationDataModelExtension, IOpenSearchClientDataModelExtension {
         
         protected override void InitializeExtractors() {

@@ -12,7 +12,6 @@ using System.Reflection;
 using Terradue.OpenSearch;
 using System.Collections.Specialized;
 using Terradue.ServiceModel.Syndication;
-using Mono.Addins;
 using log4net;
 using log4net.Repository.Hierarchy;
 using log4net.Layout;
@@ -120,9 +119,6 @@ namespace Terradue.OpenSearch.Client
 
             log.Debug("Initialize Addins registry.");
 
-            AddinManager.Initialize();
-            AddinManager.Registry.Update(null);
-
             log.Debug("Initialize SSL verification.");
             // Override automatic validation of SSL server certificates.
             System.Net.ServicePointManager.ServerCertificateValidationCallback = (s, ce, ca, p) => true;
@@ -164,13 +160,12 @@ namespace Terradue.OpenSearch.Client
             sw.WriteLine(string.Format("{0,-30}{1,-40}", "Extension Id", "Mime-Type capability"));
             sw.WriteLine(string.Format("{0,-30}{1,-40}", "============", "===================="));
 
-            AddinManager.Initialize();
-            AddinManager.Registry.Update(null);
+            OpenSearchEngine ose = new OpenSearchEngine();
+            ose.LoadPlugins();
 
-            foreach (TypeExtensionNode node in AddinManager.GetExtensionNodes(typeof(IOpenSearchEngineExtension)))
+            foreach (var osee in ose.Extensions)
             {
-                IOpenSearchEngineExtension osee = (IOpenSearchEngineExtension)node.CreateInstance();
-                sw.WriteLine(string.Format("{0,-30}{1,-40}", osee.Identifier, osee.DiscoveryContentType));
+                sw.WriteLine(string.Format("{0,-30}{1,-40}", osee.Value.Identifier, osee.Value.DiscoveryContentType));
             }
 
             sw.Close();

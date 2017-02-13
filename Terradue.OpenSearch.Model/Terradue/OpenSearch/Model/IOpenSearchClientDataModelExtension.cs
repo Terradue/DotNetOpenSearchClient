@@ -1,5 +1,4 @@
 using System;
-using Mono.Addins;
 using System.Collections.Generic;
 using System.IO;
 using Terradue.OpenSearch.Result;
@@ -8,12 +7,10 @@ using Terradue.OpenSearch.Engine;
 using System.Net;
 
 
-[assembly:AddinRoot("OpenSearchDataModel", "1.0")]
 namespace Terradue.OpenSearch.Model {
 
 
 
-    [TypeExtensionPoint()]
     public interface IOpenSearchClientDataModelExtension {
 
         void InitModelExtension(NameValueCollection parameters);

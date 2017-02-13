@@ -1,6 +1,5 @@
 ﻿using System;
 using Terradue.OpenSearch.Model.GeoTime;
-using Mono.Addins;
 using System.Collections.Specialized;
 using System.Collections.Generic;
 using Terradue.OpenSearch.Engine;
@@ -10,7 +9,7 @@ using log4net;
 
 namespace Terradue.OpenSearch.Model.EarthObservation {
     
-    [Extension(typeof(IOpenSearchClientDataModelExtension))]
+    [OpenSearchClientExtension("EOP", "Earth observation Profile client extension" )]
     public class EarthObservationDataModelExtension : GeoTimeDataModelExtension, IOpenSearchClientDataModelExtension {
 
         private static readonly ILog log = LogManager.GetLogger(typeof(EarthObservationDataModelExtension));
