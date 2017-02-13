@@ -3,19 +3,16 @@ using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.IO;
 using Terradue.OpenSearch.Result;
-using Mono.Addins;
 using System.Linq;
 using System.Collections.ObjectModel;
 using Terradue.ServiceModel.Syndication;
 using Terradue.OpenSearch.Engine;
 using System.Net;
 
-[assembly: Addin]
-[assembly: AddinDependency("OpenSearchDataModel", "1.0")]
 namespace Terradue.OpenSearch.Model.GeoTime
 {
 
-	[Extension(typeof(IOpenSearchClientDataModelExtension))]
+    [OpenSearchClientExtension("GeoTime", "Geo And Time Client extension")]
 	public class GeoTimeDataModelExtension : IOpenSearchClientDataModelExtension
 	{
 

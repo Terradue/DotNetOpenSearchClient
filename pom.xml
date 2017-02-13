@@ -10,7 +10,7 @@
 	<artifactId>opensearch-client</artifactId>
 	<packaging>rpm</packaging>
 	<description>OpenSearch Client</description>
-	<version>1.6.5</version>
+	<version>1.6.6</version>
 	<properties>
 		<redmine.projectID>opensearch-client</redmine.projectID>
 	</properties>
@@ -144,7 +144,7 @@
 							<directory>/usr/local/lib/ne_110m_land</directory>
 							<sources>
 								<source>
-									<location>${basedir}/packages/Terradue.Metadata.EarthObservation.1.4.14/content/Resources/ne_110m_land</location>
+									<location>${basedir}/packages/Terradue.Metadata.EarthObservation.1.4.16/content/Resources/ne_110m_land</location>
 								</source>
 							</sources>
 						</mapping>

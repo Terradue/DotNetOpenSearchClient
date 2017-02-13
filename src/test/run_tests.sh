@@ -2,6 +2,8 @@
 
 exit_code=0
 
+cp -r ../../packages/Terradue.Metadata.EarthObservation.*/content/Resources/ne_110m_land /usr/local/lib/ne_110m_land
+
 for test in $( ls tests.d/* )
 do
   /bin/bash ${test}

@@ -1,5 +1,4 @@
 ﻿using System;
-using Mono.Addins;
 using System.IO;
 using System.Collections.Generic;
 using Terradue.OpenSearch.Result;
@@ -7,6 +6,7 @@ using System.Collections.Specialized;
 using Terradue.OpenSearch.Engine;
 using System.Net;
 using log4net;
+using System.Reflection;
 
 namespace Terradue.OpenSearch.Model {
     public class DataModel {
@@ -40,13 +40,34 @@ namespace Terradue.OpenSearch.Model {
 
         public static IOpenSearchClientDataModelExtension FindPluginByName(string name) {
 
-            AddinManager.Initialize();
-            AddinManager.Registry.Update();
+            List<Assembly> allAssemblies = new List<Assembly>();
+            string dirpath = Path.GetDirectoryName((new System.Uri(Assembly.GetExecutingAssembly().CodeBase)).AbsolutePath);
 
-            foreach (TypeExtensionNode node in AddinManager.GetExtensionNodes (typeof(IOpenSearchClientDataModelExtension))) {
-                IOpenSearchClientDataModelExtension modelExtension = (IOpenSearchClientDataModelExtension)node.CreateInstance();
-                if (modelExtension.Name == name) {
-                    return modelExtension;
+            log.Debug(string.Format("Scan {0} for OpenSearch Client plugins", dirpath));
+            foreach (string dll in Directory.GetFiles(dirpath, "*.dll"))
+                allAssemblies.Add(Assembly.LoadFile(dll));
+
+            foreach (var assembly in allAssemblies)
+            {
+                foreach (var cl in assembly.GetTypes())
+                {
+                    var dnAttributes = cl.GetCustomAttributes(typeof(OpenSearchClientExtensionAttribute), true);
+                    foreach (OpenSearchClientExtensionAttribute dnAttribute in dnAttributes)
+                    {
+                        log.Debug(String.Format("Found {0} [{1}] in class {2}", dnAttribute.NodeName, dnAttribute.Description, cl.Name));
+                        try
+                        {
+                            IOpenSearchClientDataModelExtension modelExtension = (IOpenSearchClientDataModelExtension)Activator.CreateInstance(cl);
+                            if (modelExtension.Name == name)
+                            {
+                                return modelExtension;
+                            }
+                        }
+                        catch (Exception e)
+                        {
+                            log.Warn(string.Format("Impossible to load {0} : {1}. Skipping extension", cl.FullName, e.Message));
+                        }
+                    }
                 }
             }
 

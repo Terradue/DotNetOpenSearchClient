@@ -1,6 +1,5 @@
 using System;
 using Terradue.OpenSearch.Model.GeoTime;
-using Mono.Addins;
 using System.Collections.Specialized;
 using System.Collections.Generic;
 using Terradue.OpenSearch.Engine;
