@@ -20,6 +20,15 @@
 				<include>*.exe</include>
 			</includes>
 		</fileSet>
+		<fileSet>
+			<directory>Terradue.OpenSearch.Client/bin</directory>
+			<outputDirectory>mono</outputDirectory>
+			<excludes>
+				<exclude>NuGet.Core.dll</exclude>
+				<exclude>NuGet4Mono.exe</exclude>
+				<exclude>NuGet4Mono.Extensions.dll</exclude>		
+			</excludes>
+		</fileSet>
 	</fileSets>
 
 </assembly>
