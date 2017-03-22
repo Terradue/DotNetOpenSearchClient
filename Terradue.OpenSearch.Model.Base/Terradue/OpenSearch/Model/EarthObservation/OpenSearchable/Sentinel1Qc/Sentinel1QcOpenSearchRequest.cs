@@ -190,16 +190,7 @@ namespace Terradue.OpenSearch.Model.EarthObservation.OpenSearchable
             if (eo != null)
             {
                 log.DebugFormat("EOP extension created from {0}", url);
-                using (MemoryStream stream = new MemoryStream())
-                {
-                    XmlWriter writer = XmlWriter.Create(stream);
-                    var ser = OgcHelpers.GetXmlSerializerFromType(eo.GetType());
-                    ser.Serialize(stream, eo);
-                    writer.Flush();
-                    stream.Seek(0, SeekOrigin.Begin);
-
-                    item.ElementExtensions.Add(XmlReader.Create(stream));
-                }
+                item.ElementExtensions.Add(eo.CreaterReader());
             }
 
             if (withOrbits)
