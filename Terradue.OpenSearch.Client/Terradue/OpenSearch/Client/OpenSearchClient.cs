@@ -255,7 +255,7 @@ namespace Terradue.OpenSearch.Client
                             if (retry == 0)
                                 throw e;
                             retry--;
-                            searchCache.ClearCache(".*", DateTime.MinValue);
+                            searchCache.ClearCache(".*", DateTime.Now);
                         }
                     }
 
@@ -296,7 +296,7 @@ namespace Terradue.OpenSearch.Client
                                     log.Warn("Exception " + e.Message);
                                 }
                                 retry--;
-                                searchCache.ClearCache(".*", DateTime.MinValue);
+                                searchCache.ClearCache(".*", DateTime.Now);
                             }
                             catch (KeyNotFoundException e)
                             {
@@ -312,7 +312,7 @@ namespace Terradue.OpenSearch.Client
 
                                 log.Warn("Exception " + e.Message);
                                 retry--;
-                                searchCache.ClearCache(".*", DateTime.MinValue);
+                                searchCache.ClearCache(".*", DateTime.Now);
                             }
 
                         }
@@ -356,7 +356,7 @@ namespace Terradue.OpenSearch.Client
                 {
                     if (outputStarted || i + 1 == altBaseUrlLists.Count())
                         throw e;
-                    searchCache.ClearCache(".*", DateTime.MinValue);
+                    searchCache.ClearCache(".*", DateTime.Now);
                     continue;
                 }
             }
