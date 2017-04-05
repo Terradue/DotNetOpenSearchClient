@@ -108,6 +108,8 @@ namespace Terradue.OpenSearch.Model.EarthObservation.OpenSearchable
                 }
                 item.ElementExtensions.Remove(identifierext);
                 item.ElementExtensions.Add("identifier", "http://purl.org/dc/elements/1.1/", identifier);
+                identifierext = item.ElementExtensions.FirstOrDefault(e => e.OuterName == "identifier" && e.OuterNamespace == "http://purl.org/dc/terms/");
+                item.ElementExtensions.Remove(identifierext);
             }
         }
 
