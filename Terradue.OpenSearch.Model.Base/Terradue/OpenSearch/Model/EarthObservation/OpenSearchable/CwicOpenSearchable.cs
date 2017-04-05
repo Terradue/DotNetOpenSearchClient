@@ -78,16 +78,7 @@ namespace Terradue.OpenSearch.Model.EarthObservation.OpenSearchable
                                 if (eo != null)
                                 {
                                     log.DebugFormat("EOP extension created from {0}", altlink.Uri);
-                                    using (MemoryStream stream = new MemoryStream())
-                                    {
-                                        XmlWriter writer = XmlWriter.Create(stream);
-                                        var ser = OgcHelpers.GetXmlSerializerFromType(eo.GetType());
-                                        ser.Serialize(stream, eo);
-                                        writer.Flush();
-                                        stream.Seek(0, SeekOrigin.Begin);
-
-                                        item.ElementExtensions.Add(XmlReader.Create(stream));
-                                    }
+                                    item.ElementExtensions.Add(eo.CreaterReader());
                                     identifier = eo.EopMetaDataProperty.EarthObservationMetaData.identifier;
                                     item.Title = new ServiceModel.Syndication.TextSyndicationContent(
                                         string.Format("{0}, {1}, Path: {2}, Row: {3}",
@@ -113,10 +104,12 @@ namespace Terradue.OpenSearch.Model.EarthObservation.OpenSearchable
                     identifier = nvc["uid"];
                     if (identifier.Contains(":"))
                         identifier = identifier.Split(':')[1];
-                    
+
                 }
                 item.ElementExtensions.Remove(identifierext);
                 item.ElementExtensions.Add("identifier", "http://purl.org/dc/elements/1.1/", identifier);
+                identifierext = item.ElementExtensions.FirstOrDefault(e => e.OuterName == "identifier" && e.OuterNamespace == "http://purl.org/dc/terms/");
+                item.ElementExtensions.Remove(identifierext);
             }
         }
 
