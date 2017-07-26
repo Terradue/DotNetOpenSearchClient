@@ -22,7 +22,7 @@
 		<Externalconsole>true</Externalconsole>
 		<PlatformTarget>x86</PlatformTarget>
 		<ConsolePause>true</ConsolePause>
-		<Commandlineparameters>https://data2.terradue.com/eop/sentinel2/dataset/description</Commandlineparameters>
+		<Commandlineparameters>https://catalog.terradue.com/sentinel2/description</Commandlineparameters>
 		<ExternalConsole>true</ExternalConsole>
 	</PropertyGroup>
 	<PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
