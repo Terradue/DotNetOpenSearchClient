@@ -105,18 +105,18 @@
     <Reference Include="HtmlAgilityPack">
       <HintPath>..\packages\HtmlAgilityPack.1.4.9.5\lib\Net45\HtmlAgilityPack.dll</HintPath>
     </Reference>
-    <Reference Include="Terradue.OpenSearch.SciHub">
-      <HintPath>..\packages\Terradue.OpenSearch.SciHub.1.3.3\lib\net45\Terradue.OpenSearch.SciHub.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
     <Reference Include="log4net">
       <HintPath>..\packages\log4net.2.0.8\lib\net45-full\log4net.dll</HintPath>
     </Reference>
-    <Reference Include="Terradue.OpenSearch">
-      <HintPath>..\packages\Terradue.OpenSearch.1.14.9\lib\net45\Terradue.OpenSearch.dll</HintPath>
-    </Reference>
     <Reference Include="Terradue.Metadata.EarthObservation">
       <HintPath>..\packages\Terradue.Metadata.EarthObservation.1.4.17\lib\net45\Terradue.Metadata.EarthObservation.dll</HintPath>
+    </Reference>
+    <Reference Include="Terradue.OpenSearch">
+      <HintPath>..\packages\Terradue.OpenSearch.1.15.0\lib\net45\Terradue.OpenSearch.dll</HintPath>
+    </Reference>
+    <Reference Include="Terradue.OpenSearch.SciHub">
+      <HintPath>..\packages\Terradue.OpenSearch.SciHub.1.3.4\lib\net45\Terradue.OpenSearch.SciHub.dll</HintPath>
+      <Private>False</Private>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -171,7 +171,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
-    <None Include="Resources\.DS_Store" />
     <None Include="Resources\ne_110m_land\.DS_Store" />
     <None Include="Resources\ne_110m_land\ne_110m_land.shx" />
     <None Include="Resources\ne_110m_land\ne_110m_land.shp" />
