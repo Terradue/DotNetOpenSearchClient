@@ -33,7 +33,7 @@ namespace Terradue.OpenSearch.Model.Scihub {
             }
         }
 
-        public override IOpenSearchable CreateOpenSearchable(IEnumerable<Uri> baseUrls, string queryFormatArg, OpenSearchEngine ose, IEnumerable<NetworkCredential> netCreds, bool lax) {
+        public override IOpenSearchable CreateOpenSearchable(IEnumerable<Uri> baseUrls, string queryFormatArg, OpenSearchEngine ose, IEnumerable<NetworkCredential> netCreds) {
             
             SciHubOpenSearchable entity = new SciHubOpenSearchable(baseUrls.First(), netCreds.First());
             if (queryFormatArg == "eop") {

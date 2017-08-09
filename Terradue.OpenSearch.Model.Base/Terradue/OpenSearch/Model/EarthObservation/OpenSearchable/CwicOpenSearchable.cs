@@ -27,13 +27,14 @@ namespace Terradue.OpenSearch.Model.EarthObservation.OpenSearchable
 
         private static readonly ILog log = LogManager.GetLogger(typeof(CwicOpenSearchable));
 
-        public CwicOpenSearchable(OpenSearchDescription osd, OpenSearchEngine ose) : base(osd, ose)
+        public CwicOpenSearchable(OpenSearchDescription osd, IOpenSearchableFactory factory) : base(osd, factory.Settings)
         {
         }
 
         public static CwicOpenSearchable CreateFrom(GenericOpenSearchable e, OpenSearchEngine ose)
         {
-            return new CwicOpenSearchable(e.GetOpenSearchDescription(), ose);
+            UrlBasedOpenSearchableFactory factory = new UrlBasedOpenSearchableFactory(new OpenSearchableFactorySettings(ose));
+            return new CwicOpenSearchable(e.GetOpenSearchDescription(), factory);
         }
 
         public new void ApplyResultFilters(OpenSearchRequest request, ref IOpenSearchResultCollection osr, string finalContentType)

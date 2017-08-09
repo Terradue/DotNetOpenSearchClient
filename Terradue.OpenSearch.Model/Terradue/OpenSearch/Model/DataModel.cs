@@ -32,8 +32,6 @@ namespace Terradue.OpenSearch.Model {
 
             modelExtension.InitModelExtension(parameters);
 
-
-
             return new DataModel(modelExtension);
 
         }
@@ -134,8 +132,8 @@ namespace Terradue.OpenSearch.Model {
             modelExtension.SetQueryParameters(nvc);
         }
 
-        public IOpenSearchable CreateOpenSearchable(IEnumerable<Uri> baseUrls, string queryFormatArg, OpenSearchEngine ose, IEnumerable<NetworkCredential> netCreds, bool lax){
-            return modelExtension.CreateOpenSearchable(baseUrls, queryFormatArg, ose, netCreds, lax);
+        public IOpenSearchable CreateOpenSearchable(IEnumerable<Uri> baseUrls, string queryFormatArg, OpenSearchEngine ose, IEnumerable<NetworkCredential> netCreds){
+            return modelExtension.CreateOpenSearchable(baseUrls, queryFormatArg, ose, netCreds);
         }
     }
 }

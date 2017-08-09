@@ -6,6 +6,7 @@ using Terradue.OpenSearch.Engine;
 using System.Net;
 using Terradue.OpenSearch.Model.EarthObservation.OpenSearchable;
 using log4net;
+using System.Linq;
 
 namespace Terradue.OpenSearch.Model.EarthObservation {
     
@@ -61,7 +62,7 @@ namespace Terradue.OpenSearch.Model.EarthObservation {
             
         }
 
-        public override IOpenSearchable CreateOpenSearchable(IEnumerable<Uri> baseUrls, string queryFormatArg, OpenSearchEngine ose, IEnumerable<NetworkCredential> netCreds, bool lax) {
+        public override IOpenSearchable CreateOpenSearchable(IEnumerable<Uri> baseUrls, string queryFormatArg, OpenSearchEngine ose, IEnumerable<NetworkCredential> netCreds) {
             List<IOpenSearchable> entities = new List<IOpenSearchable>();
 
             IOpenSearchEngineExtension ext;
@@ -72,22 +73,30 @@ namespace Terradue.OpenSearch.Model.EarthObservation {
                 ext = ose.GetExtensionByExtensionName(queryFormatArg);
             }
 
-            foreach (var url in baseUrls) {
-                IOpenSearchable e = null;
+			for (int i = 0; i < baseUrls.Count(); i++)
+			{
+				var url = baseUrls.ElementAt(i);
+
+				OpenSearchableFactorySettings settings = new OpenSearchableFactorySettings(ose)
+				{
+					Credentials = netCreds.ElementAt(i)
+				};
+
+				IOpenSearchable e = null;
                 // QC Sentinel1 case
                 if (url.Host == "qc.sentinel1.eo.esa.int")
                 {
                     log.DebugFormat("QC Sentinel1 source. Trying to get the earthobservation profile");
-                    e = new Sentinel1QcOpenSearchable(url, ose);
+                    e = new Sentinel1QcOpenSearchable(url, settings.OpenSearchEngine);
                     entities.Add(e);
                     continue;
                 }
-                e = OpenSearchFactory.FindOpenSearchable(ose, url, ext.DiscoveryContentType, lax);
+                e = OpenSearchFactory.FindOpenSearchable(settings, url, ext.DiscoveryContentType);
                 if (!e.DefaultMimeType.Contains("profile=http://earth.esa.int/eop")) {
                     try {
-                        e = OpenSearchFactory.FindOpenSearchable(ose, url, "application/atom+xml; profile=http://earth.esa.int/eop/2.1", lax);
+                        e = OpenSearchFactory.FindOpenSearchable(settings, url, "application/atom+xml; profile=http://earth.esa.int/eop/2.1");
                     } catch (InvalidOperationException){
-                        e = OpenSearchFactory.FindOpenSearchable(ose, url, "application/atom+xml", lax);
+                        e = OpenSearchFactory.FindOpenSearchable(settings, url, "application/atom+xml");
                     }
                     if (!e.DefaultMimeType.Contains("xml"))
                         throw new InvalidOperationException("No Url in the OpenSearch Description Document that could fit the EOP data model");
@@ -95,12 +104,12 @@ namespace Terradue.OpenSearch.Model.EarthObservation {
                 // Fedeo case
                 if (url.Host == "fedeo.esa.int" && e.DefaultMimeType == "application/atom+xml" && e is Terradue.OpenSearch.GenericOpenSearchable) {
                     log.DebugFormat("Fedeo source. Trying to get the earthobservation profile");
-                    e = FedeoOpenSearchable.CreateFrom(url, ose);
+                    e = FedeoOpenSearchable.CreateFrom(url, settings.OpenSearchEngine);
                 }
                 // Cwic case
                 if (url.Host == "cwic.wgiss.ceos.org" && e.DefaultMimeType == "application/atom+xml" && e is Terradue.OpenSearch.GenericOpenSearchable) {
                     log.DebugFormat("Cwic source. Trying to get the earthobservation profile");
-                    e = CwicOpenSearchable.CreateFrom((Terradue.OpenSearch.GenericOpenSearchable)e, ose);
+                    e = CwicOpenSearchable.CreateFrom((Terradue.OpenSearch.GenericOpenSearchable)e, settings.OpenSearchEngine);
                 }
 
                 entities.Add(e);

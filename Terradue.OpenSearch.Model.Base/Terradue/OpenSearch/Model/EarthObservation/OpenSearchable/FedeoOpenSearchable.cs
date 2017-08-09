@@ -19,11 +19,12 @@ namespace Terradue.OpenSearch.Model.EarthObservation.OpenSearchable
 
         private static readonly ILog log = LogManager.GetLogger(typeof(FedeoOpenSearchable));
 
-        public FedeoOpenSearchable(OpenSearchUrl url, OpenSearchEngine ose): base(url, ose){
+        public FedeoOpenSearchable(OpenSearchUrl url, IOpenSearchableFactory factory): base(url, factory.Settings){
         }
 
         public static FedeoOpenSearchable CreateFrom(Uri url,  OpenSearchEngine ose) {
-            return new FedeoOpenSearchable(new OpenSearchUrl(url), ose);
+            UrlBasedOpenSearchableFactory factory = new UrlBasedOpenSearchableFactory(new OpenSearchableFactorySettings(ose));
+            return new FedeoOpenSearchable(new OpenSearchUrl(url), factory);
         }
 
         public new void ApplyResultFilters(OpenSearchRequest request, ref IOpenSearchResultCollection osr, string finalContentType) {
