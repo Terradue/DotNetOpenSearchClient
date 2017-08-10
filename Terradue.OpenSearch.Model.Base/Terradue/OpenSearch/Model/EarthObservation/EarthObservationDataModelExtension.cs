@@ -117,8 +117,10 @@ namespace Terradue.OpenSearch.Model.EarthObservation {
 
             IOpenSearchable entity;
 
+            OpenSearchableFactorySettings settings2 = new OpenSearchableFactorySettings(ose);
+
             if (entities.Count > 1) {
-                entity = new MultiGenericOpenSearchable(entities, ose);
+                entity = new MultiGenericOpenSearchable(entities, settings2);
             } else {
                 entity = entities[0];
             }
