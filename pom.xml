@@ -10,17 +10,12 @@
 	<artifactId>opensearch-client</artifactId>
 	<packaging>rpm</packaging>
 	<description>OpenSearch Client</description>
-	<version>1.6.10</version>
+	<version>1.7</version>
 	<properties>
 		<redmine.projectID>opensearch-client</redmine.projectID>
 	</properties>
 	<build>
 		<plugins>
-			<plugin>
-				<groupId>org.nuiton.jredmine</groupId>
-				<artifactId>jredmine-maven-plugin</artifactId>
-				<inherited>false</inherited>
-			</plugin>
 			<plugin>
 				<groupId>org.codehaus.mojo</groupId>
 				<artifactId>exec-maven-plugin</artifactId>
@@ -144,7 +139,7 @@
 							<directory>/usr/local/lib/ne_110m_land</directory>
 							<sources>
 								<source>
-									<location>${basedir}/packages/Terradue.Metadata.EarthObservation.1.4.16/content/Resources/ne_110m_land</location>
+									<location>${basedir}/packages/Terradue.Metadata.EarthObservation.1.4.17/content/Resources/ne_110m_land</location>
 								</source>
 							</sources>
 						</mapping>

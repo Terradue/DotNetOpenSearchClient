@@ -175,13 +175,13 @@ namespace Terradue.OpenSearch.Model.EarthObservation.OpenSearchable
                                                                    match.Groups["stopdate"].Value),
                                         url,
                                          identifier,
-                                        DateTimeOffset.ParseExact(match.Groups["proddate"].Value, "yyyyMMddTHHmmss", CultureInfo.InvariantCulture).ToUniversalTime());
+                                        DateTimeOffset.ParseExact(match.Groups["proddate"].Value, "yyyyMMddTHHmmss", CultureInfo.InvariantCulture, DateTimeStyles.AssumeUniversal).ToUniversalTime());
 
-            DateTime start = DateTime.ParseExact(match.Groups["startdate"].Value, "yyyyMMddTHHmmss", CultureInfo.InvariantCulture).ToUniversalTime();
-            DateTime stop = DateTime.ParseExact(match.Groups["stopdate"].Value, "yyyyMMddTHHmmss", CultureInfo.InvariantCulture).ToUniversalTime();
+            DateTime start = DateTime.ParseExact(match.Groups["startdate"].Value, "yyyyMMddTHHmmss", CultureInfo.InvariantCulture, DateTimeStyles.AssumeUniversal).ToUniversalTime();
+            DateTime stop = DateTime.ParseExact(match.Groups["stopdate"].Value, "yyyyMMddTHHmmss", CultureInfo.InvariantCulture, DateTimeStyles.AssumeUniversal).ToUniversalTime();
 
             item.Identifier = identifier;
-            item.PublishDate = DateTimeOffset.ParseExact(match.Groups["proddate"].Value, "yyyyMMddTHHmmss", CultureInfo.InvariantCulture).ToUniversalTime();
+            item.PublishDate = DateTimeOffset.ParseExact(match.Groups["proddate"].Value, "yyyyMMddTHHmmss", CultureInfo.InvariantCulture, DateTimeStyles.AssumeUniversal).ToUniversalTime();
             item.Links.Add(SyndicationLink.CreateMediaEnclosureLink(url, "application/xml", 0));
             item.ElementExtensions.Add("polygon", "http://www.georss.org/georss", "-90 -180 -90 180 90 180 90 -180 -90 -180");
             item.ElementExtensions.Add("date", "http://purl.org/dc/elements/1.1/", string.Format("{0}/{1}", start.ToString("O"), stop.ToString("O")));

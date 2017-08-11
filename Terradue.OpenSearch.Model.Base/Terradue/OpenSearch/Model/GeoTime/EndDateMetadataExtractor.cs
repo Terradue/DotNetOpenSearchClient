@@ -20,7 +20,7 @@ namespace Terradue.OpenSearch.Model.GeoTime
                         break;
                     }
                     if (ext.OuterName == "dtend" && ext.OuterNamespace == "http://www.w3.org/2002/12/cal/ical#") {
-                        date = DateTime.Parse(ext.GetObject<string>()).ToUniversalTime().ToString("O");
+                        date = DateTime.Parse(ext.GetObject<string>(), null, System.Globalization.DateTimeStyles.AssumeUniversal).ToUniversalTime().ToString("O");
                         break;
                     }
                 }

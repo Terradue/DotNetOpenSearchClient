@@ -92,7 +92,7 @@ namespace Terradue.OpenSearch.Model.EarthObservation.OpenSearchable
             NameValueCollection illParams = new NameValueCollection(parameters);
             illParams.Set("ills", "true");
 
-            return new IllimitedOpenSearchRequest<AtomFeed, AtomItem>(ose, this, "application/atom+xml", new OpenSearchUrl(url.Uri), illParams);
+            return new IllimitedOpenSearchRequest<AtomFeed, AtomItem>(new OpenSearchableFactorySettings(ose), this, "application/atom+xml", new OpenSearchUrl(url.Uri), illParams);
         }
 
         public Terradue.OpenSearch.Schema.OpenSearchDescription GetOpenSearchDescription()

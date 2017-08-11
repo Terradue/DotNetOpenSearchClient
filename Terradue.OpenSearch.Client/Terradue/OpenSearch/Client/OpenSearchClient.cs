@@ -244,7 +244,7 @@ namespace Terradue.OpenSearch.Client
                         // Perform the query
                         try
                         {
-                            entity = dataModel.CreateOpenSearchable(altBaseUrlLists[i], queryFormatArg, ose, altNetCredsLists[i], lax);
+                            entity = dataModel.CreateOpenSearchable(altBaseUrlLists[i], queryFormatArg, ose, altNetCredsLists[i]);
                             index = entity.GetOpenSearchDescription().DefaultUrl.IndexOffset;
                             log.Debug("IndexOffset : " + index);
                             break;
