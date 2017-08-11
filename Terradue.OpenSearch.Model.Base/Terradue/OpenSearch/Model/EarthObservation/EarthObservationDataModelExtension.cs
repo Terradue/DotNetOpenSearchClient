@@ -79,7 +79,7 @@ namespace Terradue.OpenSearch.Model.EarthObservation {
 
 				OpenSearchableFactorySettings settings = new OpenSearchableFactorySettings(ose)
 				{
-					Credentials = netCreds.ElementAt(i)
+					Credentials = netCreds == null ? null : netCreds.ElementAt(i)
 				};
 
 				IOpenSearchable e = null;
@@ -91,6 +91,19 @@ namespace Terradue.OpenSearch.Model.EarthObservation {
                     entities.Add(e);
                     continue;
                 }
+                // USGS case
+				if (url.Host == "earthexplorer.usgs.gov")
+				{
+					log.DebugFormat("Usgs source. Trying to get the earthobservation profile");
+
+					// pass them as parameters of the opensearchable
+					string[] landsat8datasetNames = new[] { "LANDSAT_8_C1", "LANDSAT_8_PREWRS" };
+
+					// usgsOpenSearchable
+					e = new Terradue.OpenSearch.Usgs.UsgsOpenSearchable(url, (NetworkCredential)settings.Credentials, landsat8datasetNames);
+                    entities.Add(e);
+                    continue;
+				}
                 e = OpenSearchFactory.FindOpenSearchable(settings, url, ext.DiscoveryContentType);
                 if (!e.DefaultMimeType.Contains("profile=http://earth.esa.int/eop")) {
                     try {
@@ -111,6 +124,10 @@ namespace Terradue.OpenSearch.Model.EarthObservation {
                     log.DebugFormat("Cwic source. Trying to get the earthobservation profile");
                     e = CwicOpenSearchable.CreateFrom((Terradue.OpenSearch.GenericOpenSearchable)e, settings.OpenSearchEngine);
                 }
+			    
+			    
+			    
+			    
 
                 entities.Add(e);
             }
