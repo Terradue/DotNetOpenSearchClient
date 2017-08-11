@@ -163,7 +163,7 @@ namespace Terradue.OpenSearch.Model.GeoTime
                 var url = baseUrls.ElementAt(i);
                 OpenSearchableFactorySettings settings = new OpenSearchableFactorySettings(ose)
                 {
-                    Credentials = netCreds.ElementAt(i)
+                    Credentials = netCreds == null ? null : netCreds.ElementAt(i)
                 };
                 if (string.IsNullOrEmpty(queryFormatArg))
                     try
