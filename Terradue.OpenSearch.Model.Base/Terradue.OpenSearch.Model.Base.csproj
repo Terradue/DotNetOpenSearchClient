@@ -57,8 +57,8 @@
     <Reference Include="NuGet4Mono.Extensions">
       <HintPath>..\packages\NuGet4Mono.0.3.0\lib\net40\NuGet4Mono.Extensions.dll</HintPath>
     </Reference>
-    <Reference Include="Terradue.OpenSearch.Usgs, Version=1.0.0.23119, Culture=neutral, PublicKeyToken=null">
-      <HintPath>..\packages\Terradue.OpenSearch.Usgs.1.0.0\lib\net45\Terradue.OpenSearch.Usgs.dll</HintPath>
+    <Reference Include="Terradue.OpenSearch.Usgs, Version=1.0.1.17964, Culture=neutral, PublicKeyToken=null">
+      <HintPath>..\packages\Terradue.OpenSearch.Usgs.1.0.1\lib\net45\Terradue.OpenSearch.Usgs.dll</HintPath>
     </Reference>
     <Reference Include="Terradue.ServiceModel.Ogc">
       <HintPath>..\packages\Terradue.ServiceModel.Ogc.1.1.6\lib\net40\Terradue.ServiceModel.Ogc.dll</HintPath>
