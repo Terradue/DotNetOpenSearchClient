@@ -96,11 +96,8 @@ namespace Terradue.OpenSearch.Model.EarthObservation {
 				{
 					log.DebugFormat("Usgs source. Trying to get the earthobservation profile");
 
-					// pass them as parameters of the opensearchable
-					string[] landsat8datasetNames = new[] { "LANDSAT_8_C1", "LANDSAT_8_PREWRS" };
-
 					// usgsOpenSearchable
-					e = new Terradue.OpenSearch.Usgs.UsgsOpenSearchable(url, (NetworkCredential)settings.Credentials, landsat8datasetNames);
+					e = new Terradue.OpenSearch.Usgs.UsgsOpenSearchable(url, (NetworkCredential)settings.Credentials);
                     entities.Add(e);
                     continue;
 				}
