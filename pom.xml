@@ -61,6 +61,7 @@
 							<environmentVariables>
 								<OPENSEARCH_CLIENT_PATH>${project.build.directory}/dependencies/mono</OPENSEARCH_CLIENT_PATH>
 								<SHUNIT2_HOME>/usr/share/shunit2</SHUNIT2_HOME>
+								<USGS_CREDENTIALS>${USGS_CREDENTIALS}</USGS_CREDENTIALS>
 							</environmentVariables>
 							<workingDirectory>${basedir}/src/test/</workingDirectory>
 						</configuration>
