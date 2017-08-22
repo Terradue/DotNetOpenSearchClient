@@ -13,6 +13,7 @@
 	<version>1.7.1-SNAPSHOT</version>
 	<properties>
 		<redmine.projectID>opensearch-client</redmine.projectID>
+		<shunit.skip>false</shunit.skip>
 	</properties>
 	<build>
 		<plugins>
@@ -64,6 +65,7 @@
 								<USGS_CREDENTIALS>${USGS_CREDENTIALS}</USGS_CREDENTIALS>
 							</environmentVariables>
 							<workingDirectory>${basedir}/src/test/</workingDirectory>
+							<skip>${shunit.skip}</skip>
 						</configuration>
 						<id>shunit2-test</id>
 						<phase>integration-test</phase>
