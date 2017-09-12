@@ -10,7 +10,7 @@ reference="http://earthexplorer.usgs.gov"
 
  test_id()
 {
-  local output=$( opensearch-client "${reference}" -a "${USGS_CREDENTIALS}" -m EOP -p count=1 -p pi=LANDSAT_8_C1,LANDSAT_8_PREWRS -p profile=eop -p uid=LC81920462017162LGN00  id )
+  local output=$( opensearch-client "${reference}" -a "${USGS_CREDENTIALS}" -m EOP  -p count=1 -p pi=LANDSAT_8_C1,LANDSAT_8_PREWRS -p profile=eop -p uid=LC81920462017162LGN00  id )
   assertEquals "LC81920462017162LGN00" "${output}"
  }
 

@@ -10,7 +10,7 @@
 	<artifactId>opensearch-client</artifactId>
 	<packaging>rpm</packaging>
 	<description>OpenSearch Client</description>
-	<version>1.7.1</version>
+	<version>1.7.2</version>
 	<properties>
 		<redmine.projectID>opensearch-client</redmine.projectID>
 		<shunit.skip>false</shunit.skip>
