@@ -10,10 +10,9 @@
 	<artifactId>opensearch-client</artifactId>
 	<packaging>rpm</packaging>
 	<description>OpenSearch Client</description>
-	<version>1.7.2</version>
+	<version>1.7.3</version>
 	<properties>
 		<redmine.projectID>opensearch-client</redmine.projectID>
-		<shunit.skip>false</shunit.skip>
 	</properties>
 	<build>
 		<plugins>
@@ -55,6 +54,7 @@
 				<executions>
 					<execution>
 						<configuration>
+							<skip>${shunit.skip}</skip>
 							<executable>/bin/bash</executable>
 							<arguments>
 								<argument>${basedir}/src/test/run_tests.sh</argument>
@@ -62,10 +62,8 @@
 							<environmentVariables>
 								<OPENSEARCH_CLIENT_PATH>${project.build.directory}/dependencies/mono</OPENSEARCH_CLIENT_PATH>
 								<SHUNIT2_HOME>/usr/share/shunit2</SHUNIT2_HOME>
-								<USGS_CREDENTIALS>${USGS_CREDENTIALS}</USGS_CREDENTIALS>
 							</environmentVariables>
 							<workingDirectory>${basedir}/src/test/</workingDirectory>
-							<skip>${shunit.skip}</skip>
 						</configuration>
 						<id>shunit2-test</id>
 						<phase>integration-test</phase>

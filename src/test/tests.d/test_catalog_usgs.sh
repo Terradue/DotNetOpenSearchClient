@@ -10,21 +10,21 @@ reference="http://earthexplorer.usgs.gov"
 
  test_id()
 {
-  local output=$( opensearch-client "${reference}" -a "${USGS_CREDENTIALS}" -m EOP  -p count=1 -p pi=LANDSAT_8_C1,LANDSAT_8_PREWRS -p profile=eop -p uid=LC81920462017162LGN00  id )
-  assertEquals "LC81920462017162LGN00" "${output}"
+  local output=$( opensearch-client "${reference}" -a "${USGS_CREDENTIALS}" -m EOP  -p count=1 -p pi=LANDSAT_8_C1 -p profile=eop -p uid=LT82270302013068LGN02  id )
+  assertEquals "LT82270302013068LGN02" "${output}"
  }
 
 
 test_indentifier()
 {
-  local output=$( opensearch-client "${reference}" -a "${USGS_CREDENTIALS}" -m EOP -p count=1 -p pi=LANDSAT_8_C1,LANDSAT_8_PREWRS -p profile=eop -p uid=LC81920462017162LGN00  identifier )
-  assertEquals "LC81920462017162LGN00" "${output}"
+  local output=$( opensearch-client "${reference}" -a "${USGS_CREDENTIALS}" -m EOP -p count=1 -p pi=LANDSAT_8_C1 -p profile=eop -p uid=LT82270302013068LGN02  identifier )
+  assertEquals "LT82270302013068LGN02" "${output}"
 }
 
 test_enclosure()
 {
-  local output=$( opensearch-client "${reference}" -a "${USGS_CREDENTIALS}" -m EOP -p count=1 -p pi=LANDSAT_8_C1,LANDSAT_8_PREWRS -p profile=eop -p uid=LC81920462017162LGN00  enclosure )
-  assertEquals "https://earthexplorer.usgs.gov/download/external/options/LANDSAT_8_C1/LC81920462017162LGN00/INVSVC/" "${output}"
+  local output=$( opensearch-client "${reference}" -a "${USGS_CREDENTIALS}" -m EOP -p count=1 -p pi=LANDSAT_8_C1 -p profile=eop -p uid=LT82270302013068LGN02  enclosure )
+  assertEquals "https://earthexplorer.usgs.gov/download/external/options/LANDSAT_8_C1/LT82270302013068LGN02/INVSVC/" "${output}"
  }
  
 
