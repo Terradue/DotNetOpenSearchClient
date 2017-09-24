@@ -54,7 +54,6 @@
 				<executions>
 					<execution>
 						<configuration>
-							<skip>${shunit.skip}</skip>
 							<executable>/bin/bash</executable>
 							<arguments>
 								<argument>${basedir}/src/test/run_tests.sh</argument>
