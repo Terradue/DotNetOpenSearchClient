@@ -10,7 +10,7 @@
 	<artifactId>opensearch-client</artifactId>
 	<packaging>rpm</packaging>
 	<description>OpenSearch Client</description>
-	<version>1.7.3</version>
+	<version>1.7.4</version>
 	<properties>
 		<redmine.projectID>opensearch-client</redmine.projectID>
 	</properties>
@@ -54,7 +54,6 @@
 				<executions>
 					<execution>
 						<configuration>
-							<skip>${shunit.skip}</skip>
 							<executable>/bin/bash</executable>
 							<arguments>
 								<argument>${basedir}/src/test/run_tests.sh</argument>
