@@ -4,7 +4,7 @@ source ./test_common.sh
 
 echo "=====  test_catalog_t2_rdf  ====="
 
-reference="http://catalogue.terradue.int/catalogue/search/ASA_IM__0P/ASA_IM__0CNPDE20030611_204630_000000162017_00129_06696_0866.N1"
+reference="http://catalogue.terradue.com/catalogue/search/ASA_IM__0P/ASA_IM__0CNPDE20030611_204630_000000162017_00129_06696_0866.N1"
 format="rdf"
 
 test_startdate()
