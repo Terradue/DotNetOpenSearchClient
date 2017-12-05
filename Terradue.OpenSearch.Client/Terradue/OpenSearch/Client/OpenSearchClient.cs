@@ -28,6 +28,8 @@ using Terradue.OpenSearch.Filters;
 using Terradue.OpenSearch.Model;
 using System.Threading;
 using log4net.Config;
+using Terradue.OpenSearch.Model.CustomExceptions;
+
 
 namespace Terradue.OpenSearch.Client
 {
@@ -97,6 +99,13 @@ namespace Terradue.OpenSearch.Client
                         Console.Error.WriteLine(e.StackTrace);
                 }
                 Environment.ExitCode = 1;
+                return;
+
+            }
+            catch (PartialAtomException e)
+            {
+                Environment.ExitCode = 18;
+                searchCache.ClearCache(".*", DateTime.Now);
                 return;
 
             }
@@ -197,6 +206,7 @@ namespace Terradue.OpenSearch.Client
         {
 
             bool closeOutputStream = true;
+            bool isAtomFeedPartial = false;
 
             // Base OpenSearch URL
             log.Debug("Initialize urls");
@@ -232,8 +242,6 @@ namespace Terradue.OpenSearch.Client
                 {
 
                     log.DebugFormat("Alternative #{0} : {1}", i, string.Join(",", altBaseUrlLists[i]));
-
-
 
                     // Find OpenSearch Entity
                     IOpenSearchable entity = null;
@@ -283,6 +291,7 @@ namespace Terradue.OpenSearch.Client
                             try
                             {
                                 osr = QueryOpenSearch(ose, entity, parametersNvc);
+                                isAtomFeedPartial = false;
                                 break;
                             }
                             catch (AggregateException ae)
@@ -302,6 +311,15 @@ namespace Terradue.OpenSearch.Client
                             {
                                 log.Error("Query not found : " + e.Message);
                                 throw e;
+                            }
+                            catch (PartialAtomException e)
+                            {
+                                if (retry == 0) {
+                                    osr = e.PartialOpenSearchResultCollection;
+                                    isAtomFeedPartial = true;
+                                }
+                                retry--;
+                                searchCache.ClearCache(".*", DateTime.Now);
                             }
                             catch (Exception e)
                             {
@@ -362,6 +380,12 @@ namespace Terradue.OpenSearch.Client
             }
 
             if (closeOutputStream) outputStream.Close();
+
+
+
+            if (isAtomFeedPartial) {
+                throw new PartialAtomException();
+            } 
 
 
         }

@@ -122,10 +122,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Terradue\OpenSearch\Model\CustomExceptions\PartialAtomException.cs" />
     <Compile Include="Terradue\OpenSearch\Model\DataModel.cs" />
     <Compile Include="Terradue\OpenSearch\Model\IMetadataExtractor.cs" />
     <Compile Include="Terradue\OpenSearch\Model\IOpenSearchClientDataModelExtension.cs" />
     <Compile Include="Terradue\OpenSearch\Model\OpenSearchClientExtensionAttribute.cs" />
+    <Compile Include="Terradue\OpenSearch\Model\PartialAtomSearchResponse.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
