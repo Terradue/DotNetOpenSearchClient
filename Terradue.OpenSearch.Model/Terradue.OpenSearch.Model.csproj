@@ -31,6 +31,9 @@
     <ConsolePause>false</ConsolePause>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Castle.Core, Version=4.0.0.0, Culture=neutral, PublicKeyToken=407dd0808d44fbdc">
+      <HintPath>..\packages\Castle.Core.4.2.1\lib\net45\Castle.Core.dll</HintPath>
+    </Reference>
     <Reference Include="GeoJSON.Net, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
       <HintPath>..\packages\GeoJSON.Net.1.0.62\lib\net45\GeoJSON.Net.dll</HintPath>
     </Reference>

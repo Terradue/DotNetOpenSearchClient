@@ -34,6 +34,7 @@ namespace Terradue.OpenSearch.Model.EarthObservation.OpenSearchable
         Uri qcBaseUrl;
 
 
+
         public Sentinel1QcOpenSearchRequest(Uri qcSearchUrl, NameValueCollection parameters) : base(new OpenSearchUrl(qcSearchUrl), "application/atom+xml")
         {
             this.qcSearchUrl = qcSearchUrl;
@@ -141,6 +142,7 @@ namespace Terradue.OpenSearch.Model.EarthObservation.OpenSearchable
                 catch (PartialAtomException e) {
                     items.AddRange(e.Items);
                     partialAtom = true;
+
                 }
 
                 queryindex = 1;
@@ -230,6 +232,7 @@ namespace Terradue.OpenSearch.Model.EarthObservation.OpenSearchable
                     Terradue.OpenSearch.SciHub.Data.Earth_Explorer_File eefile = (Terradue.OpenSearch.SciHub.Data.Earth_Explorer_File)eeser.Deserialize(response.GetResponseStream());
 
                     item.ElementExtensions.Add(GenerateOrbitsExtension(eefile));
+              
                 }
             }
 
