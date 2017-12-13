@@ -102,6 +102,44 @@ namespace Terradue.OpenSearch.Client.Test {
             Assert.AreEqual("s3://sentinel-1/2015/05/S1A_IW_GRDH_1SDV_20150522T154256_20150522T154321_006036_007CB1_593F.zip\n", enclosure);
 
         }
+	    
+	    
+	    
+	    [Test()]
+	    public void DataAuthor84() {
+
+		    
+		    //opensearch-client -p count=20 -p startIndex=1 -m EOP -p start=2017-11-30 -p auxtype=aux_resorb -p orbits=true https://qc.sentinel1.eo.esa.int/ identifier
+		    OpenSearchClient.baseUrlArg.Add("https://qc.sentinel1.eo.esa.int/");
+
+		    OpenSearchClient.metadataPaths.Add("identifier");
+
+		    OpenSearchClient.parameterArgs.Add("profile=eop");
+
+		    OpenSearchClient.parameterArgs.Add("count=20");
+
+		    OpenSearchClient.parameterArgs.Add("start=2017-11-30");
+		    
+		    OpenSearchClient.parameterArgs.Add("startIndex=1");
+		    
+		    OpenSearchClient.parameterArgs.Add("auxtype=aux_resorb");
+		    
+		    OpenSearchClient.parameterArgs.Add("orbits=true");
+
+		    OpenSearchClient.queryModelArg = "EOP";
+
+		    MemoryStream ms = new MemoryStream();
+
+		    client.ProcessQuery(ms);
+
+		    ms.Seek(0, SeekOrigin.Begin);
+
+		    var enclosure = Encoding.UTF8.GetString(ms.ToArray());
+
+		  Console.WriteLine(enclosure);
+
+	    }
+	    
             
     }
 }
