@@ -12,7 +12,7 @@ namespace Terradue.OpenSearch.Model.EarthObservation
         public override string GetMetadata(Terradue.OpenSearch.Result.IOpenSearchResultItem item, string specifier) {
 			string ident = base.GetMetadata(item, specifier);
             if (ident == null) {
-                var identifier = Terradue.Metadata.EarthObservation.OpenSearch.EarthObservationOpenSearchResultHelpers.FindIdentifierFromOpenSearchResultItem(item);
+                var identifier = Terradue.Metadata.EarthObservation.OpenSearch.Extensions.EarthObservationOpenSearchResultExtensions.FindIdentifier(item);
                 if (identifier != null)
                     ident = identifier;
             }

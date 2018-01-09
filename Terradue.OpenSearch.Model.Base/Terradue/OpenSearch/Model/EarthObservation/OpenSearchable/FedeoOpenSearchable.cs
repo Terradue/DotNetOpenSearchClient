@@ -43,7 +43,7 @@ namespace Terradue.OpenSearch.Model.EarthObservation.OpenSearchable
 
                 log.DebugFormat("Searching for alternate link to om for item {0}", item.Identifier);
 
-                var eo = Terradue.Metadata.EarthObservation.MetadataHelpers.GetEarthObservationFromIOpenSearchResultItem(item);
+                var eo = Terradue.Metadata.EarthObservation.OpenSearch.Extensions.EarthObservationOpenSearchResultExtensions.GetEarthObservationProfile(item);
 
                 if (eo != null && eo is ServiceModel.Ogc.Eop20.EarthObservationType) {
                     AddOrReplaceEarthObservation((ServiceModel.Ogc.Eop20.EarthObservationType)eo, item);
@@ -63,7 +63,7 @@ namespace Terradue.OpenSearch.Model.EarthObservation.OpenSearchable
                     }
                 }
 
-                item.ElementExtensions.Add(Terradue.ServiceModel.Ogc.OgcHelpers.CreaterReader(eo));
+                item.ElementExtensions.Add(Terradue.ServiceModel.Ogc.OgcHelpers.CreateReader(eo));
             }
         }
 	}
