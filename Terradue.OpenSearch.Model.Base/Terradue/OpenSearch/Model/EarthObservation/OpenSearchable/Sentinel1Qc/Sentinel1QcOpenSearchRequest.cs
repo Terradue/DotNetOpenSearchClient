@@ -12,6 +12,7 @@ using System.Xml;
 using System.Xml.Serialization;
 using HtmlAgilityPack;
 using log4net;
+using Terradue.OpenSearch.Model.CustomExceptions;
 using Terradue.OpenSearch.Request;
 using Terradue.OpenSearch.Response;
 using Terradue.OpenSearch.Result;
@@ -31,6 +32,7 @@ namespace Terradue.OpenSearch.Model.EarthObservation.OpenSearchable
         private static readonly ILog log = LogManager.GetLogger(typeof(Sentinel1QcOpenSearchRequest));
 
         Uri qcBaseUrl;
+
 
 
         public Sentinel1QcOpenSearchRequest(Uri qcSearchUrl, NameValueCollection parameters) : base(new OpenSearchUrl(qcSearchUrl), "application/atom+xml")
@@ -73,6 +75,8 @@ namespace Terradue.OpenSearch.Model.EarthObservation.OpenSearchable
             int absindex = index + ((page - 1) * count);
             int queryindex = absindex % 20;
             int querypage = (absindex / 20) + 1;
+
+            bool partialAtom = false;
 
             List<AtomItem> items = new List<AtomItem>();
 
@@ -132,7 +136,14 @@ namespace Terradue.OpenSearch.Model.EarthObservation.OpenSearchable
                 if (items.FirstOrDefault(i => i.Identifier == list.Last().Key.Replace(".EOF", "")) != null)
                     break;
 
-                items.AddRange(BuildAtomItem(list.Skip(queryindex - 1).Take(count - items.Count()), withOrbits));
+                try {
+                    items.AddRange(BuildAtomItem(list.Skip(queryindex - 1).Take(count - items.Count()), withOrbits));
+                }
+                catch (PartialAtomException e) {
+                    items.AddRange(e.Items);
+                    partialAtom = true;
+
+                }
 
                 queryindex = 1;
                 page++;
@@ -143,20 +154,36 @@ namespace Terradue.OpenSearch.Model.EarthObservation.OpenSearchable
 
             sw.Stop();
 
-            return new Terradue.OpenSearch.Response.AtomOpenSearchResponse(feed, sw.Elapsed);
+           if (partialAtom) {
+                return new PartialAtomSearchResponse(feed, sw.Elapsed);
+           }
+            
+           return new Terradue.OpenSearch.Response.AtomOpenSearchResponse(feed, sw.Elapsed);
         }
 
         IEnumerable<AtomItem> BuildAtomItem(IEnumerable<KeyValuePair<string, Uri>> products, bool withOrbits)
         {
+            
             List<AtomItem> items = new List<AtomItem>();
 
+            bool partial = false;
             foreach (var product in products)
             {
-                var item = CreateItemFromLink(product.Key, product.Value, withOrbits);
-                if (item != null)
-                    items.Add(item);
+                try {
+                    var item = CreateItemFromLink(product.Key, product.Value, withOrbits);
+                    if (item != null)
+                        items.Add(item);
+                }
+                catch (Exception e) {
+                        partial = true;
+                        log.Warn("Ommitting corrupted xml: " + product.Value);
+                }
             }
 
+            if (partial) {
+                throw new PartialAtomException("Atom is partial " , items);
+            }
+            
             return items;
         }
 
@@ -205,6 +232,7 @@ namespace Terradue.OpenSearch.Model.EarthObservation.OpenSearchable
                     Terradue.OpenSearch.SciHub.Data.Earth_Explorer_File eefile = (Terradue.OpenSearch.SciHub.Data.Earth_Explorer_File)eeser.Deserialize(response.GetResponseStream());
 
                     item.ElementExtensions.Add(GenerateOrbitsExtension(eefile));
+              
                 }
             }
 
