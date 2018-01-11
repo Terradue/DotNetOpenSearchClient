@@ -190,7 +190,7 @@ namespace Terradue.OpenSearch.Model.EarthObservation.OpenSearchable
             if (eo != null)
             {
                 log.DebugFormat("EOP extension created from {0}", url);
-                item.ElementExtensions.Add(eo.CreaterReader());
+                item.ElementExtensions.Add(eo.CreateReader());
             }
 
             if (withOrbits)
@@ -240,7 +240,7 @@ namespace Terradue.OpenSearch.Model.EarthObservation.OpenSearchable
             eo.EopMetaDataProperty.EarthObservationMetaData = new Terradue.ServiceModel.Ogc.Eop21.EarthObservationMetaDataType();
             eo.EopMetaDataProperty.EarthObservationMetaData.identifier = identifier;
 
-            eo.procedure = new Terradue.ServiceModel.Ogc.Om.OM_ProcessPropertyType();
+            eo.procedure = new Terradue.ServiceModel.Ogc.Om20.OM_ProcessPropertyType();
             eo.procedure.Eop21EarthObservationEquipment = new Terradue.ServiceModel.Ogc.Eop21.EarthObservationEquipmentType();
             eo.procedure.Eop21EarthObservationEquipment.platform = new Terradue.ServiceModel.Ogc.Eop21.PlatformPropertyType();
             eo.procedure.Eop21EarthObservationEquipment.platform.Platform = new Terradue.ServiceModel.Ogc.Eop21.PlatformType();
@@ -255,7 +255,7 @@ namespace Terradue.OpenSearch.Model.EarthObservation.OpenSearchable
             eo.EopMetaDataProperty.EarthObservationMetaData.processing[0].ProcessingInformation.processingCenter.Text = "POD";
             eo.EopMetaDataProperty.EarthObservationMetaData.processing[0].ProcessingInformation.processingDate = published.DateTime;
 
-            eo.phenomenonTime = new Terradue.ServiceModel.Ogc.Om.TimeObjectPropertyType();
+            eo.phenomenonTime = new Terradue.ServiceModel.Ogc.Om20.TimeObjectPropertyType();
             eo.phenomenonTime.GmlTimePeriod = new Terradue.ServiceModel.Ogc.Gml321.TimePeriodType();
             if (start != null)
             {
@@ -277,23 +277,23 @@ namespace Terradue.OpenSearch.Model.EarthObservation.OpenSearchable
         public static SyndicationElementExtension GenerateOrbitsExtension(Terradue.OpenSearch.SciHub.Data.Earth_Explorer_File file)
         {
 
-            SyndicationElementExtension extension = new SyndicationElementExtension(GetS1OrbitsFromEE(file), Terradue.Metadata.EarthObservation.Extra.orbitListType.OrbitsSerializer);
+            SyndicationElementExtension extension = new SyndicationElementExtension(GetS1OrbitsFromEE(file), Terradue.Metadata.EarthObservation.Model.orbitListType.OrbitsSerializer);
 
             return extension;
         }
 
 
-        public static Terradue.Metadata.EarthObservation.Extra.orbitListType GetS1OrbitsFromEE(Terradue.OpenSearch.SciHub.Data.Earth_Explorer_File file)
+        public static Terradue.Metadata.EarthObservation.Model.orbitListType GetS1OrbitsFromEE(Terradue.OpenSearch.SciHub.Data.Earth_Explorer_File file)
         {
 
-            Terradue.Metadata.EarthObservation.Extra.orbitListType orbits = new Terradue.Metadata.EarthObservation.Extra.orbitListType();
+            Terradue.Metadata.EarthObservation.Model.orbitListType orbits = new Terradue.Metadata.EarthObservation.Model.orbitListType();
 
             orbits.orbit = file.Data_Block.List_of_OSVs.OSV.
-                Select<Terradue.OpenSearch.SciHub.Data.Earth_Explorer_FileData_BlockList_of_OSVsOSV, Terradue.Metadata.EarthObservation.Extra.orbitType>(o =>
+                Select<Terradue.OpenSearch.SciHub.Data.Earth_Explorer_FileData_BlockList_of_OSVsOSV, Terradue.Metadata.EarthObservation.Model.orbitType>(o =>
                 {
-                    Terradue.Metadata.EarthObservation.Extra.orbitType orbit = new Terradue.Metadata.EarthObservation.Extra.orbitType();
+                    Terradue.Metadata.EarthObservation.Model.orbitType orbit = new Terradue.Metadata.EarthObservation.Model.orbitType();
                     orbit.time = DateTime.SpecifyKind(DateTime.Parse(o.UTC.Replace("UTC=", "")), DateTimeKind.Utc);
-                    orbit.frame = Terradue.Metadata.EarthObservation.Extra.referenceFrameType.EarthFixed;
+                    orbit.frame = Terradue.Metadata.EarthObservation.Model.referenceFrameType.EarthFixed;
                     orbit.absoluteOrbit = int.Parse(o.Absolute_Orbit.Replace("+", ""));
                     orbit.position = new double[] { o.X.Value, o.Y.Value, o.Z.Value };
                     orbit.velocity = new double[] { o.VX.Value, o.VY.Value, o.VZ.Value };

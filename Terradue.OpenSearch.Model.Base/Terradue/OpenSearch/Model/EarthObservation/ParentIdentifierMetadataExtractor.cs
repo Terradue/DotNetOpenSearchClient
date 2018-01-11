@@ -10,7 +10,7 @@ namespace Terradue.OpenSearch.Model.EarthObservation
 
         public string GetMetadata(IOpenSearchResultItem item, string specifier) {
 
-            return Terradue.Metadata.EarthObservation.OpenSearch.EarthObservationOpenSearchResultHelpers.FindParentIdentifierFromOpenSearchResultItem(item);
+            return Terradue.Metadata.EarthObservation.OpenSearch.Extensions.EarthObservationOpenSearchResultExtensions.FindParentIdentifier(item);
         }
 
         public string Description {

@@ -12,7 +12,7 @@ namespace Terradue.OpenSearch.Model.EarthObservation
             string geom = base.GetMetadata(item, specifier);
 
             if (geom == null) {
-                var geometry = Terradue.Metadata.EarthObservation.OpenSearch.EarthObservationOpenSearchResultHelpers.FindGeometryFromEarthObservation(item);
+                var geometry = Terradue.Metadata.EarthObservation.OpenSearch.Extensions.EarthObservationOpenSearchResultExtensions.FindGeometry(item);
                 if (geometry != null)
                     geom = geometry.ToWkt();
             }

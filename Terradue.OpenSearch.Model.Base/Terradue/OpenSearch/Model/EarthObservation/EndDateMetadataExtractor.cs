@@ -8,7 +8,7 @@ namespace Terradue.OpenSearch.Model.EarthObservation
         #region IMetadataExtractor implementation
         public override string GetMetadata(Terradue.OpenSearch.Result.IOpenSearchResultItem item, string specifier) {
 			string date = base.GetMetadata(item, specifier);
-            var end = Terradue.Metadata.EarthObservation.OpenSearch.EarthObservationOpenSearchResultHelpers.FindEndDateFromOpenSearchResultItem(item);
+            var end = Terradue.Metadata.EarthObservation.OpenSearch.Extensions.EarthObservationOpenSearchResultExtensions.FindEndDate(item);
             if (end != DateTime.MinValue)
                 date = end.ToUniversalTime().ToString("O");
 

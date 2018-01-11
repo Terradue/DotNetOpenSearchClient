@@ -11,8 +11,6 @@ using System.Linq;
 using System.Xml;
 using log4net;
 using System.Xml.Serialization;
-using Terradue.Metadata.EarthObservation;
-using System.IO;
 using System.Text;
 using Terradue.ServiceModel.Ogc;
 using Terradue.ServiceModel.Ogc.Owc.AtomEncoding;
@@ -79,7 +77,7 @@ namespace Terradue.OpenSearch.Model.EarthObservation.OpenSearchable
                                 if (eo != null)
                                 {
                                     log.DebugFormat("EOP extension created from {0}", altlink.Uri);
-                                    item.ElementExtensions.Add(eo.CreaterReader());
+                                    item.ElementExtensions.Add(eo.CreateReader());
                                     identifier = eo.EopMetaDataProperty.EarthObservationMetaData.identifier;
                                     item.Title = new ServiceModel.Syndication.TextSyndicationContent(
                                         string.Format("{0}, {1}, Path: {2}, Row: {3}",
@@ -170,7 +168,7 @@ namespace Terradue.OpenSearch.Model.EarthObservation.OpenSearchable
             var identifier = scene.metadataFields.FirstOrDefault(m => m.name == "Landsat Scene Identifier");
             optEo.EopMetaDataProperty.EarthObservationMetaData.identifier = identifier.metadataValue;
 
-            optEo.procedure = new Terradue.ServiceModel.Ogc.Om.OM_ProcessPropertyType();
+            optEo.procedure = new Terradue.ServiceModel.Ogc.Om20.OM_ProcessPropertyType();
             optEo.procedure.Eop21EarthObservationEquipment = new Terradue.ServiceModel.Ogc.Eop21.EarthObservationEquipmentType();
             optEo.procedure.Eop21EarthObservationEquipment.platform = new Terradue.ServiceModel.Ogc.Eop21.PlatformPropertyType();
             optEo.procedure.Eop21EarthObservationEquipment.platform.Platform = new Terradue.ServiceModel.Ogc.Eop21.PlatformType();
@@ -289,7 +287,7 @@ namespace Terradue.OpenSearch.Model.EarthObservation.OpenSearchable
 
             optEo.EopMetaDataProperty.EarthObservationMetaData.processing[0].ProcessingInformation.auxiliaryDataSetFileName = aux.ToArray();
 
-            optEo.phenomenonTime = new Terradue.ServiceModel.Ogc.Om.TimeObjectPropertyType();
+            optEo.phenomenonTime = new Terradue.ServiceModel.Ogc.Om20.TimeObjectPropertyType();
             optEo.phenomenonTime.GmlTimePeriod = new Terradue.ServiceModel.Ogc.Gml321.TimePeriodType();
             var start = scene.metadataFields.FirstOrDefault(m => m.name == "Start Time");
             var stop = scene.metadataFields.FirstOrDefault(m => m.name == "Stop Time");
@@ -361,7 +359,7 @@ namespace Terradue.OpenSearch.Model.EarthObservation.OpenSearchable
                             optEo.result.Opt21EarthObservationResult.browse[0].BrowseInformation.referenceSystemIdentifier.Value = wmsparams.FirstOrDefault(p => p.StartsWith("srs=")).Split('=')[1];
                         }
                         optEo.result.Opt21EarthObservationResult.browse[0].BrowseInformation.fileName = new Terradue.ServiceModel.Ogc.Eop21.BrowseInformationTypeFileName();
-                        optEo.result.Opt21EarthObservationResult.browse[0].BrowseInformation.fileName.ServiceReference = new Terradue.ServiceModel.Ogc.Ows.ServiceReferenceType();
+                        optEo.result.Opt21EarthObservationResult.browse[0].BrowseInformation.fileName.ServiceReference = new Terradue.ServiceModel.Ogc.Ows20.ServiceReferenceType();
                         optEo.result.Opt21EarthObservationResult.browse[0].BrowseInformation.fileName.ServiceReference.href = overlay.overlayLink;
                         optEo.result.Opt21EarthObservationResult.browse[0].BrowseInformation.type = "img";
                         optEo.result.Opt21EarthObservationResult.browse[0].BrowseInformation.fileName.ServiceReference.title = overlay.caption;
