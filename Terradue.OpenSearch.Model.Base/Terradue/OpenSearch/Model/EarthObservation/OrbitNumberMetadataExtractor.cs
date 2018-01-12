@@ -8,7 +8,7 @@ namespace Terradue.OpenSearch.Model.EarthObservation {
 
         public string GetMetadata(IOpenSearchResultItem item, string specifier) {
 
-            return Terradue.Metadata.EarthObservation.OpenSearch.EarthObservationOpenSearchResultHelpers.FindOrbitNumberFromOpenSearchResultItem(item);
+            return Terradue.Metadata.EarthObservation.OpenSearch.Extensions.EarthObservationOpenSearchResultExtensions.FindOrbitNumber(item);
         }
 
         public string Description {

@@ -17,6 +17,8 @@ using System.Text;
 using Terradue.ServiceModel.Ogc;
 using Terradue.OpenSearch.Engine.Extensions;
 using System.Web;
+using Terradue.OpenSearch.Model.CustomExceptions;
+using Terradue.OpenSearch.Response;
 
 namespace Terradue.OpenSearch.Model.EarthObservation.OpenSearchable
 {
@@ -61,6 +63,7 @@ namespace Terradue.OpenSearch.Model.EarthObservation.OpenSearchable
 
         readonly Uri qcBaseUrl;
         readonly OpenSearchEngine ose;
+        private ReadNativeFunction originalReadNativeFunctionToExtend;
 
         public Sentinel1QcOpenSearchable(Uri qcBaseUrl, OpenSearchEngine ose)
         {
@@ -71,9 +74,24 @@ namespace Terradue.OpenSearch.Model.EarthObservation.OpenSearchable
         public QuerySettings GetQuerySettings(Terradue.OpenSearch.Engine.OpenSearchEngine ose)
         {
             IOpenSearchEngineExtension osee = new AtomOpenSearchEngineExtension();
-            return new QuerySettings(osee.DiscoveryContentType, osee.ReadNative);
+            originalReadNativeFunctionToExtend = osee.ReadNative;
+            return new QuerySettings(osee.DiscoveryContentType, Sentinel1QcReadNative);
         }
 
+        
+        
+        public  IOpenSearchResultCollection Sentinel1QcReadNative(IOpenSearchResponse response) {            
+            IOpenSearchResultCollection openSearchResultCollection = originalReadNativeFunctionToExtend(response);
+            
+            if (response.GetType() == typeof(PartialAtomSearchResponse)) {
+                throw new PartialAtomException("Attaching result to exception " , null , openSearchResultCollection);
+            }
+
+            return openSearchResultCollection;
+        }
+        
+        
+        
         public Terradue.OpenSearch.Request.OpenSearchRequest Create(QuerySettings querySettings, System.Collections.Specialized.NameValueCollection parameters)
         {
 

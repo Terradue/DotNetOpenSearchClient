@@ -63,11 +63,20 @@
     <Reference Include="NuGet4Mono.Extensions">
       <HintPath>..\packages\NuGet4Mono.0.3.0\lib\net40\NuGet4Mono.Extensions.dll</HintPath>
     </Reference>
-    <Reference Include="Terradue.OpenSearch.SciHub, Version=1.4.5.20708, Culture=neutral, PublicKeyToken=null">
-      <HintPath>..\packages\Terradue.OpenSearch.SciHub.1.4.5\lib\net45\Terradue.OpenSearch.SciHub.dll</HintPath>
+    <Reference Include="Terradue.Metadata.EarthObservation, Version=1.5.1.18472, Culture=neutral, PublicKeyToken=null">
+      <HintPath>..\packages\Terradue.Metadata.EarthObservation.1.5.1\lib\net45\Terradue.Metadata.EarthObservation.dll</HintPath>
     </Reference>
-    <Reference Include="Terradue.ServiceModel.Ogc">
-      <HintPath>..\packages\Terradue.ServiceModel.Ogc.1.1.6\lib\net40\Terradue.ServiceModel.Ogc.dll</HintPath>
+    <Reference Include="Terradue.OpenSearch, Version=1.15.7.19790, Culture=neutral, PublicKeyToken=null">
+      <HintPath>..\packages\Terradue.OpenSearch.1.15.7\lib\net45\Terradue.OpenSearch.dll</HintPath>
+    </Reference>
+    <Reference Include="Terradue.OpenSearch.SciHub, Version=1.4.6.27945, Culture=neutral, PublicKeyToken=null">
+      <HintPath>..\packages\Terradue.OpenSearch.SciHub.1.4.6\lib\net45\Terradue.OpenSearch.SciHub.dll</HintPath>
+    </Reference>
+    <Reference Include="Terradue.OpenSearch.Usgs, Version=1.1.1.17058, Culture=neutral, PublicKeyToken=null">
+      <HintPath>..\packages\Terradue.OpenSearch.Usgs.1.1.1\lib\net45\Terradue.OpenSearch.Usgs.dll</HintPath>
+    </Reference>
+    <Reference Include="Terradue.ServiceModel.Ogc, Version=2.1.0.31673, Culture=neutral, PublicKeyToken=null">
+      <HintPath>..\packages\Terradue.ServiceModel.Ogc.2.1.0\lib\net45\Terradue.ServiceModel.Ogc.dll</HintPath>
     </Reference>
     <Reference Include="Terradue.ServiceModel.Syndication">
       <HintPath>..\packages\Terradue.ServiceModel.Syndication.1.0.2\lib\net40\Terradue.ServiceModel.Syndication.dll</HintPath>
@@ -113,15 +122,6 @@
     </Reference>
     <Reference Include="log4net">
       <HintPath>..\packages\log4net.2.0.8\lib\net45-full\log4net.dll</HintPath>
-    </Reference>
-    <Reference Include="Terradue.Metadata.EarthObservation">
-      <HintPath>..\packages\Terradue.Metadata.EarthObservation.1.4.17\lib\net45\Terradue.Metadata.EarthObservation.dll</HintPath>
-    </Reference>
-    <Reference Include="Terradue.OpenSearch">
-      <HintPath>..\packages\Terradue.OpenSearch.1.15.5\lib\net45\Terradue.OpenSearch.dll</HintPath>
-    </Reference>
-    <Reference Include="Terradue.OpenSearch.Usgs">
-      <HintPath>..\packages\Terradue.OpenSearch.Usgs.1.1.0\lib\net45\Terradue.OpenSearch.Usgs.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
