@@ -52,5 +52,11 @@ test_identifier()
   done
 }
 
+test_track()
+{
+    local output=$( opensearch-client "${reference}" -m EOP  track )
+    assertEquals "66" "${output}"
+}
+
 
 . ${SHUNIT2_HOME}/shunit2
