@@ -81,11 +81,8 @@
     <Reference Include="Terradue.OpenSearch.RdfEO, Version=1.4.0.20749, Culture=neutral, PublicKeyToken=null">
       <HintPath>..\packages\Terradue.OpenSearch.RdfEO.1.4.0\lib\net45\Terradue.OpenSearch.RdfEO.dll</HintPath>
     </Reference>
-    <Reference Include="Terradue.OpenSearch.SciHub, Version=1.4.6.20204, Culture=neutral, PublicKeyToken=null">
-      <HintPath>..\packages\Terradue.OpenSearch.SciHub.1.4.6-build20180108T111351\lib\net45\Terradue.OpenSearch.SciHub.dll</HintPath>
-    </Reference>
-    <Reference Include="Terradue.OpenSearch.SciHub, Version=1.4.6.27945, Culture=neutral, PublicKeyToken=null">
-      <HintPath>..\packages\Terradue.OpenSearch.SciHub.1.4.6\lib\net45\Terradue.OpenSearch.SciHub.dll</HintPath>
+    <Reference Include="Terradue.OpenSearch.SciHub, Version=1.4.7.19858, Culture=neutral, PublicKeyToken=null">
+      <HintPath>..\packages\Terradue.OpenSearch.SciHub.1.4.7\lib\net45\Terradue.OpenSearch.SciHub.dll</HintPath>
     </Reference>
     <Reference Include="Terradue.OpenSearch.Usgs, Version=1.1.1.17058, Culture=neutral, PublicKeyToken=null">
       <HintPath>..\packages\Terradue.OpenSearch.Usgs.1.1.1\lib\net45\Terradue.OpenSearch.Usgs.dll</HintPath>
