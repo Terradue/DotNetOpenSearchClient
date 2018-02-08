@@ -222,6 +222,7 @@ namespace Terradue.OpenSearch.Client
             // Init data Model
             log.Debug("Init data models");
             dataModelParameters = PrepareDataModelParameters();
+            
             dataModel = DataModel.CreateFromArgs(queryModelArg, dataModelParameters);
 
             NameValueCollection parametersNvc;
@@ -499,6 +500,9 @@ namespace Terradue.OpenSearch.Client
                     case "--alternative":
                         alternative = true;
                         break;
+                    case "--all-enclosures":
+                        dataModelParameterArgs.Add("allEnclosures=true");
+                        break;
                     default:
                         if (baseUrlArg == null)
                         {
@@ -543,6 +547,7 @@ namespace Terradue.OpenSearch.Client
             Console.Error.WriteLine(" -a/--auth <creds>         Authentication credentials. A string representing the credentials, usually username:password.");
             Console.Error.WriteLine(" --lax                     Lax query: assign parameters even if not described by the opensearch server.");
             Console.Error.WriteLine(" --alternative             Altenative query: Instead of making a parallel multi search in case of multiple URL, it tries the URL until 1 returns results");
+            Console.Error.WriteLine(" --all-enclosures          Return all available enclosures");
             Console.Error.WriteLine(" -v/--verbose              Make the operation more talkative");
             Console.Error.WriteLine();
         }
