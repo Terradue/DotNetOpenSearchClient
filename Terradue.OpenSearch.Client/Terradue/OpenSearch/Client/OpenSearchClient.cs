@@ -433,7 +433,7 @@ namespace Terradue.OpenSearch.Client {
                         if (argpos < args.Length - 1) {
                             retryAttempts = int.Parse(args[++argpos]);
                             if (retryAttempts < 0) {
-                                Console.Error.WriteLine("Number of maximum retries must be a positive integer");
+                                Console.Error.WriteLine("Number of maximum retries must be a non negative integer");
                                 return false;
                             }
                         }
@@ -468,22 +468,22 @@ namespace Terradue.OpenSearch.Client {
             Console.Error.WriteLine();
             Console.Error.WriteLine("Options:");
 
-            Console.Error.WriteLine(" -p/--parameter <param>    Specify a parameter for the query");
-            Console.Error.WriteLine(" -o/--output <file>        Write output to <file> instead of stdout");
-            Console.Error.WriteLine(" -f/--format <format>      Specify the format of the query. Format available can be listed with --list-osee.");
-            Console.Error.WriteLine("                           By default, the client is automatic and uses the default or the first format.");
-            Console.Error.WriteLine(" -to/--time-out <file>     Specify query timeout (millisecond)");
-            Console.Error.WriteLine(" --pagination              Specify the pagination number for search loops. Default: 20");
-            Console.Error.WriteLine(" --list-osee               List the OpenSearch Engine Extensions");
-            Console.Error.WriteLine(" -m/--model <format>       Specify the data model of the results for the query. Data model give access to specific" +
-                                    "metadata extractors or transformers. By default the \"GeoTime\" model is used. Used without urls, it lists the metadata options");
-            Console.Error.WriteLine(" -dp/--datamodel-parameter <param> Specify a data model parameter");
-            Console.Error.WriteLine(" -a/--auth <creds>         Authentication credentials. A string representing the credentials, usually username:password.");
-            Console.Error.WriteLine(" --lax                     Lax query: assign parameters even if not described by the opensearch server.");
-            Console.Error.WriteLine(" --alternative             Altenative query: Instead of making a parallel multi search in case of multiple URL, it tries the URL until 1 returns results");
-            Console.Error.WriteLine(" --all-enclosures          Return all available enclosures");
-            Console.Error.WriteLine(" --max-retries             Specify the number of times the client will attempt the call if the action fails");
-            Console.Error.WriteLine(" -v/--verbose              Make the operation more talkative");
+            Console.Error.WriteLine(" -p/--parameter <param>=<value>      <param> specifies a parameter for the query with value <value>");
+            Console.Error.WriteLine(" -o/--output <file>                  Writes output to <file> instead of stdout");
+            Console.Error.WriteLine(" -f/--format <format>                Specify the format of the query. Format available can be listed with --list-osee.");
+            Console.Error.WriteLine("                                     By default, the client is automatic and uses the default or the first format.");
+            Console.Error.WriteLine(" -to/--time-out <n>                  <n> specifies query timeout (millisecond)");
+            Console.Error.WriteLine(" --pagination <n>                    <n> specifies the pagination number for search loops. Default: 20");
+            Console.Error.WriteLine(" --list-osee                         Lists the OpenSearch Engine Extensions");
+            Console.Error.WriteLine(" -m/--model <format>                 <format> specifies the data model of the results for the query. Data model gives access to specific metadata extractors or transformers.");
+            Console.Error.WriteLine("                                     By default the \"GeoTime\" model is used. Used without urls, it lists the metadata options");
+            Console.Error.WriteLine(" -dp/--datamodel-parameter <param>   <param> Specify a data model parameter");
+            Console.Error.WriteLine(" -a/--auth <creds>                   <creds> is a string representing the credentials with format username:password.");
+            Console.Error.WriteLine(" --lax                               Lax query: assign parameters even if not described by the opensearch server.");
+            Console.Error.WriteLine(" --alternative                       Altenative query: Instead of making a parallel multi search in case of multiple URL, it tries the URL until 1 returns results");
+            Console.Error.WriteLine(" --all-enclosures                    Returns all available enclosures");
+            Console.Error.WriteLine(" --max-retries <n>                   <n> specifies the number of retries if the action fails");
+            Console.Error.WriteLine(" -v/--verbose                        Makes the operation more talkative");
             Console.Error.WriteLine();
         }
 
