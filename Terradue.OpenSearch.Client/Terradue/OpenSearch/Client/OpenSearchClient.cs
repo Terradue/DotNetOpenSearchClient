@@ -240,7 +240,7 @@ namespace Terradue.OpenSearch.Client {
                         log.Debug("startIndex : " + index);
                         parametersNvc = ResolveParameters(parameters, entity);
 
-                        retry = 5;
+                        retry = retryAttempts;
                         while (retry >= 0) {
                             // Perform the query
                             log.Debug("Launching query...");
