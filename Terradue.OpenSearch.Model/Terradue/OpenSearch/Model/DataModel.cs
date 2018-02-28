@@ -132,8 +132,8 @@ namespace Terradue.OpenSearch.Model {
             modelExtension.SetQueryParameters(nvc);
         }
 
-        public IOpenSearchable CreateOpenSearchable(IEnumerable<Uri> baseUrls, string queryFormatArg, OpenSearchEngine ose, IEnumerable<NetworkCredential> netCreds){
-            return modelExtension.CreateOpenSearchable(baseUrls, queryFormatArg, ose, netCreds);
+        public IOpenSearchable CreateOpenSearchable(IEnumerable<Uri> baseUrls, string queryFormatArg, OpenSearchEngine ose, IEnumerable<NetworkCredential> netCreds, OpenSearchableFactorySettings settings){
+            return modelExtension.CreateOpenSearchable(baseUrls, queryFormatArg, ose, netCreds, settings);
         }
     }
 }

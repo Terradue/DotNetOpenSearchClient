@@ -213,7 +213,9 @@ namespace Terradue.OpenSearch.Client {
                     while (retry >= 0) {
                         // Perform the query
                         try {
-                            entity = dataModel.CreateOpenSearchable(altBaseUrlLists[i], queryFormatArg, ose, altNetCredsLists[i]);
+                            OpenSearchableFactorySettings settings = new OpenSearchableFactorySettings(ose);
+                            settings.MaxRetries  = retryAttempts;
+                            entity = dataModel.CreateOpenSearchable(altBaseUrlLists[i], queryFormatArg, ose, altNetCredsLists[i],settings);
                             index = entity.GetOpenSearchDescription().DefaultUrl.IndexOffset;
                             log.Debug("IndexOffset : " + index);
                             break;

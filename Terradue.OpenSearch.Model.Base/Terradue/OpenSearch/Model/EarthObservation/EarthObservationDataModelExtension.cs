@@ -62,7 +62,7 @@ namespace Terradue.OpenSearch.Model.EarthObservation {
             
         }
 
-        public override IOpenSearchable CreateOpenSearchable(IEnumerable<Uri> baseUrls, string queryFormatArg, OpenSearchEngine ose, IEnumerable<NetworkCredential> netCreds) {
+        public override IOpenSearchable CreateOpenSearchable(IEnumerable<Uri> baseUrls, string queryFormatArg, OpenSearchEngine ose, IEnumerable<NetworkCredential> netCreds, OpenSearchableFactorySettings settings) {
             List<IOpenSearchable> entities = new List<IOpenSearchable>();
 
             IOpenSearchEngineExtension ext;
@@ -77,10 +77,7 @@ namespace Terradue.OpenSearch.Model.EarthObservation {
 			{
 				var url = baseUrls.ElementAt(i);
 
-				OpenSearchableFactorySettings settings = new OpenSearchableFactorySettings(ose)
-				{
-					Credentials = netCreds == null ? null : netCreds.ElementAt(i)
-				};
+			    settings.Credentials = netCreds == null ? null : netCreds.ElementAt(i);
 
 				IOpenSearchable e = null;
                 // QC Sentinel1 case
