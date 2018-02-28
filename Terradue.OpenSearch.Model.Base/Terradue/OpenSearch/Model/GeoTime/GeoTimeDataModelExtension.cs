@@ -155,16 +155,16 @@ namespace Terradue.OpenSearch.Model.GeoTime
 
         }
 
-        public virtual IOpenSearchable CreateOpenSearchable(IEnumerable<Uri> baseUrls, string queryFormatArg, OpenSearchEngine ose, IEnumerable<NetworkCredential> netCreds)
+
+        public virtual IOpenSearchable CreateOpenSearchable(IEnumerable<Uri> baseUrls, string queryFormatArg, OpenSearchEngine ose, IEnumerable<NetworkCredential> netCreds, OpenSearchableFactorySettings settings)
         {
             List<IOpenSearchable> entities = new List<IOpenSearchable>();
             for (int i = 0; i < baseUrls.Count(); i++)
             {
                 var url = baseUrls.ElementAt(i);
-                OpenSearchableFactorySettings settings = new OpenSearchableFactorySettings(ose)
-                {
-                    Credentials = netCreds == null ? null : netCreds.ElementAt(i)
-                };
+
+                settings.Credentials = netCreds == null ? null : netCreds.ElementAt(i);
+           
                 if (string.IsNullOrEmpty(queryFormatArg))
                     try
                     {
