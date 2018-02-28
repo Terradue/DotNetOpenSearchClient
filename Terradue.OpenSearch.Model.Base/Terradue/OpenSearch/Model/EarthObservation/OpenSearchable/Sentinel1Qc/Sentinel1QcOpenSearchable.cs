@@ -61,6 +61,8 @@ namespace Terradue.OpenSearch.Model.EarthObservation.OpenSearchable
             }
         }
 
+        public int MaxRetries { get; set; } = 5;
+
         readonly Uri qcBaseUrl;
         readonly OpenSearchEngine ose;
         private ReadNativeFunction originalReadNativeFunctionToExtend;
