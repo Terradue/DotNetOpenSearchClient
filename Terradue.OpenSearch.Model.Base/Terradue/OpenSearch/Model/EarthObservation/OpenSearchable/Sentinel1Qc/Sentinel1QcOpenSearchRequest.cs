@@ -27,7 +27,7 @@ namespace Terradue.OpenSearch.Model.EarthObservation.OpenSearchable
         NameValueCollection parameters;
         readonly Uri qcSearchUrl;
 
-        XmlSerializer eeser = new XmlSerializer(typeof(Terradue.OpenSearch.SciHub.Data.Earth_Explorer_File));
+        XmlSerializer eeser = new XmlSerializer(typeof(Terradue.OpenSearch.Sentinel.Data.Earth_Explorer_File));
 
         private static readonly ILog log = LogManager.GetLogger(typeof(Sentinel1QcOpenSearchRequest));
 
@@ -302,7 +302,7 @@ namespace Terradue.OpenSearch.Model.EarthObservation.OpenSearchable
 
         }
 
-        public static SyndicationElementExtension GenerateOrbitsExtension(Terradue.OpenSearch.SciHub.Data.Earth_Explorer_File file)
+        public static SyndicationElementExtension GenerateOrbitsExtension(Terradue.OpenSearch.Sentinel.Data.Earth_Explorer_File file)
         {
 
             SyndicationElementExtension extension = new SyndicationElementExtension(GetS1OrbitsFromEE(file), Terradue.Metadata.EarthObservation.Model.orbitListType.OrbitsSerializer);
@@ -311,13 +311,13 @@ namespace Terradue.OpenSearch.Model.EarthObservation.OpenSearchable
         }
 
 
-        public static Terradue.Metadata.EarthObservation.Model.orbitListType GetS1OrbitsFromEE(Terradue.OpenSearch.SciHub.Data.Earth_Explorer_File file)
+        public static Terradue.Metadata.EarthObservation.Model.orbitListType GetS1OrbitsFromEE(Terradue.OpenSearch.Sentinel.Data.Earth_Explorer_File file)
         {
 
             Terradue.Metadata.EarthObservation.Model.orbitListType orbits = new Terradue.Metadata.EarthObservation.Model.orbitListType();
 
             orbits.orbit = file.Data_Block.List_of_OSVs.OSV.
-                Select<Terradue.OpenSearch.SciHub.Data.Earth_Explorer_FileData_BlockList_of_OSVsOSV, Terradue.Metadata.EarthObservation.Model.orbitType>(o =>
+                Select<Terradue.OpenSearch.Sentinel.Data.Earth_Explorer_FileData_BlockList_of_OSVsOSV, Terradue.Metadata.EarthObservation.Model.orbitType>(o =>
                 {
                     Terradue.Metadata.EarthObservation.Model.orbitType orbit = new Terradue.Metadata.EarthObservation.Model.orbitType();
                     orbit.time = DateTime.SpecifyKind(DateTime.Parse(o.UTC.Replace("UTC=", "")), DateTimeKind.Utc);
