@@ -94,7 +94,7 @@ namespace Terradue.OpenSearch.Model.EarthObservation {
 					log.DebugFormat("Usgs source. Trying to get the earthobservation profile");
 
 					// usgsOpenSearchable
-					e = new Terradue.OpenSearch.Usgs.UsgsOpenSearchable(url, (NetworkCredential)settings.Credentials);
+					e = new Terradue.OpenSearch.Usgs.UsgsOpenSearchable(url, settings);
                     entities.Add(e);
                     continue;
 				}
