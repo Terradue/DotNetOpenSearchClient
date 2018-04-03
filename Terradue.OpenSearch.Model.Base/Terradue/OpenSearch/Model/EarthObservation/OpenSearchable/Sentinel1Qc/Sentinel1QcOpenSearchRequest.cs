@@ -227,12 +227,8 @@ namespace Terradue.OpenSearch.Model.EarthObservation.OpenSearchable
 
                 using (var response = request.GetResponse())
                 {
-
-
-                    Terradue.OpenSearch.SciHub.Data.Earth_Explorer_File eefile = (Terradue.OpenSearch.SciHub.Data.Earth_Explorer_File)eeser.Deserialize(response.GetResponseStream());
-
+                    Terradue.OpenSearch.Sentinel.Data.Earth_Explorer_File eefile = (Terradue.OpenSearch.Sentinel.Data.Earth_Explorer_File)eeser.Deserialize(response.GetResponseStream());
                     item.ElementExtensions.Add(GenerateOrbitsExtension(eefile));
-              
                 }
             }
 

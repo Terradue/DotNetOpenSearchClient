@@ -34,8 +34,9 @@ namespace Terradue.OpenSearch.Model.Scihub {
         }
 
         public override IOpenSearchable CreateOpenSearchable(IEnumerable<Uri> baseUrls, string queryFormatArg, OpenSearchEngine ose, IEnumerable<NetworkCredential> netCreds, OpenSearchableFactorySettings settings) {
-            
-            SciHubOpenSearchable entity = new SciHubOpenSearchable(baseUrls.First(), netCreds.First(), settings.MaxRetries);
+
+            settings.Credentials = netCreds.First();
+            DataHubOpenSearchable entity = new DataHubOpenSearchable(baseUrls.First(),settings); 
             if (queryFormatArg == "eop") {
                 entity.DefaultMimeType = "application/atom+xml; profile=http://earth.esa.int/eop/2.1";
             }
