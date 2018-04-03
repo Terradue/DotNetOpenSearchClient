@@ -72,9 +72,6 @@
     <Reference Include="NuGet4Mono.Extensions">
       <HintPath>..\packages\NuGet4Mono.0.3.0\lib\net40\NuGet4Mono.Extensions.dll</HintPath>
     </Reference>
-    <Reference Include="Terradue.Metadata.EarthObservation, Version=1.5.1.18472, Culture=neutral, PublicKeyToken=null">
-      <HintPath>..\packages\Terradue.Metadata.EarthObservation.1.5.1\lib\net45\Terradue.Metadata.EarthObservation.dll</HintPath>
-    </Reference>
     <Reference Include="Terradue.Metadata.EarthObservation, Version=1.5.4.17976, Culture=neutral, PublicKeyToken=null">
       <HintPath>..\packages\Terradue.Metadata.EarthObservation.1.5.4\lib\net45\Terradue.Metadata.EarthObservation.dll</HintPath>
     </Reference>
