@@ -27,6 +27,7 @@ using Terradue.GeoJson.Feature;
 using Terradue.OpenSearch.Filters;
 using Terradue.OpenSearch.Model;
 using System.Threading;
+using System.Threading.Tasks;
 using log4net.Config;
 using Terradue.OpenSearch.Model.CustomExceptions;
 
@@ -49,7 +50,7 @@ namespace Terradue.OpenSearch.Client {
         internal static string queryModelArg = "GeoTime";
         internal static List<string> baseUrlArg = null;
         private static int retryAttempts = 5;
-        private static uint timeout = 20000;
+        private static uint timeout = 300000;
         private static int pagination = 20;
         private static int totalResults;
         internal static List<string> metadataPaths = null;
@@ -75,8 +76,11 @@ namespace Terradue.OpenSearch.Client {
 
                 client.Initialize();
 
-                if (baseUrlArg != null)
-                    client.ProcessQuery();
+                if (baseUrlArg != null) {
+                    var task = Task.Run(() => client.ProcessQuery());
+                    if (!task.Wait(TimeSpan.FromMilliseconds(timeout)))
+                        throw new TimeoutException("Timed out");
+                }
 
                 if (listOsee == true)
                     client.ListOpenSearchEngineExtensions();
@@ -84,8 +88,7 @@ namespace Terradue.OpenSearch.Client {
                 if (!string.IsNullOrEmpty(queryModelArg) && baseUrlArg == null) {
                     client.PrintDataModelHelp(DataModel.CreateFromArgs(queryModelArg, new NameValueCollection()));
                 }
-            }
-            catch (AggregateException ae) {
+            } catch (AggregateException ae) {
                 foreach (var e in ae.InnerExceptions) {
                     Console.Error.WriteLine(string.Format("{0} : {1} {2}", e.ToString(), e.Message, e.HelpLink));
                     if (verbose)
@@ -93,13 +96,16 @@ namespace Terradue.OpenSearch.Client {
                 }
                 Environment.ExitCode = 1;
                 return;
-            }
-            catch (PartialAtomException e) {
+            } catch (PartialAtomException e) {
                 Environment.ExitCode = 18;
                 searchCache.ClearCache(".*", DateTime.Now);
                 return;
-            }
-            catch (Exception e) {
+            } catch (TimeoutException e) {
+                Console.Error.WriteLine(string.Format("{0} : {1} {2}", e.Source, e.Message, e.HelpLink));
+                Environment.ExitCode = 124;
+                return;
+                
+            } catch (Exception e) {
                 Console.Error.WriteLine(string.Format("{0} : {1} {2}", e.Source, e.Message, e.HelpLink));
                 if (verbose)
                     Console.Error.WriteLine(e.StackTrace);
