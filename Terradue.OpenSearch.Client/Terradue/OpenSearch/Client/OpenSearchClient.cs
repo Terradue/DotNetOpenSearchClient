@@ -449,6 +449,9 @@ namespace Terradue.OpenSearch.Client {
                             return false;
                         break;
                     default:
+                        if (Regex.Match(args[argpos], "^-").Success) {
+                            throw new ArgumentException(String.Format("Invalid URL or option: {0}", args[argpos]));
+                        }
                         if (baseUrlArg == null) {
                             baseUrlArg = new List<string>();
                             Regex csvSplit = new Regex("(?:^|,)(\"(?:[^\"]+|\"\")*\"|[^,]*)", RegexOptions.Compiled);
