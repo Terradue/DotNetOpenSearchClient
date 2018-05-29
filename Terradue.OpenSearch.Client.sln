@@ -31,6 +31,10 @@ Global
 		{BFFA2485-B9AC-4DE4-BABF-4DD96590F9D4}.Debug|x86.Build.0 = Debug|Any CPU
 		{BFFA2485-B9AC-4DE4-BABF-4DD96590F9D4}.Release|x86.ActiveCfg = Release|Any CPU
 		{BFFA2485-B9AC-4DE4-BABF-4DD96590F9D4}.Release|x86.Build.0 = Release|Any CPU
+		{997A44FD-EE4A-490A-855B-88305E0CD269}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{997A44FD-EE4A-490A-855B-88305E0CD269}.Debug|x86.Build.0 = Debug|Any CPU
+		{997A44FD-EE4A-490A-855B-88305E0CD269}.Release|x86.ActiveCfg = Release|Any CPU
+		{997A44FD-EE4A-490A-855B-88305E0CD269}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(MonoDevelopProperties) = preSolution
 		Policies = $0
@@ -40,18 +44,6 @@ Global
 		$1.scope = application/x-csproject
 		$0.CSharpFormattingPolicy = $2
 		$2.scope = text/x-csharp
-		$2.NewLinesForBracesInTypes = False
-		$2.NewLinesForBracesInMethods = False
-		$2.NewLinesForBracesInProperties = False
-		$2.NewLinesForBracesInAccessors = False
-		$2.NewLinesForBracesInAnonymousMethods = False
-		$2.NewLinesForBracesInControlBlocks = False
-		$2.NewLinesForBracesInAnonymousTypes = False
-		$2.NewLinesForBracesInObjectCollectionArrayInitializers = False
-		$2.NewLinesForBracesInLambdaExpressionBody = False
-		$2.NewLineForElse = False
-		$2.NewLineForCatch = False
-		$2.NewLineForFinally = False
 		$0.TextStylePolicy = $3
 		$3.inheritsSet = null
 		$3.scope = text/x-csharp
