@@ -12,3 +12,4 @@ Terradue.OpenSearch.Model/Resources
 /Terradue.OpenSearch.Client/Terradue.OpenSearch.Client.csproj.user
 .idea/
 Terradue.OpenSearch.Client.sln.DotSettings.user
+/.vs
