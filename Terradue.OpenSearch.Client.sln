@@ -31,6 +31,10 @@ Global
 		{BFFA2485-B9AC-4DE4-BABF-4DD96590F9D4}.Debug|x86.Build.0 = Debug|Any CPU
 		{BFFA2485-B9AC-4DE4-BABF-4DD96590F9D4}.Release|x86.ActiveCfg = Release|Any CPU
 		{BFFA2485-B9AC-4DE4-BABF-4DD96590F9D4}.Release|x86.Build.0 = Release|Any CPU
+		{997A44FD-EE4A-490A-855B-88305E0CD269}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{997A44FD-EE4A-490A-855B-88305E0CD269}.Debug|x86.Build.0 = Debug|Any CPU
+		{997A44FD-EE4A-490A-855B-88305E0CD269}.Release|x86.ActiveCfg = Release|Any CPU
+		{997A44FD-EE4A-490A-855B-88305E0CD269}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(MonoDevelopProperties) = preSolution
 		Policies = $0
@@ -42,7 +46,7 @@ Global
 		$2.scope = text/x-csharp
 		$0.TextStylePolicy = $3
 		$3.inheritsSet = null
-		$3.scope = application/x-csproject
+		$3.scope = text/x-csharp
 		$0.XmlFormattingPolicy = $4
 		$4.inheritsSet = null
 		$4.scope = application/x-csproject
