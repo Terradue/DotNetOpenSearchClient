@@ -1,52 +1,148 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
+using System.IO;
 using System.Linq;
+using System.Text.RegularExpressions;
+using Amazon.S3;
+using IniParser;
+using IniParser.Model;
+using log4net;
 using NuGet;
 using Terradue.ServiceModel.Syndication;
 
-namespace Terradue.OpenSearch.Model.GeoTime {
+namespace Terradue.OpenSearch.Model.GeoTime
+{
 
-    class EnclosureMetadataExtractor : IMetadataExtractor {
+	class EnclosureMetadataExtractor : IMetadataExtractor
+	{
 
-        NameValueCollection parameters;
+		private static readonly ILog log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
-        public EnclosureMetadataExtractor(NameValueCollection parameters) {
-            this.parameters = parameters;
-        }
+		NameValueCollection parameters;
 
-        #region IMetadataExtractor implementation
+		public EnclosureMetadataExtractor(NameValueCollection parameters)
+		{
+			this.parameters = parameters;
+		}
 
-        public string GetMetadata(Terradue.OpenSearch.Result.IOpenSearchResultItem item, string specifier) {
+		#region IMetadataExtractor implementation
 
-            if (item.Links == null)
-                return "";
+		public string GetMetadata(Terradue.OpenSearch.Result.IOpenSearchResultItem item, string specifier)
+		{
 
-            // retrieve all enclosure links
-            var links = item.Links.Where(l => l.RelationshipType == "enclosure").Select(l => l.Uri.ToString()).ToList();
+			if (item.Links == null)
+				return "";
 
-            string enclosure;
-            if (links.IsEmpty()) {
-                enclosure = "";
-            }
-            else if (parameters.AllKeys.Contains("allEnclosures")) {
-                enclosure = string.Join("|", links);
-            }
-            else {
-                enclosure = links.First();
-            }
-            return enclosure;
-        }
+			// retrieve all enclosure links
+			var links = item.Links.Where(l => l.RelationshipType == "enclosure");
 
-        public string Description {
-            get {
-                return string.Format(
-                    "Link to related resource that is potentially large in size and might require special handling (RFC 4287). This metadata takes into account the following data model parameters: enclosure:scheme, enclosure:host");
-            }
-        }
+			// Enclosure availability control function
+			if (!parameters.AllKeys.Contains("disableEnclosureControl") && !parameters.AllKeys.Contains("allEnclosures"))
+			{
+				links = RemoveNonAvailableLinks(links);
+			}
 
-        #endregion
+			string enclosure;
+			if (links.IsEmpty())
+			{
+				enclosure = "";
+			}
+			else if (parameters.AllKeys.Contains("allEnclosures"))
+			{
+				enclosure = string.Join("|", links.Select(l => l.Uri.ToString()));
+			}
+			else
+			{
+				enclosure = links.First().Uri.ToString();
+			}
+			return enclosure;
+		}
 
-    }
+		public string Description
+		{
+			get
+			{
+				return string.Format(
+					"Link to related resource that is potentially large in size and might require special handling (RFC 4287). This metadata takes into account the following data model parameters: enclosure:scheme, enclosure:host");
+			}
+		}
+
+		#endregion
+
+		private IEnumerable<SyndicationLink> RemoveNonAvailableLinks(IEnumerable<SyndicationLink> links)
+		{
+			List<SyndicationLink> finalLinks = new List<SyndicationLink>();
+
+			foreach (var link in links)
+			{
+				switch (link.Uri.Scheme)
+				{
+					case "s3":
+						if (TestS3Link(link)) finalLinks.Add(link);
+						break;
+					default:
+						finalLinks.Add(link);
+						break;
+				}
+			}
+
+			return finalLinks;
+
+		}
+
+		private bool TestS3Link(SyndicationLink link)
+		{
+			string accessKey = "";
+			string secretKey = "";
+			string hostBase = "";
+			bool useHttps = false;
+			string homePath = (Environment.OSVersion.Platform == PlatformID.Unix ||
+				   Environment.OSVersion.Platform == PlatformID.MacOSX)
+                	? Environment.GetEnvironmentVariable("HOME")
+                	: Environment.ExpandEnvironmentVariables("%HOMEDRIVE%%HOMEPATH%");
+
+			try
+			{
+				var parser = new FileIniDataParser();
+				IniData data = parser.ReadFile(Path.Combine(homePath, ".s3cfg"));
+
+				accessKey = data["default"]["access_key"];
+				secretKey = data["default"]["host_base"];
+				hostBase = data["default"]["host_base"];
+				bool.TryParse(data["default"]["use_https"], out useHttps);
+			}
+			catch (Exception e)
+			{
+				log.Warn("No S3 config to check the S3 links!");
+				return false;
+			}
+
+
+			AmazonS3Config config = new AmazonS3Config();
+			config.ServiceURL = string.Format("http{0}://{1}", useHttps ? "s" : "", hostBase);
+
+			AmazonS3Client client = new AmazonS3Client(accessKey, secretKey, config);
+
+			Match match = Regex.Match(link.Uri.AbsolutePath, @"^\/(?'bucket'[^\/]*)\/(?'key'.*)$");
+
+			if (!match.Success) return false;
+
+			try
+			{
+				var list = client.ListObjects(match.Groups["bucket"].Value, match.Groups["key"].Value);
+				log.DebugFormat("S3 reponse: {0} objects: {1}", list.HttpStatusCode, string.Join(",", list.S3Objects.Select(s3 => s3.Key)));
+
+				if (list.HttpStatusCode == System.Net.HttpStatusCode.OK && list.S3Objects.Count() > 0) return true;
+			}
+			catch (Exception e)
+			{
+				log.WarnFormat("Error listing {0} using {1} : {2}", link.Uri, config.ServiceURL, e.Message);
+				return false;
+			}
+
+			return false;
+		}
+	}
 
 }
