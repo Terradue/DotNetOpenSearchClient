@@ -81,6 +81,9 @@ namespace Terradue.OpenSearch.Model.GeoTime
 					case "s3":
 						if (TestS3Link(link)) finalLinks.Add(link);
 						break;
+					case "file":
+                        if (TestFileLink(link)) finalLinks.Add(link);
+                        break;
 					default:
 						finalLinks.Add(link);
 						break;
@@ -89,6 +92,11 @@ namespace Terradue.OpenSearch.Model.GeoTime
 
 			return finalLinks;
 
+		}
+
+		private bool TestFileLink(SyndicationLink link)
+		{
+			return File.Exists(link.Uri.AbsolutePath);
 		}
 
 		private bool TestS3Link(SyndicationLink link)
