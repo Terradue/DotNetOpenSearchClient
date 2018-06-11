@@ -64,17 +64,11 @@
     <Reference Include="NuGet4Mono.Extensions">
       <HintPath>..\packages\NuGet4Mono.0.3.0\lib\net40\NuGet4Mono.Extensions.dll</HintPath>
     </Reference>
-    <Reference Include="Terradue.Metadata.EarthObservation, Version=1.5.4.17976, Culture=neutral, PublicKeyToken=null">
-      <HintPath>..\packages\Terradue.Metadata.EarthObservation.1.5.4\lib\net45\Terradue.Metadata.EarthObservation.dll</HintPath>
-    </Reference>
     <Reference Include="Terradue.OpenSearch, Version=1.15.10.20691, Culture=neutral, PublicKeyToken=null">
       <HintPath>..\packages\Terradue.OpenSearch.1.15.10\lib\net45\Terradue.OpenSearch.dll</HintPath>
     </Reference>
     <Reference Include="Terradue.OpenSearch.Usgs, Version=1.1.2.27700, Culture=neutral, PublicKeyToken=null">
       <HintPath>..\packages\Terradue.OpenSearch.Usgs.1.1.2\lib\net45\Terradue.OpenSearch.Usgs.dll</HintPath>
-    </Reference>
-    <Reference Include="Terradue.ServiceModel.Ogc, Version=2.1.0.31673, Culture=neutral, PublicKeyToken=null">
-      <HintPath>..\packages\Terradue.ServiceModel.Ogc.2.1.0\lib\net45\Terradue.ServiceModel.Ogc.dll</HintPath>
     </Reference>
     <Reference Include="Terradue.ServiceModel.Syndication">
       <HintPath>..\packages\Terradue.ServiceModel.Syndication.1.0.2\lib\net40\Terradue.ServiceModel.Syndication.dll</HintPath>
@@ -121,6 +115,12 @@
     </Reference>
     <Reference Include="Terradue.OpenSearch.SciHub">
       <HintPath>..\packages\Terradue.OpenSearch.SciHub.1.6.2\lib\net45\Terradue.OpenSearch.SciHub.dll</HintPath>
+    </Reference>
+    <Reference Include="Terradue.ServiceModel.Ogc">
+      <HintPath>..\packages\Terradue.ServiceModel.Ogc.2.1.1\lib\net45\Terradue.ServiceModel.Ogc.dll</HintPath>
+    </Reference>
+    <Reference Include="Terradue.Metadata.EarthObservation">
+      <HintPath>..\packages\Terradue.Metadata.EarthObservation.1.5.5\lib\net45\Terradue.Metadata.EarthObservation.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
