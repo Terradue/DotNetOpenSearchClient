@@ -438,6 +438,10 @@ namespace Terradue.OpenSearch.Client {
                     case "--all-enclosures":
                         dataModelParameterArgs.Add("allEnclosures=true");
                         break;
+					case "-dec":
+					case "--disable-enclosure-control":
+                        dataModelParameterArgs.Add("disableEnclosureControl=true");
+                        break;
                     case "--max-retries":
                         if (argpos < args.Length - 1) {
                             retryAttempts = int.Parse(args[++argpos]);
@@ -493,7 +497,8 @@ namespace Terradue.OpenSearch.Client {
             Console.Error.WriteLine(" -a/--auth <creds>                   <creds> is a string representing the credentials with format username:password.");
             Console.Error.WriteLine(" --lax                               Lax query: assign parameters even if not described by the opensearch server.");
             Console.Error.WriteLine(" --alternative                       Altenative query: Instead of making a parallel multi search in case of multiple URL, it tries the URL until 1 returns results");
-            Console.Error.WriteLine(" --all-enclosures                    Returns all available enclosures");
+			Console.Error.WriteLine(" --all-enclosures                    Returns all available enclosures. Implies disable enclosure control (disable-enclosure-control)");
+			Console.Error.WriteLine(" -dec/--disable-enclosure-control    Do not check enclosure avaialability when enclosure metadata is queried");
             Console.Error.WriteLine(" --max-retries <n>                   <n> specifies the number of retries if the action fails");
             Console.Error.WriteLine(" -v/--verbose                        Makes the operation more talkative");
             Console.Error.WriteLine();
@@ -617,7 +622,10 @@ namespace Terradue.OpenSearch.Client {
             var remoteParams = entity.GetOpenSearchParameters(entity.DefaultMimeType);
 
             if (remoteParams["do"] != null && nvc["do"] == null) {
-                nvc["do"] = Dns.GetHostName();
+				if ( !string.IsNullOrEmpty(Environment.GetEnvironmentVariable("DOWNLOAD_ORIGIN")))
+					nvc["do"] = Environment.GetEnvironmentVariable("DOWNLOAD_ORIGIN");
+				else
+                    nvc["do"] = Dns.GetHostName();
             }
 
             dataModel.SetQueryParameters(nvc);
