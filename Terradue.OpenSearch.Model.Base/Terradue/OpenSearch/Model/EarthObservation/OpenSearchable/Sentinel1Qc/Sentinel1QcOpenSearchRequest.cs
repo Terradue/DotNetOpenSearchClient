@@ -248,7 +248,8 @@ namespace Terradue.OpenSearch.Model.EarthObservation.OpenSearchable
             qs.Set("page", querypage.ToString());
 
             if (!string.IsNullOrEmpty(start))
-                qs.Set("validity_start_time", string.Format("{0}{1}", start, string.IsNullOrEmpty(stop) ? "" : ".." + stop));
+                qs.Set("validity_start", string.Format("{0}{1}", start, string.IsNullOrEmpty(stop) ? "" : ".." + stop));
+            
             url.Query = qs.ToString();
 
             return url.Uri;
