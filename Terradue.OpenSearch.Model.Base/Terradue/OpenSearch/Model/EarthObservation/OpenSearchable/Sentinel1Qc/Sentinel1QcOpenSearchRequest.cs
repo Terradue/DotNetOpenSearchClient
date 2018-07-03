@@ -125,7 +125,7 @@ namespace Terradue.OpenSearch.Model.EarthObservation.OpenSearchable
                     var a = tr.SelectSingleNode("td/a");
                     log.Debug(a.InnerText);
                     HtmlAttribute href = a.Attributes["href"];
-                    var producturl = new Uri(string.Format("{0}/{1}/{2}", qcBaseUrl, type, href.Value));
+                    var producturl = new Uri(href.Value);
                     log.Debug(producturl);
                     list.Add(a.InnerText, producturl);
                 }
@@ -248,7 +248,8 @@ namespace Terradue.OpenSearch.Model.EarthObservation.OpenSearchable
             qs.Set("page", querypage.ToString());
 
             if (!string.IsNullOrEmpty(start))
-                qs.Set("validity_start_time", string.Format("{0}{1}", start, string.IsNullOrEmpty(stop) ? "" : ".." + stop));
+                qs.Set("validity_start", string.Format("{0}{1}", start, string.IsNullOrEmpty(stop) ? "" : ".." + stop));
+            
             url.Query = qs.ToString();
 
             return url.Uri;

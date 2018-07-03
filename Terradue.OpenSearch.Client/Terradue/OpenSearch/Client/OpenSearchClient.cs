@@ -76,11 +76,8 @@ namespace Terradue.OpenSearch.Client {
 
                 client.Initialize();
 
-                if (baseUrlArg != null) {
-                    var task = Task.Run(() => client.ProcessQuery());
-                    if (!task.Wait(TimeSpan.FromMilliseconds(timeout)))
-                        throw new TimeoutException("Timed out");
-                }
+                if (baseUrlArg != null)
+                    client.ProcessQuery();
 
                 if (listOsee == true)
                     client.ListOpenSearchEngineExtensions();
@@ -89,11 +86,9 @@ namespace Terradue.OpenSearch.Client {
                     client.PrintDataModelHelp(DataModel.CreateFromArgs(queryModelArg, new NameValueCollection()));
                 }
             } catch (AggregateException ae) {
-                foreach (var e in ae.InnerExceptions) {
-                    Console.Error.WriteLine(string.Format("{0} : {1} {2}", e.ToString(), e.Message, e.HelpLink));
-                    if (verbose)
-                        Console.Error.WriteLine(e.StackTrace);
-                }
+                foreach (var e in ae.InnerExceptions)
+                    LogError(e, true);
+                
                 Environment.ExitCode = 1;
                 return;
             } catch (PartialAtomException e) {
@@ -101,11 +96,13 @@ namespace Terradue.OpenSearch.Client {
                 searchCache.ClearCache(".*", DateTime.Now);
                 return;
             } catch (TimeoutException e) {
+                LogError(e);
                 Console.Error.WriteLine(string.Format("{0} : {1} {2}", e.Source, e.Message, e.HelpLink));
                 Environment.ExitCode = 124;
                 return;
                 
             } catch (Exception e) {
+                LogError(e, true);
                 Console.Error.WriteLine(string.Format("{0} : {1} {2}", e.Source, e.Message, e.HelpLink));
                 if (verbose)
                     Console.Error.WriteLine(e.StackTrace);
@@ -113,6 +110,7 @@ namespace Terradue.OpenSearch.Client {
                 return;
             }
         }
+
 
         internal void Initialize() {
             // Config log
@@ -200,134 +198,28 @@ namespace Terradue.OpenSearch.Client {
 
             dataModel = DataModel.CreateFromArgs(queryModelArg, dataModelParameters);
 
-            NameValueCollection parametersNvc;
-
             List<List<Uri>> altBaseUrlLists = alternative ? new List<List<Uri>>(baseUrls.Select(u => new List<Uri>(){u})) : new List<List<Uri>>(){baseUrls};
 
             List<List<NetworkCredential>> altNetCredsLists = alternative ? new List<List<NetworkCredential>>(netCreds.Select(u => new List<NetworkCredential>(){u})) : new List<List<NetworkCredential>>(){netCreds};
 
             for (int i = 0; i < altBaseUrlLists.Count(); i++) {
+
+                log.DebugFormat("Alternative #{0} : {1} (timeout = {2} ms)", i, string.Join(",", altBaseUrlLists[i]), timeout);
+
+                bool alternativeSuccess = false;
                 bool outputStarted = false;
-
                 try {
-                    log.DebugFormat("Alternative #{0} : {1}", i, string.Join(",", altBaseUrlLists[i]));
-
-                    // Find OpenSearch Entity
-                    IOpenSearchable entity = null;
-                    int retry = retryAttempts;
-                    int index = 1;
-                    while (retry >= 0) {
-                        // Perform the query
-                        try {
-                            OpenSearchableFactorySettings settings = new OpenSearchableFactorySettings(ose);
-                            settings.MaxRetries  = retryAttempts;
-                            entity = dataModel.CreateOpenSearchable(altBaseUrlLists[i], queryFormatArg, ose, altNetCredsLists[i],settings);
-                            index = entity.GetOpenSearchDescription().DefaultUrl.IndexOffset;
-                            log.Debug("IndexOffset : " + index);
-                            break;
-                        }
-                        catch (Exception e) {
-                            log.Warn(e.Message);
-                            if (retry == 0)
-                                throw e;
-                            retry--;
-                            searchCache.ClearCache(".*", DateTime.Now);
-                        }
-                    }
-
-                    NameValueCollection parameters = PrepareQueryParameters(entity);
-                    string startIndex = parameters.Get("startIndex");
-                    if (startIndex != null) {
-                        index = int.Parse(startIndex);
-                    }
-
-                    IOpenSearchResultCollection osr = null;
-                    long totalCount = 0;
-                    log.Debug(totalResults + " entries requested");
-                    while (totalResults > 0) {
-                        log.Debug("startIndex : " + index);
-                        parametersNvc = ResolveParameters(parameters, entity);
-
-                        retry = retryAttempts;
-                        while (retry >= 0) {
-                            // Perform the query
-                            log.Debug("Launching query...");
-                            try {
-                                osr = QueryOpenSearch(ose, entity, parametersNvc);
-                                isAtomFeedPartial = false;
-                                break;
-                            }
-                            catch (AggregateException ae) {
-                                if (retry == 0) {
-                                    throw ae;
-                                }
-                                foreach (Exception e in ae.InnerExceptions) {
-                                    log.Warn("Exception " + e.Message);
-                                }
-                                retry--;
-                                searchCache.ClearCache(".*", DateTime.Now);
-                            }
-                            catch (KeyNotFoundException e) {
-                                log.Error("Query not found : " + e.Message);
-                                throw e;
-                            }
-                            catch (PartialAtomException e) {
-                                if (retry == 0) {
-                                    osr = e.PartialOpenSearchResultCollection;
-                                    isAtomFeedPartial = true;
-                                }
-                                retry--;
-                                searchCache.ClearCache(".*", DateTime.Now);
-                            }
-                            catch (Exception e) {
-                                if (retry == 0) {
-                                    throw e;
-                                }
-
-                                log.Warn("Exception " + e.Message);
-                                retry--;
-                                searchCache.ClearCache(".*", DateTime.Now);
-                            }
-                        }
-
-                        int count = CountResults(osr);
-                        if (alternative && totalCount == 0 && count == 0)
-                            throw new Exception("No results found");
-
-                        // Transform the result
-                        OutputResult(osr, outputStream);
-
-                        outputStarted = true;
-
-
-                        log.Debug(count + " entries found");
-                        if (count == 0)
-                            break;
-                        int expectedCount = count;
-                        if (!string.IsNullOrEmpty(parameters["count"]) && int.TryParse(parameters["count"], out expectedCount) && count < expectedCount)
-                            break;
-
-                        totalResults -= count;
-                        totalCount += count;
-                        log.Debug(count + " entries found on " + totalResults + " requested");
-                        int paramCount;
-                        if (Int32.TryParse(parameters.Get("count"), out paramCount) && totalResults < paramCount) {
-                            parameters.Set("count", "" + totalResults);
-                        }
-                        index += count;
-
-                        parameters.Set("startIndex", "" + index);
-                    }
-
-                    if (alternative && totalCount > 0)
-                        break;
-                }
-                catch (Exception e) {
+                    Task task = Task.Run(() => alternativeSuccess = ProcessAlternative(altBaseUrlLists[i], altNetCredsLists[i], outputStream, ref outputStarted, ref isAtomFeedPartial));
+                    if (!task.Wait(TimeSpan.FromMilliseconds(timeout))) throw new TimeoutException("Timed out");
+                    if (alternativeSuccess) break;
+                } catch (Exception e) {
                     if (outputStarted || i + 1 == altBaseUrlLists.Count())
                         throw e;
+                    else
+                        LogError(e, true);
                     searchCache.ClearCache(".*", DateTime.Now);
-                    continue;
                 }
+
             }
 
             if (closeOutputStream) outputStream.Close();
@@ -337,6 +229,118 @@ namespace Terradue.OpenSearch.Client {
                 throw new PartialAtomException();
             }
         }
+
+
+
+        internal bool ProcessAlternative(List<Uri> uri, List<NetworkCredential> credential, Stream outputStream, ref bool outputStarted, ref bool isAtomFeedPartial) {
+            outputStarted = false;
+            // Find OpenSearch Entity
+            IOpenSearchable entity = null;
+            int retry = retryAttempts;
+            int index = 1;
+            while (retry >= 0) {
+                // Perform the query
+                try {
+                    OpenSearchableFactorySettings settings = new OpenSearchableFactorySettings(ose);
+                    settings.MaxRetries = retryAttempts;
+                    entity = dataModel.CreateOpenSearchable(uri, queryFormatArg, ose, credential, settings);
+                    index = entity.GetOpenSearchDescription().DefaultUrl.IndexOffset;
+                    log.Debug("IndexOffset : " + index);
+                    break;
+                } catch (Exception e) {
+                    log.Warn(e.Message);
+                    if (retry == 0)
+                        throw e;
+                    retry--;
+                    searchCache.ClearCache(".*", DateTime.Now);
+                }
+            }
+
+            NameValueCollection parameters = PrepareQueryParameters(entity);
+            string startIndex = parameters.Get("startIndex");
+            if (startIndex != null) {
+                index = int.Parse(startIndex);
+            }
+
+            NameValueCollection parametersNvc;
+
+            IOpenSearchResultCollection osr = null;
+            long totalCount = 0;
+            log.Debug(totalResults + " entries requested");
+            while (totalResults > 0) {
+                log.Debug("startIndex : " + index);
+                parametersNvc = ResolveParameters(parameters, entity);
+
+                retry = retryAttempts;
+                while (retry >= 0) {
+                    // Perform the query
+                    log.Debug("Launching query...");
+                    try {
+                        osr = QueryOpenSearch(ose, entity, parametersNvc);
+                        isAtomFeedPartial = false;
+                        break;
+                    } catch (AggregateException ae) {
+                        if (retry == 0) {
+                            throw ae;
+                        }
+                        foreach (Exception e in ae.InnerExceptions) {
+                            log.Warn("Exception " + e.Message);
+                        }
+                        retry--;
+                        searchCache.ClearCache(".*", DateTime.Now);
+                    } catch (KeyNotFoundException e) {
+                        log.Error("Query not found : " + e.Message);
+                        throw e;
+                    } catch (PartialAtomException e) {
+                        if (retry == 0) {
+                            osr = e.PartialOpenSearchResultCollection;
+                            isAtomFeedPartial = true;
+                        }
+                        retry--;
+                        searchCache.ClearCache(".*", DateTime.Now);
+                    } catch (Exception e) {
+                        if (retry == 0) {
+                            throw e;
+                        }
+
+                        log.Warn("Exception " + e.Message);
+                        retry--;
+                        searchCache.ClearCache(".*", DateTime.Now);
+                    }
+                }
+
+                int count = CountResults(osr);
+                if (alternative && totalCount == 0 && count == 0)
+                    throw new Exception("No results found");
+
+                // Transform the result
+                OutputResult(osr, outputStream);
+
+                outputStarted = true;
+
+
+                log.Debug(count + " entries found");
+                if (count == 0)
+                    break;
+                int expectedCount = count;
+                if (!string.IsNullOrEmpty(parameters["count"]) && int.TryParse(parameters["count"], out expectedCount) && count < expectedCount)
+                    break;
+
+                totalResults -= count;
+                totalCount += count;
+                log.Debug(count + " entries found on " + totalResults + " requested");
+                int paramCount;
+                if (Int32.TryParse(parameters.Get("count"), out paramCount) && totalResults < paramCount) {
+                    parameters.Set("count", "" + totalResults);
+                }
+                index += count;
+
+                parameters.Set("startIndex", "" + index);
+            }
+
+            return (alternative && totalCount > 0); // success
+        }
+
 
         //---------------------------------------------------------------------------------------------------------------------
         public static bool GetArgs(string[] args) {
@@ -437,8 +441,8 @@ namespace Terradue.OpenSearch.Client {
                     case "--all-enclosures":
                         dataModelParameterArgs.Add("allEnclosures=true");
                         break;
-					case "-dec":
-					case "--disable-enclosure-control":
+                    case "-dec":
+                    case "--disable-enclosure-control":
                         dataModelParameterArgs.Add("disableEnclosureControl=true");
                         break;
                     case "--max-retries":
@@ -496,8 +500,8 @@ namespace Terradue.OpenSearch.Client {
             Console.Error.WriteLine(" -a/--auth <creds>                   <creds> is a string representing the credentials with format username:password.");
             Console.Error.WriteLine(" --lax                               Lax query: assign parameters even if not described by the opensearch server.");
             Console.Error.WriteLine(" --alternative                       Altenative query: Instead of making a parallel multi search in case of multiple URL, it tries the URL until 1 returns results");
-			Console.Error.WriteLine(" --all-enclosures                    Returns all available enclosures. Implies disable enclosure control (disable-enclosure-control)");
-			Console.Error.WriteLine(" -dec/--disable-enclosure-control    Do not check enclosure avaialability when enclosure metadata is queried");
+            Console.Error.WriteLine(" --all-enclosures                    Returns all available enclosures. Implies disable enclosure control (disable-enclosure-control)");
+            Console.Error.WriteLine(" -dec/--disable-enclosure-control    Do not check enclosure avaialability when enclosure metadata is queried");
             Console.Error.WriteLine(" --max-retries <n>                   <n> specifies the number of retries if the action fails");
             Console.Error.WriteLine(" -v/--verbose                        Makes the operation more talkative");
             Console.Error.WriteLine();
@@ -532,6 +536,14 @@ namespace Terradue.OpenSearch.Client {
             return LogManager.GetLogger(typeof(OpenSearchClient));
         }
 
+        internal static void LogError(Exception e, bool withStackTrace = false) {
+            log.Error(String.Format("{0} : {1} {2}", e.Source, e.Message, e.HelpLink));
+            Console.Error.WriteLine("{0} : {1} {2}", e.Source, e.Message, e.HelpLink);
+            if (verbose && withStackTrace)
+                Console.Error.WriteLine(e.StackTrace);
+        }
+
+        
         //---------------------------------------------------------------------------------------------------------------------
         /// <summary>
         /// Initializes the OpenSearch URL to query
@@ -621,9 +633,9 @@ namespace Terradue.OpenSearch.Client {
             var remoteParams = entity.GetOpenSearchParameters(entity.DefaultMimeType);
 
             if (remoteParams["do"] != null && nvc["do"] == null) {
-				if ( !string.IsNullOrEmpty(Environment.GetEnvironmentVariable("DOWNLOAD_ORIGIN")))
-					nvc["do"] = Environment.GetEnvironmentVariable("DOWNLOAD_ORIGIN");
-				else
+                if ( !string.IsNullOrEmpty(Environment.GetEnvironmentVariable("DOWNLOAD_ORIGIN")))
+                    nvc["do"] = Environment.GetEnvironmentVariable("DOWNLOAD_ORIGIN");
+                else
                     nvc["do"] = Dns.GetHostName();
             }
 
