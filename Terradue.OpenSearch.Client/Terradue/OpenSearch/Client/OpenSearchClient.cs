@@ -30,7 +30,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using log4net.Config;
 using Terradue.OpenSearch.Model.CustomExceptions;
-
+using System.Runtime.ExceptionServices;
 
 namespace Terradue.OpenSearch.Client {
 
@@ -324,7 +324,7 @@ namespace Terradue.OpenSearch.Client {
                 }
                 catch (Exception e) {
                     if (outputStarted || i + 1 == altBaseUrlLists.Count())
-                        throw e;
+						ExceptionDispatchInfo.Capture(e).Throw();
                     searchCache.ClearCache(".*", DateTime.Now);
                     continue;
                 }
