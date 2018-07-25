@@ -41,6 +41,7 @@ namespace Terradue.OpenSearch.Model.EarthObservation {
 			metadataExtractors.Add("wrsLatitudeGrid", new WrsLatitudeGridMetadataExtractor());
             metadataExtractors.Add("processingLevel", new ProcessingLevelMetadataExtractor());
             metadataExtractors.Add("id", new IdMetadataExtractor());
+			metadataExtractors.Add("cc", new CloudCoverMetadataExtractor());
         }
 
         public override string Name {
