@@ -273,16 +273,16 @@ namespace Terradue.OpenSearch.Client {
 
             IOpenSearchResultCollection osr = null;
             long totalCount = 0;
-            log.DebugFormat(DateTime.Now + " - " + "{0} entries requested", totalResults);
+            log.DebugFormat("{0} entries requested", totalResults);
             while (totalResults > 0) {
-                log.DebugFormat(DateTime.Now + "startIndex : {0}", index);
+                log.DebugFormat("startIndex: {0}", index);
                 parametersNvc = ResolveParameters(parameters, entity);
 
                 retry = retryAttempts;
                 while (retry >= 0) {
                     if (canceled) return false;
                     // Perform the query
-                    log.Debug(DateTime.Now + " - " + "Launching query...");
+                    log.Debug("Launching query...");
                     try {
                         osr = QueryOpenSearch(ose, entity, parametersNvc);
                         isAtomFeedPartial = false;
