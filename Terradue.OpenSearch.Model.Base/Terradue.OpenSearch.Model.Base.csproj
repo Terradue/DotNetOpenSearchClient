@@ -96,8 +96,8 @@
     <Reference Include="NuGet.Core">
       <HintPath>..\packages\NuGet.Core.2.14.0\lib\net40-Client\NuGet.Core.dll</HintPath>
     </Reference>
-    <Reference Include="Terradue.OpenSearch.Usgs, Version=1.1.3.14780, Culture=neutral, PublicKeyToken=null">
-      <HintPath>..\packages\Terradue.OpenSearch.Usgs.1.1.3\lib\net45\Terradue.OpenSearch.Usgs.dll</HintPath>
+    <Reference Include="Terradue.OpenSearch.Usgs, Version=1.1.4.18321, Culture=neutral, PublicKeyToken=null">
+      <HintPath>..\packages\Terradue.OpenSearch.Usgs.1.1.4-ftservererrormessage20180813T101448\lib\net45\Terradue.OpenSearch.Usgs.dll</HintPath>
     </Reference>
     <Reference Include="Terradue.ServiceModel.Ogc.OwsContext">
       <HintPath>..\packages\Terradue.ServiceModel.Ogc.OwsContext.1.1.2\lib\net45\Terradue.ServiceModel.Ogc.OwsContext.dll</HintPath>
