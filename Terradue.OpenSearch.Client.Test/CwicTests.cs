@@ -13,8 +13,6 @@ namespace Terradue.OpenSearch.Client.Test {
     public class CwicTests {
 
         OpenSearchClient client;
-        XNamespace atom = "http://www.w3.org/2005/Atom";
-        XNamespace georss10 = "http://www.georss.org/georss/10";
 
         [SetUp]
         public void SetUpClient(){

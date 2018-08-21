@@ -23,7 +23,6 @@ namespace Terradue.OpenSearch.Model.EarthObservation.OpenSearchable
 {
     class Sentinel1QcOpenSearchRequest : OpenSearchRequest
     {
-        OpenSearchUrl openSearchUrl;
         NameValueCollection parameters;
         readonly Uri qcSearchUrl;
 
@@ -174,7 +173,7 @@ namespace Terradue.OpenSearch.Model.EarthObservation.OpenSearchable
                     if (item != null)
                         items.Add(item);
                 }
-                catch (Exception e) {
+                catch (Exception) {
                         partial = true;
                         log.Warn("Ommitting corrupted xml: " + product.Value);
                 }
