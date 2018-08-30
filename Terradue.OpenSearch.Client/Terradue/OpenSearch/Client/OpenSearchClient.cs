@@ -274,6 +274,9 @@ namespace Terradue.OpenSearch.Client {
             IOpenSearchResultCollection osr = null;
             long totalCount = 0;
             log.DebugFormat("{0} entries requested", totalResults);
+
+            if (outputStarted) return false;
+
             while (totalResults > 0) {
                 log.DebugFormat("startIndex: {0}", index);
                 parametersNvc = ResolveParameters(parameters, entity);
@@ -332,7 +335,6 @@ namespace Terradue.OpenSearch.Client {
                 // Transform the result
                 OutputResult(osr, outputStream);
 
-                if (outputStarted) return false;
                 outputStarted = true;
 
 
