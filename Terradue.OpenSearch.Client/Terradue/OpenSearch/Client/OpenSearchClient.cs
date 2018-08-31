@@ -114,7 +114,7 @@ namespace Terradue.OpenSearch.Client {
 
 
 
-        private static bool GetArgs(string[] args) {
+        internal static bool GetArgs(string[] args) {
             if (args.Length == 0)
                 return false;
 
@@ -279,7 +279,6 @@ namespace Terradue.OpenSearch.Client {
             Console.Error.WriteLine(" -v/--verbose                        Makes the operation more talkative");
             Console.Error.WriteLine();
         }
-
 
 
 
@@ -536,6 +535,7 @@ namespace Terradue.OpenSearch.Client {
 
             return (totalCount > 0); // success
         }
+
 
 
         private void PrintOpenSearchDescription(string arg) {
