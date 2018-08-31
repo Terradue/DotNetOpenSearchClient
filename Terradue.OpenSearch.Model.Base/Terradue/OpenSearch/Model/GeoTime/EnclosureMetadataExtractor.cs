@@ -120,7 +120,7 @@ namespace Terradue.OpenSearch.Model.GeoTime
 				hostBase = data["default"]["host_base"];
 				bool.TryParse(data["default"]["use_https"], out useHttps);
 			}
-			catch (Exception e)
+			catch (Exception)
 			{
 				log.Warn("No S3 config to check the S3 links!");
 				return false;

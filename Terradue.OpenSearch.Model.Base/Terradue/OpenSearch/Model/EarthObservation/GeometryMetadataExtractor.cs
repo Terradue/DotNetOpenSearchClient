@@ -19,11 +19,13 @@ namespace Terradue.OpenSearch.Model.EarthObservation
 
             return geom;
         }
-        public string Description {
+
+
+        /*public string Description {
             get {
                 throw new NotImplementedException();
             }
-        }
+        }*/
         #endregion
 	}
 
