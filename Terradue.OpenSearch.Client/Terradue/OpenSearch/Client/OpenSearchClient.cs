@@ -35,7 +35,7 @@ namespace Terradue.OpenSearch.Client {
         internal static bool verbose;
         internal static bool lax = false;
         internal static bool alternative = false;
-        internal static bool listOsee;
+        internal static bool listEncoding;
         internal static string outputFilePathArg = null;
         internal static string descriptionArg = null;
         internal static string queryFormatArg = null;
@@ -78,13 +78,12 @@ namespace Terradue.OpenSearch.Client {
 
                 client.Initialize();
 
-                if (baseUrlArg != null) {
+                if (listEncoding == true) {
+                    client.ListOpenSearchEngineExtensions();
+                } else if (baseUrlArg != null) {
                     if (descriptionArg == null) client.ProcessQuery();
                     else client.PrintOpenSearchDescription(descriptionArg);
                 }
-
-                if (listOsee == true)
-                    client.ListOpenSearchEngineExtensions();
 
                 if (!string.IsNullOrEmpty(queryModelArg) && baseUrlArg == null) {
                     client.PrintDataModelHelp(DataModel.CreateFromArgs(queryModelArg, new NameValueCollection()));
@@ -114,7 +113,7 @@ namespace Terradue.OpenSearch.Client {
 
 
 
-        private static bool GetArgs(string[] args) {
+        internal static bool GetArgs(string[] args) {
             if (args.Length == 0)
                 return false;
 
@@ -185,8 +184,8 @@ namespace Terradue.OpenSearch.Client {
                         } else
                             return false;
                         break;
-                    case "--list-osee":
-                        listOsee = true;
+                    case "--list-encoding":
+                        listEncoding = true;
                         break;
                     case "-m":
                     case "--model":
@@ -257,29 +256,37 @@ namespace Terradue.OpenSearch.Client {
             Console.Error.WriteLine();
             Console.Error.WriteLine("Options:");
 
-            Console.Error.WriteLine(" -d/--description full|types|<type>[.<param>]");
-            Console.Error.WriteLine("                                     Shows a human-readable version of the OpenSearch description document ('full': entirely, 'types': URL types)");
-            Console.Error.WriteLine("                                     <type> specifies a query URL type, <param> specifies a parameter name");
-            Console.Error.WriteLine(" -p/--parameter <param>=<value>      <param> specifies a parameter for the query with value <value>");
-            Console.Error.WriteLine(" -o/--output <file>                  Writes output to <file> instead of stdout");
-            Console.Error.WriteLine(" -f/--format <format>                Specify the format of the query. Format available can be listed with --list-osee.");
-            Console.Error.WriteLine("                                     By default, the client is automatic and uses the default or the first format.");
-            Console.Error.WriteLine(" -to/--time-out <n>                  <n> specifies query timeout (millisecond)");
-            Console.Error.WriteLine(" --pagination <n>                    <n> specifies the pagination number for search loops. Default: 20");
-            Console.Error.WriteLine(" --list-osee                         Lists the OpenSearch Engine Extensions");
-            Console.Error.WriteLine(" -m/--model <format>                 <format> specifies the data model of the results for the query. Data model gives access to specific metadata extractors or transformers.");
-            Console.Error.WriteLine("                                     By default the \"GeoTime\" model is used. Used without urls, it lists the metadata options");
-            Console.Error.WriteLine(" -dp/--datamodel-parameter <param>   <param> Specify a data model parameter");
-            Console.Error.WriteLine(" -a/--auth <creds>[,...[,...]]       <creds> is a string representing the credentials with format username:password.");
-            Console.Error.WriteLine(" --lax                               Lax query: assign parameters even if not described by the opensearch server.");
-            Console.Error.WriteLine(" --alternative                       Altenative query: Instead of making a parallel multi search in case of multiple URL, it tries the URL until 1 returns results");
-            Console.Error.WriteLine(" --all-enclosures                    Returns all available enclosures. Implies disable enclosure control (disable-enclosure-control)");
-            Console.Error.WriteLine(" -dec/--disable-enclosure-control    Do not check enclosure avaialability when enclosure metadata is queried");
-            Console.Error.WriteLine(" --max-retries <n>                   <n> specifies the number of retries if the action fails");
-            Console.Error.WriteLine(" -v/--verbose                        Makes the operation more talkative");
-            Console.Error.WriteLine();
-        }
+            Console.Error.WriteLine(@"
+-d/--description full|types|<type>[.<param>
+                                   Shows a human-readable version of the OpenSearch description document
+                                   ('full': entirely, 'types': URL types)
+                                   <type> specifies a query URL type, <param> specifies a parameter name
+-p/--parameter <param>=<value>     <param> specifies a parameter for the query with value <value>
+-o/--output <file>                 Writes output to <file> instead of stdout
+--list-encoding                    Lists the available OpenSearch Engine Extensions handling various metadata
+                                   encodings or exchange formats (e.g. ATOM, JSON or RDF)
+-f/--format <format>               Specify the output format of the query result. If the catalogue supports
+                                   that format as output, the client requests it for the query.
+                                   Available formats can be listed with --list-encoding. By default
+                                   the client uses the default or the first format ('atom' in many cases).
+-m/--model <format>                <format> specifies the data model of the results for the query. The data model
+                                   gives access to specific metadata extractors or transformers. By default
+                                   the ""GeoTime"" model is used. Used without urls, it lists the metadata options
+-to/--time-out <n>                 <n> specifies query timeout (millisecond)
+--pagination <n>                   <n> specifies the pagination number for search loops. Default: 20
+-dp/--datamodel-parameter <param>  <param> specifies a data model parameter
+-a/--auth <creds>[,...[,...]]      <creds> is a string representing the credentials with format username:password.
+--lax                              Lax query: assigns parameters even if not described by the opensearch server.
+--alternative                      Altenative query: Instead of making a parallel multi search in case of multiple URL,
+                                   the client tries the URL until 1 returns results
+--all-enclosures                   Returns all available enclosures. Implies disable enclosure control
+                                   (disable-enclosure-control)
+-dec/--disable-enclosure-control   Disables the check for enclosure avaialability when enclosure metadata is queried
+--max-retries <n>                  <n> specifies the number of retries if the action fails
+-v/--verbose                       Makes the operation more talkative
 
+");
+        }
 
 
 
@@ -451,6 +458,9 @@ namespace Terradue.OpenSearch.Client {
             IOpenSearchResultCollection osr = null;
             long totalCount = 0;
             log.DebugFormat("{0} entries requested", totalResults);
+
+            if (outputStarted) return false;
+
             while (totalResults > 0) {
                 log.DebugFormat("startIndex: {0}", index);
                 parametersNvc = ResolveParameters(parameters, entity);
@@ -509,7 +519,6 @@ namespace Terradue.OpenSearch.Client {
                 // Transform the result
                 OutputResult(osr, outputStream);
 
-                if (outputStarted) return false;
                 outputStarted = true;
 
 
@@ -536,6 +545,7 @@ namespace Terradue.OpenSearch.Client {
         }
 
 
+
         private void PrintOpenSearchDescription(string arg) {
 
             Match argMatch = argRegex.Match(arg);
@@ -556,103 +566,127 @@ namespace Terradue.OpenSearch.Client {
             using (Stream outputStream = InitializeOutputStream()) {
                 using (StreamWriter sw = new StreamWriter(outputStream)) {
 
-                    foreach (OpenSearchDescriptionUrl url in osd.Url) {
-                        if (url.Relation == "self") continue;
+                    if (type == "types") {
+                        sw.WriteLine("Formats");
+                        sw.WriteLine("{0,-10}{1,-10}{2,-60}", "Format", "Supported", "MIME type");
+                        sw.WriteLine("{0,-10}{1,-10}{2,-60}", "======", "=========", "=========");
 
-                        string urlShortType = GetUrlShortType(url.Type);
-                        if (type != "full" && type != "types" && type != urlShortType) continue;
+                        foreach (OpenSearchDescriptionUrl url in osd.Url) {
+                            if (url.Relation == "self") continue;
 
-                        typeFound = true;
-
-                        //if (type == "full" || type == "types") {
-                        sw.Write("Search URL type {0}", urlShortType);
-                        if (url.Type != urlShortType) sw.Write(" ({0})", url.Type);
-                        sw.WriteLine();
-                        //}
-
-                        int qmPos = url.Template.IndexOf('?');
-                        if (qmPos == -1) continue;
-
-                        string queryString = url.Template.Substring(qmPos + 1);
-
-                        if (type == "types") continue;
-
-                        if (paramName == null) {
-                            sw.WriteLine("Parameters");
-                            sw.WriteLine("{0,-22}{1,-40} M O R P S (mandatory, options, range, pattern, step)", "Name", "Description/title");
-                            sw.WriteLine("{0,-22}{1,-40} ---------", "----", "-----------------");
-                        }
-
-                        MatchCollection paramMatches = paramRegex.Matches(queryString);
-                        foreach (Match paramMatch in paramMatches) {
-                            string name = paramMatch.Groups[1].Value;
-                            string identifier = paramMatch.Groups[2].Value;
-                            bool mandatory = !paramMatch.Groups[3].Success;
-                            string title = GetParameterDescription(identifier);
-                            bool options = false;
-                            bool range = false;
-                            bool pattern = false;
-                            bool step = false;
-
-                            OpenSearchDescriptionUrlParameter param = null;
-                            if (url.Parameters != null) {
-                                foreach (OpenSearchDescriptionUrlParameter p in url.Parameters) {
-                                    if (p.Name == name) param = p;
+                            bool isFormat = false;
+                            foreach (IOpenSearchEngineExtension osee in ose.Extensions.Values) {
+                                if (osee.DiscoveryContentType == url.Type) {
+                                    isFormat = true;
+                                    break;
                                 }
                             }
+                            string urlShortType = GetUrlShortType(url.Type);
 
-                            if (param != null) {
-                                title = param.Title;
-                                options = param.Options != null && param.Options.Count != 0;
-                                range = param.Maximum != null || param.MinInclusive != null || param.MaxInclusive != null || param.MinExclusive != null || param.MaxExclusive != null;
-                                pattern = param.Pattern != null;
-                                step = param.Step != null;
+                            sw.WriteLine("{0,-14}{1,-6}{2,-40}", urlShortType == url.Type ? "-" : urlShortType, isFormat ? "*" : " ", url.Type);
+                        }
+                    } else {
+                        foreach (OpenSearchDescriptionUrl url in osd.Url) {
+                            if (url.Relation == "self") continue;
+
+                            string urlShortType = GetUrlShortType(url.Type);
+                            if (type != "full" && type != urlShortType) continue;
+
+                            typeFound = true;
+
+                            bool isFormat = false;
+                            foreach (IOpenSearchEngineExtension osee in ose.Extensions.Values) {
+                                if (osee.DiscoveryContentType == url.Type) {
+                                    isFormat = true;
+                                    break;
+                                }
                             }
+                            sw.Write("Search URL type: {0}", url.Type);
+                            if (isFormat) sw.Write(" (format: {0})", urlShortType);
+                            sw.WriteLine();
+
+                            int qmPos = url.Template.IndexOf('?');
+                            if (qmPos == -1) continue;
+
+                            string queryString = url.Template.Substring(qmPos + 1);
 
                             if (paramName == null) {
-                                if (title != null && title.Length > 40) title = String.Format("{0}...", title.Substring(0, 37));
-                                sw.WriteLine("- {0,-20}{1,-40} {2,-2}{3,-2}{4,-2}{5,-2}{6,-2}",
-                                    name,
-                                    title,
-                                    mandatory ? "M" : "-",
-                                    options ? "O" : "-",
-                                    range ? "R" : "-",
-                                    pattern ? "P" : "-",
-                                    step ? "S" : "-"
-                                );
+                                sw.WriteLine("Parameters");
+                                sw.WriteLine("{0,-22}{1,-40} M O R P S (mandatory, options, range, pattern, step)", "Name", "Description/title");
+                                sw.WriteLine("{0,-22}{1,-40} ---------", "----", "-----------------");
                             }
 
-                            if (type != "full" && paramName != name) continue;
+                            MatchCollection paramMatches = paramRegex.Matches(queryString);
+                            foreach (Match paramMatch in paramMatches) {
+                                string name = paramMatch.Groups[1].Value;
+                                string identifier = paramMatch.Groups[2].Value;
+                                bool mandatory = !paramMatch.Groups[3].Success;
+                                string title = GetParameterDescription(identifier);
+                                bool options = false;
+                                bool range = false;
+                                bool pattern = false;
+                                bool step = false;
 
-                            paramFound = true;
-                            if (paramName != null) {
-                                sw.WriteLine("- Parameter: {0}", name);
-                                sw.WriteLine("    Description/title: {0}", title);
-                            }
-                            if (options) {
-                                sw.WriteLine("    Options:");
-                                sw.WriteLine("    {0,-22} {1,-40}", "Value", "Label/description");
-                                sw.WriteLine("    {0,-22} {1,-40}", "-----", "-----------------");
-                                foreach (OpenSearchDescriptionUrlParameterOption o in param.Options) {
-                                    sw.WriteLine("    - {0,-20} {1,-40}", o.Value, o.Label);
+                                OpenSearchDescriptionUrlParameter param = null;
+                                if (url.Parameters != null) {
+                                    foreach (OpenSearchDescriptionUrlParameter p in url.Parameters) {
+                                        if (p.Name == name) param = p;
+                                    }
+                                }
+
+                                if (param != null) {
+                                    title = param.Title;
+                                    options = param.Options != null && param.Options.Count != 0;
+                                    range = param.Maximum != null || param.MinInclusive != null || param.MaxInclusive != null || param.MinExclusive != null || param.MaxExclusive != null;
+                                    pattern = param.Pattern != null;
+                                    step = param.Step != null;
+                                }
+
+                                if (paramName == null) {
+                                    if (title != null && title.Length > 40) title = String.Format("{0}...", title.Substring(0, 37));
+                                    sw.WriteLine("- {0,-20}{1,-40} {2,-2}{3,-2}{4,-2}{5,-2}{6,-2}",
+                                        name,
+                                        title,
+                                        mandatory ? "M" : "-",
+                                        options ? "O" : "-",
+                                        range ? "R" : "-",
+                                        pattern ? "P" : "-",
+                                        step ? "S" : "-"
+                                    );
+                                }
+
+                                if (type != "full" && paramName != name) continue;
+
+                                paramFound = true;
+                                if (paramName != null) {
+                                    sw.WriteLine("- Parameter: {0}", name);
+                                    sw.WriteLine("    Description/title: {0}", title);
+                                }
+                                if (options) {
+                                    sw.WriteLine("    Options:");
+                                    sw.WriteLine("    {0,-22} {1,-40}", "Value", "Label/description");
+                                    sw.WriteLine("    {0,-22} {1,-40}", "-----", "-----------------");
+                                    foreach (OpenSearchDescriptionUrlParameterOption o in param.Options) {
+                                        sw.WriteLine("    - {0,-20} {1,-40}", o.Value, o.Label);
+                                    }
+                                }
+                                if (range) {
+                                    string min = (param.MinExclusive != null ? param.MinExclusive : param.MinInclusive != null ? param.MinInclusive : param.Minimum);
+                                    string max = (param.MaxExclusive != null ? param.MaxExclusive : param.MaxInclusive != null ? param.MaxInclusive : param.Maximum);
+                                    sw.WriteLine("    Range: {0} {2} value {3} {1}", min, max, param.MinExclusive == null ? "<=" : "<", param.MaxExclusive == null ? "<=" : "<");
+                                }
+                                if (pattern) {
+                                    sw.WriteLine("    Pattern: {0}", param.Pattern);
+                                }
+                                if (step) {
+                                    sw.WriteLine("    Step: {0}", param.Step);
                                 }
                             }
-                            if (range) {
-                                string min = (param.MinExclusive != null ? param.MinExclusive : param.MinInclusive != null ? param.MinInclusive : param.Minimum);
-                                string max = (param.MaxExclusive != null ? param.MaxExclusive : param.MaxInclusive != null ? param.MaxInclusive : param.Maximum);
-                                sw.WriteLine("    Range: {0} {2} value {3} {1}", min, max, param.MinExclusive == null ? "<=" : "<", param.MaxExclusive == null ? "<=" : "<");
-                            }
-                            if (pattern) {
-                                sw.WriteLine("    Pattern: {0}", param.Pattern);
-                            }
-                            if (step) {
-                                sw.WriteLine("    Step: {0}", param.Step);
-                            }
+                            sw.WriteLine();
+
+
+                            //sw.WriteLine("URL {0} {1} {2}", url.Type, url.Relation, url.Template);
                         }
-                        sw.WriteLine();
-
-
-                        //sw.WriteLine("URL {0} {1} {2}", url.Type, url.Relation, url.Template);
                     }
                     sw.Close();
                 }
@@ -674,9 +708,6 @@ namespace Terradue.OpenSearch.Client {
             sw.WriteLine(string.Format("{0,-30}{1,-40}", "Extension Id", "Mime-Type capability"));
             sw.WriteLine(string.Format("{0,-30}{1,-40}", "============", "===================="));
 
-            OpenSearchEngine ose = new OpenSearchEngine();
-            ose.LoadPlugins();
-
             foreach (IOpenSearchEngineExtension osee in ose.Extensions.Values) {
                 sw.WriteLine(string.Format("{0,-30}{1,-40}", osee.Identifier, osee.DiscoveryContentType));
             }
@@ -690,7 +721,7 @@ namespace Terradue.OpenSearch.Client {
             // Initialize the output stream
             Stream outputStream = InitializeOutputStream();
 
-            dataModel.PrintHelp(outputStream);
+            dataModel.PrintHelp(outputStream, listEncoding);
         }
 
 
