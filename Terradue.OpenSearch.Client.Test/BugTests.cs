@@ -140,6 +140,39 @@ namespace Terradue.OpenSearch.Client.Test {
 
 	    }
 	    
+        [Test()]
+        public void DataAuthor123() {
+
+            string[] args = new string[] {
+                "-m", "Scihub",
+                "-p", "modified=2018-08-28T13:00:00Z/2018-08-28T14:00:00Z/",
+                "-p", "count=unlimited",
+                "--pagination", "100",
+                "-a", "t2user:1psed1xiT",
+                "http://scihub.terradue.com/apihub",
+                "id,identifier,published,updated"
+            };
+
+            OpenSearchClient.baseUrlArg = null;
+            OpenSearchClient.metadataPaths = null;
+            OpenSearchClient.GetArgs(args);
+
+            MemoryStream ms = new MemoryStream();
+
+            client.ProcessQuery(ms);
+
+            ms.Seek(0, SeekOrigin.Begin);
+            int count = 0;
+
+            using (StreamReader sr = new StreamReader(ms)) {
+                string line;
+                while ((line = sr.ReadLine()) != null) count++;
+            }
+
+            Console.WriteLine("Products found: {0}", count);
+            Assert.IsTrue(count > 100, "The number of products seems too small");
+
+        }
             
     }
 }

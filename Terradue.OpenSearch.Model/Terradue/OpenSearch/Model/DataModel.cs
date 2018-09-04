@@ -73,9 +73,11 @@ namespace Terradue.OpenSearch.Model {
 
         }
 
-        public void PrintHelp(System.IO.Stream outputStream) {
+        public void PrintHelp(System.IO.Stream outputStream, bool emptyLine = false) {
 
             StreamWriter sw = new StreamWriter(outputStream);
+
+            if (emptyLine) sw.WriteLine();
 
             sw.WriteLine(string.Format("Data model: {0}", modelExtension.Name));
             sw.WriteLine(string.Format("============" + new string('=', modelExtension.Name.Length)));
