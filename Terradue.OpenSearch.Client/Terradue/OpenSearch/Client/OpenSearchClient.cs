@@ -359,19 +359,12 @@ namespace Terradue.OpenSearch.Client {
 
 
         public void ProcessQuery(Stream outputStream = null) {
-            bool closeOutputStream = true;
+            
             bool isAtomFeedPartial = false;
 
             // Base OpenSearch URL
             log.Debug("Initialize urls");
             List<Uri> baseUrls = InitializeUrl();
-
-            // Initialize the output stream
-            log.Debug("Initialize output");
-            if (outputStream == null)
-                outputStream = InitializeOutputStream();
-            else
-                closeOutputStream = false;
 
             // Init data Model
             log.Debug("Init data models");
@@ -391,7 +384,7 @@ namespace Terradue.OpenSearch.Client {
 
                 bool alternativeSuccess = false;
                 try {
-                    Task task = Task.Run(() => alternativeSuccess = ProcessAlternative(altBaseUrlLists[i], altNetCredsLists[i], outputStream, ref isAtomFeedPartial, ref canceled[i]));
+                    Task task = Task.Run(() => alternativeSuccess = ProcessAlternative(altBaseUrlLists[i], altNetCredsLists[i], ref isAtomFeedPartial, ref canceled[i]));
                     if (!task.Wait(TimeSpan.FromMilliseconds(timeout))) {
                         // NOTE: At this point the timeout has been reached, but the task continues in the background.
                         // Using the reference to the canceled[] item the execution of the alternative query can be interrupted
@@ -413,7 +406,7 @@ namespace Terradue.OpenSearch.Client {
 
             }
 
-            if (closeOutputStream) outputStream.Close();
+            
 
             if (isAtomFeedPartial) {
                 throw new PartialAtomException();
@@ -424,7 +417,7 @@ namespace Terradue.OpenSearch.Client {
 
 
 
-        private bool ProcessAlternative(List<Uri> uri, List<NetworkCredential> credential, Stream outputStream, ref bool isAtomFeedPartial, ref bool canceled) {
+        private bool ProcessAlternative(List<Uri> uri, List<NetworkCredential> credential, ref bool isAtomFeedPartial, ref bool canceled) {
             // Find OpenSearch Entity
             IOpenSearchable entity = null;
             int retry = retryAttempts;
@@ -447,6 +440,8 @@ namespace Terradue.OpenSearch.Client {
                 }
             }
 
+
+
             NameValueCollection parameters = PrepareQueryParameters(entity);
             string startIndex = parameters.Get("startIndex");
             if (startIndex != null) {
@@ -462,8 +457,16 @@ namespace Terradue.OpenSearch.Client {
             if (outputStarted) return false;
 
             while (totalResults > 0) {
+				bool closeOutputStream = true;
+				Stream outputStream = null;
                 log.DebugFormat("startIndex: {0}", index);
                 parametersNvc = ResolveParameters(parameters, entity);
+
+				// Initialize the output stream
+                if (outputStream == null)
+                    outputStream = InitializeOutputStream(index);
+                else
+                    closeOutputStream = false;
 
                 retry = retryAttempts;
                 while (retry >= 0) {
@@ -539,6 +542,8 @@ namespace Terradue.OpenSearch.Client {
                 index += count;
 
                 parameters.Set("startIndex", "" + index);
+
+				if (closeOutputStream) outputStream.Close();
             }
 
             return (totalCount > 0); // success
@@ -760,11 +765,18 @@ namespace Terradue.OpenSearch.Client {
         /// Initializes the output stream.
         /// </summary>
         /// <returns>The output stream.</returns>
-        private Stream InitializeOutputStream() {
+        private Stream InitializeOutputStream(int index = 0) {
             if (outputFilePathArg == null) {
                 return Console.OpenStandardOutput();
             } else {
-                return new FileStream(outputFilePathArg, FileMode.Create);
+				string path = outputFilePathArg;
+				if ( path.Contains("%index%") ){
+					path = path.Replace("%index%", index.ToString());
+				} else if (index > 0){
+					path += "-" + index;
+				}
+				log.DebugFormat("output to {0}", path);
+                return new FileStream(path, FileMode.Create);
             }
         }
 
