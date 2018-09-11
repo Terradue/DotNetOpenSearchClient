@@ -150,12 +150,6 @@
     <Reference Include="Terradue.Metadata.EarthObservation">
       <HintPath>..\packages\Terradue.Metadata.EarthObservation.1.5.6\lib\net45\Terradue.Metadata.EarthObservation.dll</HintPath>
     </Reference>
-    <Reference Include="Terradue.OpenSearch.SciHub">
-      <HintPath>..\packages\Terradue.OpenSearch.SciHub.1.6.3\lib\net45\Terradue.OpenSearch.SciHub.dll</HintPath>
-    </Reference>
-    <Reference Include="Terradue.OpenSearch">
-      <HintPath>..\packages\Terradue.OpenSearch.1.15.13\lib\net45\Terradue.OpenSearch.dll</HintPath>
-    </Reference>
     <Reference Include="System.IO">
       <HintPath>..\packages\System.IO.4.3.0\lib\net462\System.IO.dll</HintPath>
     </Reference>
@@ -187,6 +181,12 @@
     </Reference>
     <Reference Include="System.Interactive.Async">
       <HintPath>..\packages\System.Interactive.Async.3.1.1\lib\net45\System.Interactive.Async.dll</HintPath>
+    </Reference>
+    <Reference Include="Terradue.OpenSearch">
+      <HintPath>..\packages\Terradue.OpenSearch.1.15.14\lib\net45\Terradue.OpenSearch.dll</HintPath>
+    </Reference>
+    <Reference Include="Terradue.OpenSearch.SciHub">
+      <HintPath>..\packages\Terradue.OpenSearch.SciHub.1.7.0\lib\net45\Terradue.OpenSearch.SciHub.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
