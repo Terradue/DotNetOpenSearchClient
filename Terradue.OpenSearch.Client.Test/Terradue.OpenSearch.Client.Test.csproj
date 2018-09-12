@@ -89,9 +89,6 @@
     </Reference>
     <Reference Include="System.Xml" />
     <Reference Include="System.Xml.Linq" />
-    <Reference Include="Terradue.GeoJson, Version=1.8.6250.23644, Culture=neutral, PublicKeyToken=null">
-      <HintPath>..\packages\Terradue.GeoJson.1.8.6250\lib\net45\Terradue.GeoJson.dll</HintPath>
-    </Reference>
     <Reference Include="Terradue.OpenSearch.Usgs, Version=1.1.3.14780, Culture=neutral, PublicKeyToken=null">
       <HintPath>..\packages\Terradue.OpenSearch.Usgs.1.1.3\lib\net45\Terradue.OpenSearch.Usgs.dll</HintPath>
     </Reference>
@@ -110,8 +107,11 @@
     <Reference Include="Terradue.ServiceModel.Syndication">
       <HintPath>..\packages\Terradue.ServiceModel.Syndication.1.0.2\lib\net40\Terradue.ServiceModel.Syndication.dll</HintPath>
     </Reference>
+    <Reference Include="Terradue.GeoJson">
+      <HintPath>..\packages\Terradue.GeoJson.1.9.0\lib\net45\Terradue.GeoJson.dll</HintPath>
+    </Reference>
     <Reference Include="Terradue.OpenSearch.SciHub">
-      <HintPath>..\packages\Terradue.OpenSearch.SciHub.1.6.3\lib\net45\Terradue.OpenSearch.SciHub.dll</HintPath>
+      <HintPath>..\packages\Terradue.OpenSearch.SciHub.1.7.1\lib\net45\Terradue.OpenSearch.SciHub.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
