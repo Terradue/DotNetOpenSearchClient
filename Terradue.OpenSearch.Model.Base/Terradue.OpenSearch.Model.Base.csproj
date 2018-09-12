@@ -90,9 +90,6 @@
     <Reference Include="NetTopologySuite.IO.ShapeFile.Extended">
       <HintPath>..\packages\NetTopologySuite.IO.1.14.0.1\lib\net45\NetTopologySuite.IO.ShapeFile.Extended.dll</HintPath>
     </Reference>
-    <Reference Include="Terradue.GeoJson">
-      <HintPath>..\packages\Terradue.GeoJson.1.8.6250\lib\net45\Terradue.GeoJson.dll</HintPath>
-    </Reference>
     <Reference Include="NuGet.Core">
       <HintPath>..\packages\NuGet.Core.2.14.0\lib\net40-Client\NuGet.Core.dll</HintPath>
     </Reference>
@@ -185,8 +182,11 @@
     <Reference Include="Terradue.OpenSearch">
       <HintPath>..\packages\Terradue.OpenSearch.1.15.14\lib\net45\Terradue.OpenSearch.dll</HintPath>
     </Reference>
+    <Reference Include="Terradue.GeoJson">
+      <HintPath>..\packages\Terradue.GeoJson.1.9.0\lib\net45\Terradue.GeoJson.dll</HintPath>
+    </Reference>
     <Reference Include="Terradue.OpenSearch.SciHub">
-      <HintPath>..\packages\Terradue.OpenSearch.SciHub.1.7.0\lib\net45\Terradue.OpenSearch.SciHub.dll</HintPath>
+      <HintPath>..\packages\Terradue.OpenSearch.SciHub.1.7.1\lib\net45\Terradue.OpenSearch.SciHub.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
