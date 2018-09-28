@@ -434,7 +434,7 @@ namespace Terradue.OpenSearch.Client {
                 } catch (Exception e) {
                     log.Warn(e.Message);
                     if (retry == 0)
-                        throw e;
+                        throw;
                     retry--;
                     searchCache.ClearCache(".*", DateTime.Now);
                 }
@@ -500,7 +500,7 @@ namespace Terradue.OpenSearch.Client {
 
                     } catch (Exception e) {
                         if (retry == 0) {
-                            throw e;
+                            throw;
                         }
 
                         log.Warn("Exception " + e.Message);
