@@ -34,7 +34,8 @@ namespace Terradue.OpenSearch.Model.Scihub {
         }
 
         public override IOpenSearchable CreateOpenSearchable(IEnumerable<Uri> baseUrls, string queryFormatArg, OpenSearchEngine ose, IEnumerable<NetworkCredential> netCreds, OpenSearchableFactorySettings settings) {
-
+			if (netCreds == null || netCreds.Count() == 0)
+				throw new InvalidOperationException("Missing credentials for access Scihub service");
             settings.Credentials = netCreds.First();
             DataHubOpenSearchable entity = new DataHubOpenSearchable(baseUrls.First(),settings); 
             if (queryFormatArg == "eop") {
