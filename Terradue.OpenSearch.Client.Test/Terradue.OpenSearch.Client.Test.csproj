@@ -111,7 +111,7 @@
       <HintPath>..\packages\Terradue.GeoJson.1.9.0\lib\net45\Terradue.GeoJson.dll</HintPath>
     </Reference>
     <Reference Include="Terradue.OpenSearch.SciHub">
-      <HintPath>..\packages\Terradue.OpenSearch.SciHub.1.7.2\lib\net45\Terradue.OpenSearch.SciHub.dll</HintPath>
+      <HintPath>..\packages\Terradue.OpenSearch.SciHub.1.7.3\lib\net45\Terradue.OpenSearch.SciHub.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
