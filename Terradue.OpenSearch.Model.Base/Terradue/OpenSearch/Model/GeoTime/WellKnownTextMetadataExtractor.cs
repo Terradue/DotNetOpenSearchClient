@@ -21,6 +21,11 @@ namespace Terradue.OpenSearch.Model.GeoTime {
 
 
         public virtual string GetMetadata(Terradue.OpenSearch.Result.IOpenSearchResultItem item, string specifier) {
+            string wkt = null;
+            if (item is Feature)
+				wkt = WktExtensions.ToWkt((Feature)item);
+			if (!string.IsNullOrEmpty(wkt))
+				return wkt;
 			var geom = item.FindGeometry();
             if (geom == null) {
                 foreach (SyndicationElementExtension ext in item.ElementExtensions.ToArray()) {
