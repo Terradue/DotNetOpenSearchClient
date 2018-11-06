@@ -284,6 +284,7 @@ namespace Terradue.OpenSearch.Client {
 -dec/--disable-enclosure-control   Disables the check for enclosure avaialability when enclosure metadata is queried
 --max-retries <n>                  <n> specifies the number of retries if the action fails
 -v/--verbose                       Makes the operation more talkative
+--exit-on-error                    Exit on any ERROR.
 
 ");
         }
@@ -514,13 +515,20 @@ namespace Terradue.OpenSearch.Client {
                 int count = CountResults(osr);
                 if (totalCount == 0 && count == 0) {
                     LogInfo("No entries found");
+					DeleteFileStream(outputStream);
                     return false;
                 }
 
                 if (canceled) return false;
 
-                // Transform the result
-                OutputResult(osr, outputStream);
+				if (osr.Count > 0) {
+					// Transform the result
+					OutputResult(osr, outputStream);
+				} else {
+					closeOutputStream = false;
+					DeleteFileStream(outputStream);
+				}
+					
 
                 outputStarted = true;
 
@@ -549,9 +557,15 @@ namespace Terradue.OpenSearch.Client {
             return (totalCount > 0); // success
         }
 
+		private void DeleteFileStream(Stream outputStream) {
+			if ( outputStream is FileStream ){
+				outputStream.Close();
+				log.DebugFormat("Delete {0}", (outputStream as FileStream).Name);
+				File.Delete((outputStream as FileStream).Name);
+			}
+		}
 
-
-        private void PrintOpenSearchDescription(string arg) {
+		private void PrintOpenSearchDescription(string arg) {
 
             Match argMatch = argRegex.Match(arg);
             string type = argMatch.Groups[1].Value;
