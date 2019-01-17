@@ -6,7 +6,7 @@ Version:        1.8.21
 Release:        %{_release}
 Summary:        Terradue Opensearch Client
 BuildArch:      noarch
-Source:         Global.asax
+Source:         /usr/bin/opensearch-client
 Requires:       mono-complete
 AutoReqProv:    no
 BuildRequires:  libtool
