@@ -36,6 +36,8 @@ namespace Terradue.OpenSearch.Model.GeoTime
             metadataExtractors.Add("related", new RelatedMetadataExtractor(parameters));
             metadataExtractors.Add("self", new SelfLinkMetadataExtractor(parameters));
             metadataExtractors.Add("link", new LinkMetadataExtractor(parameters));
+            metadataExtractors.Add("cat", new CategoryMetadataExtractor(parameters));
+            metadataExtractors.Add("ext", new ExtensionMetadataExtractor(parameters));
         }
 
         #region IOpenSearchClientDataModelExtension implementation
