@@ -23,11 +23,11 @@ Generic OpenSearch Client giving the ability to retrieve element values from gen
 
 
 %install
-mkdir -p %{buildroot}%{_localstatedir}/usr/lib/opensearch-client
-cp -r %{_sourcedir}/bin %{buildroot}%{_localstatedir}/usr/lib/opensearch-client
-cp %{_sourcedir}/opensearch-client %{_sourcedir}/log4net.config %{buildroot}%{_localstatedir}/usr/bin/
-mkdir -p %{buildroot}%{_localstatedir}/usr/local/lib/ne_110m_land
-cp -r %{_sourcedir}/packages/Terradue.Metadata.EarthObservation.*/content/Resources/ne_110m_land %{buildroot}%{_localstatedir}/usr/local/lib/ne_110m_land
+mkdir -p %{buildroot}/usr/lib/opensearch-client
+cp -r %{_sourcedir}/bin %{buildroot}/usr/lib/opensearch-client
+cp %{_sourcedir}/opensearch-client %{_sourcedir}/log4net.config %{buildroot}/usr/bin/
+mkdir -p %{buildroot}/usr/local/lib/ne_110m_land
+cp -r %{_sourcedir}/packages/Terradue.Metadata.EarthObservation.*/content/Resources/ne_110m_land %{buildroot}/usr/local/lib/ne_110m_land
 
 
 %post
