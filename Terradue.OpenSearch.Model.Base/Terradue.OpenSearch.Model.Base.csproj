@@ -229,6 +229,8 @@
     <Compile Include="Terradue\OpenSearch\Model\EarthObservation\OpenSearchable\Sentinel1Qc\Sentinel1QcOpenSearchable.cs" />
     <Compile Include="Terradue\OpenSearch\Model\EarthObservation\OpenSearchable\Sentinel1Qc\Sentinel1QcOpenSearchRequest.cs" />
     <Compile Include="Terradue\OpenSearch\Model\EarthObservation\CloudCoverMetadataExtractor.cs" />
+    <Compile Include="Terradue\OpenSearch\Model\GeoTime\CategoryMetadataExtractor.cs" />
+    <Compile Include="Terradue\OpenSearch\Model\GeoTime\ExtensionMetadataExtractor.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>

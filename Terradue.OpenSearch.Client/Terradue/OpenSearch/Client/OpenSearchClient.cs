@@ -34,6 +34,7 @@ namespace Terradue.OpenSearch.Client {
         private static Version version = typeof(OpenSearchClient).Assembly.GetName().Version;
         internal static bool verbose;
         internal static bool lax = false;
+        internal static bool adjustIdentifiers = false;
         internal static bool alternative = false;
         internal static bool listEncoding;
         internal static string outputFilePathArg = null;
@@ -204,6 +205,9 @@ namespace Terradue.OpenSearch.Client {
                     case "--lax":
                         lax = true;
                         break;
+                    case "--adjust-identifiers":
+                        adjustIdentifiers = true;
+                        break;
                     case "--alternative":
                         alternative = true;
                         break;
@@ -279,6 +283,7 @@ namespace Terradue.OpenSearch.Client {
 --lax                              Lax query: assigns parameters even if not described by the opensearch server.
 --alternative                      Altenative query: Instead of making a parallel multi search in case of multiple URL,
                                    the client tries the URL until 1 returns results
+--adjust-identifiers               Adjusts entry identifiers to match the title to avoid identifiers that are URLs
 --all-enclosures                   Returns all available enclosures. Implies disable enclosure control
                                    (disable-enclosure-control)
 -dec/--disable-enclosure-control   Disables the check for enclosure avaialability when enclosure metadata is queried
@@ -520,6 +525,8 @@ namespace Terradue.OpenSearch.Client {
                 }
 
                 if (canceled) return false;
+
+                if (adjustIdentifiers) AdjustIdentifiers(osr);
 
 				if (osr.Count > 0) {
 					// Transform the result
@@ -935,6 +942,20 @@ namespace Terradue.OpenSearch.Client {
             dataModel.PrintByItem(metadataPaths, outputStream);
 
             return;
+        }
+
+
+
+        public void AdjustIdentifiers(IOpenSearchResultCollection osr) {
+            Regex badIdentifierRegex = new Regex(@"^(http|ftp)(s)?://");
+            Regex goodIdentifierRegex = new Regex(@".*[A-Za-z]+.*\d{8}.*");
+
+            foreach (IOpenSearchResultItem item in osr.Items) {
+                Console.WriteLine("ITEM: '{0}' '{1}' '{2}'", item.Id, item.Identifier, item.Title.Text);
+                if (badIdentifierRegex.Match(item.Identifier).Success && goodIdentifierRegex.Match(item.Title.Text).Success) {
+                    item.Identifier = item.Title.Text;
+                }
+            }
         }
 
 
