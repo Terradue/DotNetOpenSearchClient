@@ -32,6 +32,8 @@
               <arguments>
                 <argument>restore</argument>
                 <argument>-NonInteractive</argument>
+                <argument>-MSBuildVersion</argument>
+                <argument>14</argument>
               </arguments>
             </configuration>
           </execution>
