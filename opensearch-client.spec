@@ -7,7 +7,7 @@ Release:        %{_release}
 Summary:        Terradue Opensearch Client
 BuildArch:      noarch
 Source:         /usr/bin/opensearch-client
-Requires:       mono-complete
+Requires:       mono
 AutoReqProv:    no
 BuildRequires:  libtool
 
