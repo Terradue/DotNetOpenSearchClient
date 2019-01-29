@@ -35,6 +35,7 @@ namespace Terradue.OpenSearch.Client {
         internal static bool verbose;
         internal static bool lax = false;
         internal static bool adjustIdentifiers = false;
+        internal static bool quotingOutput = false;
         internal static bool alternative = false;
         internal static bool listEncoding;
         internal static string outputFilePathArg = null;
@@ -207,6 +208,10 @@ namespace Terradue.OpenSearch.Client {
                         break;
                     case "--adjust-identifiers":
                         adjustIdentifiers = true;
+                        break;
+                    case "-qo":
+                    case "--quoting-output":
+                        quotingOutput = true;
                         break;
                     case "--alternative":
                         alternative = true;
@@ -939,7 +944,7 @@ namespace Terradue.OpenSearch.Client {
                 return;
             }
 
-            dataModel.PrintByItem(metadataPaths, outputStream);
+            dataModel.PrintByItem(metadataPaths, outputStream, quotingOutput);
 
             return;
         }
