@@ -2,7 +2,7 @@ Name:           opensearch-client
 Url:            https://github.com/Terradue/DotNetOpenSearchClient
 License:        AGPLv3
 Group:          Productivity/Networking/Web/Servers
-Version:        1.8.22
+Version:        1.8.23
 Release:        %{_release}
 Summary:        Terradue Opensearch Client
 BuildArch:      noarch
