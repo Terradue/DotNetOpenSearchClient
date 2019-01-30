@@ -113,7 +113,7 @@ namespace Terradue.OpenSearch.Model {
                 var metadata = modelExtension.GetMetadataForItem(metadataPaths, item);
 
                 for (int i = 0; i < metadata.Count; i++) {
-                    if (metadata[i].Contains(",")) {
+                    if (!string.IsNullOrEmpty(metadata[i]) && metadata[i].Contains(",")) {
                         toQuote[i] |= true;
                     }
                 }
