@@ -2,12 +2,12 @@ Name:           opensearch-client
 Url:            https://github.com/Terradue/DotNetOpenSearchClient
 License:        AGPLv3
 Group:          Productivity/Networking/Web/Servers
-Version:        1.8.21
+Version:        1.8.23
 Release:        %{_release}
 Summary:        Terradue Opensearch Client
 BuildArch:      noarch
 Source:         /usr/bin/opensearch-client
-Requires:       mono-complete
+Requires:       mono
 AutoReqProv:    no
 BuildRequires:  libtool
 
@@ -24,7 +24,7 @@ Generic OpenSearch Client giving the ability to retrieve element values from gen
 
 %install
 mkdir -p %{buildroot}/usr/lib/opensearch-client
-cp -r %{_sourcedir}/bin %{buildroot}/usr/lib/opensearch-client
+cp -r %{_sourcedir}/bin/* %{buildroot}/usr/lib/opensearch-client
 mkdir -p %{buildroot}/usr/bin/
 cp %{_sourcedir}/opensearch-client %{buildroot}/usr/bin/
 mkdir -p %{buildroot}/usr/local/lib/

@@ -7,18 +7,19 @@ using Terradue.OpenSearch.Engine;
 using System.Net;
 using log4net;
 using System.Reflection;
+using System.Linq;
 
 namespace Terradue.OpenSearch.Model {
     public class DataModel {
-        
+
         IOpenSearchClientDataModelExtension modelExtension;
 
         private static readonly ILog log = LogManager.GetLogger(typeof(DataModel));
 
-        
+
         private DataModel(IOpenSearchClientDataModelExtension modelExtension) {
             this.modelExtension = modelExtension;
-            
+
         }
 
 
@@ -45,24 +46,17 @@ namespace Terradue.OpenSearch.Model {
             foreach (string dll in Directory.GetFiles(dirpath, "*.dll"))
                 allAssemblies.Add(Assembly.LoadFile(dll));
 
-            foreach (var assembly in allAssemblies)
-            {
-                foreach (var cl in assembly.GetTypes())
-                {
+            foreach (var assembly in allAssemblies) {
+                foreach (var cl in assembly.GetTypes()) {
                     var dnAttributes = cl.GetCustomAttributes(typeof(OpenSearchClientExtensionAttribute), true);
-                    foreach (OpenSearchClientExtensionAttribute dnAttribute in dnAttributes)
-                    {
+                    foreach (OpenSearchClientExtensionAttribute dnAttribute in dnAttributes) {
                         log.Debug(String.Format("Found {0} [{1}] in class {2}", dnAttribute.NodeName, dnAttribute.Description, cl.Name));
-                        try
-                        {
+                        try {
                             IOpenSearchClientDataModelExtension modelExtension = (IOpenSearchClientDataModelExtension)Activator.CreateInstance(cl);
-                            if (modelExtension.Name == name)
-                            {
+                            if (modelExtension.Name == name) {
                                 return modelExtension;
                             }
-                        }
-                        catch (Exception e)
-                        {
+                        } catch (Exception e) {
                             log.Warn(string.Format("Impossible to load {0} : {1}. Skipping extension", cl.FullName, e.Message));
                         }
                     }
@@ -107,13 +101,33 @@ namespace Terradue.OpenSearch.Model {
 
         }
 
-        public void PrintByItem(List<string> metadataPaths, System.IO.Stream outputStream) {
+        public void PrintByItem(List<string> metadataPaths, System.IO.Stream outputStream, bool quoting=false) {
 
             StreamWriter sw = new StreamWriter(outputStream);
 
-            foreach ( var item in modelExtension.GetCollection().Items ){
-                
+            List<List<String>> metadatas = new List<List<string>>();
+            bool[] toQuote = new bool[metadataPaths.Count()];
+
+            foreach (var item in modelExtension.GetCollection().Items) {
+
                 var metadata = modelExtension.GetMetadataForItem(metadataPaths, item);
+
+                for (int i = 0; i < metadata.Count; i++) {
+                    if (!string.IsNullOrEmpty(metadata[i]) && metadata[i].Contains(",")) {
+                        toQuote[i] |= true;
+                    }
+                }
+
+                metadatas.Add(metadata);
+
+            }
+
+            foreach (var metadata in metadatas) {
+
+                for (int i = 0; i < metadata.Count; i++) {
+                    if(toQuote[i] && quoting)
+                        metadata[i] = '"' + metadata[i].Replace('"', '\"') + '"';
+                }
 
                 sw.Write(string.Join(",", metadata));
 
@@ -130,11 +144,11 @@ namespace Terradue.OpenSearch.Model {
             modelExtension.ApplyParameters();
         }
 
-        public void SetQueryParameters(NameValueCollection nvc){
+        public void SetQueryParameters(NameValueCollection nvc) {
             modelExtension.SetQueryParameters(nvc);
         }
 
-        public IOpenSearchable CreateOpenSearchable(IEnumerable<Uri> baseUrls, string queryFormatArg, OpenSearchEngine ose, IEnumerable<NetworkCredential> netCreds, OpenSearchableFactorySettings settings){
+        public IOpenSearchable CreateOpenSearchable(IEnumerable<Uri> baseUrls, string queryFormatArg, OpenSearchEngine ose, IEnumerable<NetworkCredential> netCreds, OpenSearchableFactorySettings settings) {
             return modelExtension.CreateOpenSearchable(baseUrls, queryFormatArg, ose, netCreds, settings);
         }
     }
