@@ -875,7 +875,7 @@ namespace Terradue.OpenSearch.Client {
                 // if martch is successful
                 if (matchParamDef.Success) {
                     // TODO filter and convert query param
-                    if (matchParamDef.Groups[1].Value == "count") {
+                    if (matchParamDef.Groups[1].Value == "count" || matchParamDef.Groups[1].Value == "{http://a9.com/-/spec/opensearch/1.1/}count") {
                         if (matchParamDef.Groups[2].Value == "unlimited") {
                             nvc.Add(matchParamDef.Groups[1].Value, pagination.ToString());
                             totalResults = int.MaxValue;

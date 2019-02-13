@@ -133,7 +133,7 @@ namespace Terradue.OpenSearch.Model.EarthObservation.OpenSearchable
             UriBuilder urlb = new UriBuilder(qcBaseUrl);
             urlb.Path += "/description";
 
-            OpenSearchDescriptionUrl url = new OpenSearchDescriptionUrl("application/opensearchdescription+xml", urlb.ToString(), "self");
+            OpenSearchDescriptionUrl url = new OpenSearchDescriptionUrl("application/opensearchdescription+xml", urlb.ToString(), "self", osd.ExtraNamespace);
             urls.Add(url);
 
             urlb = new UriBuilder(qcBaseUrl);
@@ -142,7 +142,7 @@ namespace Terradue.OpenSearch.Model.EarthObservation.OpenSearchable
 
             string[] queryString = Array.ConvertAll(query.AllKeys, key => string.Format("{0}={1}", key, query[key]));
             urlb.Query = string.Join("&", queryString);
-            url = new OpenSearchDescriptionUrl("application/atom+xml", urlb.ToString(), "search");
+            url = new OpenSearchDescriptionUrl("application/atom+xml", urlb.ToString(), "search", osd.ExtraNamespace);
             url.IndexOffset = 0;
             urls.Add(url);
 
