@@ -60,9 +60,6 @@ namespace Terradue.OpenSearch.Model.EarthObservation.OpenSearchable
         public override IOpenSearchResponse GetResponse()
         {
 
-            Stopwatch sw = new Stopwatch();
-            sw.Start();
-
             AtomFeed feed = new AtomFeed();
 
             int count = string.IsNullOrEmpty(parameters["count"]) ? 20 : int.Parse(parameters["count"]);
@@ -151,13 +148,11 @@ namespace Terradue.OpenSearch.Model.EarthObservation.OpenSearchable
 
             feed.Items = items;
 
-            sw.Stop();
-
            if (partialAtom) {
-                return new PartialAtomSearchResponse(feed, sw.Elapsed);
+                return new PartialAtomSearchResponse(feed);
            }
             
-           return new Terradue.OpenSearch.Response.AtomOpenSearchResponse(feed, sw.Elapsed);
+           return new Terradue.OpenSearch.Response.AtomOpenSearchResponse(feed);
         }
 
         IEnumerable<AtomItem> BuildAtomItem(IEnumerable<KeyValuePair<string, Uri>> products, bool withOrbits)
