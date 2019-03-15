@@ -21,6 +21,7 @@ using System.Threading.Tasks;
 using log4net.Config;
 using Terradue.OpenSearch.Model.CustomExceptions;
 using Terradue.OpenSearch.Schema;
+using Terradue.OpenSearch.Benchmarking;
 
 namespace Terradue.OpenSearch.Client {
 
@@ -41,6 +42,7 @@ namespace Terradue.OpenSearch.Client {
         internal static string outputFilePathArg = null;
         internal static string descriptionArg = null;
         internal static string queryFormatArg = null;
+        internal static string metricsType = null;
         internal static string queryModelArg = "GeoTime";
         internal static List<string> baseUrlArg = null;
         internal static int retryAttempts = 5;
@@ -113,9 +115,6 @@ namespace Terradue.OpenSearch.Client {
                 return;
             }
         }
-
-
-
 
         internal static bool GetArgs(string[] args) {
             if (args.Length == 0)
@@ -235,6 +234,20 @@ namespace Terradue.OpenSearch.Client {
                         } else
                             return false;
                         break;
+                    case "--metrics":
+                    case "-me":
+                        if (argpos < args.Length - 1) {
+                            metricsType = args[++argpos];
+                            switch (metricsType) {
+                                case "basic":
+                                    break;
+                                default:
+                                    log.ErrorFormat("{0} is not a valid type for metrics", metricsType);
+                                    return false;
+                            }
+                        } else
+                            return false;
+                        break;
                     default:
                         if (Regex.Match(args[argpos], "^-").Success) {
                             throw new ArgumentException(String.Format("Invalid URL or option: {0}", args[argpos]));
@@ -295,6 +308,7 @@ namespace Terradue.OpenSearch.Client {
                                    (disable-enclosure-control)
 -dec/--disable-enclosure-control   Disables the check for enclosure avaialability when enclosure metadata is queried
 --max-retries <n>                  <n> specifies the number of retries if the action fails
+--metrics/-me <metrics_type>       <metrics_type> specifies the type  metrics to extract and write (e.g. basic)
 -v/--verbose                       Makes the operation more talkative
 --exit-on-error                    Exit on any ERROR.
 
@@ -440,6 +454,8 @@ namespace Terradue.OpenSearch.Client {
                 try {
                     OpenSearchableFactorySettings settings = new OpenSearchableFactorySettings(ose);
                     settings.MaxRetries = retryAttempts;
+                    if (!string.IsNullOrEmpty(metricsType))
+                        settings.ReportMetrics = true;
                     entity = dataModel.CreateOpenSearchable(uri, queryFormatArg, ose, credential, settings);
                     index = entity.GetOpenSearchDescription().DefaultUrl.IndexOffset;
                     log.Debug("IndexOffset : " + index);
@@ -453,7 +469,8 @@ namespace Terradue.OpenSearch.Client {
                 }
             }
 
-
+            if (!string.IsNullOrEmpty(metricsType))
+                EnableBenchmarking();
 
             NameValueCollection parameters = PrepareQueryParameters(entity);
             string startIndex = parameters.Get("startIndex");
@@ -533,7 +550,8 @@ namespace Terradue.OpenSearch.Client {
 
                 if (canceled) return false;
 
-                if (adjustIdentifiers) AdjustIdentifiers(osr);
+                if (adjustIdentifiers) AdjustIdentifiers(osr, outputStream);
+
 
 				if (osr.Count > 0) {
 					// Transform the result
@@ -542,7 +560,6 @@ namespace Terradue.OpenSearch.Client {
 					closeOutputStream = false;
 					DeleteFileStream(outputStream);
 				}
-					
 
                 outputStarted = true;
 
@@ -565,13 +582,43 @@ namespace Terradue.OpenSearch.Client {
 
                 parameters.Set("startIndex", "" + index);
 
+                if (!string.IsNullOrEmpty(metricsType))
+                    WriteMetrics(osr);
+
 				if (closeOutputStream) outputStream.Close();
             }
 
             return (totalCount > 0); // success
         }
 
-		private void DeleteFileStream(Stream outputStream) {
+        private void EnableBenchmarking() {
+            ose.RegisterPostSearchFilter(MetricFactory.GenerateBasicMetrics);
+        }
+
+        private void WriteMetrics(IOpenSearchResultCollection osr) {
+            log.Debug("Writing benchmark");
+
+            var metricsArray = osr.ElementExtensions.ReadElementExtensions<Metrics>("Metrics", "http://www.terradue.com/metrics", MetricFactory.Serializer);
+            if (metricsArray == null || metricsArray.Count == 0) {
+                log.Warn("No metrics found");
+                return;
+            }
+
+            var metrics = metricsArray.First();
+
+            using (var fs = new FileStream(string.Format("opensearch-client_metrics_{0}_{1}.txt", metricsType, DateTime.UtcNow.ToString("O")), FileMode.Create, FileAccess.Write)) {
+                using (var fw = new StreamWriter(fs)) {
+                    foreach (var metric in metrics.Metric) {
+                        fw.WriteLine("{0};{1};{2};{3}", metric.Identifier, metric.Value, metric.Uom, metric.Description);
+                    }
+                    fw.Close();
+                }
+            }
+
+
+        }
+
+        private void DeleteFileStream(Stream outputStream) {
 			if ( outputStream is FileStream ){
 				outputStream.Close();
 				log.DebugFormat("Delete {0}", (outputStream as FileStream).Name);
@@ -1009,12 +1056,12 @@ namespace Terradue.OpenSearch.Client {
 
 
 
-        public void AdjustIdentifiers(IOpenSearchResultCollection osr) {
+        public void AdjustIdentifiers(IOpenSearchResultCollection osr, Stream outputStream) {
             Regex badIdentifierRegex = new Regex(@"^(http|ftp)(s)?://");
             Regex goodIdentifierRegex = new Regex(@".*[A-Za-z]+.*\d{8}.*");
-
+            StreamWriter sw = new StreamWriter(outputStream);
             foreach (IOpenSearchResultItem item in osr.Items) {
-                Console.WriteLine("ITEM: '{0}' '{1}' '{2}'", item.Id, item.Identifier, item.Title.Text);
+                sw.WriteLine("ITEM: '{0}' '{1}' '{2}'", item.Id, item.Identifier, item.Title.Text);
                 if (badIdentifierRegex.Match(item.Identifier).Success && goodIdentifierRegex.Match(item.Title.Text).Success) {
                     item.Identifier = item.Title.Text;
                 }
