@@ -1,26 +1,26 @@
 using System;
 using System.Collections.Generic;
-using System.IO;
-using System.Text.RegularExpressions;
-using System.Xml;
-using System.Linq;
 using System.Collections.Specialized;
-using Terradue.ServiceModel.Syndication;
-using log4net;
-using log4net.Repository.Hierarchy;
-using log4net.Layout;
-using log4net.Core;
-using log4net.Appender;
-using Terradue.OpenSearch.Engine;
-using Terradue.OpenSearch.Result;
+using System.IO;
+using System.Linq;
 using System.Net;
-using Terradue.OpenSearch.Filters;
-using Terradue.OpenSearch.Model;
+using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Xml;
+using log4net;
+using log4net.Appender;
 using log4net.Config;
+using log4net.Core;
+using log4net.Layout;
+using log4net.Repository.Hierarchy;
+using Terradue.OpenSearch.Engine;
+using Terradue.OpenSearch.Filters;
+using Terradue.OpenSearch.Model;
 using Terradue.OpenSearch.Model.CustomExceptions;
+using Terradue.OpenSearch.Result;
 using Terradue.OpenSearch.Schema;
+using Terradue.ServiceModel.Syndication;
 
 namespace Terradue.OpenSearch.Client {
 
@@ -452,7 +452,6 @@ namespace Terradue.OpenSearch.Client {
                     searchCache.ClearCache(".*", DateTime.Now);
                 }
             }
-
 
 
             NameValueCollection parameters = PrepareQueryParameters(entity);
