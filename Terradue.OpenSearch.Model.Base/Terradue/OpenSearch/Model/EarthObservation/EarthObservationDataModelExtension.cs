@@ -42,6 +42,7 @@ namespace Terradue.OpenSearch.Model.EarthObservation {
             metadataExtractors.Add("processingLevel", new ProcessingLevelMetadataExtractor());
             metadataExtractors.Add("id", new IdMetadataExtractor());
 			metadataExtractors.Add("cc", new CloudCoverMetadataExtractor());
+            metadataExtractors.Add("sensorResolution", new SensorResolutionMetadataExtractor());
         }
 
         public override string Name {
@@ -102,9 +103,10 @@ namespace Terradue.OpenSearch.Model.EarthObservation {
                 e = OpenSearchFactory.FindOpenSearchable(settings, url, ext.DiscoveryContentType);
                 if (!e.DefaultMimeType.Contains("profile=http://earth.esa.int/eop")) {
                     try {
-                        e = OpenSearchFactory.FindOpenSearchable(settings, url, "application/atom+xml; profile=http://earth.esa.int/eop/2.1");
-                    } catch (InvalidOperationException){
-                        e = OpenSearchFactory.FindOpenSearchable(settings, url, "application/atom+xml");
+                        var ef = OpenSearchFactory.FindOpenSearchable(settings, url, "application/atom+xml; profile=http://earth.esa.int/eop/2.1");
+                        e = ef;
+                    } catch (EntryPointNotFoundException){
+                        log.WarnFormat("No URL template found for EOP profile. Looking later in entries' links");
                     }
                     if (!e.DefaultMimeType.Contains("xml"))
                         throw new InvalidOperationException("No Url in the OpenSearch Description Document that could fit the EOP data model");

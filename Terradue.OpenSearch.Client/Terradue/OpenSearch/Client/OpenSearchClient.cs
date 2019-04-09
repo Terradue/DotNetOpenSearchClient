@@ -1,34 +1,35 @@
 using System;
 using System.Collections.Generic;
-using System.IO;
-using System.Text.RegularExpressions;
-using System.Xml;
-using System.Linq;
 using System.Collections.Specialized;
-using Terradue.ServiceModel.Syndication;
-using log4net;
-using log4net.Repository.Hierarchy;
-using log4net.Layout;
-using log4net.Core;
-using log4net.Appender;
-using Terradue.OpenSearch.Engine;
-using Terradue.OpenSearch.Result;
+using System.IO;
+using System.Linq;
 using System.Net;
-using Terradue.OpenSearch.Filters;
-using Terradue.OpenSearch.Model;
+using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Xml;
+using log4net;
+using log4net.Appender;
 using log4net.Config;
+using log4net.Core;
+using log4net.Layout;
+using log4net.Repository.Hierarchy;
+using Terradue.OpenSearch.Engine;
+using Terradue.OpenSearch.Filters;
+using Terradue.OpenSearch.Model;
 using Terradue.OpenSearch.Model.CustomExceptions;
+using Terradue.OpenSearch.Result;
 using Terradue.OpenSearch.Schema;
+using Terradue.ServiceModel.Syndication;
+using Terradue.OpenSearch.Benchmarking;
 
 namespace Terradue.OpenSearch.Client {
 
 
 
-
-
     public class OpenSearchClient {
+
+        public const string XMLNS_OPENSEARCH_1_1 = "http://a9.com/-/spec/opensearch/1.1/";
 
         private static ILog log = LogManager.GetLogger(typeof(OpenSearchClient));
         private static Version version = typeof(OpenSearchClient).Assembly.GetName().Version;
@@ -41,6 +42,7 @@ namespace Terradue.OpenSearch.Client {
         internal static string outputFilePathArg = null;
         internal static string descriptionArg = null;
         internal static string queryFormatArg = null;
+        internal static string metricsType = null;
         internal static string queryModelArg = "GeoTime";
         internal static List<string> baseUrlArg = null;
         internal static int retryAttempts = 5;
@@ -61,10 +63,12 @@ namespace Terradue.OpenSearch.Client {
 
 
         private static Regex argRegex = new Regex(@"^([^\.]+)(\.(.+))?$");
-        private static Regex paramRegex = new Regex(@"([^&=]+?)=\{(.+?)(\?)?\}");
+        private static Regex paramRegex = new Regex(@"([^&=]+?)=\{((([^:\}]+):)?([^\}]+?))(\?)?\}");
 
         private static Dictionary<string, string> urlTypes;
         private static Dictionary<string, string> urlParameterLabels;
+        private static Dictionary<string, string> osdNamespaces;
+
 
 
 
@@ -111,9 +115,6 @@ namespace Terradue.OpenSearch.Client {
                 return;
             }
         }
-
-
-
 
         internal static bool GetArgs(string[] args) {
             if (args.Length == 0)
@@ -233,6 +234,20 @@ namespace Terradue.OpenSearch.Client {
                         } else
                             return false;
                         break;
+                    case "--metrics":
+                    case "-me":
+                        if (argpos < args.Length - 1) {
+                            metricsType = args[++argpos];
+                            switch (metricsType) {
+                                case "basic":
+                                    break;
+                                default:
+                                    log.ErrorFormat("{0} is not a valid type for metrics", metricsType);
+                                    return false;
+                            }
+                        } else
+                            return false;
+                        break;
                     default:
                         if (Regex.Match(args[argpos], "^-").Success) {
                             throw new ArgumentException(String.Format("Invalid URL or option: {0}", args[argpos]));
@@ -293,6 +308,7 @@ namespace Terradue.OpenSearch.Client {
                                    (disable-enclosure-control)
 -dec/--disable-enclosure-control   Disables the check for enclosure avaialability when enclosure metadata is queried
 --max-retries <n>                  <n> specifies the number of retries if the action fails
+--metrics/-me <metrics_type>       <metrics_type> specifies the type  metrics to extract and write (e.g. basic)
 -v/--verbose                       Makes the operation more talkative
 --exit-on-error                    Exit on any ERROR.
 
@@ -438,6 +454,8 @@ namespace Terradue.OpenSearch.Client {
                 try {
                     OpenSearchableFactorySettings settings = new OpenSearchableFactorySettings(ose);
                     settings.MaxRetries = retryAttempts;
+                    if (!string.IsNullOrEmpty(metricsType))
+                        settings.ReportMetrics = true;
                     entity = dataModel.CreateOpenSearchable(uri, queryFormatArg, ose, credential, settings);
                     index = entity.GetOpenSearchDescription().DefaultUrl.IndexOffset;
                     log.Debug("IndexOffset : " + index);
@@ -451,7 +469,8 @@ namespace Terradue.OpenSearch.Client {
                 }
             }
 
-
+            if (!string.IsNullOrEmpty(metricsType))
+                EnableBenchmarking();
 
             NameValueCollection parameters = PrepareQueryParameters(entity);
             string startIndex = parameters.Get("startIndex");
@@ -531,7 +550,8 @@ namespace Terradue.OpenSearch.Client {
 
                 if (canceled) return false;
 
-                if (adjustIdentifiers) AdjustIdentifiers(osr);
+                if (adjustIdentifiers) AdjustIdentifiers(osr, outputStream);
+
 
 				if (osr.Count > 0) {
 					// Transform the result
@@ -540,7 +560,6 @@ namespace Terradue.OpenSearch.Client {
 					closeOutputStream = false;
 					DeleteFileStream(outputStream);
 				}
-					
 
                 outputStarted = true;
 
@@ -563,13 +582,43 @@ namespace Terradue.OpenSearch.Client {
 
                 parameters.Set("startIndex", "" + index);
 
+                if (!string.IsNullOrEmpty(metricsType))
+                    WriteMetrics(osr);
+
 				if (closeOutputStream) outputStream.Close();
             }
 
             return (totalCount > 0); // success
         }
 
-		private void DeleteFileStream(Stream outputStream) {
+        private void EnableBenchmarking() {
+            ose.RegisterPostSearchFilter(MetricFactory.GenerateBasicMetrics);
+        }
+
+        private void WriteMetrics(IOpenSearchResultCollection osr) {
+            log.Debug("Writing benchmark");
+
+            var metricsArray = osr.ElementExtensions.ReadElementExtensions<Metrics>("Metrics", "http://www.terradue.com/metrics", MetricFactory.Serializer);
+            if (metricsArray == null || metricsArray.Count == 0) {
+                log.Warn("No metrics found");
+                return;
+            }
+
+            var metrics = metricsArray.First();
+
+            using (var fs = new FileStream(string.Format("opensearch-client_metrics_{0}_{1}.txt", metricsType, DateTime.UtcNow.ToString("O")), FileMode.Create, FileAccess.Write)) {
+                using (var fw = new StreamWriter(fs)) {
+                    foreach (var metric in metrics.Metric) {
+                        fw.WriteLine("{0};{1};{2};{3}", metric.Identifier, metric.Value, metric.Uom, metric.Description);
+                    }
+                    fw.Close();
+                }
+            }
+
+
+        }
+
+        private void DeleteFileStream(Stream outputStream) {
 			if ( outputStream is FileStream ){
 				outputStream.Close();
 				log.DebugFormat("Delete {0}", (outputStream as FileStream).Name);
@@ -599,8 +648,9 @@ namespace Terradue.OpenSearch.Client {
 
                     if (type == "types") {
                         sw.WriteLine("Formats");
+                        sw.WriteLine("=======");
                         sw.WriteLine("{0,-10}{1,-10}{2,-60}", "Format", "Supported", "MIME type");
-                        sw.WriteLine("{0,-10}{1,-10}{2,-60}", "======", "=========", "=========");
+                        sw.WriteLine("{0,-10}{1,-10}{2,-60}", "------", "---------", "---------");
 
                         foreach (OpenSearchDescriptionUrl url in osd.Url) {
                             if (url.Relation == "self") continue;
@@ -623,6 +673,8 @@ namespace Terradue.OpenSearch.Client {
                             string urlShortType = GetUrlShortType(url.Type);
                             if (type != "full" && type != urlShortType) continue;
 
+                            // ---- only for full view or if dealing with the correct type: ----
+
                             typeFound = true;
 
                             bool isFormat = false;
@@ -643,16 +695,22 @@ namespace Terradue.OpenSearch.Client {
 
                             if (paramName == null) {
                                 sw.WriteLine("Parameters");
-                                sw.WriteLine("{0,-22}{1,-40} M O R P S (mandatory, options, range, pattern, step)", "Name", "Description/title");
-                                sw.WriteLine("{0,-22}{1,-40} ---------", "----", "-----------------");
+                                sw.WriteLine("==========");
+                                sw.Write("{0,-22}{1,-40}", "Parameter name", "Description/title");
+                                if (type != "full") sw.Write(" M O R P S (mandatory, options, range, pattern, step)");
+                                sw.WriteLine();
+                                sw.Write("{0,-22}{1,-40}", "--------------", "-----------------");
+                                if (type != "full") sw.Write(" ---------");
+                                sw.WriteLine();
                             }
 
                             MatchCollection paramMatches = paramRegex.Matches(queryString);
                             foreach (Match paramMatch in paramMatches) {
                                 string name = paramMatch.Groups[1].Value;
                                 string identifier = paramMatch.Groups[2].Value;
-                                bool mandatory = !paramMatch.Groups[3].Success;
+                                bool mandatory = !paramMatch.Groups[6].Success;
                                 string title = GetParameterDescription(identifier);
+                                string qualifiedName = GetParameterQualifiedName(osd, paramMatch.Groups[4].Value, paramMatch.Groups[5].Value);
                                 bool options = false;
                                 bool range = false;
                                 bool pattern = false;
@@ -673,25 +731,36 @@ namespace Terradue.OpenSearch.Client {
                                     step = param.Step != null;
                                 }
 
+                                // ---- only for table view (no parameter specified): ----
+
                                 if (paramName == null) {
-                                    if (title != null && title.Length > 40) title = String.Format("{0}...", title.Substring(0, 37));
-                                    sw.WriteLine("- {0,-20}{1,-40} {2,-2}{3,-2}{4,-2}{5,-2}{6,-2}",
+                                    if (type != "full" && title != null && title.Length > 40) title = String.Format("{0}...", title.Substring(0, 37));
+                                    sw.Write("- {0,-20}{1,-40}",
                                         name,
-                                        title,
-                                        mandatory ? "M" : "-",
-                                        options ? "O" : "-",
-                                        range ? "R" : "-",
-                                        pattern ? "P" : "-",
-                                        step ? "S" : "-"
+                                        title
                                     );
+                                    if (type != "full") {
+                                        sw.Write(" {0,-2}{1,-2}{2,-2}{3,-2}{4,-2}",
+                                            mandatory ? "M" : "-",
+                                            options ? "O" : "-",
+                                            range ? "R" : "-",
+                                            pattern ? "P" : "-",
+                                            step ? "S" : "-"
+                                        );
+                                        
+                                    }
+                                    sw.WriteLine();
                                 }
 
                                 if (type != "full" && paramName != name) continue;
+
+                                // ---- only for "full" display of a single parameter: ----
 
                                 paramFound = true;
                                 if (paramName != null) {
                                     sw.WriteLine("- Parameter: {0}", name);
                                     sw.WriteLine("    Description/title: {0}", title);
+                                    sw.WriteLine("    Qualified name:    {0}", qualifiedName);
                                 }
                                 if (options) {
                                     sw.WriteLine("    Options:");
@@ -718,6 +787,42 @@ namespace Terradue.OpenSearch.Client {
 
                             //sw.WriteLine("URL {0} {1} {2}", url.Type, url.Relation, url.Template);
                         }
+
+
+                        // Display fully qualified names
+
+                        if (type != null && paramName == null) {
+                            foreach (OpenSearchDescriptionUrl url in osd.Url) {
+                                if (url.Relation == "self") continue;
+
+                                int qmPos = url.Template.IndexOf('?');
+                                if (qmPos == -1) continue;
+
+                                string queryString = url.Template.Substring(qmPos + 1);
+
+                                string urlShortType = GetUrlShortType(url.Type);
+                                if (type != urlShortType) continue;
+
+                                sw.WriteLine("Qualified names of parameters");
+                                sw.WriteLine("=============================");
+                                sw.WriteLine("{0,-22}{1}", "Parameter name", "Qualified name");
+                                sw.WriteLine("{0,-22}{1}", "--------------", "--------------");
+
+                                MatchCollection paramMatches = paramRegex.Matches(queryString);
+                                foreach (Match paramMatch in paramMatches) {
+                                    string name = paramMatch.Groups[1].Value;
+                                    string namespaceUri = GetParameterQualifiedName(osd, paramMatch.Groups[4].Value, paramMatch.Groups[5].Value);
+
+                                    sw.WriteLine("- {0,-20}{1}", name, namespaceUri);
+
+                                }
+
+                            }
+                            sw.WriteLine();
+
+                        }
+
+
                     }
                     sw.Close();
                 }
@@ -817,7 +922,7 @@ namespace Terradue.OpenSearch.Client {
                 // if martch is successful
                 if (matchParamDef.Success) {
                     // TODO filter and convert query param
-                    if (matchParamDef.Groups[1].Value == "count") {
+                    if (matchParamDef.Groups[1].Value == "count" || matchParamDef.Groups[1].Value == "{http://a9.com/-/spec/opensearch/1.1/}count") {
                         if (matchParamDef.Groups[2].Value == "unlimited") {
                             nvc.Add(matchParamDef.Groups[1].Value, pagination.ToString());
                             totalResults = int.MaxValue;
@@ -951,12 +1056,12 @@ namespace Terradue.OpenSearch.Client {
 
 
 
-        public void AdjustIdentifiers(IOpenSearchResultCollection osr) {
+        public void AdjustIdentifiers(IOpenSearchResultCollection osr, Stream outputStream) {
             Regex badIdentifierRegex = new Regex(@"^(http|ftp)(s)?://");
             Regex goodIdentifierRegex = new Regex(@".*[A-Za-z]+.*\d{8}.*");
-
+            StreamWriter sw = new StreamWriter(outputStream);
             foreach (IOpenSearchResultItem item in osr.Items) {
-                Console.WriteLine("ITEM: '{0}' '{1}' '{2}'", item.Id, item.Identifier, item.Title.Text);
+                sw.WriteLine("ITEM: '{0}' '{1}' '{2}'", item.Id, item.Identifier, item.Title.Text);
                 if (badIdentifierRegex.Match(item.Identifier).Success && goodIdentifierRegex.Match(item.Title.Text).Success) {
                     item.Identifier = item.Title.Text;
                 }
@@ -1021,6 +1126,23 @@ namespace Terradue.OpenSearch.Client {
             if (urlParameterLabels.ContainsKey(identifier)) return urlParameterLabels[identifier];
 
             return identifier;
+        }
+
+        public static string GetParameterQualifiedName(OpenSearchDescription osd, string namespacePrefix, string localName) {
+            if (osdNamespaces == null) {
+                XmlQualifiedName[] ns = osd.ExtraNamespace.ToArray();
+                osdNamespaces = new Dictionary<string, string>();
+                foreach (XmlQualifiedName qn in ns) osdNamespaces[qn.Name] = qn.Namespace;
+            }
+
+            string s = String.Empty;
+
+            string namespaceUri = null;
+            if (osdNamespaces.ContainsKey(namespacePrefix)) namespaceUri = osdNamespaces[namespacePrefix];
+            else if (String.IsNullOrEmpty(namespacePrefix)) namespaceUri = XMLNS_OPENSEARCH_1_1 + " XXXX ";
+
+            if (namespaceUri == null) return String.Format("{0}:{1} (namespae URI not retrievable)", namespacePrefix, localName);
+            return String.Format("{{{0}}}{1}", namespaceUri, localName);
         }
 
 

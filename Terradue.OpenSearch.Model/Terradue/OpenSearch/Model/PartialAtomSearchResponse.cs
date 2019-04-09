@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using Terradue.OpenSearch.Benchmarking;
 using Terradue.OpenSearch.Response;
 using Terradue.OpenSearch.Result;
 
@@ -12,7 +14,7 @@ namespace Terradue.OpenSearch.Model {
 
         public IOpenSearchResultCollection PartialOpenSearchResultCollection { get; set; }
 
-        public PartialAtomSearchResponse(AtomFeed result, TimeSpan timeSpan, IOpenSearchResultCollection partialOpenSearchResultCollection = null) : base(result, timeSpan) {
+        public PartialAtomSearchResponse(AtomFeed result, IOpenSearchResultCollection partialOpenSearchResultCollection = null) : base(result) {
             if (partialOpenSearchResultCollection != null) {
                 PartialOpenSearchResultCollection = partialOpenSearchResultCollection;
             }
