@@ -58,6 +58,7 @@ namespace Terradue.OpenSearch.Client {
         internal static List<string> dataModelParameterArgs = new List<string>();
 
         private OpenSearchEngine ose;
+        OpenSearchableFactorySettings settings;
         private int totalResults;
         private NameValueCollection dataModelParameters;
         private DataModel dataModel;
@@ -69,10 +70,6 @@ namespace Terradue.OpenSearch.Client {
 
         private static Dictionary<string, string> urlTypes;
         private static Dictionary<string, string> urlParameterLabels;
-        private static Dictionary<string, string> osdNamespaces;
-
-
-
 
         public static void Main(string[] args) {
             if (!GetArgs(args)) {
@@ -331,13 +328,53 @@ namespace Terradue.OpenSearch.Client {
 
             log.Debug("Load OpenSearch Engine.");
             ose = new OpenSearchEngine();
+            settings = new OpenSearchableFactorySettings(ose);
+            settings.MaxRetries = retryAttempts;
+            if (!string.IsNullOrEmpty(metricsType))
+                settings.ReportMetrics = true;
+            settings.ParametersKeywordsTable = InitializeParametersKeywordsTable();
 
             LoadOpenSearchEngineExtensions(ose);
 
             InitCache();
         }
 
-
+        private Dictionary<string, string> InitializeParametersKeywordsTable() {
+            Dictionary<string, string> table = OpenSearchFactory.GetBaseOpenSearchParametersKeywordsTable();
+            table["update"] = "{http://purl.org/dc/terms/}modified";
+            table["updated"] = "{http://purl.org/dc/terms/}modified";
+            table["modified"] = "{http://purl.org/dc/terms/}modified";
+            table["do"] = "{http://www.terradue.com/opensearch}downloadOrigin";
+            table["from"] = "{http://a9.com/-/opensearch/extensions/eo/1.0/}accessedFrom";
+            table["start"] = "{http://a9.com/-/opensearch/extensions/time/1.0/}start";
+            table["stop"] = "{http://a9.com/-/opensearch/extensions/time/1.0/}end";
+            table["end"] = "{http://a9.com/-/opensearch/extensions/time/1.0/}end";
+            table["trel"] = "{http://a9.com/-/opensearch/extensions/time/1.0/}relation";
+            table["box"] = "{http://a9.com/-/opensearch/extensions/geo/1.0/}box";
+            table["bbox"] = "{http://a9.com/-/opensearch/extensions/geo/1.0/}box";
+            table["geom"] = "{http://a9.com/-/opensearch/extensions/geo/1.0/}geometry";
+            table["geometry"] = "{http://a9.com/-/opensearch/extensions/geo/1.0/}geometry";
+            table["uid"] = "{http://a9.com/-/opensearch/extensions/geo/1.0/}uid";
+            table["id"] = "{http://purl.org/dc/terms/}identifier";
+            table["rel"] = "{http://a9.com/-/opensearch/extensions/geo/1.0/}relation";
+            table["cat"] = "{http://purl.org/dc/terms/}subject";
+            table["pt"] = "{http://a9.com/-/opensearch/extensions/eo/1.0/}productType";
+            table["psn"] = "{http://a9.com/-/opensearch/extensions/eo/1.0/}platform";
+            table["psi"] = "{http://a9.com/-/opensearch/extensions/eo/1.0/}platformSerialIdentifier";
+            table["isn"] = "{http://a9.com/-/opensearch/extensions/eo/1.0/}instrument";
+            table["sensor"] = "{http://a9.com/-/opensearch/extensions/eo/1.0/}sensorType";
+            table["st"] = "{http://a9.com/-/opensearch/extensions/eo/1.0/}sensorType";
+            table["od"] = "{http://a9.com/-/opensearch/extensions/eo/1.0/}orbitDirection";
+            table["ot"] = "{http://a9.com/-/opensearch/extensions/eo/1.0/}orbitType";
+            table["title"] = "{http://a9.com/-/opensearch/extensions/eo/1.0/}title";
+            table["track"] = "{http://a9.com/-/opensearch/extensions/eo/1.0/}track";
+            table["frame"] = "{http://a9.com/-/opensearch/extensions/eo/1.0/}frame";
+            table["swath"] = "{http://a9.com/-/opensearch/extensions/eo/1.0/}swathIdentifier";
+            table["cc"] = "{http://a9.com/-/opensearch/extensions/eo/1.0/}cloudCover";
+            table["lc"] = "{http://www.terradue.com/opensearch}landCover";
+            table["dcg"] = "{http://www.terradue.com/opensearch}doubleCheckGeometry";
+            return table;
+        }
 
         private ILog ConfigureLog() {
             Hierarchy hierarchy = (Hierarchy)LogManager.GetRepository();
@@ -643,7 +680,6 @@ namespace Terradue.OpenSearch.Client {
 
             dataModelParameters = PrepareDataModelParameters();
             dataModel = DataModel.CreateFromArgs(queryModelArg, dataModelParameters);
-            OpenSearchableFactorySettings settings = new OpenSearchableFactorySettings(ose);
             settings.MaxRetries = retryAttempts;
             List<Uri> baseUrls = InitializeUrl();
             IOpenSearchable entity = dataModel.CreateOpenSearchable(baseUrls, queryFormatArg, ose, netCreds, settings);
@@ -702,21 +738,22 @@ namespace Terradue.OpenSearch.Client {
                             if (paramName == null) {
                                 sw.WriteLine("Parameters");
                                 sw.WriteLine("==========");
-                                sw.Write("{0,-22}{1,-40}", "Parameter name", "Description/title");
+                                sw.Write("{0,-30}{1,-40}", "Parameter name", "Description/title");
                                 if (type != "full") sw.Write(" M O R P S (mandatory, options, range, pattern, step)");
                                 sw.WriteLine();
-                                sw.Write("{0,-22}{1,-40}", "--------------", "-----------------");
+                                sw.Write("{0,-30}{1,-40}", "--------------", "-----------------");
                                 if (type != "full") sw.Write(" ---------");
                                 sw.WriteLine();
                             }
 
                             MatchCollection paramMatches = paramRegex.Matches(queryString);
                             foreach (Match paramMatch in paramMatches) {
-                                string name = paramMatch.Groups[1].Value;
+                                string name = string.Format("{0}{1}", paramMatch.Groups[3].Value, paramMatch.Groups[5].Value);
                                 string identifier = paramMatch.Groups[2].Value;
                                 bool mandatory = !paramMatch.Groups[6].Success;
-                                string title = GetParameterDescription(identifier);
-                                string qualifiedName = GetParameterQualifiedName(osd, paramMatch.Groups[4].Value, paramMatch.Groups[5].Value);
+                                string qualifiedName = GetParameterQualifiedName(url, paramMatch.Groups[4].Value, paramMatch.Groups[5].Value);
+                                string title =  GetParameterDescription(url, paramMatch.Groups[1].Value, qualifiedName);
+
                                 bool options = false;
                                 bool range = false;
                                 bool pattern = false;
@@ -725,7 +762,7 @@ namespace Terradue.OpenSearch.Client {
                                 OpenSearchDescriptionUrlParameter param = null;
                                 if (url.Parameters != null) {
                                     foreach (OpenSearchDescriptionUrlParameter p in url.Parameters) {
-                                        if (p.Name == name) param = p;
+                                        if (p.Name == paramMatch.Groups[1].Value) param = p;
                                     }
                                 }
 
@@ -741,7 +778,7 @@ namespace Terradue.OpenSearch.Client {
 
                                 if (paramName == null) {
                                     if (type != "full" && title != null && title.Length > 40) title = String.Format("{0}...", title.Substring(0, 37));
-                                    sw.Write("- {0,-20}{1,-40}",
+                                    sw.Write("{0,-30}{1,-40}",
                                         name,
                                         title
                                     );
@@ -809,17 +846,17 @@ namespace Terradue.OpenSearch.Client {
                                 string urlShortType = GetUrlShortType(url.Type);
                                 if (type != urlShortType) continue;
 
-                                sw.WriteLine("Qualified names of parameters");
-                                sw.WriteLine("=============================");
-                                sw.WriteLine("{0,-22}{1}", "Parameter name", "Qualified name");
-                                sw.WriteLine("{0,-22}{1}", "--------------", "--------------");
+                                sw.WriteLine("Valid names for parameters");
+                                sw.WriteLine("==========================");
+                                sw.WriteLine("{0,-30}{1,-25}{2}", "Prefixed name", "Aliases", "Qualified name");
+                                sw.WriteLine("{0,-30}{1,-25}{2}", "-------------", "-------", "--------------");
 
                                 MatchCollection paramMatches = paramRegex.Matches(queryString);
                                 foreach (Match paramMatch in paramMatches) {
-                                    string name = paramMatch.Groups[1].Value;
-                                    string namespaceUri = GetParameterQualifiedName(osd, paramMatch.Groups[4].Value, paramMatch.Groups[5].Value);
-
-                                    sw.WriteLine("- {0,-20}{1}", name, namespaceUri);
+                                    string name = string.Format("{0}{1}", paramMatch.Groups[3].Value, paramMatch.Groups[5].Value);
+                                    string qualifiedName = GetParameterQualifiedName(url, paramMatch.Groups[4].Value, paramMatch.Groups[5].Value);
+                                    string alias = string.Join(",", settings.ParametersKeywordsTable.Where(kvp => kvp.Value == qualifiedName).Select(kvp => kvp.Key));
+                                    sw.WriteLine("{0,-30}{1,-25}{2}", name, alias, qualifiedName);
 
                                 }
 
@@ -903,13 +940,17 @@ namespace Terradue.OpenSearch.Client {
         /// </summary>
         /// <returns>The output stream.</returns>
         private Stream InitializeOutputStream(int index = 0) {
-            if (outputFilePathArg == null) return Console.OpenStandardOutput();
-
-            string path = outputFilePathArg;
-            if ( path.Contains("%index%") ){
-                path = path.Replace("%index%", index.ToString());
-            } else if (index > 0){
-                path += "-" + index;
+            if (outputFilePathArg == null) {
+                return Console.OpenStandardOutput();
+            } else {
+                string path = outputFilePathArg;
+                if ( path.Contains("%index%") ){
+                    path = path.Replace("%index%", index.ToString());
+                } else if (index > 0){
+                    path += "-" + index;
+                }
+                log.DebugFormat("output to {0}", path);
+                return new FileStream(path, FileMode.Create);
             }
             log.DebugFormat("output to {0}", path);
             return new FileStream(path, FileMode.Create);
@@ -1186,64 +1227,69 @@ namespace Terradue.OpenSearch.Client {
 
 
 
-        public static string GetParameterDescription(string identifier) {
+        public static string GetParameterDescription(OpenSearchDescriptionUrl url, string key, string fqdn) {
+
+            if (url.Parameters != null) {
+                var param = url.Parameters.FirstOrDefault(p => p.Name == key);
+
+                if (param != null && !string.IsNullOrEmpty(param.Title))
+                    return param.Title;
+            }
+
+            return GetParameterDescriptionByFQDN(fqdn);
+
+        }
+
+        public static string GetParameterDescriptionByFQDN(string fqdn) {
+
             if (urlParameterLabels == null) {
                 urlParameterLabels = new Dictionary<string, string>();
-                urlParameterLabels["count"] = "Number of search results per page desired";
-                urlParameterLabels["startPage"] = "Page number of the set of search results desired";
-                urlParameterLabels["startIndex"] = "Index of the first search result desired";
-                urlParameterLabels["searchTerms"] = "EO Free Text Search";
-                urlParameterLabels["language"] = "Desired language of the results";
-                urlParameterLabels["dct:modified"] = "Date after which dataset are updated (RFC-3339)";
-                urlParameterLabels["dc:modified"] = "Date after which dataset are updated (RFC-3339)";
-                urlParameterLabels["t2:downloadOrigin"] = "A string identifying the download origin (keyword, hostname...) to adapt the enclosure. If the parameter is enclosed between [] (e.g. [terradue]), enclosure will be returned only if there is a enclosure found for this source.";
-                urlParameterLabels["from"] = "A string identifying the location from which the resource will be accessed. The catalogue shall return the download location in the enclosure atom link according to the parameter value.";
-                urlParameterLabels["time:start"] = "Start of the temporal interval (RFC-3339)";
-                urlParameterLabels["time:end"] = "Stop of the temporal interval (RFC-3339)";
-                urlParameterLabels["geo:box"] = "Rectangular bounding box (minlon,minlat,maxlon,maxlat)";
-                urlParameterLabels["geo:geometry"] = "Geometry in WKT";
-                urlParameterLabels["uid"] = "The identifier of the resource within the search engine context (local reference)";
-                urlParameterLabels["geo:uid"] = "The identifier of the resource within the search engine context (local reference)";
-                urlParameterLabels["dc:identifier"] = "The identifier of the resource within the search engine context (local reference)";
-                urlParameterLabels["geo:relation"] = "Spatial relation (possible values are “intersects”, “contains”, “disjoint”). The default is intersects.";
-                urlParameterLabels["time:relation"] = "Temporal relation (possible values are 'intersects', 'contains', 'during', 'disjoint', 'equals')";
-                urlParameterLabels["dc:subject"] = "The identifier of a category. Recommended best practice is to use a controlled vocabulary.";
-                urlParameterLabels["eop:productType"] = "A string identifying the product type";
-                urlParameterLabels["eop:platform"] = "A string with the platform short name";
-                urlParameterLabels["eop:instrument"] = "A string identifying the instrument";
-                urlParameterLabels["eop:sensorType"] = "A string identifying the sensor type";
-                urlParameterLabels["eop:orbitDirection"] = "A string identifying the orbit direction";
-                urlParameterLabels["eop:orbitType"] = "A string identifying the orbit type";
-                urlParameterLabels["eop:title"] = "A name given to the resource";
-                urlParameterLabels["eop:track"] = "A number, set or interval requesting the range of orbit tracks";
-                urlParameterLabels["eop:frame"] = "A number, set or interval requesting the range of orbit frames";
-                urlParameterLabels["eop:swathIdentifier"] = "Swath identifier that corresponds to precise incidence angles for the sensor";
-                urlParameterLabels["t2:landCover"] = "A number, set or interval requesting the land coverage";
-                urlParameterLabels["t2:doubleCheckGeometry"] = "Set to apply a finer geometry filtering";
+                urlParameterLabels["{http://a9.com/-/spec/opensearch/1.1/}count"] = "Number of search results per page desired";
+                urlParameterLabels["{http://a9.com/-/spec/opensearch/1.1/}startPage"] = "Page number of the set of search results desired";
+                urlParameterLabels["{http://a9.com/-/spec/opensearch/1.1/}startIndex"] = "Index of the first search result desired";
+                urlParameterLabels["{http://a9.com/-/spec/opensearch/1.1/}searchTerms"] = "EO Free Text Search";
+                urlParameterLabels["{http://a9.com/-/spec/opensearch/1.1/}language"] = "Desired language of the results";
+                urlParameterLabels["{http://purl.org/dc/terms/}modified"] = "Date after which dataset are updated (RFC-3339)";
+                urlParameterLabels["{http://www.terradue.com/opensearch}downloadOrigin"] = "A string identifying the download origin (keyword, hostname...) to adapt the enclosure. If the parameter is enclosed between [] (e.g. [terradue]), enclosure will be returned only if there is a enclosure found for this source.";
+                urlParameterLabels["{http://a9.com/-/opensearch/extensions/eo/1.0/}accessedFrom"] = "A string identifying the location from which the resource will be accessed. The catalogue shall return the download location in the enclosure atom link according to the parameter value.";
+                urlParameterLabels["{http://a9.com/-/opensearch/extensions/time/1.0/}start"] = "Start of the temporal interval (RFC-3339)";
+                urlParameterLabels["{http://a9.com/-/opensearch/extensions/time/1.0/}end"] = "Stop of the temporal interval (RFC-3339)";
+                urlParameterLabels["{http://a9.com/-/opensearch/extensions/time/1.0/}relation"] = "Temporal relation (possible values are “intersects”, “contains”, “during”, “disjoint”, “equals”)";
+                urlParameterLabels["{http://a9.com/-/opensearch/extensions/geo/1.0/}box"] = "Rectangular bounding box (minlon,minlat,maxlon,maxlat)";
+                urlParameterLabels["{http://a9.com/-/opensearch/extensions/geo/1.0/}geometry"] = "Geometry in WKT";
+                urlParameterLabels["{http://a9.com/-/opensearch/extensions/geo/1.0/}uid"] = "The identifier of the resource within the search engine context (local reference)";
+                urlParameterLabels["{http://purl.org/dc/terms/}identifier"] = "The identifier of the resource within the search engine context (local reference)";
+                urlParameterLabels["{http://a9.com/-/opensearch/extensions/geo/1.0/}relation"] = "Spatial relation (possible values are “intersects”, “contains”, “disjoint”). The default is intersects.";
+                urlParameterLabels["{http://purl.org/dc/terms/}subject"] = "The identifier of a category. Recommended best practice is to use a controlled vocabulary.";
+                urlParameterLabels["{http://a9.com/-/opensearch/extensions/eo/1.0/}productType"] = "A string identifying the product type";
+                urlParameterLabels["{http://a9.com/-/opensearch/extensions/eo/1.0/}platform"] = "A string with the platform short name";
+                urlParameterLabels["{http://a9.com/-/opensearch/extensions/eo/1.0/}platformSerialIdentifier"] = "A string with the Platform serial identifier";
+                urlParameterLabels["{http://a9.com/-/opensearch/extensions/eo/1.0/}instrument"] = "A string identifying the instrument";
+                urlParameterLabels["{http://a9.com/-/opensearch/extensions/eo/1.0/}sensorType"] = "A string identifying the sensor type";
+                urlParameterLabels["{http://a9.com/-/opensearch/extensions/eo/1.0/}orbitDirection"] = "A string identifying the orbit direction";
+                urlParameterLabels["{http://a9.com/-/opensearch/extensions/eo/1.0/}orbitType"] = "A string identifying the orbit type";
+                urlParameterLabels["{http://a9.com/-/opensearch/extensions/eo/1.0/}title"] = "A name given to the resource";
+                urlParameterLabels["{http://a9.com/-/opensearch/extensions/eo/1.0/}track"] = "A number, set or interval requesting the range of orbit tracks";
+                urlParameterLabels["{http://a9.com/-/opensearch/extensions/eo/1.0/}frame"] = "A number, set or interval requesting the range of orbit frames";
+                urlParameterLabels["{http://a9.com/-/opensearch/extensions/eo/1.0/}swathIdentifier"] = "Swath identifier that corresponds to precise incidence angles for the sensor";
+                urlParameterLabels["{http://a9.com/-/opensearch/extensions/eo/1.0/}cloudCover"] = "A number, set or interval requesting the cloud coverage";
+                urlParameterLabels["{http://www.terradue.com/opensearch}landCover"] = "A number, set or interval requesting the land coverage";
+                urlParameterLabels["{http://www.terradue.com/opensearch}doubleCheckGeometry"] = "Set to apply a finer geometry filtering";
             }
 
-            if (urlParameterLabels.ContainsKey(identifier)) return urlParameterLabels[identifier];
+            if (urlParameterLabels.ContainsKey(fqdn)) return urlParameterLabels[fqdn];
 
-            return identifier;
+            return fqdn;
         }
 
-        public static string GetParameterQualifiedName(OpenSearchDescription osd, string namespacePrefix, string localName) {
-            if (osdNamespaces == null) {
-                XmlQualifiedName[] ns = osd.ExtraNamespace.ToArray();
-                osdNamespaces = new Dictionary<string, string>();
-                foreach (XmlQualifiedName qn in ns) osdNamespaces[qn.Name] = qn.Namespace;
-            }
+        public static string GetParameterQualifiedName(OpenSearchDescriptionUrl url, string namespacePrefix, string localName) {
 
-            string s = String.Empty;
+            XmlQualifiedName ns = url.ExtraNamespace.ToArray().FirstOrDefault(n => n.Name == namespacePrefix);
 
-            string namespaceUri = null;
-            if (osdNamespaces.ContainsKey(namespacePrefix)) namespaceUri = osdNamespaces[namespacePrefix];
-            else if (String.IsNullOrEmpty(namespacePrefix)) namespaceUri = XMLNS_OPENSEARCH_1_1 + " XXXX ";
-
-            if (namespaceUri == null) return String.Format("{0}:{1} (namespae URI not retrievable)", namespacePrefix, localName);
-            return String.Format("{{{0}}}{1}", namespaceUri, localName);
+            if ( ns == null )
+                return String.Format("{0}:{1} (namespae URI not retrievable)", namespacePrefix, localName);
+            return String.Format("{{{0}}}{1}", ns.Namespace, localName);
         }
-
 
 
         internal static void LogError(Exception e, bool withStackTrace = false) {
