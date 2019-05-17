@@ -85,13 +85,21 @@ namespace Terradue.OpenSearch.Model.EarthObservation {
                 // QC Sentinel1 case
                 if (url.Host == "qc.sentinel1.eo.esa.int")
                 {
-                    log.DebugFormat("QC Sentinel1 source. Trying to get the earthobservation profile");
-                    e = new Sentinel1QcOpenSearchable(url, settings.OpenSearchEngine);
+                    log.DebugFormat("QC Sentinel1 source. No longer supported; using aux.sentinel1.eo.esa.int instead");
+                    log.DebugFormat("AUX Sentinel1 source. Trying to get the earthobservation profile");
+                    //e = new Sentinel1QcOpenSearchable(url, settings.OpenSearchEngine);
+                    e = new Sentinel1AuxOpenSearchable(url, settings.OpenSearchEngine);
+                    entities.Add(e);
+                    continue;
+                }
+                if (url.Host == "aux.sentinel1.eo.esa.int") {
+                    log.DebugFormat("AUX Sentinel1 source. Trying to get the earthobservation profile");
+                    e = new Sentinel1AuxOpenSearchable(url, settings.OpenSearchEngine);
                     entities.Add(e);
                     continue;
                 }
                 // USGS case
-				if (url.Host == "earthexplorer.usgs.gov")
+                if (url.Host == "earthexplorer.usgs.gov")
 				{
 					log.DebugFormat("Usgs source. Trying to get the earthobservation profile");
 
