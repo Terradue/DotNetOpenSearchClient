@@ -109,8 +109,8 @@ namespace Terradue.OpenSearch.Client.Test {
 	    public void DataAuthor84() {
 
 		    
-		    //opensearch-client -p count=20 -p startIndex=1 -m EOP -p start=2017-11-30 -p auxtype=aux_resorb -p orbits=true https://qc.sentinel1.eo.esa.int/ identifier
-		    OpenSearchClient.baseUrlArg.Add("https://qc.sentinel1.eo.esa.int/");
+		    //opensearch-client -p count=20 -p startIndex=1 -m EOP -p start=2017-11-30 -p auxtype=aux_resorb -p orbits=true https://aux.sentinel1.eo.esa.int/ identifier
+		    OpenSearchClient.baseUrlArg.Add("https://aux.sentinel1.eo.esa.int/");
 
 		    OpenSearchClient.metadataPaths.Add("identifier");
 

@@ -238,6 +238,8 @@
     <Compile Include="Terradue\OpenSearch\Model\GeoTime\CategoryMetadataExtractor.cs" />
     <Compile Include="Terradue\OpenSearch\Model\GeoTime\ExtensionMetadataExtractor.cs" />
     <Compile Include="Terradue\OpenSearch\Model\EarthObservation\SensorResolutionMetadataExtractor.cs" />
+    <Compile Include="Terradue\OpenSearch\Model\EarthObservation\OpenSearchable\Sentinel1Aux\Sentinel1AuxOpenSearchable.cs" />
+    <Compile Include="Terradue\OpenSearch\Model\EarthObservation\OpenSearchable\Sentinel1Aux\Sentinel1AuxOpenSearchRequest.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
@@ -248,6 +250,7 @@
     <Folder Include="Terradue\OpenSearch\New Folder\" />
     <Folder Include="Terradue\OpenSearch\Model\Schemas\" />
     <Folder Include="Terradue\OpenSearch\Model\EarthObservation\OpenSearchable\Sentinel1Qc\" />
+    <Folder Include="Terradue\OpenSearch\Model\EarthObservation\OpenSearchable\Sentinel1Aux\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
