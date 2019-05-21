@@ -22,6 +22,8 @@ using Terradue.OpenSearch.Result;
 using Terradue.OpenSearch.Schema;
 using Terradue.ServiceModel.Syndication;
 using Terradue.OpenSearch.Benchmarking;
+using System.Xml.Serialization;
+using System.Text;
 
 namespace Terradue.OpenSearch.Client {
 
@@ -1044,9 +1046,33 @@ namespace Terradue.OpenSearch.Client {
 
             dataModel.LoadResults(osr);
 
+
             if (metadataPaths.Contains("{}")) {
-                dataModel.PrintCollection(outputStream);
-                return;
+
+                // NOTE: Temporary workaround for DATAAUTHOR-156
+                // Adjust long horizontal segments in polygons
+                if (queryModelArg == "Scihub") {
+                    XmlDocument doc = new XmlDocument();
+                    using (MemoryStream ms = new MemoryStream()) {
+                        dataModel.PrintCollection(ms);
+                        ms.Seek(0, SeekOrigin.Begin);
+                        doc.Load(ms);
+                    }
+                    XmlNamespaceManager nsm = new XmlNamespaceManager(doc.NameTable);
+                    nsm.AddNamespace("gml32", "http://www.opengis.net/gml/3.2");
+                    nsm.AddNamespace("gml", "http://www.opengis.net/gml");
+                    XmlNodeList posLists = doc.SelectNodes("//gml32:posList | //gml:posList", nsm);
+                    foreach (XmlNode posList in posLists) {
+                        (posList as XmlElement).RemoveAttribute("count");
+                        posList.InnerText = AdjustCoordinates(posList.InnerText);
+                    }
+                    doc.Save(outputStream);
+                    return;
+
+                } else {
+                    dataModel.PrintCollection(outputStream);
+                    return;
+                }
             }
 
             dataModel.PrintByItem(metadataPaths, outputStream, quotingOutput);
@@ -1059,13 +1085,39 @@ namespace Terradue.OpenSearch.Client {
         public void AdjustIdentifiers(IOpenSearchResultCollection osr, Stream outputStream) {
             Regex badIdentifierRegex = new Regex(@"^(http|ftp)(s)?://");
             Regex goodIdentifierRegex = new Regex(@".*[A-Za-z]+.*\d{8}.*");
-            StreamWriter sw = new StreamWriter(outputStream);
             foreach (IOpenSearchResultItem item in osr.Items) {
-                sw.WriteLine("ITEM: '{0}' '{1}' '{2}'", item.Id, item.Identifier, item.Title.Text);
                 if (badIdentifierRegex.Match(item.Identifier).Success && goodIdentifierRegex.Match(item.Title.Text).Success) {
                     item.Identifier = item.Title.Text;
                 }
             }
+        }
+
+
+
+        public string AdjustCoordinates(string original) {
+            string result = String.Empty;
+            Regex numRegex = new Regex(@"-?(\d*\.\d+|\d+)");
+            MatchCollection numMatch = numRegex.Matches(original);
+            int count = numMatch.Count / 2;
+            double lastLat = 0, lastLon = 0;
+            for (int i = 0; i < count; i++) {
+                double lat = Double.Parse(numMatch[2 * i].Value);
+                double lon = Double.Parse(numMatch[2 * i + 1].Value);
+                if (i != 0) {
+                    double lonDiff = lon - lastLon;
+                    double latDiff = lat - lastLat;
+                    if (Math.Abs(lonDiff) > 80) {
+                        int parts = (int)Math.Ceiling((Math.Abs(lonDiff) / 80));
+                        for (int j = 1; j < parts; j++) {
+                            result += String.Format(" {0} {1}", Math.Round(lastLat + j * (latDiff / parts), 4), Math.Round(lastLon + j * (lonDiff / parts), 4));
+                        }
+                    }
+                }
+                result += String.Format("{2}{0} {1}", lat, lon, i == 0 ? String.Empty : " ");
+                lastLat = lat;
+                lastLon = lon;
+            }
+            return result;
         }
 
 
