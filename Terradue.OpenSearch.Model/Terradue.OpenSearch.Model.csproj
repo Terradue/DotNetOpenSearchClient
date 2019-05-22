@@ -59,10 +59,10 @@
       <HintPath>..\packages\Microsoft.Web.Xdt.2.1.1\lib\net40\Microsoft.Web.XmlTransform.dll</HintPath>
     </Reference>
     <Reference Include="NuGet4Mono">
-      <HintPath>..\packages\NuGet4Mono.0.3.0\lib\net40\NuGet4Mono.exe</HintPath>
+      <HintPath>..\packages\NuGet4Mono.0.7.0\lib\net40\NuGet4Mono.exe</HintPath>
     </Reference>
     <Reference Include="NuGet4Mono.Extensions">
-      <HintPath>..\packages\NuGet4Mono.0.3.0\lib\net40\NuGet4Mono.Extensions.dll</HintPath>
+      <HintPath>..\packages\NuGet4Mono.0.7.0\lib\net40\NuGet4Mono.Extensions.dll</HintPath>
     </Reference>
     <Reference Include="GeoAPI">
       <HintPath>..\packages\GeoAPI.1.7.4\lib\net45\GeoAPI.dll</HintPath>
