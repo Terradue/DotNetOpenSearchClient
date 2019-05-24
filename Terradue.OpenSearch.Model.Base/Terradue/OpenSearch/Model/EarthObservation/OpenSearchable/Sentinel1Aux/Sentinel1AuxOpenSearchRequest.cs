@@ -19,10 +19,14 @@ using Terradue.OpenSearch.Result;
 using Terradue.ServiceModel.Ogc;
 using Terradue.ServiceModel.Syndication;
 
-namespace Terradue.OpenSearch.Model.EarthObservation.OpenSearchable
-{
-    class Sentinel1AuxOpenSearchRequest : OpenSearchRequest
-    {
+namespace Terradue.OpenSearch.Model.EarthObservation.OpenSearchable {
+
+
+
+
+    class Sentinel1AuxOpenSearchRequest : OpenSearchRequest {
+
+        static Regex identifierRegex = new Regex(@"^(?'mission'\w{3})_OPER_AUX_(?'type'\w{6})_(?'system'\w{4})_(?'proddate'\d{8}T\d{6})_V(?'startdate'\w{15})_(?'stopdate'\w{15})$");
         NameValueCollection parameters;
         readonly Uri auxSearchUrl;
 
@@ -34,8 +38,7 @@ namespace Terradue.OpenSearch.Model.EarthObservation.OpenSearchable
 
 
 
-        public Sentinel1AuxOpenSearchRequest(Uri auxSearchUrl, NameValueCollection parameters) : base(new OpenSearchUrl(auxSearchUrl), "application/atom+xml")
-        {
+        public Sentinel1AuxOpenSearchRequest(Uri auxSearchUrl, NameValueCollection parameters) : base(new OpenSearchUrl(auxSearchUrl), "application/atom+xml") {
             this.auxSearchUrl = auxSearchUrl;
             var tmpurl = new UriBuilder(auxSearchUrl);
             tmpurl.Path = "";
@@ -44,21 +47,17 @@ namespace Terradue.OpenSearch.Model.EarthObservation.OpenSearchable
             this.parameters = parameters;
         }
 
-        public override NameValueCollection OriginalParameters
-        {
-            get
-            {
+        public override NameValueCollection OriginalParameters {
+            get {
                 return parameters;
             }
 
-            set
-            {
+            set {
                 parameters = value;
             }
         }
 
-        public override IOpenSearchResponse GetResponse()
-        {
+        public override IOpenSearchResponse GetResponse() {
 
             AtomFeed feed = new AtomFeed();
 
@@ -73,18 +72,27 @@ namespace Terradue.OpenSearch.Model.EarthObservation.OpenSearchable
 
             List<AtomItem> items = new List<AtomItem>();
 
+            string uid = null;
             int day = 0, dayCount = 1;
-            DateTime startDate, stopDate;
+            DateTime startDate = DateTime.UtcNow, stopDate = DateTime.UtcNow;
+            if (!String.IsNullOrEmpty(parameters["uid"])) {
+                uid = parameters["uid"];
+                Match match = identifierRegex.Match(uid);
+                if (match.Success && DateTime.TryParseExact(match.Groups["proddate"].Value, "yyyyMMddTHHmmss", DateTimeFormatInfo.InvariantInfo, DateTimeStyles.AssumeUniversal, out startDate)) {
+                    startDate = startDate.ToUniversalTime();
+                    count = 1;
+                    startIndex = 1;
+                }
+            }
             if (!String.IsNullOrEmpty(parameters["start"]) && DateTime.TryParse(parameters["start"], DateTimeFormatInfo.InvariantInfo, DateTimeStyles.AssumeUniversal, out startDate)) {
                 startDate = startDate.ToUniversalTime();
-            } else {
-                startDate = DateTime.UtcNow;
             }
             if (!String.IsNullOrEmpty(parameters["stop"]) && DateTime.TryParse(parameters["stop"], DateTimeFormatInfo.InvariantInfo, DateTimeStyles.AssumeUniversal, out stopDate)) {
                 stopDate = stopDate.ToUniversalTime();
                 dayCount = (stopDate - startDate).Days + 1;
-                log.DebugFormat("LOOP {0} {1} [{2}] [{3}]", startDate, dayCount, startDate, stopDate);
             }
+
+
 
             Dictionary<string, Uri> list = new Dictionary<string, Uri>();
             int index = 0;
@@ -110,9 +118,13 @@ namespace Terradue.OpenSearch.Model.EarthObservation.OpenSearchable
 
                 foreach (HtmlNode link in links) {
                     HtmlAttribute href = link.Attributes["href"];
-                    if (!link.InnerText.EndsWith(".EOF", StringComparison.InvariantCulture)) continue;
+                    string text = link.InnerText;
+                    if (!text.EndsWith(".EOF", StringComparison.InvariantCulture)) continue;
 
                     index++;
+
+                    if (uid != null && String.Format("{0}.EOF", uid) != text) continue;
+
                     if (index < startIndex) {
                         skippedCount++;
                         continue;
@@ -127,9 +139,9 @@ namespace Terradue.OpenSearch.Model.EarthObservation.OpenSearchable
                     }
                     addedCount++;
                     list.Add(link.InnerText, productUrl);
-                    if (list.Count >= count) break;
+                    if (uid != null || list.Count >= count) break;
                 }
-                log.DebugFormat("Items skipped: {0}, added: {1}", skippedCount, addedCount);
+                if (uid != null) log.DebugFormat("Items skipped: {0}, added: {1}", skippedCount, addedCount);
 
                 if (list.Count >= count) break; // break also from day loop
 
@@ -153,8 +165,9 @@ namespace Terradue.OpenSearch.Model.EarthObservation.OpenSearchable
            return new Terradue.OpenSearch.Response.AtomOpenSearchResponse(feed);
         }
 
-        IEnumerable<AtomItem> BuildAtomItem(IEnumerable<KeyValuePair<string, Uri>> products, bool withOrbits)
-        {
+
+
+        IEnumerable<AtomItem> BuildAtomItem(IEnumerable<KeyValuePair<string, Uri>> products, bool withOrbits) {
             
             List<AtomItem> items = new List<AtomItem>();
 
@@ -179,11 +192,11 @@ namespace Terradue.OpenSearch.Model.EarthObservation.OpenSearchable
             return items;
         }
 
-        AtomItem CreateItemFromLink(string key, Uri url, bool withOrbits)
-        {
+
+
+        AtomItem CreateItemFromLink(string key, Uri url, bool withOrbits) {
             string identifier = key.Replace(".EOF", "");
-            Match match = Regex.Match(identifier,
-                                      @"^(?'mission'\w{3})_OPER_AUX_(?'type'\w{6})_(?'system'\w{4})_(?'proddate'\w{15})_V(?'startdate'\w{15})_(?'stopdate'\w{15})$");
+            Match match = identifierRegex.Match(identifier);
 
             if (!match.Success)
                 return null;
@@ -228,8 +241,9 @@ namespace Terradue.OpenSearch.Model.EarthObservation.OpenSearchable
 
         }
 
-        static Uri BuildUrl(Uri auxSearchUrl, string type, DateTime date)
-        {
+
+
+        static Uri BuildUrl(Uri auxSearchUrl, string type, DateTime date) {
             UriBuilder url = new UriBuilder(auxSearchUrl);
             url.Path += String.Format("/{0}/{1:yyyy/MM/dd}/", String.IsNullOrEmpty(type) ? "RESORB" : Regex.Replace(type, "^aux_", String.Empty).ToUpper(), date);
             var qs = HttpUtility.ParseQueryString(String.Empty);
@@ -237,8 +251,9 @@ namespace Terradue.OpenSearch.Model.EarthObservation.OpenSearchable
 
         }
 
-        public static Terradue.ServiceModel.Ogc.Eop21.EarthObservationType OrbToEo(string identifier, string mission, string type, DateTime start, DateTime stop, DateTimeOffset published)
-        {
+
+
+        public static Terradue.ServiceModel.Ogc.Eop21.EarthObservationType OrbToEo(string identifier, string mission, string type, DateTime start, DateTime stop, DateTimeOffset published) {
 
             Terradue.ServiceModel.Ogc.Eop21.EarthObservationType eo = new Terradue.ServiceModel.Ogc.Eop21.EarthObservationType();
 
@@ -280,8 +295,7 @@ namespace Terradue.OpenSearch.Model.EarthObservation.OpenSearchable
 
         }
 
-        public static SyndicationElementExtension GenerateOrbitsExtension(Terradue.OpenSearch.Sentinel.Data.Earth_Explorer_File file)
-        {
+        public static SyndicationElementExtension GenerateOrbitsExtension(Terradue.OpenSearch.Sentinel.Data.Earth_Explorer_File file) {
 
             SyndicationElementExtension extension = new SyndicationElementExtension(GetS1OrbitsFromEE(file), Terradue.Metadata.EarthObservation.Model.orbitListType.OrbitsSerializer);
 
@@ -289,8 +303,7 @@ namespace Terradue.OpenSearch.Model.EarthObservation.OpenSearchable
         }
 
 
-        public static Terradue.Metadata.EarthObservation.Model.orbitListType GetS1OrbitsFromEE(Terradue.OpenSearch.Sentinel.Data.Earth_Explorer_File file)
-        {
+        public static Terradue.Metadata.EarthObservation.Model.orbitListType GetS1OrbitsFromEE(Terradue.OpenSearch.Sentinel.Data.Earth_Explorer_File file) {
 
             Terradue.Metadata.EarthObservation.Model.orbitListType orbits = new Terradue.Metadata.EarthObservation.Model.orbitListType();
 
