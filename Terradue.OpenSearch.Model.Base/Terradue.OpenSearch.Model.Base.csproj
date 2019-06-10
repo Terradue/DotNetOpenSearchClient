@@ -1,23 +1,22 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project ToolsVersion="15.0" Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProductVersion>8.0.30703</ProductVersion>
-    <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{6222FD31-E454-4D76-9AAF-0535787A6A1B}</ProjectGuid>
     <OutputType>Library</OutputType>
     <RootNamespace>Terradue.OpenSearch.Model.Base</RootNamespace>
     <AssemblyName>Terradue.OpenSearch.Model.Base</AssemblyName>
-    <UseMSBuildEngine>False</UseMSBuildEngine>
-    <TargetFrameworkVersion>v4.7.1</TargetFrameworkVersion>
+    <TargetFramework>net4.5</TargetFramework>
+    <RuntimeIdentifiers>win;linux-x64</RuntimeIdentifiers>
+    <RestorePackagesPath>$(SolutionDir)\packages</RestorePackagesPath>
+    <IsPackable>false</IsPackable>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>bin\Debug</OutputPath>
-    <DefineConstants>DEBUG;</DefineConstants>
+    <DefineConstants>DEBUG;NETFRAMEWORK;NET45</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <ConsolePause>false</ConsolePause>
@@ -31,245 +30,39 @@
     <ConsolePause>false</ConsolePause>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="GeoJSON.Net, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
-      <HintPath>..\packages\GeoJSON.Net.1.0.62\lib\net45\GeoJSON.Net.dll</HintPath>
-    </Reference>
-    <Reference Include="MathNet.Numerics, Version=3.20.0.0, Culture=neutral, PublicKeyToken=null">
-      <HintPath>..\packages\MathNet.Numerics.3.20.0\lib\net40\MathNet.Numerics.dll</HintPath>
-    </Reference>
-    <Reference Include="Mono.Options, Version=5.0.0.0, Culture=neutral, PublicKeyToken=null">
-      <HintPath>..\packages\Mono.Options.5.3.0.1\lib\net4-client\Mono.Options.dll</HintPath>
-    </Reference>
-    <Reference Include="Newtonsoft.Json, Version=10.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed">
-      <HintPath>..\packages\Newtonsoft.Json.10.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
-    </Reference>
-    <Reference Include="System" />
-    <Reference Include="System.Net" />
-    <Reference Include="System.Xml" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Core" />
-    <Reference Include="System.Numerics" />
-    <Reference Include="ProjNet">
-      <HintPath>..\packages\ProjNet.1.2\lib\net20\ProjNet.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Runtime.Serialization" />
-    <Reference Include="System.Web" />
-    <Reference Include="Microsoft.Web.XmlTransform">
-      <HintPath>..\packages\Microsoft.Web.Xdt.2.1.1\lib\net40\Microsoft.Web.XmlTransform.dll</HintPath>
-    </Reference>
-    <Reference Include="NuGet4Mono">
-      <HintPath>..\packages\NuGet4Mono.0.8.0\lib\net45\NuGet4Mono.exe</HintPath>
-    </Reference>
-    <Reference Include="NuGet4Mono.Extensions">
-      <HintPath>..\packages\NuGet4Mono.Extensions.0.8.0\lib\net45\NuGet4Mono.Extensions.dll</HintPath>
-    </Reference>
-    <Reference Include="GeoAPI">
-      <HintPath>..\packages\GeoAPI.1.7.4\lib\net45\GeoAPI.dll</HintPath>
-    </Reference>
-    <Reference Include="NetTopologySuite">
-      <HintPath>..\packages\NetTopologySuite.1.14\lib\net45\NetTopologySuite.dll</HintPath>
-    </Reference>
-    <Reference Include="PowerCollections">
-      <HintPath>..\packages\NetTopologySuite.1.14\lib\net45\PowerCollections.dll</HintPath>
-    </Reference>
-    <Reference Include="NetTopologySuite.IO">
-      <HintPath>..\packages\NetTopologySuite.IO.1.14.0.1\lib\net45\NetTopologySuite.IO.dll</HintPath>
-    </Reference>
-    <Reference Include="NetTopologySuite.IO.GeoTools">
-      <HintPath>..\packages\NetTopologySuite.IO.1.14.0.1\lib\net45\NetTopologySuite.IO.GeoTools.dll</HintPath>
-    </Reference>
-    <Reference Include="NetTopologySuite.IO.MsSqlSpatial">
-      <HintPath>..\packages\NetTopologySuite.IO.1.14.0.1\lib\net45\NetTopologySuite.IO.MsSqlSpatial.dll</HintPath>
-    </Reference>
-    <Reference Include="NetTopologySuite.IO.PostGis">
-      <HintPath>..\packages\NetTopologySuite.IO.1.14.0.1\lib\net45\NetTopologySuite.IO.PostGis.dll</HintPath>
-    </Reference>
-    <Reference Include="NetTopologySuite.IO.ShapeFile">
-      <HintPath>..\packages\NetTopologySuite.IO.1.14.0.1\lib\net45\NetTopologySuite.IO.ShapeFile.dll</HintPath>
-    </Reference>
-    <Reference Include="NetTopologySuite.IO.ShapeFile.Extended">
-      <HintPath>..\packages\NetTopologySuite.IO.1.14.0.1\lib\net45\NetTopologySuite.IO.ShapeFile.Extended.dll</HintPath>
-    </Reference>
-    <Reference Include="NuGet.Core">
-      <HintPath>..\packages\NuGet.Core.2.14.0\lib\net40-Client\NuGet.Core.dll</HintPath>
-    </Reference>
-    <Reference Include="Terradue.ServiceModel.Ogc.OwsContext">
-      <HintPath>..\packages\Terradue.ServiceModel.Ogc.OwsContext.1.2.0\lib\net45\Terradue.ServiceModel.Ogc.OwsContext.dll</HintPath>
-    </Reference>
-    <Reference Include="HtmlAgilityPack">
-      <HintPath>..\packages\HtmlAgilityPack.1.4.9.5\lib\Net45\HtmlAgilityPack.dll</HintPath>
-    </Reference>
-    <Reference Include="log4net">
-      <HintPath>..\packages\log4net.2.0.8\lib\net45-full\log4net.dll</HintPath>
-    </Reference>
-    <Reference Include="Google.Api.Gax">
-      <HintPath>..\packages\Google.Api.Gax.2.2.1\lib\net45\Google.Api.Gax.dll</HintPath>
-    </Reference>
-    <Reference Include="Google.Apis.Core">
-      <HintPath>..\packages\Google.Apis.Core.1.32.0\lib\net45\Google.Apis.Core.dll</HintPath>
-    </Reference>
-    <Reference Include="Google.Apis">
-      <HintPath>..\packages\Google.Apis.1.32.0\lib\net45\Google.Apis.dll</HintPath>
-    </Reference>
-    <Reference Include="Google.Apis.PlatformServices">
-      <HintPath>..\packages\Google.Apis.1.32.0\lib\net45\Google.Apis.PlatformServices.dll</HintPath>
-    </Reference>
-    <Reference Include="Google.Apis.Auth">
-      <HintPath>..\packages\Google.Apis.Auth.1.32.0\lib\net45\Google.Apis.Auth.dll</HintPath>
-    </Reference>
-    <Reference Include="Google.Apis.Auth.PlatformServices">
-      <HintPath>..\packages\Google.Apis.Auth.1.32.0\lib\net45\Google.Apis.Auth.PlatformServices.dll</HintPath>
-    </Reference>
-    <Reference Include="Google.Api.Gax.Rest">
-      <HintPath>..\packages\Google.Api.Gax.Rest.2.2.1\lib\net45\Google.Api.Gax.Rest.dll</HintPath>
-    </Reference>
-    <Reference Include="Google.Apis.Storage.v1">
-      <HintPath>..\packages\Google.Apis.Storage.v1.1.32.0.1035\lib\net45\Google.Apis.Storage.v1.dll</HintPath>
-    </Reference>
-    <Reference Include="Google.Cloud.Storage.V1">
-      <HintPath>..\packages\Google.Cloud.Storage.V1.2.1.0\lib\net45\Google.Cloud.Storage.V1.dll</HintPath>
-    </Reference>
-    <Reference Include="Terradue.ServiceModel.Ogc">
-      <HintPath>..\packages\Terradue.ServiceModel.Ogc.2.1.1\lib\net45\Terradue.ServiceModel.Ogc.dll</HintPath>
-    </Reference>
-    <Reference Include="AWSSDK.Core">
-      <HintPath>..\packages\AWSSDK.Core.3.3.23.1\lib\net45\AWSSDK.Core.dll</HintPath>
-    </Reference>
-    <Reference Include="AWSSDK.S3">
-      <HintPath>..\packages\AWSSDK.S3.3.3.18.3\lib\net45\AWSSDK.S3.dll</HintPath>
-    </Reference>
-    <Reference Include="INIFileParser">
-      <HintPath>..\packages\ini-parser.2.5.2\lib\net20\INIFileParser.dll</HintPath>
-    </Reference>
-    <Reference Include="Terradue.Metadata.EarthObservation">
-      <HintPath>..\packages\Terradue.Metadata.EarthObservation.1.5.9\lib\net45\Terradue.Metadata.EarthObservation.dll</HintPath>
-    </Reference>
-    <Reference Include="System.IO">
-      <HintPath>..\packages\System.IO.4.3.0\lib\net462\System.IO.dll</HintPath>
-    </Reference>
-    <Reference Include="mscorlib" />
-    <Reference Include="System.Runtime">
-      <HintPath>..\packages\System.Runtime.4.3.0\lib\net462\System.Runtime.dll</HintPath>
-    </Reference>
-    <Reference Include="System.ComponentModel.Composition" />
-    <Reference Include="System.Security.Cryptography.Encoding">
-      <HintPath>..\packages\System.Security.Cryptography.Encoding.4.3.0\lib\net46\System.Security.Cryptography.Encoding.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Security.Cryptography.Primitives">
-      <HintPath>..\packages\System.Security.Cryptography.Primitives.4.3.0\lib\net46\System.Security.Cryptography.Primitives.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Security.Cryptography.Algorithms">
-      <HintPath>..\packages\System.Security.Cryptography.Algorithms.4.3.0\lib\net463\System.Security.Cryptography.Algorithms.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Security.Cryptography.X509Certificates">
-      <HintPath>..\packages\System.Security.Cryptography.X509Certificates.4.3.0\lib\net461\System.Security.Cryptography.X509Certificates.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Net.Http">
-      <HintPath>..\packages\System.Net.Http.4.3.1\lib\net46\System.Net.Http.dll</HintPath>
-    </Reference>
-    <Reference Include="Terradue.ServiceModel.Syndication">
-      <HintPath>..\packages\Terradue.ServiceModel.Syndication.1.0.4\lib\net452\Terradue.ServiceModel.Syndication.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Interactive.Async">
-      <HintPath>..\packages\System.Interactive.Async.3.1.1\lib\net46\System.Interactive.Async.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Interactive.Async">
-      <HintPath>..\packages\System.Interactive.Async.3.1.1\lib\net45\System.Interactive.Async.dll</HintPath>
-    </Reference>
-    <Reference Include="Terradue.OpenSearch">
-      <HintPath>..\packages\Terradue.OpenSearch.1.17.0-ft11720190424T091305\lib\net45\Terradue.OpenSearch.dll</HintPath>
-    </Reference>
-    <Reference Include="Terradue.GeoJson">
-      <HintPath>..\packages\Terradue.GeoJson.1.9.2\lib\net45\Terradue.GeoJson.dll</HintPath>
-    </Reference>
-    <Reference Include="Terradue.OpenSearch.SciHub">
-      <HintPath>..\packages\Terradue.OpenSearch.SciHub.1.7.4\lib\net45\Terradue.OpenSearch.SciHub.dll</HintPath>
-    </Reference>
-    <Reference Include="Terradue.ServiceModel.Syndication">
-      <HintPath>..\packages\Terradue.ServiceModel.Syndication.1.0.7\lib\net45\Terradue.ServiceModel.Syndication.dll</HintPath>
-    </Reference>
-    <Reference Include="Terradue.OpenSearch.SciHub">
-      <HintPath>..\packages\Terradue.OpenSearch.SciHub.1.7.12\lib\net45\Terradue.OpenSearch.SciHub.dll</HintPath>
-    </Reference>
-    <Reference Include="NuGet4Mono">
-      <HintPath>..\packages\NuGet4Mono.0.8.0\lib\net45\NuGet4Mono.exe</HintPath>
-    </Reference>
-    <Reference Include="NuGet4Mono.Extensions">
-      <HintPath>..\packages\NuGet4Mono.Extensions.0.8.0\lib\net45\NuGet4Mono.Extensions.dll</HintPath>
-    </Reference>
-    <Reference Include="Terradue.OpenSearch.Usgs">
-      <HintPath>..\packages\Terradue.OpenSearch.Usgs.1.1.4\lib\net45\Terradue.OpenSearch.Usgs.dll</HintPath>
-    </Reference>
+    <Reference Include="System"/>
+    <Reference Include="System.Net"/>
+    <Reference Include="System.Xml"/>
+    <Reference Include="System.Xml.Linq"/>
+    <Reference Include="System.Core"/>
+    <Reference Include="System.Numerics"/>
+    <Reference Include="System.Runtime.Serialization"/>
+    <Reference Include="System.Web"/>
+    <Reference Include="System.ComponentModel.Composition"/>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Terradue\OpenSearch\Model\EarthObservation\EarthObservationDataModelExtension.cs" />
-    <Compile Include="Terradue\OpenSearch\Model\EarthObservation\EndDateMetadataExtractor.cs" />
-    <Compile Include="Terradue\OpenSearch\Model\EarthObservation\FrameMetadataExtractor.cs" />
-    <Compile Include="Terradue\OpenSearch\Model\EarthObservation\GeometryMetadataExtractor.cs" />
-    <Compile Include="Terradue\OpenSearch\Model\EarthObservation\IdentifierMetadataExtractor.cs" />
-    <Compile Include="Terradue\OpenSearch\Model\EarthObservation\OrbitDirectionMetadataExtractor.cs" />
-    <Compile Include="Terradue\OpenSearch\Model\EarthObservation\OrbitNumberMetadataExtractor.cs" />
-    <Compile Include="Terradue\OpenSearch\Model\EarthObservation\ParentIdentifierMetadataExtractor.cs" />
-    <Compile Include="Terradue\OpenSearch\Model\EarthObservation\ProductTypeMetadataExtractor.cs" />
-    <Compile Include="Terradue\OpenSearch\Model\EarthObservation\StartDateMetadataExtractor.cs" />
-    <Compile Include="Terradue\OpenSearch\Model\EarthObservation\SwathIdentifierMetadataExtractor.cs" />
-    <Compile Include="Terradue\OpenSearch\Model\EarthObservation\TrackMetadataExtractor.cs" />
-    <Compile Include="Terradue\OpenSearch\Model\GeoTime\EnclosureMetadataExtractor.cs" />
-    <Compile Include="Terradue\OpenSearch\Model\GeoTime\EndDateMetadataExtractor.cs" />
-    <Compile Include="Terradue\OpenSearch\Model\GeoTime\GeoTimeDataModelExtension.cs" />
-    <Compile Include="Terradue\OpenSearch\Model\GeoTime\IdentifierMetadataExtractor.cs" />
-    <Compile Include="Terradue\OpenSearch\Model\GeoTime\PublicationDateMetadataExtractor.cs" />
-    <Compile Include="Terradue\OpenSearch\Model\GeoTime\StartDateMetadataExtractor.cs" />
-    <Compile Include="Terradue\OpenSearch\Model\GeoTime\UpdatedMetadataExtractor.cs" />
-    <Compile Include="Terradue\OpenSearch\Model\GeoTime\WellKnownTextMetadataExtractor.cs" />
-    <Compile Include="Terradue\OpenSearch\Model\SciHub\ScihubDataModelExtension.cs" />
-    <Compile Include="Terradue\OpenSearch\Model\GeoTime\RelatedMetadataExtractor.cs" />
-    <Compile Include="Terradue\OpenSearch\Model\GeoTime\SelfLinkMetadataExtractor.cs" />
-    <Compile Include="Terradue\OpenSearch\Model\GeoTime\TitleMetadataExtractor.cs" />
-    <Compile Include="Terradue\OpenSearch\Model\EarthObservation\OpenSearchable\FedeoOpenSearchable.cs" />
-    <Compile Include="Terradue\OpenSearch\Model\EarthObservation\OperationalModeMetadataExtractor.cs" />
-    <Compile Include="Terradue\OpenSearch\Model\EarthObservation\PlatformShortNameMetadataExtractor.cs" />
-    <Compile Include="Terradue\OpenSearch\Model\EarthObservation\PolarisationChannelsMetadataExtractor.cs" />
-    <Compile Include="Terradue\OpenSearch\Model\EarthObservation\ProcessingLevelMetadataExtractor.cs" />
-    <Compile Include="Terradue\OpenSearch\Model\EarthObservation\WrsLongitudeGridMetadataExtractor.cs" />
-    <Compile Include="Terradue\OpenSearch\Model\EarthObservation\OpenSearchable\CwicOpenSearchable.cs" />
-    <Compile Include="Terradue\OpenSearch\Model\Schemas\EarthExplorer.cs" />
-    <Compile Include="Terradue\OpenSearch\Model\EarthObservation\IdMetadataExtractor.cs" />
-    <Compile Include="Terradue\OpenSearch\Model\EarthObservation\WrsLatitudeGridMetadataExtractor.cs" />
-    <Compile Include="Terradue\OpenSearch\Model\GeoTime\LinkMetadataExtractor.cs" />
-    <Compile Include="Terradue\OpenSearch\Model\EarthObservation\OpenSearchable\Sentinel1Qc\Sentinel1QcOpenSearchable.cs" />
-    <Compile Include="Terradue\OpenSearch\Model\EarthObservation\OpenSearchable\Sentinel1Qc\Sentinel1QcOpenSearchRequest.cs" />
-    <Compile Include="Terradue\OpenSearch\Model\EarthObservation\CloudCoverMetadataExtractor.cs" />
-    <Compile Include="Terradue\OpenSearch\Model\GeoTime\CategoryMetadataExtractor.cs" />
-    <Compile Include="Terradue\OpenSearch\Model\GeoTime\ExtensionMetadataExtractor.cs" />
-    <Compile Include="Terradue\OpenSearch\Model\EarthObservation\SensorResolutionMetadataExtractor.cs" />
-    <Compile Include="Terradue\OpenSearch\Model\EarthObservation\OpenSearchable\Sentinel1Aux\Sentinel1AuxOpenSearchable.cs" />
-    <Compile Include="Terradue\OpenSearch\Model\EarthObservation\OpenSearchable\Sentinel1Aux\Sentinel1AuxOpenSearchRequest.cs" />
-  </ItemGroup>
-  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
-  <ItemGroup>
-    <Folder Include="Terradue\" />
-    <Folder Include="Terradue\OpenSearch\" />
-    <Folder Include="Terradue\OpenSearch\Model\" />
-    <Folder Include="Terradue\OpenSearch\Model\EarthObservation\OpenSearchable\" />
-    <Folder Include="Terradue\OpenSearch\New Folder\" />
-    <Folder Include="Terradue\OpenSearch\Model\Schemas\" />
-    <Folder Include="Terradue\OpenSearch\Model\EarthObservation\OpenSearchable\Sentinel1Qc\" />
-    <Folder Include="Terradue\OpenSearch\Model\EarthObservation\OpenSearchable\Sentinel1Aux\" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="packages.config" />
-    <None Include="Resources\ne_110m_land\.DS_Store" />
-    <None Include="Resources\ne_110m_land\ne_110m_land.shx" />
-    <None Include="Resources\ne_110m_land\ne_110m_land.shp" />
-    <None Include="Resources\ne_110m_land\ne_110m_land.prj" />
-    <None Include="Resources\ne_110m_land\ne_110m_land.dbf" />
+    <Folder Include="Terradue\"/>
+    <Folder Include="Terradue\OpenSearch\"/>
+    <Folder Include="Terradue\OpenSearch\Model\"/>
+    <Folder Include="Terradue\OpenSearch\Model\EarthObservation\OpenSearchable\"/>
+    <Folder Include="Terradue\OpenSearch\New Folder\"/>
+    <Folder Include="Terradue\OpenSearch\Model\Schemas\"/>
+    <Folder Include="Terradue\OpenSearch\Model\EarthObservation\OpenSearchable\Sentinel1Qc\"/>
+    <Folder Include="Terradue\OpenSearch\Model\EarthObservation\OpenSearchable\Sentinel1Aux\"/>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Terradue.OpenSearch.Model\Terradue.OpenSearch.Model.csproj">
       <Project>{BFFA2485-B9AC-4DE4-BABF-4DD96590F9D4}</Project>
       <Name>Terradue.OpenSearch.Model</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Terradue.OpenSearch" Version="1.17.0-ft11720190424t091305"/>
+    <PackageReference Include="Terradue.Metadata.EarthObservation" Version="1.5.9"/>
+    <PackageReference Include="Terradue.OpenSearch.SciHub" Version="1.7.12"/>
+    <PackageReference Include="HtmlAgilityPack" Version="1.4.9.5"/>
+    <PackageReference Include="AWSSDK.S3" Version="3.3.18.3"/>
+    <PackageReference Include="ini-parser" Version="2.5.2"/>
+    <PackageReference Include="Terradue.OpenSearch.Usgs" Version="1.1.4"/>
   </ItemGroup>
 </Project>

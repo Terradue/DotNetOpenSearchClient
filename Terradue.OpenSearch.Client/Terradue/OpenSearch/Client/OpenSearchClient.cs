@@ -24,7 +24,9 @@ using Terradue.ServiceModel.Syndication;
 using Terradue.OpenSearch.Benchmarking;
 using System.Xml.Serialization;
 using System.Text;
+using System.Runtime.CompilerServices;
 
+[assembly:InternalsVisibleTo("Terradue.OpenSearch.Client.Test")]
 namespace Terradue.OpenSearch.Client {
 
 

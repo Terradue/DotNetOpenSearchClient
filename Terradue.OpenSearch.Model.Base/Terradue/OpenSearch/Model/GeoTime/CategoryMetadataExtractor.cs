@@ -4,11 +4,7 @@ using System.Collections.Specialized;
 using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
-using Amazon.S3;
-using IniParser;
-using IniParser.Model;
 using log4net;
-using NuGet;
 using Terradue.ServiceModel.Syndication;
 
 namespace Terradue.OpenSearch.Model.GeoTime

@@ -1,0 +1,165 @@
+<!-- https://github.com/dotnet/cli/issues/3959 -->
+<!-- HACK: Uses internal NuGet targets. -->
+<Project>
+  <!-- Remove project references from appearing as dependencies. -->
+  <Target Name="_RemoveProjectReferences"
+          AfterTargets="_GenerateRestoreGraph">
+    <ItemGroup>
+      <!--
+        Removing the ProjectReference items directly or setting PrivateAssets to All on them prevents their 
+        dependencies from being added to the restore graph. ProjectReference items become _RestoreGraphEntry 
+        items with Type set to ProjectSpec. This removes their entries after their dependencies have been 
+        added.
+      -->
+      <_RemoveRestoreGraphEntry Include="@(_RestoreGraphEntry->WithMetadataValue('Type', 'ProjectSpec'))" />
+      <!-- All ProjectReference items get included anyway unless the restoring project is not removed. -->
+      <_RemoveRestoreGraphEntry Remove="@(_RemoveRestoreGraphEntry->WithMetadataValue('ProjectUniqueName', $(MSBuildProjectFullPath)))" />
+      <_RestoreGraphEntry Remove="@(_RemoveRestoreGraphEntry)" />
+    </ItemGroup>
+  </Target>
+
+  <Target Name="_CollectPackageReferencesPerProject"
+          BeforeTargets="CollectPackageReferences">
+    <!-- NOTE: This doesn't collect package references from projects with PrivateAssets set to All. -->
+    <MSBuild Projects="@(ProjectReference)"
+             Targets="CollectPackageReferences">
+      <Output TaskParameter="TargetOutputs" ItemName="PackageReference" />
+    </MSBuild>
+  </Target>
+
+  <Target Name="_ExcludeThisBuildOutput"
+          BeforeTargets="_WalkEachTargetPerFramework">
+    <PropertyGroup>
+      <IncludeBuildOutput Condition="'$(IncludeThisBuildOutput)' == 'false'">false</IncludeBuildOutput>
+    </PropertyGroup>
+  </Target>
+
+  <Target Name="_WalkEachProjectPerFramework"
+          DependsOnTargets="Restore"
+          AfterTargets="_WalkEachTargetPerFramework">
+    <PropertyGroup>
+      <!-- Include the following outputs in the package. -->
+      <IncludeBuildOutput Condition="'$(IncludeThisBuildOutput)' == 'false'">true</IncludeBuildOutput>
+    </PropertyGroup>
+
+    <MSBuild Projects="$(MSBuildProjectFullPath)"
+             Targets="__GetBuildOutputFilesWithTfm"
+             Properties="_TargetFramework=%(_TargetFrameworks.Identity)">
+      <Output TaskParameter="TargetOutputs" ItemName="_BuildOutputInPackage" />
+    </MSBuild>
+
+    <MSBuild Projects="$(MSBuildProjectFullPath)"
+             Targets="__GetTfmSpecificContentForPackage"
+             Properties="_TargetFramework=%(_TargetFrameworks.Identity)">
+      <Output TaskParameter="TargetOutputs" ItemName="_PackageFiles" />
+    </MSBuild>
+
+    <MSBuild Projects="$(MSBuildProjectFullPath)"
+             Targets="__GetDebugSymbolsWithTfm"
+             Properties="_TargetFramework=%(_TargetFrameworks.Identity)">
+      <Output TaskParameter="TargetOutputs" ItemName="_TargetPathsToSymbols" />
+    </MSBuild>
+
+    <MSBuild Projects="$(MSBuildProjectFullPath)"
+             Targets="_SourceFilesProjectOutputGroup"
+             Properties="_TargetFramework=%(_TargetFrameworks.Identity)">
+      <Output TaskParameter="TargetOutputs" ItemName="_SourceFiles" />
+    </MSBuild>
+
+    <MSBuild Projects="$(MSBuildProjectFullPath)"
+             Targets="__GetFrameworkAssemblyReferences"
+             Properties="_TargetFramework=%(_TargetFrameworks.Identity)">
+      <Output TaskParameter="TargetOutputs" ItemName="_FrameworkAssemblyReferences" />
+    </MSBuild>
+  </Target>
+
+  <!-- Include the output assembly, satellite assemblies, documentation file, and Pri file. -->
+  <Target Name="__GetBuildOutputFilesWithTfm"
+          DependsOnTargets="__CollectProjectReferences"
+          Returns="@(_BuildOutputInPackage)">
+    <MSBuild Projects="@(_ProjectReference)"
+             Targets="_GetBuildOutputFilesWithTfm">
+      <Output TaskParameter="TargetOutputs" ItemName="__BuildOutputInPackage" />
+    </MSBuild>
+
+    <ItemGroup>
+      <_BuildOutputInPackage Include="@(__BuildOutputInPackage)">
+        <TargetFramework>$(_TargetFramework)</TargetFramework>
+      </_BuildOutputInPackage>
+    </ItemGroup>
+  </Target>
+
+  <!-- Include content files. -->
+  <Target Name="__GetTfmSpecificContentForPackage"
+          DependsOnTargets="__CollectProjectReferences"
+          Returns="@(_PackageFiles)">
+    <MSBuild Projects="@(_ProjectReference)"
+             Targets="_GetTfmSpecificContentForPackage">
+      <Output TaskParameter="TargetOutputs" ItemName="__PackageFiles" />
+    </MSBuild>
+
+    <ItemGroup>
+      <_PackageFiles Include="@(__PackageFiles)">
+        <TargetFramework>$(_TargetFramework)</TargetFramework>
+      </_PackageFiles>
+    </ItemGroup>
+  </Target>
+
+  <!-- Include debug symbols. -->
+  <Target Name="__GetDebugSymbolsWithTfm"
+          DependsOnTargets="__CollectProjectReferences"
+          Returns="@(_TargetPathsToSymbols)">
+    <MSBuild Projects="@(_ProjectReference)"
+             Targets="_GetDebugSymbolsWithTfm">
+      <Output TaskParameter="TargetOutputs" ItemName="__TargetPathsToSymbols" />
+    </MSBuild>
+
+    <ItemGroup>
+      <_TargetPathsToSymbols Include="@(__TargetPathsToSymbols)">
+        <TargetFramework>$(_TargetFramework)</TargetFramework>
+      </_TargetPathsToSymbols>
+    </ItemGroup>
+  </Target>
+
+  <!-- Include source files. -->
+  <!-- NOTE: Don't think this works correctly. -->
+  <Target Name="_SourceFilesProjectOutputGroup"
+          DependsOnTargets="__CollectProjectReferences"
+          Returns="@(_SourceFiles)">
+    <MSBuild Projects="@(_ProjectReference)"
+             Targets="SourceFilesProjectOutputGroup"
+             Properties="BuildProjectReferences=false"
+             Condition="'$(IncludeSource)' == 'true'">
+      <Output TaskParameter="TargetOutputs" ItemName="__SourceFiles" />
+    </MSBuild>
+
+    <ItemGroup>
+      <_SourceFiles Include="@(__SourceFiles)">
+        <TargetFramework>$(_TargetFramework)</TargetFramework>
+      </_SourceFiles>
+    </ItemGroup>
+  </Target>
+
+  <!-- Include framework assembly references. -->
+  <Target Name="__GetFrameworkAssemblyReferences"
+          DependsOnTargets="__CollectProjectReferences"
+          Returns="@(_FrameworkAssemblyReferences)">
+    <MSBuild Projects="$(_ProjectReference)"
+             Targets="_GetFrameworkAssemblyReferences"
+             Properties="BuildProjectReferences=false">
+      <Output TaskParameter="TargetOutputs" ItemName="_FrameworkAssemblyReferences" />
+    </MSBuild>
+  </Target>
+
+  <Target Name="__CollectProjectReferences"
+          Returns="@(_ProjectReference)">
+    <MSBuild Projects="$(MSBuildProjectFullPath)"
+             Targets="_CollectProjectReferences"
+             Properties="TargetFramework=$(_TargetFramework)">
+      <Output TaskParameter="TargetOutputs" ItemName="_ProjectReference" />
+    </MSBuild>
+  </Target>
+
+  <Target Name="_CollectProjectReferences"
+          Returns="@(ProjectReference)" />
+</Project>
