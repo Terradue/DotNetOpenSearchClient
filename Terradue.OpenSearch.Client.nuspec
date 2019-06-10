@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<package >
+  <metadata>
+    <id>Terradue.OpenSearch.Client</id>
+    <version>1.5.3</version>
+    <authors>Terradue</authors>
+    <owners>Terradue</owners>
+    <licenseUrl>https://github.com/Terradue/DotNetOpenSearchClient/blob/master/LICENSE</licenseUrl>
+    <projectUrl>https://github.com/Terradue/DotNetOpenSearchClient</projectUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>Generic OpenSearch Client</description>
+    <copyright>Copyright 2014</copyright>
+    <tags>OpenSearch</tags>
+    <dependencies>
+      <dependency id="Terradue.ServiceModel.Syndication" version="1.0.0" />
+      <dependency id="Terradue.OpenSearch" version="[1.11.12,1.12)" />
+      <dependency id="Terradue.GeoJson" version="[1.5.6,1.6)" />
+      <dependency id="Terradue.Metadata.EarthObservation" version="[1.3.4,)" />
+      <dependency id="Terradue.OpenSearch.GeoJson" version="[1.3.2,)" />
+      <dependency id="Terradue.OpenSearch.RdfEO" version="[1.3.4,)" />
+      <dependency id="log4net" version="[2.0.0]" />
+      <dependency id="Mono.Addins" version="[1.2]" />
+    </dependencies>
+  </metadata>
+  <files>
+	  <file src="Terradue.OpenSearch.Client/bin/OpenSearchClient.exe" target="lib/net40" /> 
+	  <file src="Terradue.OpenSearch.Client/bin/Terradue.OpenSearch.Model.dll" target="lib/net40" /> 
+	  <file src="Terradue.OpenSearch.Client/bin/Terradue.OpenSearch.Model.Base.dll" target="lib/net40" /> 
+  </files>
+</package>
