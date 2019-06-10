@@ -161,9 +161,6 @@
     <Reference Include="System.Net.Http">
       <HintPath>..\packages\System.Net.Http.4.3.1\lib\net46\System.Net.Http.dll</HintPath>
     </Reference>
-    <Reference Include="Terradue.ServiceModel.Syndication">
-      <HintPath>..\packages\Terradue.ServiceModel.Syndication.1.0.4\lib\net452\Terradue.ServiceModel.Syndication.dll</HintPath>
-    </Reference>
     <Reference Include="System.Interactive.Async">
       <HintPath>..\packages\System.Interactive.Async.3.1.1\lib\net46\System.Interactive.Async.dll</HintPath>
     </Reference>
@@ -175,9 +172,6 @@
     </Reference>
     <Reference Include="Terradue.GeoJson">
       <HintPath>..\packages\Terradue.GeoJson.1.9.2\lib\net45\Terradue.GeoJson.dll</HintPath>
-    </Reference>
-    <Reference Include="Terradue.OpenSearch.SciHub">
-      <HintPath>..\packages\Terradue.OpenSearch.SciHub.1.7.4\lib\net45\Terradue.OpenSearch.SciHub.dll</HintPath>
     </Reference>
     <Reference Include="Terradue.ServiceModel.Syndication">
       <HintPath>..\packages\Terradue.ServiceModel.Syndication.1.0.7\lib\net45\Terradue.ServiceModel.Syndication.dll</HintPath>
@@ -240,6 +234,7 @@
     <Compile Include="Terradue\OpenSearch\Model\EarthObservation\SensorResolutionMetadataExtractor.cs" />
     <Compile Include="Terradue\OpenSearch\Model\EarthObservation\OpenSearchable\Sentinel1Aux\Sentinel1AuxOpenSearchable.cs" />
     <Compile Include="Terradue\OpenSearch\Model\EarthObservation\OpenSearchable\Sentinel1Aux\Sentinel1AuxOpenSearchRequest.cs" />
+    <Compile Include="Terradue\OpenSearch\Model\EarthObservation\VendorSpecificMetadataExtractor.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
