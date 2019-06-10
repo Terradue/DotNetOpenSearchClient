@@ -8,36 +8,8 @@
     <AssemblyName>Terradue.OpenSearch.Client.Test</AssemblyName>
     <TargetFramework>net4.5</TargetFramework>
     <RuntimeIdentifiers>win;linux-x64</RuntimeIdentifiers>
-    <Title>DotNetOpenSearchClient</Title>
-    <Description>Generic OpenSearch Client</Description>
-    <PackageLicenseFile>LICENSE</PackageLicenseFile>
-    <Authors>Emmanuel Mathot</Authors>
-    <Company>Terradue</Company>
-    <RepositoryUrl>https://github.com/Terradue/DotNetOpenSearchClient</RepositoryUrl>
-    <PackageTags>OGC;Terradue;Opensearch</PackageTags>
-    <PackageOutputPath>$(SolutionDir)\build</PackageOutputPath>
     <RestorePackagesPath>$(SolutionDir)\packages</RestorePackagesPath>
     <IsPackable>false</IsPackable>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>bin</OutputPath>
-    <DefineConstants>DEBUG;</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <ConsolePause>false</ConsolePause>
-    <PlatformTarget>x86</PlatformTarget>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>full</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>bin</OutputPath>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <ConsolePause>false</ConsolePause>
-    <PlatformTarget>x86</PlatformTarget>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System"/>
