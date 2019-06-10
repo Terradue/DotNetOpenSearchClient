@@ -24,7 +24,7 @@ Generic OpenSearch Client giving the ability to retrieve element values from gen
 
 %install
 mkdir -p %{buildroot}/usr/lib/opensearch-client
-cp -r %{_sourcedir}/bin/* %{buildroot}/usr/lib/opensearch-client
+cp -r %{_sourcedir}/bin/Debug/net4.5* %{buildroot}/usr/lib/opensearch-client
 mkdir -p %{buildroot}/usr/bin/
 cp %{_sourcedir}/opensearch-client %{buildroot}/usr/bin/
 mkdir -p %{buildroot}/usr/local/lib/
