@@ -12,7 +12,7 @@ namespace Terradue.OpenSearch.Client.Test {
 
         OpenSearchClient client;
 
-        [SetUp]
+        [OneTimeSetUp]
         public void SetUpClient() {
             
             client = new OpenSearchClient();

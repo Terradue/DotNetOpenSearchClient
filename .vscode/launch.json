@@ -1,0 +1,25 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Query sentinel2 index",
+            "type": "mono",
+            "request": "launch",
+            "program": "${workspaceRoot}/Terradue.OpenSearch.Client/bin/x86/Debug/net4.5/OpenSearchClient.exe",
+            "args": [
+                "https://catalog.terradue.com/sentinel2/search"
+            ],
+            "cwd": "${workspaceRoot}"
+        },
+        {
+            "name": "Attach",
+            "type": "mono",
+            "request": "attach",
+            "address": "localhost",
+            "port": 55555
+        }
+    ]
+}
