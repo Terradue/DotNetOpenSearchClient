@@ -8,7 +8,7 @@
             "name": "Query sentinel2 index",
             "type": "mono",
             "request": "launch",
-            "program": "${workspaceRoot}/Terradue.OpenSearch.Client/bin/x86/Debug/net4.5/OpenSearchClient.exe",
+            "program": "${workspaceRoot}/Terradue.OpenSearch.Client/bin/Debug/net4.5/OpenSearchClient.exe",
             "args": [
                 "https://catalog.terradue.com/sentinel2/search"
             ],
