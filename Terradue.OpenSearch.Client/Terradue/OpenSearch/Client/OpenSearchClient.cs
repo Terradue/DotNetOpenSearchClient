@@ -491,15 +491,20 @@ namespace Terradue.OpenSearch.Client {
             while (retry >= 0) {
                 // Perform the query
                 try {
-
+                    OpenSearchableFactorySettings settings = new OpenSearchableFactorySettings(ose);
+                    settings.MaxRetries = retryAttempts;
+                    if (!string.IsNullOrEmpty(metricsType)) {
+                        settings.ReportMetrics = true;
+                    }
                     entity = dataModel.CreateOpenSearchable(uri, queryFormatArg, ose, credential, settings);
                     index = entity.GetOpenSearchDescription().DefaultUrl.IndexOffset;
                     log.Debug("IndexOffset : " + index);
                     break;
                 } catch (Exception e) {
                     log.Warn(e.Message);
-                    if (retry == 0)
+                    if (retry == 0) {
                         throw;
+                    }
                     retry--;
                     searchCache.ClearCache(".*", DateTime.Now);
                 }
