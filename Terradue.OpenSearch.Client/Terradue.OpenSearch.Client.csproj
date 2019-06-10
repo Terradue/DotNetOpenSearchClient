@@ -5,7 +5,7 @@
     <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
     <ProjectGuid>{1FB59AA7-3878-47CD-4267-F179F56C6470}</ProjectGuid>
     <OutputType>Exe</OutputType>
-    <RootNamespace>Terradue.OpenSearchClient</RootNamespace>
+    <RootNamespace>Terradue.OpenSearch.Client</RootNamespace>
     <AssemblyName>OpenSearchClient</AssemblyName>
     <TargetFramework>net4.5</TargetFramework>
     <RuntimeIdentifiers>win;linux-x64</RuntimeIdentifiers>
@@ -21,27 +21,6 @@
     <PackageOutputPath>$(SolutionDir)\build</PackageOutputPath>
     <RestorePackagesPath>$(SolutionDir)\packages</RestorePackagesPath>
     <IsTool>true</IsTool>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>bin</OutputPath>
-    <DefineConstants>DEBUG;NETFRAMEWORK;NET45</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <Externalconsole>true</Externalconsole>
-    <ConsolePause>true</ConsolePause>
-    <Commandlineparameters>https://catalog.terradue.com/sentinel2/description</Commandlineparameters>
-    <ExternalConsole>true</ExternalConsole>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>full</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>bin</OutputPath>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <Externalconsole>true</Externalconsole>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -66,21 +45,11 @@
   <ItemGroup>
     <PackageReference Include="Terradue.OpenSearch" Version="1.17.0-ft11720190424t091305" />
     <Content Include="$(SolutionDir)\LICENSE" Pack="true" PackagePath=""/>
-    
   </ItemGroup>
-  <Import Project="WalkEachTargetPerProject.targets" />
-  <!--
+   <!--
     The following solves the problem that 'dotnet pack' does not include the DLLs from referenced projects.
     See https://github.com/NuGet/Home/issues/3891 for a description of the problem
     and for newer versions / workarounds / built-in methods.
   -->
-  <PropertyGroup>
-    <TargetsForTfmSpecificBuildOutput>$(TargetsForTfmSpecificBuildOutput);CopyProjectReferencesToPackage</TargetsForTfmSpecificBuildOutput>
-    <!-- include PDBs in the NuGet package -->
-  </PropertyGroup>
-  <Target Name="CopyProjectReferencesToPackage" DependsOnTargets="ResolveReferences">
-    <ItemGroup>
-      <BuildOutputInPackage Include="@(ReferenceCopyLocalPaths->WithMetadataValue('ReferenceSourceTarget', 'ProjectReference'))" />
-    </ItemGroup>
-  </Target>
+  <Import Project="WalkEachTargetPerProject.targets" />
 </Project>
