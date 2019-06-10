@@ -43,6 +43,7 @@ namespace Terradue.OpenSearch.Model.EarthObservation {
             metadataExtractors.Add("id", new IdMetadataExtractor());
 			metadataExtractors.Add("cc", new CloudCoverMetadataExtractor());
             metadataExtractors.Add("sensorResolution", new SensorResolutionMetadataExtractor());
+            metadataExtractors.Add("vs", new VendorSpecificMetadataExtractor());
         }
 
         public override string Name {
