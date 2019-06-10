@@ -24,8 +24,7 @@ pipeline {
     stage('Build') {
       steps {
         echo "Build .NET application"
-        sh 'nuget restore -MSBuildVersion 14'
-        sh "xbuild /p:Configuration=${params.DOTNET_CONFIG}"
+        sh "msbuild /t:build /p:Configuration=DEBUG /Restore:true"
         sh 'cp -r Terradue.OpenSearch.Client/bin $WORKSPACE/build/SOURCES/'
         sh 'cp src/main/scripts/opensearch-client $WORKSPACE/build/SOURCES/'
         sh 'cp -r packages $WORKSPACE/build/SOURCES/'
