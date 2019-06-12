@@ -114,7 +114,7 @@
       <HintPath>..\packages\Terradue.ServiceModel.Ogc.OwsContext.1.2.0\lib\net45\Terradue.ServiceModel.Ogc.OwsContext.dll</HintPath>
     </Reference>
     <Reference Include="Terradue.OpenSearch.Usgs">
-      <HintPath>..\packages\Terradue.OpenSearch.Usgs.1.1.5\lib\net45\Terradue.OpenSearch.Usgs.dll</HintPath>
+      <HintPath>..\packages\Terradue.OpenSearch.Usgs.1.1.6\lib\net45\Terradue.OpenSearch.Usgs.dll</HintPath>
     </Reference>
     <Reference Include="Terradue.OpenSearch.RdfEO">
       <HintPath>..\packages\Terradue.OpenSearch.RdfEO.1.4.3\lib\net45\Terradue.OpenSearch.RdfEO.dll</HintPath>
