@@ -114,7 +114,10 @@
       <HintPath>..\packages\Terradue.ServiceModel.Ogc.OwsContext.1.2.0\lib\net45\Terradue.ServiceModel.Ogc.OwsContext.dll</HintPath>
     </Reference>
     <Reference Include="Terradue.OpenSearch.Usgs">
-      <HintPath>..\packages\Terradue.OpenSearch.Usgs.1.1.4\lib\net45\Terradue.OpenSearch.Usgs.dll</HintPath>
+      <HintPath>..\packages\Terradue.OpenSearch.Usgs.1.1.5\lib\net45\Terradue.OpenSearch.Usgs.dll</HintPath>
+    </Reference>
+    <Reference Include="Terradue.OpenSearch.RdfEO">
+      <HintPath>..\packages\Terradue.OpenSearch.RdfEO.1.4.3\lib\net45\Terradue.OpenSearch.RdfEO.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -123,6 +126,7 @@
     <Compile Include="CwicTests.cs" />
     <Compile Include="ScihubTests.cs" />
     <Compile Include="ResultAdjustmentTests.cs" />
+    <Compile Include="Sentinel1AuxTests.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>

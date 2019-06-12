@@ -173,7 +173,62 @@ namespace Terradue.OpenSearch.Client.Test {
             Assert.IsTrue(count > 100, "The number of products seems too small");
 
         }
-            
+
+
+        [Test()]
+        public void DataAuthor164() {
+
+            OpenSearchClient.baseUrlArg.Add("http://earthexplorer.usgs.gov");
+
+            OpenSearchClient.queryModelArg = "EOP";
+            OpenSearchClient.parameterArgs.Add("profile=eop");
+            OpenSearchClient.parameterArgs.Add("startPage=1");
+            OpenSearchClient.parameterArgs.Add("count=20");
+            OpenSearchClient.parameterArgs.Add("start=2019-05-01");
+            OpenSearchClient.parameterArgs.Add("stop=2019-05-02");
+            OpenSearchClient.parameterArgs.Add("pi=LANDSAT_8_C1");
+
+            OpenSearchClient.metadataPaths.Add("{}");
+
+            long size = 0;
+            using (MemoryStream ms = new MemoryStream()) {
+                client.ProcessQuery(ms);
+                ms.Seek(0, SeekOrigin.Begin);
+                size = ms.Length;
+            }
+
+            Assert.Greater(size, 300000);
+
+        }
+
+        [Test()]
+        public void DataAuthor165() {
+
+            OpenSearchClient.baseUrlArg.Add("http://eo-virtual-archive4.esa.int/search/COSMOSKYMED/rdf");
+
+            OpenSearchClient.queryModelArg = "EOP";
+            OpenSearchClient.parameterArgs.Add("count=unlimited");
+            OpenSearchClient.parameterArgs.Add("modified_start=2019-05-01");
+            OpenSearchClient.parameterArgs.Add("modified_stop=2019-05-26");
+            OpenSearchClient.pagination = 100;
+            OpenSearchClient.adjustIdentifiers = true;
+
+            OpenSearchClient.metadataPaths.Add("{}");
+
+            long size = 0;
+            using (MemoryStream ms = new MemoryStream()) {
+                client.ProcessQuery(ms);
+                ms.Seek(0, SeekOrigin.Begin);
+                size = ms.Length;
+            }
+
+            Assert.Greater(size, 150000);
+
+        }
+
     }
+
+
+
 }
 

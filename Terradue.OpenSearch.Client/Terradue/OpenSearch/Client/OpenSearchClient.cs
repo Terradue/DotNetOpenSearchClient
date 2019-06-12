@@ -413,7 +413,7 @@ namespace Terradue.OpenSearch.Client {
 
                 bool alternativeSuccess = false;
                 try {
-                    Task task = Task.Run(() => alternativeSuccess = ProcessAlternative(altBaseUrlLists[i], altNetCredsLists[i], ref isAtomFeedPartial, ref canceled[i]));
+                    Task task = Task.Run(() => alternativeSuccess = ProcessAlternative(altBaseUrlLists[i], altNetCredsLists[i], ref isAtomFeedPartial, ref canceled[i], outputStream));
                     if (!task.Wait(TimeSpan.FromMilliseconds(timeout))) {
                         // NOTE: At this point the timeout has been reached, but the task continues in the background.
                         // Using the reference to the canceled[] item the execution of the alternative query can be interrupted
@@ -446,7 +446,7 @@ namespace Terradue.OpenSearch.Client {
 
 
 
-        private bool ProcessAlternative(List<Uri> uri, List<NetworkCredential> credential, ref bool isAtomFeedPartial, ref bool canceled) {
+        private bool ProcessAlternative(List<Uri> uri, List<NetworkCredential> credential, ref bool isAtomFeedPartial, ref bool canceled, Stream outsideOutputStream = null) {
             // Find OpenSearch Entity
             IOpenSearchable entity = null;
             int retry = retryAttempts;
@@ -491,16 +491,18 @@ namespace Terradue.OpenSearch.Client {
             if (outputStarted) return false;
 
             while (totalResults > 0) {
-				bool closeOutputStream = true;
-				Stream outputStream = null;
+                bool closeOutputStream = true;
+                Stream outputStream = null;
                 log.DebugFormat("startIndex: {0}", index);
                 parametersNvc = ResolveParameters(parameters, entity);
 
-				// Initialize the output stream
-                if (outputStream == null)
+                // Initialize the output stream
+                if (outsideOutputStream == null) {
                     outputStream = InitializeOutputStream(index);
-                else
+                } else {
+                    outputStream = outsideOutputStream;
                     closeOutputStream = false;
+                }
 
                 retry = retryAttempts;
                 while (retry >= 0) {
@@ -548,7 +550,7 @@ namespace Terradue.OpenSearch.Client {
                 int count = CountResults(osr);
                 if (totalCount == 0 && count == 0) {
                     LogInfo("No entries found");
-					DeleteFileStream(outputStream);
+                    DeleteFileStream(outputStream);
                     return false;
                 }
 
@@ -557,22 +559,21 @@ namespace Terradue.OpenSearch.Client {
                 if (adjustIdentifiers) AdjustIdentifiers(osr, outputStream);
 
 
-				if (osr.Count > 0) {
-					// Transform the result
-					OutputResult(osr, outputStream);
-				} else {
-					closeOutputStream = false;
-					DeleteFileStream(outputStream);
-				}
+                if (osr.Count > 0) {
+                    // Transform the result
+                    OutputResult(osr, outputStream);
+                } else {
+                    closeOutputStream = false;
+                    DeleteFileStream(outputStream);
+                }
 
                 outputStarted = true;
-
 
                 log.Debug(count + " entries found");
                 if (count == 0)
                     break;
                 int expectedCount = count;
-                if (!string.IsNullOrEmpty(parameters["count"]) && int.TryParse(parameters["count"], out expectedCount) && count < expectedCount)
+                if (!String.IsNullOrEmpty(parameters["count"]) && int.TryParse(parameters["count"], out expectedCount) && count < expectedCount)
                     break;
 
                 totalResults -= count;
@@ -589,7 +590,8 @@ namespace Terradue.OpenSearch.Client {
                 if (!string.IsNullOrEmpty(metricsType))
                     WriteMetrics(osr);
 
-				if (closeOutputStream) outputStream.Close();
+                if (closeOutputStream) outputStream.Close();
+
             }
 
             return (totalCount > 0); // success
@@ -623,14 +625,14 @@ namespace Terradue.OpenSearch.Client {
         }
 
         private void DeleteFileStream(Stream outputStream) {
-			if ( outputStream is FileStream ){
-				outputStream.Close();
-				log.DebugFormat("Delete {0}", (outputStream as FileStream).Name);
-				File.Delete((outputStream as FileStream).Name);
-			}
-		}
+            if ( outputStream is FileStream ){
+                outputStream.Close();
+                log.DebugFormat("Delete {0}", (outputStream as FileStream).Name);
+                File.Delete((outputStream as FileStream).Name);
+            }
+        }
 
-		private void PrintOpenSearchDescription(string arg) {
+        private void PrintOpenSearchDescription(string arg) {
 
             Match argMatch = argRegex.Match(arg);
             string type = argMatch.Groups[1].Value;
@@ -901,18 +903,16 @@ namespace Terradue.OpenSearch.Client {
         /// </summary>
         /// <returns>The output stream.</returns>
         private Stream InitializeOutputStream(int index = 0) {
-            if (outputFilePathArg == null) {
-                return Console.OpenStandardOutput();
-            } else {
-				string path = outputFilePathArg;
-				if ( path.Contains("%index%") ){
-					path = path.Replace("%index%", index.ToString());
-				} else if (index > 0){
-					path += "-" + index;
-				}
-				log.DebugFormat("output to {0}", path);
-                return new FileStream(path, FileMode.Create);
+            if (outputFilePathArg == null) return Console.OpenStandardOutput();
+
+            string path = outputFilePathArg;
+            if ( path.Contains("%index%") ){
+                path = path.Replace("%index%", index.ToString());
+            } else if (index > 0){
+                path += "-" + index;
             }
+            log.DebugFormat("output to {0}", path);
+            return new FileStream(path, FileMode.Create);
         }
 
 
@@ -1063,7 +1063,8 @@ namespace Terradue.OpenSearch.Client {
                     XmlNamespaceManager nsm = new XmlNamespaceManager(doc.NameTable);
                     nsm.AddNamespace("gml32", "http://www.opengis.net/gml/3.2");
                     nsm.AddNamespace("gml", "http://www.opengis.net/gml");
-                    XmlNodeList posLists = doc.SelectNodes("//gml32:posList | //gml:posList", nsm);
+                    nsm.AddNamespace("georss", "http://www.georss.org/georss");
+                    XmlNodeList posLists = doc.SelectNodes("//gml32:posList | //gml:posList | //georss:polygon", nsm);
                     foreach (XmlNode posList in posLists) {
                         (posList as XmlElement).RemoveAttribute("count");
                         posList.InnerText = AdjustCoordinates(posList.InnerText);
@@ -1090,6 +1091,7 @@ namespace Terradue.OpenSearch.Client {
             foreach (IOpenSearchResultItem item in osr.Items) {
                 if (badIdentifierRegex.Match(item.Identifier).Success && goodIdentifierRegex.Match(item.Title.Text).Success) {
                     item.Identifier = item.Title.Text;
+                    item.Id = item.Title.Text;
                 }
             }
         }
@@ -1098,7 +1100,7 @@ namespace Terradue.OpenSearch.Client {
 
         public string AdjustCoordinates(string original) {
             string result = String.Empty;
-            Regex numRegex = new Regex(@"-?(\d*\.\d+|\d+)");
+            Regex numRegex = new Regex(@"-?(\d*\.\d+|\d+)([Ee]-?\d+)?");
             MatchCollection numMatch = numRegex.Matches(original);
             int count = numMatch.Count / 2;
             double lastLat = 0, lastLon = 0;

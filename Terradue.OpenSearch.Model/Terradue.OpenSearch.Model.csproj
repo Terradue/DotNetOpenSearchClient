@@ -120,7 +120,7 @@
       <HintPath>..\packages\Terradue.ServiceModel.Syndication.1.0.7\lib\net45\Terradue.ServiceModel.Syndication.dll</HintPath>
     </Reference>
     <Reference Include="Terradue.OpenSearch.Usgs">
-      <HintPath>..\packages\Terradue.OpenSearch.Usgs.1.1.4\lib\net45\Terradue.OpenSearch.Usgs.dll</HintPath>
+      <HintPath>..\packages\Terradue.OpenSearch.Usgs.1.1.5\lib\net45\Terradue.OpenSearch.Usgs.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>

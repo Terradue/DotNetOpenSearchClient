@@ -62,7 +62,11 @@ namespace Terradue.OpenSearch.Model.EarthObservation.OpenSearchable {
             AtomFeed feed = new AtomFeed();
 
             int count, startIndex;
-            if (String.IsNullOrEmpty(parameters["count"]) || !Int32.TryParse(parameters["count"], out count)) count = 20;
+            if (parameters["count"] == "unlimited") {
+                count = 10000;
+            } else if (String.IsNullOrEmpty(parameters["count"]) || !Int32.TryParse(parameters["count"], out count)) {
+                count = 20;
+            }
             if (String.IsNullOrEmpty(parameters["startIndex"]) || !Int32.TryParse(parameters["startIndex"], out startIndex)) startIndex = 1;
 
             string type = string.IsNullOrEmpty(parameters["auxtype"]) ? "aux_resorb" : parameters["auxtype"];
@@ -99,6 +103,7 @@ namespace Terradue.OpenSearch.Model.EarthObservation.OpenSearchable {
             while (day < dayCount) {
                 log.DebugFormat("Querying day {0}/{1}: {2:yyyy-MM-dd}", day + 1, dayCount, startDate.AddDays(day));
 
+                if (auxBaseUrl.Host == "qc.sentinel1.eo.esa.int") auxBaseUrl = new Uri(auxBaseUrl.AbsoluteUri.Replace("qc.sentinel1.eo.esa.int", "aux.sentinel1.eo.esa.int"));
                 Uri url = BuildUrl(auxBaseUrl, type, startDate.AddDays(day));
 
                 var request = WebRequest.Create(url);

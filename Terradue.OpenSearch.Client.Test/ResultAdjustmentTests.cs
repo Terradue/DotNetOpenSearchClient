@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text;
 using System.Net;
+using System.Xml;
 
 namespace Terradue.OpenSearch.Client.Test {
     
@@ -11,6 +12,8 @@ namespace Terradue.OpenSearch.Client.Test {
     public class ResultAdjustmentTests {
 
         OpenSearchClient client;
+        XmlNamespaceManager nsm;
+        string geometryXPath = "//gml32:posList | //gml:posList | //georss:polygon";
 
         [SetUp]
         public void SetUpClient() {
@@ -23,158 +26,125 @@ namespace Terradue.OpenSearch.Client.Test {
             OpenSearchClient.parameterArgs = new List<string>();
             OpenSearchClient.dataModelParameterArgs = new List<string>();
             OpenSearchClient.queryModelArg = "GeoTime";
+
+            XmlDocument doc = new XmlDocument();
+            nsm = new XmlNamespaceManager(doc.NameTable);
+            nsm.AddNamespace("gml32", "http://www.opengis.net/gml/3.2");
+            nsm.AddNamespace("gml", "http://www.opengis.net/gml");
+            nsm.AddNamespace("georss", "http://www.georss.org/georss");
+            nsm.AddNamespace("atom", "http://www.w3.org/2005/Atom");
+            nsm.AddNamespace("dc", "http://purl.org/dc/elements/1.1/");
         }
 
         [Test()]
-        public void ScihubPolyonTest() {
+        public void ScihubPolyonTest1() {
 
             OpenSearchClient.baseUrlArg.Add("https://scihub.copernicus.eu/apihub");
-            OpenSearchClient.netCreds = new List<NetworkCredential> { new NetworkCredential("metadata03", "metadata03terradue") };
 
             OpenSearchClient.queryModelArg = "Scihub";
             OpenSearchClient.parameterArgs.Add("uid=S3A_SL_1_RBT____20190414T044653_20190414T044953_20190415T091626_0179_043_290_1440_LN2_O_NT_003");
-            OpenSearchClient.parameterArgs.Add("psn=Sentinel-3");
-            OpenSearchClient.outputFilePathArg = "mytest.atom.xml";
 
             OpenSearchClient.metadataPaths.Add("{}");
 
-            client.ProcessQuery();
-
-            /*MemoryStream ms = new MemoryStream();
-
-            client.ProcessQuery(ms);
-
-            ms.Seek(0, SeekOrigin.Begin);
-
-            var enclosure = Encoding.UTF8.GetString(ms.ToArray());
-
-            Assert.AreEqual("http://download.terradue.com/sentinel-1/2016/05/24/S1A_IW_SLC__1SDV_20160524T160839_20160524T160906_011403_011568_F048.zip\n", enclosure);*/
-
-        }
-
-        [Test()]
-		public void Issue_19006()
-		{
-
-			OpenSearchClient.baseUrlArg.Add("https://data2.terradue.com:443/eop/landsat8/series/ecop-gran-paradiso/search?format=atom&uid=LC81950292016117LGN00");
-
-			OpenSearchClient.queryModelArg = "EOP";
-
-			OpenSearchClient.metadataPaths.Add("wrsLatitudeGrid");
-
-			MemoryStream ms = new MemoryStream();
-
-			client.ProcessQuery(ms);
-
-			ms.Seek(0, SeekOrigin.Begin);
-
-			var enclosure = Encoding.UTF8.GetString(ms.ToArray());
-
-			Assert.AreEqual("29\n", enclosure);
-
-		}
-
-        //[Test()]
-        public void ValueTooLarge() {
-
-            OpenSearchClient.baseUrlArg.Add("https://scihub.copernicus.eu/apihub/odata/v1");
-
-            OpenSearchClient.metadataPaths.Add("{}");
-
-            OpenSearchClient.parameterArgs.Add("profile=eop");
-
-            OpenSearchClient.parameterArgs.Add("count=1");
-
-            OpenSearchClient.parameterArgs.Add("uid=S1A_S6_SLC__1SSV_20160601T055814_20160601T055843_011513_011908_173A");
-
-            OpenSearchClient.queryModelArg = "Scihub";
-
-            string[] creds = "t2da:t2da".Split(':');
-            OpenSearchClient.netCreds = new List<NetworkCredential> { new NetworkCredential(creds[0], creds[1])};
-
-            MemoryStream ms = new MemoryStream();
-
-            client.ProcessQuery(ms);
-
-            ms.Seek(0, SeekOrigin.Begin);
-
-            var enclosure = Encoding.UTF8.GetString(ms.ToArray());
-
-            Assert.AreEqual("s3://sentinel-1/2015/05/S1A_IW_GRDH_1SDV_20150522T154256_20150522T154321_006036_007CB1_593F.zip\n", enclosure);
-
-        }
-	    
-	    
-	    
-	    [Test()]
-	    public void DataAuthor84() {
-
-		    
-		    //opensearch-client -p count=20 -p startIndex=1 -m EOP -p start=2017-11-30 -p auxtype=aux_resorb -p orbits=true https://aux.sentinel1.eo.esa.int/ identifier
-		    OpenSearchClient.baseUrlArg.Add("https://aux.sentinel1.eo.esa.int/");
-
-		    OpenSearchClient.metadataPaths.Add("identifier");
-
-		    OpenSearchClient.parameterArgs.Add("profile=eop");
-
-		    OpenSearchClient.parameterArgs.Add("count=20");
-
-		    OpenSearchClient.parameterArgs.Add("start=2017-11-30");
-		    
-		    OpenSearchClient.parameterArgs.Add("startIndex=1");
-		    
-		    OpenSearchClient.parameterArgs.Add("auxtype=aux_resorb");
-		    
-		    OpenSearchClient.parameterArgs.Add("orbits=true");
-
-		    OpenSearchClient.queryModelArg = "EOP";
-
-		    MemoryStream ms = new MemoryStream();
-
-		    client.ProcessQuery(ms);
-
-		    ms.Seek(0, SeekOrigin.Begin);
-
-		    var enclosure = Encoding.UTF8.GetString(ms.ToArray());
-
-		  Console.WriteLine(enclosure);
-
-	    }
-	    
-        [Test()]
-        public void DataAuthor123() {
-
-            string[] args = new string[] {
-                "-m", "Scihub",
-                "-p", "modified=2018-08-28T13:00:00Z/2018-08-28T14:00:00Z/",
-                "-p", "count=unlimited",
-                "--pagination", "100",
-                "-a", "t2user:1psed1xiT",
-                "http://scihub.terradue.com/apihub",
-                "id,identifier,published,updated"
-            };
-
-            OpenSearchClient.baseUrlArg = null;
-            OpenSearchClient.metadataPaths = null;
-            OpenSearchClient.GetArgs(args);
-
-            MemoryStream ms = new MemoryStream();
-
-            client.ProcessQuery(ms);
-
-            ms.Seek(0, SeekOrigin.Begin);
-            int count = 0;
-
-            using (StreamReader sr = new StreamReader(ms)) {
-                string line;
-                while ((line = sr.ReadLine()) != null) count++;
+            XmlDocument doc = new XmlDocument();
+            using (MemoryStream ms = new MemoryStream()) {
+                client.ProcessQuery(ms);
+                ms.Seek(0, SeekOrigin.Begin);
+                doc.Load(ms);
             }
 
-            Console.WriteLine("Products found: {0}", count);
-            Assert.IsTrue(count > 100, "The number of products seems too small");
+            int total = 0;
+            int corrected = 0;
+
+            XmlNodeList posLists = doc.SelectNodes(geometryXPath, nsm);
+            foreach (XmlNode posList in posLists) {
+                string text = posList.InnerText;
+                if (text.Contains("85.05115 180 85.05115 72.8804")) {
+                    total++;
+                }
+                if (text.Contains("85.05115 180 85.0512 126.4402 85.05115 72.8804")) {
+                    total++;
+                    corrected++;
+                }
+            }
+
+            Console.WriteLine("Total polygons to correct: {0}; polygons corrected: {1}", total, corrected);
+
+            Assert.Greater(total, 0);
+            Assert.AreEqual(total, corrected);
+        }
+
+        [Test()]
+        public void ScihubPolyonTest2() {
+
+            OpenSearchClient.baseUrlArg.Add("https://scihub.copernicus.eu/apihub");
+
+            OpenSearchClient.queryModelArg = "Scihub";
+            OpenSearchClient.parameterArgs.Add("uid=S3A_SY_2_VGP____20190415T074341_20190415T082648_20190416T152039_2587_043_306______LN2_O_NT_002");
+            OpenSearchClient.parameterArgs.Add("psn=Sentinel-3");
+
+            OpenSearchClient.metadataPaths.Add("{}");
+
+            XmlDocument doc = new XmlDocument();
+            using (MemoryStream ms = new MemoryStream()) {
+                client.ProcessQuery(ms);
+                ms.Seek(0, SeekOrigin.Begin);
+                doc.Load(ms);
+            }
+
+            int total = 0;
+            int corrected = 0;
+
+            XmlNodeList posLists = doc.SelectNodes(geometryXPath, nsm);
+            foreach (XmlNode posList in posLists) {
+                string text = posList.InnerText;
+                if (text.Contains("85.05115 132.658809581381 85.05115 34.7498902383989")) {
+                    total++;
+                }
+                if (text.Contains("85.05115 132.658809581381 85.0512 83.7043 85.05115 34.7498902383989")) {
+                    total++;
+                    corrected++;
+                }
+            }
+
+            Console.WriteLine("Total polygons to correct: {0}; polygons corrected: {1}", total, corrected);
+
+            Assert.Greater(total, 0);
+            Assert.AreEqual(total, corrected);
+        }
+
+
+        [Test()]
+        public void VirtualArchiveIdentifierTest() {
+
+            OpenSearchClient.baseUrlArg.Add("http://eo-virtual-archive4.esa.int/search/COSMOSKYMED/rdf");
+
+
+            OpenSearchClient.parameterArgs.Add("count=unlimited");
+            OpenSearchClient.parameterArgs.Add("modified_start=2019-05-01");
+            OpenSearchClient.parameterArgs.Add("modified_stop=2019-05-26");
+            OpenSearchClient.parameterArgs.Add("uid=CSKS1_RAW_B_HI_08_HH_RA_SF_20190524161228_20190524161235");
+            OpenSearchClient.adjustIdentifiers = true;
+            OpenSearchClient.metadataPaths.Add("{}");
+
+            XmlDocument doc = new XmlDocument();
+            using (MemoryStream ms = new MemoryStream()) {
+                client.ProcessQuery(ms);
+                ms.Seek(0, SeekOrigin.Begin);
+                doc.Load(ms);
+            }
+
+            XmlNode idNode = doc.SelectSingleNode("atom:feed/atom:entry/atom:id", nsm);
+            Assert.NotNull(idNode);
+            Assert.AreEqual("CSKS1_RAW_B_HI_08_HH_RA_SF_20190524161228_20190524161235", idNode.InnerText);
+
+            XmlNode identifierNode = doc.SelectSingleNode("atom:feed/atom:entry/dc:identifier", nsm);
+            Assert.NotNull(identifierNode);
+            Assert.AreEqual("CSKS1_RAW_B_HI_08_HH_RA_SF_20190524161228_20190524161235", identifierNode.InnerText);
 
         }
-            
+
     }
+
 }
 
