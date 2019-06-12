@@ -43,6 +43,7 @@ namespace Terradue.OpenSearch.Model.EarthObservation {
             metadataExtractors.Add("id", new IdMetadataExtractor());
 			metadataExtractors.Add("cc", new CloudCoverMetadataExtractor());
             metadataExtractors.Add("sensorResolution", new SensorResolutionMetadataExtractor());
+            metadataExtractors.Add("vs", new VendorSpecificMetadataExtractor());
         }
 
         public override string Name {
@@ -83,8 +84,7 @@ namespace Terradue.OpenSearch.Model.EarthObservation {
 
 				IOpenSearchable e = null;
                 // QC Sentinel1 case
-                if (url.Host == "qc.sentinel1.eo.esa.int")
-                {
+                if (url.Host == "qc.sentinel1.eo.esa.int") {
                     log.DebugFormat("QC Sentinel1 source. No longer supported; using aux.sentinel1.eo.esa.int instead");
                     log.DebugFormat("AUX Sentinel1 source. Trying to get the earthobservation profile");
                     //e = new Sentinel1QcOpenSearchable(url, settings.OpenSearchEngine);
@@ -99,8 +99,7 @@ namespace Terradue.OpenSearch.Model.EarthObservation {
                     continue;
                 }
                 // USGS case
-                if (url.Host == "earthexplorer.usgs.gov")
-				{
+                if (url.Host == "earthexplorer.usgs.gov") {
 					log.DebugFormat("Usgs source. Trying to get the earthobservation profile");
 
 					// usgsOpenSearchable

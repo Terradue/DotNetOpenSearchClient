@@ -93,16 +93,16 @@
       <HintPath>..\packages\Terradue.Metadata.EarthObservation.1.5.9\lib\net45\Terradue.Metadata.EarthObservation.dll</HintPath>
     </Reference>
     <Reference Include="Terradue.OpenSearch">
-      <HintPath>..\packages\Terradue.OpenSearch.1.16.0-build20190314T091335\lib\net45\Terradue.OpenSearch.dll</HintPath>
+      <HintPath>..\packages\Terradue.OpenSearch.1.16.1\lib\net45\Terradue.OpenSearch.dll</HintPath>
     </Reference>
     <Reference Include="Terradue.ServiceModel.Syndication">
-      <HintPath>..\packages\Terradue.ServiceModel.Syndication.1.0.4\lib\net452\Terradue.ServiceModel.Syndication.dll</HintPath>
+      <HintPath>..\packages\Terradue.ServiceModel.Syndication.1.0.7\lib\net45\Terradue.ServiceModel.Syndication.dll</HintPath>
     </Reference>
     <Reference Include="Terradue.GeoJson">
       <HintPath>..\packages\Terradue.GeoJson.1.9.2\lib\net45\Terradue.GeoJson.dll</HintPath>
     </Reference>
     <Reference Include="Terradue.OpenSearch.SciHub">
-      <HintPath>..\packages\Terradue.OpenSearch.SciHub.1.7.4\lib\net45\Terradue.OpenSearch.SciHub.dll</HintPath>
+      <HintPath>..\packages\Terradue.OpenSearch.SciHub.1.7.12\lib\net45\Terradue.OpenSearch.SciHub.dll</HintPath>
     </Reference>
     <Reference Include="NuGet4Mono">
       <HintPath>..\packages\NuGet4Mono.0.8.0\lib\net45\NuGet4Mono.exe</HintPath>
@@ -114,7 +114,10 @@
       <HintPath>..\packages\Terradue.ServiceModel.Ogc.OwsContext.1.2.0\lib\net45\Terradue.ServiceModel.Ogc.OwsContext.dll</HintPath>
     </Reference>
     <Reference Include="Terradue.OpenSearch.Usgs">
-      <HintPath>..\packages\Terradue.OpenSearch.Usgs.1.1.4\lib\net45\Terradue.OpenSearch.Usgs.dll</HintPath>
+      <HintPath>..\packages\Terradue.OpenSearch.Usgs.1.1.6\lib\net45\Terradue.OpenSearch.Usgs.dll</HintPath>
+    </Reference>
+    <Reference Include="Terradue.OpenSearch.RdfEO">
+      <HintPath>..\packages\Terradue.OpenSearch.RdfEO.1.4.3\lib\net45\Terradue.OpenSearch.RdfEO.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -122,6 +125,8 @@
     <Compile Include="GeoTimeModelTests.cs" />
     <Compile Include="CwicTests.cs" />
     <Compile Include="ScihubTests.cs" />
+    <Compile Include="ResultAdjustmentTests.cs" />
+    <Compile Include="Sentinel1AuxTests.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>

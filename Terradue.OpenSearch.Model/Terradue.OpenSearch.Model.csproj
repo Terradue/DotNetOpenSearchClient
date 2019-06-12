@@ -107,9 +107,6 @@
     <Reference Include="Terradue.Metadata.EarthObservation">
       <HintPath>..\packages\Terradue.Metadata.EarthObservation.1.5.9\lib\net45\Terradue.Metadata.EarthObservation.dll</HintPath>
     </Reference>
-    <Reference Include="Terradue.ServiceModel.Syndication">
-      <HintPath>..\packages\Terradue.ServiceModel.Syndication.1.0.4\lib\net452\Terradue.ServiceModel.Syndication.dll</HintPath>
-    </Reference>
     <Reference Include="Terradue.OpenSearch">
       <HintPath>..\packages\Terradue.OpenSearch.1.16.1\lib\net45\Terradue.OpenSearch.dll</HintPath>
     </Reference>
@@ -117,13 +114,13 @@
       <HintPath>..\packages\Terradue.GeoJson.1.9.2\lib\net45\Terradue.GeoJson.dll</HintPath>
     </Reference>
     <Reference Include="Terradue.OpenSearch.SciHub">
-      <HintPath>..\packages\Terradue.OpenSearch.SciHub.1.7.4\lib\net45\Terradue.OpenSearch.SciHub.dll</HintPath>
+      <HintPath>..\packages\Terradue.OpenSearch.SciHub.1.7.12\lib\net45\Terradue.OpenSearch.SciHub.dll</HintPath>
     </Reference>
     <Reference Include="Terradue.ServiceModel.Syndication">
       <HintPath>..\packages\Terradue.ServiceModel.Syndication.1.0.7\lib\net45\Terradue.ServiceModel.Syndication.dll</HintPath>
     </Reference>
     <Reference Include="Terradue.OpenSearch.Usgs">
-      <HintPath>..\packages\Terradue.OpenSearch.Usgs.1.1.4\lib\net45\Terradue.OpenSearch.Usgs.dll</HintPath>
+      <HintPath>..\packages\Terradue.OpenSearch.Usgs.1.1.6\lib\net45\Terradue.OpenSearch.Usgs.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
