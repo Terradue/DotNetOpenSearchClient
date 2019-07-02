@@ -1,7 +1,7 @@
 pipeline {
   parameters{
     booleanParam(name: 'RUN_TESTS', defaultValue: false, description: 'If this parameter is set, the tests will run during the build.', )
-    string(name: 'TEST_AUTH', defaultValue: '', description: 'Add pairs of &lt;testid&gt;:&lt;password&gt; tuples separated by comma. If not specified, tests requring authentication are skipped.', )
+    string(name: 'TEST_AUTH', defaultValue: '', description: 'Add &lt;name&gt;=&lt;username&gt;:&lt;password&gt; triples separated by spaces. If not specified, tests requring authentication are skipped.', )
     choice(name: 'DOTNET_CONFIG', choices: "Debug\nRelease", description: 'Debug will produce symbols in the assmbly to be able to debug it at runtime. This is the recommended option for feature, hotfix testing or release candidate.<br/><strong>For publishing a release from master branch, please choose Release.</strong>', )
    }
   agent { node { label 'centos7-mono4' } }

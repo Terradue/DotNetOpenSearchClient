@@ -6,10 +6,10 @@ using System.Text;
 using System.Net;
 using System.Xml;
 
-namespace Terradue.OpenSearch.Client.Test {
+namespace Terradue.OpenSearch.Client.Test{
     
     [TestFixture()]
-    public class ResultAdjustmentTests {
+    public class ResultAdjustmentTests : TestBase {
 
         OpenSearchClient client;
         XmlNamespaceManager nsm;
@@ -34,12 +34,17 @@ namespace Terradue.OpenSearch.Client.Test {
             nsm.AddNamespace("georss", "http://www.georss.org/georss");
             nsm.AddNamespace("atom", "http://www.w3.org/2005/Atom");
             nsm.AddNamespace("dc", "http://purl.org/dc/elements/1.1/");
+
+            LoadCredentials();
         }
 
         [Test()]
-        public void ScihubPolyonTest1() {
+        public void Test_SciHubPolyon_01() {
+
+            Credential credential = GetCredential("SciHubPolygon_01", true);
 
             OpenSearchClient.baseUrlArg.Add("https://scihub.copernicus.eu/apihub");
+            OpenSearchClient.netCreds = new List<NetworkCredential> { new NetworkCredential(credential.Username, credential.Password) };
 
             OpenSearchClient.queryModelArg = "Scihub";
             OpenSearchClient.parameterArgs.Add("uid=S3A_SL_1_RBT____20190414T044653_20190414T044953_20190415T091626_0179_043_290_1440_LN2_O_NT_003");
@@ -75,9 +80,12 @@ namespace Terradue.OpenSearch.Client.Test {
         }
 
         [Test()]
-        public void ScihubPolyonTest2() {
+        public void Test_SciHubPolyon_02() {
+
+            Credential credential = GetCredential("SciHubPolygon_02", true);
 
             OpenSearchClient.baseUrlArg.Add("https://scihub.copernicus.eu/apihub");
+            OpenSearchClient.netCreds = new List<NetworkCredential> { new NetworkCredential(credential.Username, credential.Password) };
 
             OpenSearchClient.queryModelArg = "Scihub";
             OpenSearchClient.parameterArgs.Add("uid=S3A_SY_2_VGP____20190415T074341_20190415T082648_20190416T152039_2587_043_306______LN2_O_NT_002");
@@ -115,10 +123,9 @@ namespace Terradue.OpenSearch.Client.Test {
 
 
         [Test()]
-        public void VirtualArchiveIdentifierTest() {
+        public void Test_VirtualArchiveIdentifier() {
 
             OpenSearchClient.baseUrlArg.Add("http://eo-virtual-archive4.esa.int/search/COSMOSKYMED/rdf");
-
 
             OpenSearchClient.parameterArgs.Add("count=unlimited");
             OpenSearchClient.parameterArgs.Add("modified_start=2019-05-01");
