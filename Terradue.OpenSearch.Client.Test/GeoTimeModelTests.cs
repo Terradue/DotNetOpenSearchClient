@@ -64,8 +64,8 @@ namespace Terradue.OpenSearch.Client.Test {
             MemoryStream ms = new MemoryStream();
             client.ProcessQuery(ms);
             ms.Seek(0, SeekOrigin.Begin);
-            var wkt = Encoding.UTF8.GetString(ms.ToArray());
-            Assert.AreEqual("2012-04-07T06:12:42.9110000Z\n", wkt);
+            var date = Encoding.UTF8.GetString(ms.ToArray());
+            Assert.AreEqual("2012-04-07T06:12:42.9110000Z\n", date);
 
         }
 
@@ -77,8 +77,8 @@ namespace Terradue.OpenSearch.Client.Test {
             MemoryStream ms = new MemoryStream();
             client.ProcessQuery(ms);
             ms.Seek(0, SeekOrigin.Begin);
-            var wkt = Encoding.UTF8.GetString(ms.ToArray());
-            Assert.AreEqual("2012-04-07T06:12:59.1460000Z\n", wkt);
+            var date = Encoding.UTF8.GetString(ms.ToArray());
+            Assert.AreEqual("2012-04-07T06:12:59.1460000Z\n", date);
 
         }
             

@@ -42,14 +42,15 @@ namespace Terradue.OpenSearch.Client.Test {
             OpenSearchClient.parameterArgs.Add("timeStart=2016-05-03T00:27:10Z");
             OpenSearchClient.parameterArgs.Add("timeEnd=2016-05-03T00:27:40Z");
             OpenSearchClient.queryModelArg = "EOP";
-            MemoryStream ms = new MemoryStream();
-            client.ProcessQuery(ms);
-            ms.Seek(0, SeekOrigin.Begin);
-            var xr = XmlReader.Create(ms);
-            XDocument doc = XDocument.Load(xr);
 
-            doc.Save("../../out/landsattest.xml");
+            XmlDocument doc = new XmlDocument();
+            using (MemoryStream ms = new MemoryStream()) {
+                client.ProcessQuery(ms);
+                ms.Seek(0, SeekOrigin.Begin);
+                doc.Load(ms);
+                //doc.Save("../../out/landsattest.xml");
 
+            }
 
         }
 

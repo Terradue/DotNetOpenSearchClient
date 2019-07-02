@@ -15,7 +15,7 @@
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>bin\Debug</OutputPath>
+    <OutputPath>bin</OutputPath>
     <DefineConstants>DEBUG;</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -25,7 +25,7 @@
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>full</DebugType>
     <Optimize>true</Optimize>
-    <OutputPath>bin\Release</OutputPath>
+    <OutputPath>bin</OutputPath>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <ConsolePause>false</ConsolePause>
@@ -87,13 +87,13 @@
     <Reference Include="System.Xml" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="Terradue.ServiceModel.Ogc">
-      <HintPath>..\packages\Terradue.ServiceModel.Ogc.2.1.1\lib\net45\Terradue.ServiceModel.Ogc.dll</HintPath>
+      <HintPath>..\packages\Terradue.ServiceModel.Ogc.2.1.2\lib\net45\Terradue.ServiceModel.Ogc.dll</HintPath>
     </Reference>
     <Reference Include="Terradue.Metadata.EarthObservation">
       <HintPath>..\packages\Terradue.Metadata.EarthObservation.1.5.9\lib\net45\Terradue.Metadata.EarthObservation.dll</HintPath>
     </Reference>
     <Reference Include="Terradue.OpenSearch">
-      <HintPath>..\packages\Terradue.OpenSearch.1.16.1\lib\net45\Terradue.OpenSearch.dll</HintPath>
+      <HintPath>..\packages\Terradue.OpenSearch.1.16.2\lib\net45\Terradue.OpenSearch.dll</HintPath>
     </Reference>
     <Reference Include="Terradue.ServiceModel.Syndication">
       <HintPath>..\packages\Terradue.ServiceModel.Syndication.1.0.7\lib\net45\Terradue.ServiceModel.Syndication.dll</HintPath>
@@ -102,7 +102,7 @@
       <HintPath>..\packages\Terradue.GeoJson.1.9.2\lib\net45\Terradue.GeoJson.dll</HintPath>
     </Reference>
     <Reference Include="Terradue.OpenSearch.SciHub">
-      <HintPath>..\packages\Terradue.OpenSearch.SciHub.1.7.12\lib\net45\Terradue.OpenSearch.SciHub.dll</HintPath>
+      <HintPath>..\packages\Terradue.OpenSearch.SciHub.1.7.14\lib\net45\Terradue.OpenSearch.SciHub.dll</HintPath>
     </Reference>
     <Reference Include="NuGet4Mono">
       <HintPath>..\packages\NuGet4Mono.0.8.0\lib\net45\NuGet4Mono.exe</HintPath>
@@ -119,6 +119,18 @@
     <Reference Include="Terradue.OpenSearch.RdfEO">
       <HintPath>..\packages\Terradue.OpenSearch.RdfEO.1.4.3\lib\net45\Terradue.OpenSearch.RdfEO.dll</HintPath>
     </Reference>
+    <Reference Include="System.Core" />
+    <Reference Include="System.Net" />
+    <Reference Include="System.Runtime.Caching" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.ServiceModel" />
+    <Reference Include="System.Web" />
+    <Reference Include="mscorlib" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.IO" />
+    <Reference Include="System.IO.Compression" />
+    <Reference Include="System.Numerics" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BugTests.cs" />
@@ -127,6 +139,8 @@
     <Compile Include="ScihubTests.cs" />
     <Compile Include="ResultAdjustmentTests.cs" />
     <Compile Include="Sentinel1AuxTests.cs" />
+    <Compile Include="_NewTests.cs" />
+    <Compile Include="_TestBase.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>

@@ -13,7 +13,6 @@ namespace Terradue.OpenSearch.Client.Test {
 
         OpenSearchClient client;
         XmlNamespaceManager nsm;
-        string geometryXPath = "//gml32:posList | //gml:posList | //georss:polygon";
 
         [SetUp]
         public void SetUpClient() {
@@ -141,7 +140,6 @@ namespace Terradue.OpenSearch.Client.Test {
                 client.ProcessQuery(ms);
                 ms.Seek(0, SeekOrigin.Begin);
                 doc.Load(ms);
-                doc.Save("test.result3.xml");
             }
 
             XmlNodeList entryNodes = doc.SelectNodes("atom:feed/atom:entry", nsm);
