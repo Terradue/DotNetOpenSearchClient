@@ -51,12 +51,7 @@ namespace Terradue.OpenSearch.Client.Test{
 
             OpenSearchClient.metadataPaths.Add("{}");
 
-            XmlDocument doc = new XmlDocument();
-            using (MemoryStream ms = new MemoryStream()) {
-                client.ProcessQuery(ms);
-                ms.Seek(0, SeekOrigin.Begin);
-                doc.Load(ms);
-            }
+            XmlDocument doc = client.GetXmlResult();
 
             int total = 0;
             int corrected = 0;
@@ -93,12 +88,7 @@ namespace Terradue.OpenSearch.Client.Test{
 
             OpenSearchClient.metadataPaths.Add("{}");
 
-            XmlDocument doc = new XmlDocument();
-            using (MemoryStream ms = new MemoryStream()) {
-                client.ProcessQuery(ms);
-                ms.Seek(0, SeekOrigin.Begin);
-                doc.Load(ms);
-            }
+            XmlDocument doc = client.GetXmlResult();
 
             int total = 0;
             int corrected = 0;
@@ -122,6 +112,41 @@ namespace Terradue.OpenSearch.Client.Test{
         }
 
 
+        [Test]
+        public void Test_SciHubPolyon_03() {
+
+            // DATAAUTHOR-168
+            // footprints with scientific notation for coordinates
+            // opensearch-client -m Scihub -p uid=S3A_SY_2_VGP____20190415T074341_20190415T082648_20190416T152039_2587_043_306______LN2_O_NT_002 -p psn=Sentinel-3 https://scihub.copernicus.eu/apihub {}
+
+            Credential credential = GetCredential("SciHubPolygon_02", true); // same as other test case
+
+            OpenSearchClient.baseUrlArg.Add("https://scihub.copernicus.eu/apihub");
+            OpenSearchClient.netCreds = new List<NetworkCredential> { new NetworkCredential(credential.Username, credential.Password) };
+
+            OpenSearchClient.queryModelArg = "Scihub";
+            OpenSearchClient.parameterArgs.Add("uid=S3A_SY_2_VGP____20190415T074341_20190415T082648_20190416T152039_2587_043_306______LN2_O_NT_002");
+            OpenSearchClient.parameterArgs.Add("psn=Sentinel-3");
+
+            OpenSearchClient.metadataPaths.Add("{}");
+
+            XmlDocument doc = client.GetXmlResult();
+
+            int count = 0;
+
+            XmlNodeList posLists = doc.SelectNodes(geometryXPath, nsm);
+            foreach (XmlNode posList in posLists) {
+                string text = posList.InnerText;
+                if (text.Contains(" 1.30829628547697E-18 ")) {
+                    count++;
+                }
+            }
+
+            Console.WriteLine("Occurences of 1.30829628547697E-18: {0}", count);
+
+            Assert.Greater(count, 0);
+        }
+
         [Test()]
         public void Test_VirtualArchiveIdentifier() {
 
@@ -134,12 +159,7 @@ namespace Terradue.OpenSearch.Client.Test{
             OpenSearchClient.adjustIdentifiers = true;
             OpenSearchClient.metadataPaths.Add("{}");
 
-            XmlDocument doc = new XmlDocument();
-            using (MemoryStream ms = new MemoryStream()) {
-                client.ProcessQuery(ms);
-                ms.Seek(0, SeekOrigin.Begin);
-                doc.Load(ms);
-            }
+            XmlDocument doc = client.GetXmlResult();
 
             XmlNode idNode = doc.SelectSingleNode("atom:feed/atom:entry/atom:id", nsm);
             Assert.NotNull(idNode);

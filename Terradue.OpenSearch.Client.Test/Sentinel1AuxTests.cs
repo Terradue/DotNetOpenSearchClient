@@ -109,19 +109,8 @@ namespace Terradue.OpenSearch.Client.Test {
             OpenSearchClient.parameterArgs.Add("auxtype=aux_resorb");
             OpenSearchClient.metadataPaths.Add("identifier");
 
-            int totalCount;
-
-            using (MemoryStream ms = new MemoryStream()) {
-                client.ProcessQuery(ms);
-                ms.Seek(0, SeekOrigin.Begin);
-                StreamReader sr = new StreamReader(ms);
-                string line;
-                int count = 0;
-                while ((line = sr.ReadLine()) != null) count++;
-                sr.Close();
-                totalCount = count;
-            }
-            Assert.Greater(totalCount, 100);
+            int count = client.GetResultCount();
+            Assert.Greater(count, 100);
 
         }
 
@@ -135,12 +124,7 @@ namespace Terradue.OpenSearch.Client.Test {
             OpenSearchClient.parameterArgs.Add("auxtype=aux_resorb");
             OpenSearchClient.metadataPaths.Add("{}");
 
-            XmlDocument doc = new XmlDocument();
-            using (MemoryStream ms = new MemoryStream()) {
-                client.ProcessQuery(ms);
-                ms.Seek(0, SeekOrigin.Begin);
-                doc.Load(ms);
-            }
+            XmlDocument doc = client.GetXmlResult();
 
             XmlNodeList entryNodes = doc.SelectNodes("atom:feed/atom:entry", nsm);
             Assert.AreEqual(1, entryNodes.Count);

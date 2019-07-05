@@ -6,11 +6,12 @@ using System.Text;
 using System.Xml;
 using System.Xml.Linq;
 using System.Linq;
+using System.Net;
 
 namespace Terradue.OpenSearch.Client.Test {
     
     [TestFixture()]
-    public class ScihubTests {
+    public class ScihubTests : TestBase {
 
         OpenSearchClient client;
 
@@ -33,12 +34,18 @@ namespace Terradue.OpenSearch.Client.Test {
 
             OpenSearchClient.verbose = true;
 
+            LoadCredentials();
+
         }
 
-        [Test()]
+        [Ignore]
         public void S1EOP() {
 
+            Credential credential = GetCredential("SciHubPolygon_01", true);
+
             OpenSearchClient.baseUrlArg.Add("http://scihub.terradue.com/apihub/odata/v1");
+            OpenSearchClient.netCreds = new List<NetworkCredential> { new NetworkCredential(credential.Username, credential.Password) };
+
             OpenSearchClient.metadataPaths.Add("{}");
             OpenSearchClient.parameterArgs.Add("count=1");
             OpenSearchClient.parameterArgs.Add("profile=eop");

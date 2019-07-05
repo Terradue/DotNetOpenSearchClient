@@ -57,19 +57,7 @@ namespace Terradue.OpenSearch.Client.Test {
             OpenSearchClient.parameterArgs.Add("stop=2018-09-26");
             OpenSearchClient.metadataPaths.Add("identifier");
 
-
-            int count = 0;
-            using (MemoryStream ms = new MemoryStream()) {
-                client.ProcessQuery(ms);
-                ms.Seek(0, SeekOrigin.Begin);
-                StreamReader sr = new StreamReader(ms);
-                string line;
-                while ((line = sr.ReadLine()) != null) {
-                    Console.WriteLine(line);
-                    count++;
-                }
-                sr.Close();
-            }
+            int count = client.GetResultCount();
             Assert.Greater(count, 700);
 
         }
@@ -122,18 +110,7 @@ namespace Terradue.OpenSearch.Client.Test {
             OpenSearchClient.parameterArgs.Add("modified_stop=2019-06-21T00:00:00Z");
             OpenSearchClient.metadataPaths.Add("identifier");
 
-            using (MemoryStream ms = new MemoryStream()) {
-                client.ProcessQuery(ms);
-                ms.Seek(0, SeekOrigin.Begin);
-                StreamReader sr = new StreamReader(ms);
-                string line;
-                int count = 0;
-                while ((line = sr.ReadLine()) != null) {
-                    Console.WriteLine(line);
-                    count++;
-                }
-                sr.Close();
-            }
+            int count = client.GetResultCount();
 
         }
 
@@ -148,18 +125,7 @@ namespace Terradue.OpenSearch.Client.Test {
             OpenSearchClient.parameterArgs.Add("{http://a9.com/-/opensearch/extensions/time/1.0/}end=2019-06-06T00:00:00Z");
             OpenSearchClient.metadataPaths.Add("identifier");
 
-            int count = 0;
-            using (MemoryStream ms = new MemoryStream()) {
-                client.ProcessQuery(ms);
-                ms.Seek(0, SeekOrigin.Begin);
-                StreamReader sr = new StreamReader(ms);
-                string line;
-                while ((line = sr.ReadLine()) != null) {
-                    Console.WriteLine(line);
-                    count++;
-                }
-                sr.Close();
-            }
+            int count = client.GetResultCount();
             Assert.AreEqual(7, count);
 
             SetUpClient();
@@ -170,18 +136,7 @@ namespace Terradue.OpenSearch.Client.Test {
             OpenSearchClient.parameterArgs.Add("startDate=2019-06-20T00:00:00Z");
             OpenSearchClient.parameterArgs.Add("endDate=2019-06-21T00:00:00Z");
 
-            count = 0;
-            using (MemoryStream ms = new MemoryStream()) {
-                client.ProcessQuery(ms);
-                ms.Seek(0, SeekOrigin.Begin);
-                StreamReader sr = new StreamReader(ms);
-                string line;
-                while ((line = sr.ReadLine()) != null) {
-                    Console.WriteLine(line);
-                    count++;
-                }
-                sr.Close();
-            }
+            count = client.GetResultCount();
             Assert.AreEqual(7, count);
         }
 

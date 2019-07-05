@@ -8,7 +8,7 @@ using System.Net;
 namespace Terradue.OpenSearch.Client.Test {
     
     [TestFixture()]
-    public class BugTests {
+    public class BugTests : TestBase {
 
         OpenSearchClient client;
 
@@ -28,16 +28,20 @@ namespace Terradue.OpenSearch.Client.Test {
             OpenSearchClient.dataModelParameterArgs = new List<string>();
 
             OpenSearchClient.queryModelArg = "GeoTime";
+
+            LoadCredentials();
         }
 
-        [Test()]
-        public void Issue5() {
+        [Ignore()] // different download location (catalog URL previously data2.terradue.com)
+        public void Test_Issue5() {
 
-            OpenSearchClient.baseUrlArg.Add("https://data2.terradue.com/eop/s1-cache/dataset/search?format=atom&uid=S1A_IW_SLC__1SDV_20160524T160839_20160524T160906_011403_011568_F048");
+            OpenSearchClient.baseUrlArg.Add("https://catalog.terradue.com/sentinel1/search?format=atom");
+
+            OpenSearchClient.parameterArgs.Add("uid=S1A_IW_SLC__1SDV_20160524T160839_20160524T160906_011403_011568_F048");
 
             OpenSearchClient.metadataPaths.Add("enclosure");
 
-            OpenSearchClient.dataModelParameterArgs.Add("enclosure:scheme=http");
+            //OpenSearchClient.dataModelParameterArgs.Add("enclosure:scheme=http");
 
             MemoryStream ms = new MemoryStream();
 
@@ -51,8 +55,8 @@ namespace Terradue.OpenSearch.Client.Test {
 
         }
 
-		[Test()]
-		public void Issue_19006()
+		[Ignore()] // product not available
+		public void Test_Issue_19006()
 		{
 
 			OpenSearchClient.baseUrlArg.Add("https://data2.terradue.com:443/eop/landsat8/series/ecop-gran-paradiso/search?format=atom&uid=LC81950292016117LGN00");
@@ -74,22 +78,19 @@ namespace Terradue.OpenSearch.Client.Test {
 		}
 
         //[Test()]
-        public void ValueTooLarge() {
+        public void Test_ValueTooLarge() {
+
+            Credential credential = GetCredential("ValueTooLarge", true);
 
             OpenSearchClient.baseUrlArg.Add("https://scihub.copernicus.eu/apihub/odata/v1");
-
-            OpenSearchClient.metadataPaths.Add("{}");
-
-            OpenSearchClient.parameterArgs.Add("profile=eop");
-
-            OpenSearchClient.parameterArgs.Add("count=1");
-
-            OpenSearchClient.parameterArgs.Add("uid=S1A_S6_SLC__1SSV_20160601T055814_20160601T055843_011513_011908_173A");
+            OpenSearchClient.netCreds = new List<NetworkCredential> { new NetworkCredential(credential.Username, credential.Password) };
 
             OpenSearchClient.queryModelArg = "Scihub";
+            OpenSearchClient.parameterArgs.Add("profile=eop");
+            OpenSearchClient.parameterArgs.Add("count=1");
+            OpenSearchClient.parameterArgs.Add("uid=S1A_S6_SLC__1SSV_20160601T055814_20160601T055843_011513_011908_173A");
+            OpenSearchClient.metadataPaths.Add("{}");
 
-            string[] creds = "t2da:t2da".Split(':');
-            OpenSearchClient.netCreds = new List<NetworkCredential> { new NetworkCredential(creds[0], creds[1])};
 
             MemoryStream ms = new MemoryStream();
 
@@ -106,26 +107,17 @@ namespace Terradue.OpenSearch.Client.Test {
 	    
 	    
 	    [Test()]
-	    public void DataAuthor84() {
+	    public void Test_DataAuthor_84() {
 
-		    
 		    //opensearch-client -p count=20 -p startIndex=1 -m EOP -p start=2017-11-30 -p auxtype=aux_resorb -p orbits=true https://aux.sentinel1.eo.esa.int/ identifier
 		    OpenSearchClient.baseUrlArg.Add("https://aux.sentinel1.eo.esa.int/");
-
 		    OpenSearchClient.metadataPaths.Add("identifier");
-
 		    OpenSearchClient.parameterArgs.Add("profile=eop");
-
-		    OpenSearchClient.parameterArgs.Add("count=20");
-
+            OpenSearchClient.parameterArgs.Add("count=20");
 		    OpenSearchClient.parameterArgs.Add("start=2017-11-30");
-		    
 		    OpenSearchClient.parameterArgs.Add("startIndex=1");
-		    
 		    OpenSearchClient.parameterArgs.Add("auxtype=aux_resorb");
-		    
 		    OpenSearchClient.parameterArgs.Add("orbits=true");
-
 		    OpenSearchClient.queryModelArg = "EOP";
 
 		    MemoryStream ms = new MemoryStream();
@@ -141,7 +133,7 @@ namespace Terradue.OpenSearch.Client.Test {
 	    }
 	    
         [Test()]
-        public void DataAuthor123() {
+        public void Test_DataAuthor_123() {
 
             string[] args = new string[] {
                 "-m", "Scihub",
@@ -157,17 +149,7 @@ namespace Terradue.OpenSearch.Client.Test {
             OpenSearchClient.metadataPaths = null;
             OpenSearchClient.GetArgs(args);
 
-            MemoryStream ms = new MemoryStream();
-
-            client.ProcessQuery(ms);
-
-            ms.Seek(0, SeekOrigin.Begin);
-            int count = 0;
-
-            using (StreamReader sr = new StreamReader(ms)) {
-                string line;
-                while ((line = sr.ReadLine()) != null) count++;
-            }
+            int count = client.GetResultCount();
 
             Console.WriteLine("Products found: {0}", count);
             Assert.IsTrue(count > 100, "The number of products seems too small");
@@ -176,9 +158,12 @@ namespace Terradue.OpenSearch.Client.Test {
 
 
         [Test()]
-        public void DataAuthor164() {
+        public void Test_DataAuthor_164() {
+
+            Credential credential = GetCredential("DataAuthor_164", true);
 
             OpenSearchClient.baseUrlArg.Add("http://earthexplorer.usgs.gov");
+            OpenSearchClient.netCreds = new List<NetworkCredential> { new NetworkCredential(credential.Username, credential.Password) };
 
             OpenSearchClient.queryModelArg = "EOP";
             OpenSearchClient.parameterArgs.Add("profile=eop");
@@ -202,7 +187,7 @@ namespace Terradue.OpenSearch.Client.Test {
         }
 
         [Test()]
-        public void DataAuthor165() {
+        public void Test_DataAuthor_165() {
 
             OpenSearchClient.baseUrlArg.Add("http://eo-virtual-archive4.esa.int/search/COSMOSKYMED/rdf");
 
@@ -215,20 +200,13 @@ namespace Terradue.OpenSearch.Client.Test {
 
             OpenSearchClient.metadataPaths.Add("{}");
 
-            long size = 0;
-            using (MemoryStream ms = new MemoryStream()) {
-                client.ProcessQuery(ms);
-                ms.Seek(0, SeekOrigin.Begin);
-                size = ms.Length;
-            }
+            long size = client.GetResultSize();
 
             Assert.Greater(size, 150000);
 
         }
 
     }
-
-
 
 }
 

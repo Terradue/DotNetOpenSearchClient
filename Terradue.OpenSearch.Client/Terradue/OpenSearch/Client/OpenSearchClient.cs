@@ -1126,6 +1126,49 @@ namespace Terradue.OpenSearch.Client {
 
 
 
+        public XmlDocument GetXmlResult() {
+            XmlDocument doc = new XmlDocument();
+            using (MemoryStream ms = new MemoryStream()) {
+                ProcessQuery(ms);
+                ms.Seek(0, SeekOrigin.Begin);
+                doc.Load(ms);
+                ms.Close();
+            }
+            return doc;
+        }
+
+
+
+        public int GetResultCount() {
+            XmlDocument doc = new XmlDocument();
+            int count = 0;
+            using (MemoryStream ms = new MemoryStream()) {
+                ProcessQuery(ms);
+                ms.Seek(0, SeekOrigin.Begin);
+                StreamReader sr = new StreamReader(ms);
+                string line;
+                while ((line = sr.ReadLine()) != null) count++;
+                sr.Close();
+                ms.Close();
+            }
+            return count;
+        }
+
+
+
+        public long GetResultSize() {
+            long size = 0;
+            using (MemoryStream ms = new MemoryStream()) {
+                ProcessQuery(ms);
+                ms.Seek(0, SeekOrigin.Begin);
+                size = ms.Length;
+                ms.Close();
+            }
+            return size;
+        }
+
+
+
         public static string GetUrlShortType(string type) {
             if (urlTypes == null) {
                 urlTypes = new Dictionary<string, string>();
