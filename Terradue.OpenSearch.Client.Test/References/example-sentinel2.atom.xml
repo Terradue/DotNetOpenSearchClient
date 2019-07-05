@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <title type="text">Result for OpenSearch query over type * in index sentinel2</title>
+  <id>https://catalog.terradue.com:443/sentinel2/search?uid=S2B_MSIL2A_20190505T235629_N0211_R116_T60VVR_20190506T020948&amp;format=atom</id>
+  <updated>2019-07-05T18:38:04.580352Z</updated>
+  <link rel="self" type="application/atom+xml" title="Reference link" href="https://catalog.terradue.com/sentinel2/search?uid=S2B_MSIL2A_20190505T235629_N0211_R116_T60VVR_20190506T020948&amp;format=atom"/>
+  <link rel="search" type="application/opensearchdescription+xml" title="OpenSearch Description link" href="https://catalog.terradue.com/sentinel2/description"/>
+  <entry>
+    <id>https://catalog.terradue.com:443/sentinel2/search?format=atom&amp;uid=S2B_MSIL2A_20190505T235629_N0211_R116_T60VVR_20190506T020948</id>
+    <title type="text">S2B S2MSI2A  Level-2A 116 Sun, 05 May 2019 23:56:29 GMT</title>
+    <summary type="html">&lt;table&gt;	&lt;tr&gt;		&lt;td&gt;Platform&lt;/td&gt;&lt;td&gt;&lt;strong&gt;S2B&lt;/strong&gt;&lt;/td&gt;	&lt;/tr&gt;&lt;tr&gt;		&lt;td&gt;Sensor&lt;/td&gt;&lt;td&gt;&lt;strong&gt;MSI&lt;/strong&gt;&lt;/td&gt;	&lt;/tr&gt;&lt;tr&gt;		&lt;td&gt;Product Type&lt;/td&gt;&lt;td&gt;&lt;strong&gt;S2MSI2A&lt;/strong&gt;&lt;/td&gt;	&lt;/tr&gt;&lt;tr&gt;		&lt;td&gt;Start Time&lt;/td&gt;&lt;td&gt;&lt;strong&gt;2019-05-05T23:56:29.0240000Z&lt;/strong&gt;&lt;/td&gt;	&lt;/tr&gt;&lt;tr&gt;		&lt;td&gt;End Time&lt;/td&gt;&lt;td&gt;&lt;strong&gt;2019-05-05T23:56:29.0240000Z&lt;/strong&gt;&lt;/td&gt;	&lt;/tr&gt;&lt;tr&gt;		&lt;td&gt;Orbit&lt;/td&gt;&lt;td&gt;&lt;strong&gt;11296 DESCENDING&lt;/strong&gt;&lt;/td&gt;	&lt;/tr&gt;&lt;tr&gt;		&lt;td&gt;Track&lt;/td&gt;&lt;td&gt;&lt;strong&gt;116&lt;/strong&gt;&lt;/td&gt;	&lt;/tr&gt;&lt;tr&gt;		&lt;td&gt;Cloud coverage&lt;/td&gt;&lt;td&gt;&lt;strong&gt;30.187832&lt;/strong&gt;&lt;/td&gt;	&lt;/tr&gt;&lt;/table&gt;</summary>
+    <published>2019-05-06T19:45:15.767Z</published>
+    <updated>2019-05-06T20:47:26.141177Z</updated>
+    <link rel="enclosure" type="application/octet-stream" title="Sentinels Scientific data hub zip file" href="https://scihub.copernicus.eu/apihub/odata/v1/Products('c24d3bc0-b04a-4c25-934c-88f435d284dc')/$value"/>
+    <link rel="icon" type="image" title="Browse" href="https://store.terradue.com/api/scihub/sentinel2/S2MSI2A/2019/05/05/quicklooks/v1/S2B_MSIL2A_20190505T235629_N0211_R116_T60VVR_20190506T020948.jpg"/>
+    <link rel="alternate" type="application/xml" title="EOP profile" href="https://catalog.terradue.com//eop/sentinel2/profile/xml?uid=S2B_MSIL2A_20190505T235629_N0211_R116_T60VVR_20190506T020948"/>
+    <link rel="self" type="application/atom+xml" title="Reference link" href="https://catalog.terradue.com/sentinel2/search?format=atom&amp;uid=S2B_MSIL2A_20190505T235629_N0211_R116_T60VVR_20190506T020948"/>
+    <content type="html">&lt;table&gt;	&lt;tr&gt;		&lt;td&gt;Platform&lt;/td&gt;&lt;td&gt;&lt;strong&gt;S2B&lt;/strong&gt;&lt;/td&gt;	&lt;/tr&gt;&lt;tr&gt;		&lt;td&gt;Sensor&lt;/td&gt;&lt;td&gt;&lt;strong&gt;MSI&lt;/strong&gt;&lt;/td&gt;	&lt;/tr&gt;&lt;tr&gt;		&lt;td&gt;Product Type&lt;/td&gt;&lt;td&gt;&lt;strong&gt;S2MSI2A&lt;/strong&gt;&lt;/td&gt;	&lt;/tr&gt;&lt;tr&gt;		&lt;td&gt;Start Time&lt;/td&gt;&lt;td&gt;&lt;strong&gt;2019-05-05T23:56:29.0240000Z&lt;/strong&gt;&lt;/td&gt;	&lt;/tr&gt;&lt;tr&gt;		&lt;td&gt;End Time&lt;/td&gt;&lt;td&gt;&lt;strong&gt;2019-05-05T23:56:29.0240000Z&lt;/strong&gt;&lt;/td&gt;	&lt;/tr&gt;&lt;tr&gt;		&lt;td&gt;Orbit&lt;/td&gt;&lt;td&gt;&lt;strong&gt;11296 DESCENDING&lt;/strong&gt;&lt;/td&gt;	&lt;/tr&gt;&lt;tr&gt;		&lt;td&gt;Track&lt;/td&gt;&lt;td&gt;&lt;strong&gt;116&lt;/strong&gt;&lt;/td&gt;	&lt;/tr&gt;&lt;tr&gt;		&lt;td&gt;Cloud coverage&lt;/td&gt;&lt;td&gt;&lt;strong&gt;30.187832&lt;/strong&gt;&lt;/td&gt;	&lt;/tr&gt;&lt;/table&gt;</content>
+    <georss:polygon xmlns:georss="http://www.georss.org/georss">63.0279332256848 175.02285616572 63.0416105189922 177.192960161942 64.0270166364866 177.199734465434 64.0127397102527 174.95350152328 63.0279332256848 175.02285616572</georss:polygon>
+    <box xmlns="http://www.georss.org/georss">63.0279332256848 174.95350152328 64.0270166364866 177.199734465434</box>
+    <date xmlns="http://purl.org/dc/elements/1.1/">2019-05-05T23:56:29.0240000Z/2019-05-05T23:56:29.0240000Z</date>
+    <spatial xmlns="http://purl.org/dc/terms/">POLYGON((175.02285616572 63.0279332256848,177.192960161942 63.0416105189922,177.199734465434 64.0270166364866,174.95350152328 64.0127397102527,175.02285616572 63.0279332256848))</spatial>
+    <productType xmlns="http://www.opengis.net/eop/2.1">S2MSI2A</productType>
+    <opt:EarthObservation xmlns:gml="http://www.opengis.net/gml/3.2" xmlns:eop="http://www.opengis.net/eop/2.1" xmlns:om="http://www.opengis.net/om" xmlns:opt="http://www.opengis.net/opt/2.1">
+      <phenomenonTime xmlns="http://www.opengis.net/om/2.0">
+        <gml:TimePeriod>
+          <gml:beginPosition>2019-05-05T23:56:29.0240000Z</gml:beginPosition>
+          <gml:endPosition>2019-05-05T23:56:29.0240000Z</gml:endPosition>
+        </gml:TimePeriod>
+      </phenomenonTime>
+      <procedure xmlns="http://www.opengis.net/om/2.0">
+        <eop:EarthObservationEquipment>
+          <eop:platform>
+            <eop:Platform>
+              <eop:shortName>S2B</eop:shortName>
+              <eop:serialIdentifier>2017-013A</eop:serialIdentifier>
+            </eop:Platform>
+          </eop:platform>
+          <eop:instrument>
+            <eop:Instrument>
+              <eop:shortName>MSI</eop:shortName>
+              <eop:description>Multi-Spectral Instrument</eop:description>
+            </eop:Instrument>
+          </eop:instrument>
+          <eop:sensor>
+            <eop:Sensor>
+              <eop:sensorType>OPTICAL</eop:sensorType>
+            </eop:Sensor>
+          </eop:sensor>
+          <eop:acquisitionParameters>
+            <eop:Acquisition>
+              <eop:orbitNumber>11296</eop:orbitNumber>
+              <eop:lastOrbitNumber/>
+              <eop:orbitDirection>DESCENDING</eop:orbitDirection>
+              <eop:wrsLongitudeGrid>116</eop:wrsLongitudeGrid>
+            </eop:Acquisition>
+          </eop:acquisitionParameters>
+        </eop:EarthObservationEquipment>
+      </procedure>
+      <featureOfInterest xmlns="http://www.opengis.net/om/2.0">
+        <eop:Footprint>
+          <eop:multiExtentOf>
+            <gml:MultiSurface>
+              <gml:surfaceMembers>
+                <gml:Polygon>
+                  <gml:exterior>
+                    <gml:LinearRing>
+                      <gml:posList count="5">63.0279332256848 175.02285616572 63.0416105189922 177.192960161942 64.0270166364866 177.199734465434 64.0127397102527 174.95350152328 63.0279332256848 175.02285616572</gml:posList>
+                    </gml:LinearRing>
+                  </gml:exterior>
+                </gml:Polygon>
+              </gml:surfaceMembers>
+            </gml:MultiSurface>
+          </eop:multiExtentOf>
+        </eop:Footprint>
+      </featureOfInterest>
+      <result xmlns="http://www.opengis.net/om/2.0">
+        <opt:EarthObservationResult>
+          <eop:browse>
+            <eop:BrowseInformation>
+              <eop:type>IMG</eop:type>
+              <eop:fileName>
+                <ServiceReference xmlns:p11="http://www.w3.org/1999/xlink" xmlns:p10="http://www.opengis.net/ows/2.0" xmlns="http://www.opengis.net/ows/2.0" p10:type="simple" p11:href="https://store.terradue.com/api/scihub/sentinel2/S2MSI2A/2019/05/05/quicklooks/v1/S2B_MSIL2A_20190505T235629_N0211_R116_T60VVR_20190506T020948.jpg"/>
+              </eop:fileName>
+            </eop:BrowseInformation>
+          </eop:browse>
+          <eop:product>
+            <eop:ProductInformation>
+              <eop:fileName>
+                <ServiceReference xmlns:p11="http://www.w3.org/1999/xlink" xmlns:p10="http://www.opengis.net/ows/2.0" xmlns="http://www.opengis.net/ows/2.0" p10:type="simple" p11:href="https://scihub.copernicus.eu/apihub/odata/v1/Products('c24d3bc0-b04a-4c25-934c-88f435d284dc')/$value" p11:title="application/zip">
+                  <p10:Identifier>c24d3bc0-b04a-4c25-934c-88f435d284dc</p10:Identifier>
+                </ServiceReference>
+              </eop:fileName>
+              <eop:size>0</eop:size>
+            </eop:ProductInformation>
+          </eop:product>
+          <opt:cloudCoverPercentage>30.187832</opt:cloudCoverPercentage>
+        </opt:EarthObservationResult>
+      </result>
+      <eop:metaDataProperty>
+        <eop:EarthObservationMetaData>
+          <eop:identifier>S2B_MSIL2A_20190505T235629_N0211_R116_T60VVR_20190506T020948</eop:identifier>
+          <eop:acquisitionType>NOMINAL</eop:acquisitionType>
+          <eop:productType>S2MSI2A</eop:productType>
+          <eop:status>ARCHIVED</eop:status>
+          <eop:statusSubType>ON-LINE</eop:statusSubType>
+          <eop:imageQualityStatus>NOMINAL</eop:imageQualityStatus>
+          <eop:productQualityStatus>DEGRADED</eop:productQualityStatus>
+          <eop:processing>
+            <eop:ProcessingInformation>
+              <eop:method>Generation of Level-1C User Product</eop:method>
+              <eop:processorVersion>02.11</eop:processorVersion>
+              <eop:processingLevel>Level-2A</eop:processingLevel>
+              <eop:nativeProductFormat>SAFE</eop:nativeProductFormat>
+            </eop:ProcessingInformation>
+          </eop:processing>
+        </eop:EarthObservationMetaData>
+      </eop:metaDataProperty>
+    </opt:EarthObservation>
+    <identifier xmlns="http://purl.org/dc/elements/1.1/">S2B_MSIL2A_20190505T235629_N0211_R116_T60VVR_20190506T020948</identifier>
+  </entry>
+  <debugRequest xmlns="http://purl.org/dc/elements/1.1/"/>
+  <debugResponse xmlns="http://purl.org/dc/elements/1.1/"/>
+  <queryTime xmlns="http://purl.org/dc/elements/1.1/">2</queryTime>
+  <totalResults xmlns="http://a9.com/-/spec/opensearch/1.1/">1</totalResults>
+  <startIndex xmlns="http://a9.com/-/spec/opensearch/1.1/">1</startIndex>
+  <itemsPerPage xmlns="http://a9.com/-/spec/opensearch/1.1/">20</itemsPerPage>
+  <os:Query xmlns:time="http://a9.com/-/opensearch/extensions/time/1.0/" xmlns:eop="http://a9.com/-/opensearch/extensions/eo/1.0/" xmlns:dct="http://purl.org/dc/terms/" xmlns:param="http://a9.com/-/spec/opensearch/extensions/parameters/1.0/" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:t2="http://www.terradue.com/opensearch" xmlns:geo="http://a9.com/-/opensearch/extensions/geo/1.0/" xmlns:os="http://a9.com/-/spec/opensearch/1.1/" role="request" geo:uid="S2B_MSIL2A_20190505T235629_N0211_R116_T60VVR_20190506T020948"/>
+</feed>
