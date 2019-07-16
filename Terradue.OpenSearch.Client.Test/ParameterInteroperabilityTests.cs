@@ -82,7 +82,7 @@ namespace Terradue.OpenSearch.Client.Test {
             OpenSearchClient.parameterArgs.Add("rows=1");
 
             int count = client.GetResultCount();
-            Assert.AreEqual(count, 1);
+            Assert.AreEqual(count, 20);
 
         }
 
