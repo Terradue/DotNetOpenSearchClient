@@ -38,7 +38,7 @@ namespace Terradue.OpenSearch.Client.Test {
 
         }
 
-        [Ignore]
+        [Ignore("")]
         public void S1EOP() {
 
             Credential credential = GetCredential("SciHubPolygon_01", true);

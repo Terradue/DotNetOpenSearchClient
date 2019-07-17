@@ -32,7 +32,7 @@ namespace Terradue.OpenSearch.Client.Test {
             LoadCredentials();
         }
 
-        [Ignore()] // different download location (catalog URL previously data2.terradue.com)
+        [Ignore("different download location (catalog URL previously data2.terradue.com)")]
         public void Test_Issue5() {
 
             OpenSearchClient.baseUrlArg.Add("https://catalog.terradue.com/sentinel1/search?format=atom");
@@ -55,7 +55,7 @@ namespace Terradue.OpenSearch.Client.Test {
 
         }
 
-		[Ignore()] // product not available
+		[Ignore("product not available")]
 		public void Test_Issue_19006()
 		{
 

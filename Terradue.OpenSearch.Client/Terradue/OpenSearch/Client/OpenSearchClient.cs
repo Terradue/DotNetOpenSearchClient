@@ -942,23 +942,17 @@ namespace Terradue.OpenSearch.Client {
         /// </summary>
         /// <returns>The output stream.</returns>
         private Stream InitializeOutputStream(int index = 0) {
-            if (outputFilePathArg == null) {
-                return Console.OpenStandardOutput();
-            } else {
-                string path = outputFilePathArg;
-                if ( path.Contains("%index%") ){
-                    path = path.Replace("%index%", index.ToString());
-                } else if (index > 0){
-                    path += "-" + index;
-                }
-                log.DebugFormat("output to {0}", path);
-                return new FileStream(path, FileMode.Create);
+            if (outputFilePathArg == null) return Console.OpenStandardOutput();
+
+            string path = outputFilePathArg;
+            if ( path.Contains("%index%") ){
+                path = path.Replace("%index%", index.ToString());
+            } else if (index > 0){
+                path += "-" + index;
             }
             log.DebugFormat("output to {0}", path);
             return new FileStream(path, FileMode.Create);
         }
-
-
 
         private NameValueCollection PrepareQueryParameters(IOpenSearchable entity) {
             NameValueCollection nvc = new NameValueCollection();
