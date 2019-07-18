@@ -6,7 +6,7 @@
     <OutputType>Library</OutputType>
     <RootNamespace>Terradue.OpenSearch.Client.Test</RootNamespace>
     <AssemblyName>Terradue.OpenSearch.Client.Test</AssemblyName>
-    <TargetFramework>net4.5</TargetFramework>
+    <TargetFramework>net45</TargetFramework>
     <RuntimeIdentifiers>win;linux-x64</RuntimeIdentifiers>
     <RestorePackagesPath>$(SolutionDir)\packages</RestorePackagesPath>
     <IsPackable>false</IsPackable>

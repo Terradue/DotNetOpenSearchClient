@@ -47,11 +47,11 @@ pipeline {
       }
       steps {
         sh 'echo "${params.TEST_AUTH}" > Terradue.OpenSearch.Client.Test/auth.txt'
-        sh 'mono packages/NUnit.ConsoleRunner.3.7.0/tools/nunit3-console.exe Terradue.OpenSearch.Client.Test/bin/Terradue.OpenSearch.Client.Test.dll --result build/TestResult.xml'
+        sh 'mono packages/nunit.consolerunner/3.10.0/tools/nunit3-console.exe *.Test/bin/*/net45/*.Test.dll'
       }
       post {
           success {
-             nunit(testResultsPattern: 'build/TestResult.xml')
+             nunit(testResultsPattern: 'TestResult.xml')
           }
       }
     }
