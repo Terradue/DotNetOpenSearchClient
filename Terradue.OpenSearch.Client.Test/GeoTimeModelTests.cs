@@ -61,9 +61,6 @@ namespace Terradue.OpenSearch.Client.Test {
 
             newWkt = String.Format("{0}{1}{2}", wktMatch.Groups[1].Value, newWkt, wktMatch.Groups[4].Value);
 
-            Console.WriteLine("A {0}", wkt);
-            Console.WriteLine("A {0}", newWkt);
-
             if (newWkt == "MULTIPOLYGON(((-121.7585 37.4894,-120.9409 37.6015,-121.1878 38.7426,-122.0047 38.6307,-121.7585 37.4894)))"
                     || newWkt == "POLYGON((-121.7585 37.4894,-120.9409 37.6015,-121.1878 38.7426,-122.0047 38.6307,-121.7585 37.4894))") {
                 Assert.Pass();

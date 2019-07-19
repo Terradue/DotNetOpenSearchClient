@@ -47,7 +47,6 @@ namespace Terradue.OpenSearch.Client.Test {
             XmlNode eoNode = doc.SelectSingleNode(eoNodePath, nsm);
             Assert.NotNull(eoNode, "EarthObservation not found");
 
-            Console.WriteLine(eoNode.OuterXml);
             Console.WriteLine("HASH {0}", GetHashString(eoNode.OuterXml));
 
             Assert.AreEqual("C42504BAA568FDD3FB6579B2D681F53E05C01F2F073E718D20223423434CEFBE", GetHashString(eoNode.OuterXml));
@@ -67,7 +66,6 @@ namespace Terradue.OpenSearch.Client.Test {
             XmlNode eoNode = doc.SelectSingleNode(eoNodePath, nsm);
             Assert.NotNull(eoNode, "EarthObservation not found");
 
-            Console.WriteLine(eoNode.OuterXml);
             Console.WriteLine("HASH {0}", GetHashString(eoNode.OuterXml));
 
             Assert.AreEqual("CB2491462AAF53EDB3E2F9CE4BBD96888EC6FDDB89A4CFFC597D47CA4747FC6D", GetHashString(eoNode.OuterXml));
@@ -89,7 +87,6 @@ namespace Terradue.OpenSearch.Client.Test {
             XmlNode eoNode = doc.SelectSingleNode(eoNodePath, nsm);
             Assert.NotNull(eoNode, "EarthObservation not found");
 
-            Console.WriteLine(eoNode.OuterXml);
             Console.WriteLine("HASH {0}", GetHashString(eoNode.OuterXml));
 
             Assert.AreEqual("E5CFC2CDFC3C3D11861E3469E7DB82017C18B9E03022450AEAC9EE9ACC755834", GetHashString(eoNode.OuterXml));
@@ -110,7 +107,6 @@ namespace Terradue.OpenSearch.Client.Test {
             XmlNode eoNode = doc.SelectSingleNode(eoNodePath, nsm);
             Assert.NotNull(eoNode, "EarthObservation not found");
 
-            Console.WriteLine(eoNode.OuterXml);
             Console.WriteLine("HASH {0}", GetHashString(eoNode.OuterXml));
 
             Assert.AreEqual("D9312324E632FB5BAE75F6B905CCE14B6E59FE1A51CFFE886BB6DE422E06F7B8", GetHashString(eoNode.OuterXml));
@@ -131,7 +127,6 @@ namespace Terradue.OpenSearch.Client.Test {
             XmlNode eoNode = doc.SelectSingleNode(eoNodePath, nsm);
             Assert.NotNull(eoNode, "EarthObservation not found");
 
-            Console.WriteLine(eoNode.OuterXml);
             Console.WriteLine("HASH {0}", GetHashString(eoNode.OuterXml));
 
             Assert.AreEqual("5BD92B7D38EEC7786FA9ECDA94372C82F4CAB065E55E701D61FFDEBE5AC3C10C", GetHashString(eoNode.OuterXml));

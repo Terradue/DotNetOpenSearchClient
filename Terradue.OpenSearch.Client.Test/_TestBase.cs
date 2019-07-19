@@ -21,7 +21,8 @@ namespace Terradue.OpenSearch.Client.Test {
 
             credentials = new Dictionary<string, Credential>();
 
-            string authFile = String.Format("{0}/auth.txt", Regex.Replace(this.GetType().Assembly.Location, "/bin/[^/]+$", String.Empty));
+            string authFile = String.Format("{0}/auth.txt", Regex.Replace(this.GetType().Assembly.Location, "/bin/.+$", String.Empty));
+            Console.WriteLine("AUTHFILE: {0}", authFile);
 
             if (File.Exists(authFile)) {
                 using (StreamReader sr = new StreamReader(authFile)) {

@@ -128,7 +128,7 @@ namespace Terradue.OpenSearch.Client.Test {
 
 		    var enclosure = Encoding.UTF8.GetString(ms.ToArray());
 
-		  Console.WriteLine(enclosure);
+            Console.WriteLine(enclosure);
 
 	    }
 	    
