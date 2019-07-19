@@ -28,6 +28,21 @@
             "cwd": "${workspaceRoot}"
         },
         {
+            "name": "Query uid",
+            "type": "mono",
+            "request": "launch",
+            "program": "${workspaceRoot}/Terradue.OpenSearch.Client/bin/Debug/net4.5/OpenSearchClient.exe",
+            "args": [
+                "-m", "EOP",
+                "-v",
+                "-p",
+                "uid=ASA_IMS_1PNESA20061204_024611_000000152053_00290_24893_0000",
+                "https://catalog.terradue.com/esar/search",
+                "identifier"
+            ],
+            "cwd": "${workspaceRoot}"
+        },
+        {
             "name": "Attach",
             "type": "mono",
             "request": "attach",

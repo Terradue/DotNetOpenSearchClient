@@ -495,6 +495,7 @@ namespace Terradue.OpenSearch.Client {
                 try {
                     OpenSearchableFactorySettings settings = new OpenSearchableFactorySettings(ose);
                     settings.MaxRetries = retryAttempts;
+                    settings.ParametersKeywordsTable = InitializeParametersKeywordsTable();
                     if (!string.IsNullOrEmpty(metricsType)) {
                         settings.ReportMetrics = true;
                     }
@@ -517,6 +518,8 @@ namespace Terradue.OpenSearch.Client {
 
             NameValueCollection parameters = PrepareQueryParameters(entity);
             string startIndex = parameters.Get("startIndex");
+            if (string.IsNullOrEmpty(startIndex))
+                startIndex = parameters.Get("{http://a9.com/-/spec/opensearch/1.1/}count");
             if (startIndex != null) {
                 index = int.Parse(startIndex);
             }
