@@ -2,7 +2,6 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{6222FD31-E454-4D76-9AAF-0535787A6A1B}</ProjectGuid>
     <OutputType>Library</OutputType>
     <RootNamespace>Terradue.OpenSearch.Model.Base</RootNamespace>
     <AssemblyName>Terradue.OpenSearch.Model.Base</AssemblyName>
@@ -12,39 +11,37 @@
     <IsPackable>false</IsPackable>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="System"/>
-    <Reference Include="System.Net"/>
-    <Reference Include="System.Xml"/>
-    <Reference Include="System.Xml.Linq"/>
-    <Reference Include="System.Core"/>
-    <Reference Include="System.Numerics"/>
-    <Reference Include="System.Runtime.Serialization"/>
-    <Reference Include="System.Web"/>
-    <Reference Include="System.ComponentModel.Composition"/>
+    <Reference Include="System" />
+    <Reference Include="System.Net" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Numerics" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.ComponentModel.Composition" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Terradue\"/>
-    <Folder Include="Terradue\OpenSearch\"/>
-    <Folder Include="Terradue\OpenSearch\Model\"/>
-    <Folder Include="Terradue\OpenSearch\Model\EarthObservation\OpenSearchable\"/>
-    <Folder Include="Terradue\OpenSearch\New Folder\"/>
-    <Folder Include="Terradue\OpenSearch\Model\Schemas\"/>
-    <Folder Include="Terradue\OpenSearch\Model\EarthObservation\OpenSearchable\Sentinel1Qc\"/>
-    <Folder Include="Terradue\OpenSearch\Model\EarthObservation\OpenSearchable\Sentinel1Aux\"/>
+    <Folder Include="Terradue\" />
+    <Folder Include="Terradue\OpenSearch\" />
+    <Folder Include="Terradue\OpenSearch\Model\" />
+    <Folder Include="Terradue\OpenSearch\Model\EarthObservation\OpenSearchable\" />
+    <Folder Include="Terradue\OpenSearch\New Folder\" />
+    <Folder Include="Terradue\OpenSearch\Model\Schemas\" />
+    <Folder Include="Terradue\OpenSearch\Model\EarthObservation\OpenSearchable\Sentinel1Qc\" />
+    <Folder Include="Terradue\OpenSearch\Model\EarthObservation\OpenSearchable\Sentinel1Aux\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Terradue.OpenSearch.Model\Terradue.OpenSearch.Model.csproj">
-      <Project>{BFFA2485-B9AC-4DE4-BABF-4DD96590F9D4}</Project>
-      <Name>Terradue.OpenSearch.Model</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Terradue.OpenSearch" Version="1.17.0"/>
-    <PackageReference Include="Terradue.Metadata.EarthObservation" Version="1.6.0"/>
-    <PackageReference Include="Terradue.OpenSearch.SciHub" Version="1.7.14"/>
-    <PackageReference Include="HtmlAgilityPack" Version="1.4.9.5"/>
-    <PackageReference Include="AWSSDK.S3" Version="3.3.18.3"/>
-    <PackageReference Include="ini-parser" Version="2.5.2"/>
-    <PackageReference Include="Terradue.OpenSearch.Usgs" Version="1.1.8"/>
+    <PackageReference Include="Terradue.OpenSearch" Version="1.17.0" />
+    <PackageReference Include="Terradue.Metadata.EarthObservation" Version="1.6.0" />
+    <PackageReference Include="Terradue.OpenSearch.SciHub" Version="1.7.14" />
+    <PackageReference Include="HtmlAgilityPack" Version="1.4.9.5" />
+    <PackageReference Include="AWSSDK.S3" Version="3.3.18.3" />
+    <PackageReference Include="ini-parser" Version="2.5.2" />
+    <PackageReference Include="Terradue.OpenSearch.Usgs" Version="1.1.8" />
   </ItemGroup>
 </Project>

@@ -9,7 +9,7 @@ using System.Xml;
 namespace Terradue.OpenSearch.Client.Test {
 
     [TestFixture()]
-    public class ParameterInteroperabilityTests : TestBase {
+    public class RemoteParameterTests : TestBase {
 
         XmlNamespaceManager nsm;
         string geometryXPath = "//gml32:posList | //gml:posList | //georss:polygon";
@@ -29,7 +29,7 @@ namespace Terradue.OpenSearch.Client.Test {
         }
 
         [Test()]
-        public void Test_Parameters_01() {
+        public void Test_Nextgeoss_01() {
             // opensearch-client "https://catalogue.nextgeoss.eu/opensearch/description.xml?osdd=SENTINEL1_L1_SLC" | wc -l
 
             OpenSearchClient client = CreateTestClient("https://catalogue.nextgeoss.eu/opensearch/description.xml?osdd=SENTINEL1_L1_SLC", "identifier");
@@ -42,7 +42,7 @@ namespace Terradue.OpenSearch.Client.Test {
 
 
         [Test()]
-        public void Test_Parameters_02() {
+        public void Test_Nextgeoss_02() {
             // opensearch-client -p count=1 "https://catalogue.nextgeoss.eu/opensearch/description.xml?osdd=SENTINEL1_L1_SLC"
 
             OpenSearchClient client = CreateTestClient("https://catalogue.nextgeoss.eu/opensearch/description.xml?osdd=SENTINEL1_L1_SLC", "identifier");
@@ -55,7 +55,7 @@ namespace Terradue.OpenSearch.Client.Test {
 
 
         [Test()]
-        public void Test_Parameters_03() {
+        public void Test_Nextgeoss_03() {
             // opensearch-client -p {http://a9.com/-/spec/opensearch/1.1/}count=1 "https://catalogue.nextgeoss.eu/opensearch/description.xml?osdd=SENTINEL1_L1_SLC"
 
             OpenSearchClient client = CreateTestClient("https://catalogue.nextgeoss.eu/opensearch/description.xml?osdd=SENTINEL1_L1_SLC", "identifier");
@@ -68,7 +68,7 @@ namespace Terradue.OpenSearch.Client.Test {
 
 
         [Test()]
-        public void Test_Parameters_04() {
+        public void Test_Nextgeoss_04() {
             // opensearch-client -p rows=1 "https://catalogue.nextgeoss.eu/opensearch/description.xml?osdd=SENTINEL1_L1_SLC"
 
             OpenSearchClient client = CreateTestClient("https://catalogue.nextgeoss.eu/opensearch/description.xml?osdd=SENTINEL1_L1_SLC", "identifier");

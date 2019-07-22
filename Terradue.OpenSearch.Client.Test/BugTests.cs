@@ -94,7 +94,10 @@ namespace Terradue.OpenSearch.Client.Test {
 	    
         [Test()]
         public void Test_DataAuthor_123() {
+            Credential credential = GetCredential("DataAuthor_123", true);
+
             OpenSearchClient client = new OpenSearchClient();
+            client.Initialize();
 
             string[] args = {
                 "-m", "Scihub",

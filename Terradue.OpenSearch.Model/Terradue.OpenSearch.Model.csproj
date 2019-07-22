@@ -2,7 +2,6 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{BFFA2485-B9AC-4DE4-BABF-4DD96590F9D4}</ProjectGuid>
     <OutputType>Library</OutputType>
     <RootNamespace>Terradue.OpenSearch.Model</RootNamespace>
     <AssemblyName>Terradue.OpenSearch.Model</AssemblyName>
@@ -12,19 +11,19 @@
     <IsPackable>false</IsPackable>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="System"/>
-    <Reference Include="System.Net"/>
-    <Reference Include="System.Xml"/>
-    <Reference Include="System.Xml.Linq"/>
-    <Reference Include="System.Core"/>
-    <Reference Include="System.Numerics"/>
+    <Reference Include="System" />
+    <Reference Include="System.Net" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Numerics" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Terradue\"/>
-    <Folder Include="Terradue\OpenSearch\"/>
-    <Folder Include="Terradue\OpenSearch\Model\"/>
+    <Folder Include="Terradue\" />
+    <Folder Include="Terradue\OpenSearch\" />
+    <Folder Include="Terradue\OpenSearch\Model\" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Terradue.OpenSearch" Version="1.17.0"/>
+    <PackageReference Include="Terradue.OpenSearch" Version="1.17.0" />
   </ItemGroup>
 </Project>

@@ -104,7 +104,7 @@ namespace Terradue.OpenSearch.Client.Test {
 
         [Test()]
         public void Test_Fedeo() {
-            // opensearch-client  -p count=unlimited -p recordSchema=om -p startDate=2019-06-20T00:00:00Z -p endDate=2019-06-21T00:00:00Z "http://fedeo.esa.int/opensearch/series/urn:eop:DLR:EOWEB:TSX-1.SAR.L1b-ScanSAR/datasets/?httpAccept=application/atom%2Bxml" {} | xmllint --format - >query_results.xml
+            // opensearch-client -p count=unlimited -p recordSchema=om -p startDate=2019-06-20T00:00:00Z -p endDate=2019-06-21T00:00:00Z "http://fedeo.esa.int/opensearch/series/urn:eop:DLR:EOWEB:TSX-1.SAR.L1b-ScanSAR/datasets/?httpAccept=application/atom%2Bxml" {} | xmllint --format - >query_results.xml
 
             OpenSearchClient client = CreateTestClient("http://fedeo.esa.int/opensearch/series/urn:eop:DLR:EOWEB:TSX-1.SAR.L1b-ScanSAR/datasets/?httpAccept=application/atom%2Bxml", "identifier");
 
