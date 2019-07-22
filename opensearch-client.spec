@@ -43,6 +43,5 @@ rm -rf %{buildroot}
 %files
 /usr/lib/opensearch-client/*
 /usr/bin/opensearch-client
-/usr/local/lib/*
 
 %changelog
