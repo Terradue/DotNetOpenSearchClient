@@ -1,0 +1,527 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <title type="text">Result for OpenSearch query over type * in index landsat7</title>
+  <id>https://catalog.terradue.com:443/landsat7/search?uid=LE07_L1TP_204033_20171130_20171226_01_T1&amp;format=atom</id>
+  <updated>2019-07-05T19:50:24.864514Z</updated>
+  <link rel="self" type="application/atom+xml" title="Reference link" href="https://catalog.terradue.com/landsat7/search?uid=LE07_L1TP_204033_20171130_20171226_01_T1&amp;format=atom"/>
+  <link rel="search" type="application/opensearchdescription+xml" title="OpenSearch Description link" href="https://catalog.terradue.com/landsat7/description"/>
+  <entry>
+    <id>https://catalog.terradue.com:443/landsat7/search?format=atom&amp;uid=LE07_L1TP_204033_20171130_20171226_01_T1</id>
+    <title type="text">Entity ID: LE07_L1TP_204033_20171130_20171226_01_T1, Acquisition Date: 30-NOV-17, Path: 204, Row: 33</title>
+    <summary type="text">&lt;table&gt;	&lt;tr&gt;		&lt;td&gt;Platform&lt;/td&gt;&lt;td&gt;&lt;strong&gt;Landsat-7&lt;/strong&gt;&lt;/td&gt;	&lt;/tr&gt;&lt;tr&gt;		&lt;td&gt;Product Type&lt;/td&gt;&lt;td&gt;&lt;strong&gt;L1TP&lt;/strong&gt;&lt;/td&gt;	&lt;/tr&gt;&lt;tr&gt;		&lt;td&gt;Start Time&lt;/td&gt;&lt;td&gt;&lt;strong&gt;2017-11-30T11:16:47.7000000Z&lt;/strong&gt;&lt;/td&gt;	&lt;/tr&gt;&lt;tr&gt;		&lt;td&gt;End Time&lt;/td&gt;&lt;td&gt;&lt;strong&gt;2017-11-30T11:17:14.4540000Z&lt;/strong&gt;&lt;/td&gt;	&lt;/tr&gt;&lt;tr&gt;		&lt;td&gt;Orbit&lt;/td&gt;&lt;td&gt;&lt;strong&gt;ASCENDING&lt;/strong&gt;&lt;/td&gt;	&lt;/tr&gt;&lt;tr&gt;		&lt;td&gt;Identifier&lt;/td&gt;&lt;td&gt;&lt;strong&gt;LE07_L1TP_204033_20171130_20171226_01_T1&lt;/strong&gt;&lt;/td&gt;	&lt;/tr&gt;&lt;/table&gt;</summary>
+    <published>2019-04-29T00:00:00Z</published>
+    <updated>2019-06-13T13:35:37.761471Z</updated>
+    <link rel="icon" type="image/jpeg" title="Browse image URL" href="https://ims.cr.usgs.gov/browse/landsat_etm_c1/2017/204/033/LE07_L1TP_204033_20171130_20171226_01_T1.jpg"/>
+    <link rel="enclosure" type="text/html" title="Granule download URL" href="https://earthexplorer.usgs.gov/download/external/options/LANDSAT_ETM_C1/LE72040332017334ASN00/INVSVC/"/>
+    <link rel="via" type="text/json" title="Original source metadata" href="https://earthexplorer.usgs.gov/metadata/xml/12267/LE72040332017334ASN00/"/>
+    <link rel="alternate" type="application/xml" title="EOP profile" href="https://catalog.terradue.com//eop/landsat7/profile/xml?uid=LE07_L1TP_204033_20171130_20171226_01_T1"/>
+    <link rel="self" type="application/atom+xml" title="Reference link" href="https://catalog.terradue.com/landsat7/search?format=atom&amp;uid=LE07_L1TP_204033_20171130_20171226_01_T1"/>
+    <content type="text">&lt;table&gt;	&lt;tr&gt;		&lt;td&gt;Platform&lt;/td&gt;&lt;td&gt;&lt;strong&gt;Landsat-7&lt;/strong&gt;&lt;/td&gt;	&lt;/tr&gt;&lt;tr&gt;		&lt;td&gt;Product Type&lt;/td&gt;&lt;td&gt;&lt;strong&gt;L1TP&lt;/strong&gt;&lt;/td&gt;	&lt;/tr&gt;&lt;tr&gt;		&lt;td&gt;Start Time&lt;/td&gt;&lt;td&gt;&lt;strong&gt;2017-11-30T11:16:47.7000000Z&lt;/strong&gt;&lt;/td&gt;	&lt;/tr&gt;&lt;tr&gt;		&lt;td&gt;End Time&lt;/td&gt;&lt;td&gt;&lt;strong&gt;2017-11-30T11:17:14.4540000Z&lt;/strong&gt;&lt;/td&gt;	&lt;/tr&gt;&lt;tr&gt;		&lt;td&gt;Orbit&lt;/td&gt;&lt;td&gt;&lt;strong&gt;ASCENDING&lt;/strong&gt;&lt;/td&gt;	&lt;/tr&gt;&lt;tr&gt;		&lt;td&gt;Identifier&lt;/td&gt;&lt;td&gt;&lt;strong&gt;LE07_L1TP_204033_20171130_20171226_01_T1&lt;/strong&gt;&lt;/td&gt;	&lt;/tr&gt;&lt;/table&gt;</content>
+    <owc:offering xmlns:owc="http://www.opengis.net/owc/1.0" code="http://www.opengis.net/spec/owc-atom/1.0/req/img">
+      <owc:content href="https://ims.cr.usgs.gov/wms/landsat_etm_c1?sceneid=le72040332017334asn00&amp;srs=EPSG:3857&amp;bbox=-1144648.2300564,4571256.7683074,-848346.9150221,4845234.3719738"/>
+    </owc:offering>
+    <georss:polygon xmlns:georss="http://www.georss.org/georss">38.25321 -10.28255 37.94215 -8.13736 39.53916 -7.62083 39.85735 -9.81402 38.25321 -10.28255</georss:polygon>
+    <box xmlns="http://www.georss.org/georss">37.94215 -10.28255 39.85735 -7.62083</box>
+    <date xmlns="http://purl.org/dc/elements/1.1/">2017-11-30T11:16:47.7000000Z/2017-11-30T11:17:14.4540000Z</date>
+    <spatial xmlns="http://purl.org/dc/terms/">POLYGON((-10.28255 38.25321,-8.13736 37.94215,-7.62083 39.53916,-9.81402 39.85735,-10.28255 38.25321))</spatial>
+    <productType xmlns="http://www.opengis.net/eop/2.1">L1TP</productType>
+    <opt:EarthObservation xmlns:gml="http://www.opengis.net/gml/3.2" xmlns:eop="http://www.opengis.net/eop/2.1" xmlns:om="http://www.opengis.net/om" xmlns:opt="http://www.opengis.net/opt/2.1">
+      <phenomenonTime xmlns="http://www.opengis.net/om/2.0">
+        <gml:TimePeriod>
+          <gml:beginPosition>2017-11-30T11:16:47.7000000Z</gml:beginPosition>
+          <gml:endPosition>2017-11-30T11:17:14.4540000Z</gml:endPosition>
+        </gml:TimePeriod>
+      </phenomenonTime>
+      <procedure xmlns="http://www.opengis.net/om/2.0">
+        <eop:EarthObservationEquipment>
+          <eop:platform>
+            <eop:Platform>
+              <eop:shortName>Landsat-7</eop:shortName>
+            </eop:Platform>
+          </eop:platform>
+          <eop:instrument>
+            <eop:Instrument/>
+          </eop:instrument>
+          <eop:sensor>
+            <eop:Sensor>
+              <eop:sensorType>OPTICAL</eop:sensorType>
+            </eop:Sensor>
+          </eop:sensor>
+          <eop:acquisitionParameters>
+            <eop:Acquisition>
+              <eop:orbitNumber/>
+              <eop:lastOrbitNumber/>
+              <eop:orbitDirection>ASCENDING</eop:orbitDirection>
+            </eop:Acquisition>
+          </eop:acquisitionParameters>
+        </eop:EarthObservationEquipment>
+      </procedure>
+      <featureOfInterest xmlns="http://www.opengis.net/om/2.0">
+        <eop:Footprint>
+          <eop:multiExtentOf>
+            <gml:MultiSurface>
+              <gml:surfaceMembers>
+                <gml:Polygon>
+                  <gml:exterior>
+                    <gml:LinearRing>
+                      <gml:posList count="5">38.25321 -10.28255 37.94215 -8.13736 39.53916 -7.62083 39.85735 -9.81402 38.25321 -10.28255</gml:posList>
+                    </gml:LinearRing>
+                  </gml:exterior>
+                </gml:Polygon>
+              </gml:surfaceMembers>
+            </gml:MultiSurface>
+          </eop:multiExtentOf>
+        </eop:Footprint>
+      </featureOfInterest>
+      <result xmlns="http://www.opengis.net/om/2.0">
+        <opt:EarthObservationResult>
+          <eop:browse>
+            <eop:BrowseInformation>
+              <eop:type>img</eop:type>
+              <eop:referenceSystemIdentifier>EPSG:3857</eop:referenceSystemIdentifier>
+              <eop:fileName>
+                <ServiceReference xmlns:p11="http://www.w3.org/1999/xlink" xmlns:p10="http://www.opengis.net/ows/2.0" xmlns="http://www.opengis.net/ows/2.0" p10:type="image/png" p11:href="https://ims.cr.usgs.gov/wms/landsat_etm_c1?sceneid=le72040332017334asn00&amp;srs=EPSG:3857&amp;bbox=-1144648.2300564,4571256.7683074,-848346.9150221,4845234.3719738" p11:title="LandsatLook Natural Color Preview Image"/>
+              </eop:fileName>
+            </eop:BrowseInformation>
+          </eop:browse>
+          <opt:cloudCoverPercentage>0</opt:cloudCoverPercentage>
+        </opt:EarthObservationResult>
+      </result>
+      <eop:metaDataProperty>
+        <eop:EarthObservationMetaData>
+          <eop:identifier>LE07_L1TP_204033_20171130_20171226_01_T1</eop:identifier>
+          <eop:parentIdentifier>LANDSAT_ETM_C1</eop:parentIdentifier>
+          <eop:acquisitionType>NOMINAL</eop:acquisitionType>
+          <eop:acquisitionSubType>T1</eop:acquisitionSubType>
+          <eop:productType>L1TP</eop:productType>
+          <eop:statusSubType>ON-LINE</eop:statusSubType>
+          <eop:imageQualityDegradation>9</eop:imageQualityDegradation>
+          <eop:imageQualityStatus>NOMINAL</eop:imageQualityStatus>
+          <eop:productQualityStatus>DEGRADED</eop:productQualityStatus>
+          <eop:processing>
+            <eop:ProcessingInformation>
+              <eop:processingLevel>ETM_L1TP</eop:processingLevel>
+              <eop:auxiliaryDataSetFileName>LE07CPF_20171001_20171231_01.06</eop:auxiliaryDataSetFileName>
+            </eop:ProcessingInformation>
+          </eop:processing>
+          <eop:vendorSpecific>
+            <eop:SpecificInformation>
+              <eop:localAttribute>Landsat Product Identifier</eop:localAttribute>
+              <eop:localValue>LE07_L1TP_204033_20171130_20171226_01_T1</eop:localValue>
+            </eop:SpecificInformation>
+          </eop:vendorSpecific>
+          <eop:vendorSpecific>
+            <eop:SpecificInformation>
+              <eop:localAttribute>Landsat Scene Identifier</eop:localAttribute>
+              <eop:localValue>LE72040332017334ASN00</eop:localValue>
+            </eop:SpecificInformation>
+          </eop:vendorSpecific>
+          <eop:vendorSpecific>
+            <eop:SpecificInformation>
+              <eop:localAttribute>Acquisition Date</eop:localAttribute>
+              <eop:localValue>2017/11/30</eop:localValue>
+            </eop:SpecificInformation>
+          </eop:vendorSpecific>
+          <eop:vendorSpecific>
+            <eop:SpecificInformation>
+              <eop:localAttribute>Spacecraft Identifier</eop:localAttribute>
+              <eop:localValue>LANDSAT_7</eop:localValue>
+            </eop:SpecificInformation>
+          </eop:vendorSpecific>
+          <eop:vendorSpecific>
+            <eop:SpecificInformation>
+              <eop:localAttribute>Scan Line Corrector</eop:localAttribute>
+              <eop:localValue>OFF</eop:localValue>
+            </eop:SpecificInformation>
+          </eop:vendorSpecific>
+          <eop:vendorSpecific>
+            <eop:SpecificInformation>
+              <eop:localAttribute>Collection Category</eop:localAttribute>
+              <eop:localValue>T1</eop:localValue>
+            </eop:SpecificInformation>
+          </eop:vendorSpecific>
+          <eop:vendorSpecific>
+            <eop:SpecificInformation>
+              <eop:localAttribute>Collection Number</eop:localAttribute>
+              <eop:localValue>1</eop:localValue>
+            </eop:SpecificInformation>
+          </eop:vendorSpecific>
+          <eop:vendorSpecific>
+            <eop:SpecificInformation>
+              <eop:localAttribute>Sensor Mode</eop:localAttribute>
+              <eop:localValue>BUMPER</eop:localValue>
+            </eop:SpecificInformation>
+          </eop:vendorSpecific>
+          <eop:vendorSpecific>
+            <eop:SpecificInformation>
+              <eop:localAttribute>WRS Path</eop:localAttribute>
+              <eop:localValue> 204</eop:localValue>
+            </eop:SpecificInformation>
+          </eop:vendorSpecific>
+          <eop:vendorSpecific>
+            <eop:SpecificInformation>
+              <eop:localAttribute>WRS Row</eop:localAttribute>
+              <eop:localValue> 033</eop:localValue>
+            </eop:SpecificInformation>
+          </eop:vendorSpecific>
+          <eop:vendorSpecific>
+            <eop:SpecificInformation>
+              <eop:localAttribute>Date L-1 Generated</eop:localAttribute>
+              <eop:localValue>2017/12/26</eop:localValue>
+            </eop:SpecificInformation>
+          </eop:vendorSpecific>
+          <eop:vendorSpecific>
+            <eop:SpecificInformation>
+              <eop:localAttribute>Start Time</eop:localAttribute>
+              <eop:localValue>2017:334:11:16:47.7004375</eop:localValue>
+            </eop:SpecificInformation>
+          </eop:vendorSpecific>
+          <eop:vendorSpecific>
+            <eop:SpecificInformation>
+              <eop:localAttribute>Stop Time</eop:localAttribute>
+              <eop:localValue>2017:334:11:17:14.4544374</eop:localValue>
+            </eop:SpecificInformation>
+          </eop:vendorSpecific>
+          <eop:vendorSpecific>
+            <eop:SpecificInformation>
+              <eop:localAttribute>Station Identifier</eop:localAttribute>
+              <eop:localValue>ASN - Alice Springs, Australia</eop:localValue>
+            </eop:SpecificInformation>
+          </eop:vendorSpecific>
+          <eop:vendorSpecific>
+            <eop:SpecificInformation>
+              <eop:localAttribute>Day/Night Indicator</eop:localAttribute>
+              <eop:localValue>Day</eop:localValue>
+            </eop:SpecificInformation>
+          </eop:vendorSpecific>
+          <eop:vendorSpecific>
+            <eop:SpecificInformation>
+              <eop:localAttribute>Land Cloud Cover</eop:localAttribute>
+              <eop:localValue>0</eop:localValue>
+            </eop:SpecificInformation>
+          </eop:vendorSpecific>
+          <eop:vendorSpecific>
+            <eop:SpecificInformation>
+              <eop:localAttribute>Scene Cloud Cover</eop:localAttribute>
+              <eop:localValue>0</eop:localValue>
+            </eop:SpecificInformation>
+          </eop:vendorSpecific>
+          <eop:vendorSpecific>
+            <eop:SpecificInformation>
+              <eop:localAttribute>Ground Control Points Model</eop:localAttribute>
+              <eop:localValue>62</eop:localValue>
+            </eop:SpecificInformation>
+          </eop:vendorSpecific>
+          <eop:vendorSpecific>
+            <eop:SpecificInformation>
+              <eop:localAttribute>Ground Control Points Version</eop:localAttribute>
+              <eop:localValue>4</eop:localValue>
+            </eop:SpecificInformation>
+          </eop:vendorSpecific>
+          <eop:vendorSpecific>
+            <eop:SpecificInformation>
+              <eop:localAttribute>Geometric RMSE Model (meters)</eop:localAttribute>
+              <eop:localValue>5.774</eop:localValue>
+            </eop:SpecificInformation>
+          </eop:vendorSpecific>
+          <eop:vendorSpecific>
+            <eop:SpecificInformation>
+              <eop:localAttribute>Geometric RMSE Model X</eop:localAttribute>
+              <eop:localValue>3.359</eop:localValue>
+            </eop:SpecificInformation>
+          </eop:vendorSpecific>
+          <eop:vendorSpecific>
+            <eop:SpecificInformation>
+              <eop:localAttribute>Geometric RMSE Model Y</eop:localAttribute>
+              <eop:localValue>4.696</eop:localValue>
+            </eop:SpecificInformation>
+          </eop:vendorSpecific>
+          <eop:vendorSpecific>
+            <eop:SpecificInformation>
+              <eop:localAttribute>Image Quality</eop:localAttribute>
+              <eop:localValue>9</eop:localValue>
+            </eop:SpecificInformation>
+          </eop:vendorSpecific>
+          <eop:vendorSpecific>
+            <eop:SpecificInformation>
+              <eop:localAttribute>Gain Change</eop:localAttribute>
+              <eop:localValue>N</eop:localValue>
+            </eop:SpecificInformation>
+          </eop:vendorSpecific>
+          <eop:vendorSpecific>
+            <eop:SpecificInformation>
+              <eop:localAttribute>Processing Software Version</eop:localAttribute>
+              <eop:localValue>LPGS_13.0.0</eop:localValue>
+            </eop:SpecificInformation>
+          </eop:vendorSpecific>
+          <eop:vendorSpecific>
+            <eop:SpecificInformation>
+              <eop:localAttribute>Full Partial Scene</eop:localAttribute>
+              <eop:localValue>FULL</eop:localValue>
+            </eop:SpecificInformation>
+          </eop:vendorSpecific>
+          <eop:vendorSpecific>
+            <eop:SpecificInformation>
+              <eop:localAttribute>Sun Elevation L-1</eop:localAttribute>
+              <eop:localValue>27.35193878</eop:localValue>
+            </eop:SpecificInformation>
+          </eop:vendorSpecific>
+          <eop:vendorSpecific>
+            <eop:SpecificInformation>
+              <eop:localAttribute>Sun Azimuth L-1</eop:localAttribute>
+              <eop:localValue>162.29787865</eop:localValue>
+            </eop:SpecificInformation>
+          </eop:vendorSpecific>
+          <eop:vendorSpecific>
+            <eop:SpecificInformation>
+              <eop:localAttribute>Gap Phase Source</eop:localAttribute>
+              <eop:localValue>DE</eop:localValue>
+            </eop:SpecificInformation>
+          </eop:vendorSpecific>
+          <eop:vendorSpecific>
+            <eop:SpecificInformation>
+              <eop:localAttribute>Gap Phase Statistic</eop:localAttribute>
+              <eop:localValue>8.832694</eop:localValue>
+            </eop:SpecificInformation>
+          </eop:vendorSpecific>
+          <eop:vendorSpecific>
+            <eop:SpecificInformation>
+              <eop:localAttribute>Data Type Level-1</eop:localAttribute>
+              <eop:localValue>ETM_L1TP</eop:localValue>
+            </eop:SpecificInformation>
+          </eop:vendorSpecific>
+          <eop:vendorSpecific>
+            <eop:SpecificInformation>
+              <eop:localAttribute>Sensor Identifier</eop:localAttribute>
+              <eop:localValue>ETM</eop:localValue>
+            </eop:SpecificInformation>
+          </eop:vendorSpecific>
+          <eop:vendorSpecific>
+            <eop:SpecificInformation>
+              <eop:localAttribute>Ephemeris Type</eop:localAttribute>
+              <eop:localValue>DEFINITIVE</eop:localValue>
+            </eop:SpecificInformation>
+          </eop:vendorSpecific>
+          <eop:vendorSpecific>
+            <eop:SpecificInformation>
+              <eop:localAttribute>Panchromatic Lines</eop:localAttribute>
+              <eop:localValue>14401</eop:localValue>
+            </eop:SpecificInformation>
+          </eop:vendorSpecific>
+          <eop:vendorSpecific>
+            <eop:SpecificInformation>
+              <eop:localAttribute>Panchromatic Samples</eop:localAttribute>
+              <eop:localValue>16381</eop:localValue>
+            </eop:SpecificInformation>
+          </eop:vendorSpecific>
+          <eop:vendorSpecific>
+            <eop:SpecificInformation>
+              <eop:localAttribute>Reflective Lines</eop:localAttribute>
+              <eop:localValue>7201</eop:localValue>
+            </eop:SpecificInformation>
+          </eop:vendorSpecific>
+          <eop:vendorSpecific>
+            <eop:SpecificInformation>
+              <eop:localAttribute>Reflective Samples</eop:localAttribute>
+              <eop:localValue>8191</eop:localValue>
+            </eop:SpecificInformation>
+          </eop:vendorSpecific>
+          <eop:vendorSpecific>
+            <eop:SpecificInformation>
+              <eop:localAttribute>Thermal Lines</eop:localAttribute>
+              <eop:localValue>7201</eop:localValue>
+            </eop:SpecificInformation>
+          </eop:vendorSpecific>
+          <eop:vendorSpecific>
+            <eop:SpecificInformation>
+              <eop:localAttribute>Thermal Samples</eop:localAttribute>
+              <eop:localValue>8191</eop:localValue>
+            </eop:SpecificInformation>
+          </eop:vendorSpecific>
+          <eop:vendorSpecific>
+            <eop:SpecificInformation>
+              <eop:localAttribute>Map Projection Level-1</eop:localAttribute>
+              <eop:localValue>UTM</eop:localValue>
+            </eop:SpecificInformation>
+          </eop:vendorSpecific>
+          <eop:vendorSpecific>
+            <eop:SpecificInformation>
+              <eop:localAttribute>UTM Zone</eop:localAttribute>
+              <eop:localValue>29</eop:localValue>
+            </eop:SpecificInformation>
+          </eop:vendorSpecific>
+          <eop:vendorSpecific>
+            <eop:SpecificInformation>
+              <eop:localAttribute>Datum</eop:localAttribute>
+              <eop:localValue>WGS84</eop:localValue>
+            </eop:SpecificInformation>
+          </eop:vendorSpecific>
+          <eop:vendorSpecific>
+            <eop:SpecificInformation>
+              <eop:localAttribute>Ellipsoid</eop:localAttribute>
+              <eop:localValue>WGS84</eop:localValue>
+            </eop:SpecificInformation>
+          </eop:vendorSpecific>
+          <eop:vendorSpecific>
+            <eop:SpecificInformation>
+              <eop:localAttribute>Grid Cell Size Panchromatic</eop:localAttribute>
+              <eop:localValue>15</eop:localValue>
+            </eop:SpecificInformation>
+          </eop:vendorSpecific>
+          <eop:vendorSpecific>
+            <eop:SpecificInformation>
+              <eop:localAttribute>Grid Cell Size Reflective</eop:localAttribute>
+              <eop:localValue>30</eop:localValue>
+            </eop:SpecificInformation>
+          </eop:vendorSpecific>
+          <eop:vendorSpecific>
+            <eop:SpecificInformation>
+              <eop:localAttribute>Grid Cell Size Thermal</eop:localAttribute>
+              <eop:localValue>30</eop:localValue>
+            </eop:SpecificInformation>
+          </eop:vendorSpecific>
+          <eop:vendorSpecific>
+            <eop:SpecificInformation>
+              <eop:localAttribute>Calibration Parameter File</eop:localAttribute>
+              <eop:localValue>LE07CPF_20171001_20171231_01.06</eop:localValue>
+            </eop:SpecificInformation>
+          </eop:vendorSpecific>
+          <eop:vendorSpecific>
+            <eop:SpecificInformation>
+              <eop:localAttribute>Scan Gap Interpolation</eop:localAttribute>
+              <eop:localValue>2</eop:localValue>
+            </eop:SpecificInformation>
+          </eop:vendorSpecific>
+          <eop:vendorSpecific>
+            <eop:SpecificInformation>
+              <eop:localAttribute>Center Latitude</eop:localAttribute>
+              <eop:localValue>38&amp;amp;deg;54'04.97&amp;quot;N</eop:localValue>
+            </eop:SpecificInformation>
+          </eop:vendorSpecific>
+          <eop:vendorSpecific>
+            <eop:SpecificInformation>
+              <eop:localAttribute>Center Longitude</eop:localAttribute>
+              <eop:localValue>8&amp;amp;deg;57'50.87&amp;quot;W</eop:localValue>
+            </eop:SpecificInformation>
+          </eop:vendorSpecific>
+          <eop:vendorSpecific>
+            <eop:SpecificInformation>
+              <eop:localAttribute>UL Corner Lat</eop:localAttribute>
+              <eop:localValue>39&amp;amp;deg;51'26.46&amp;quot;N</eop:localValue>
+            </eop:SpecificInformation>
+          </eop:vendorSpecific>
+          <eop:vendorSpecific>
+            <eop:SpecificInformation>
+              <eop:localAttribute>UL Corner Long</eop:localAttribute>
+              <eop:localValue>9&amp;amp;deg;48'50.47&amp;quot;W</eop:localValue>
+            </eop:SpecificInformation>
+          </eop:vendorSpecific>
+          <eop:vendorSpecific>
+            <eop:SpecificInformation>
+              <eop:localAttribute>UR Corner Lat</eop:localAttribute>
+              <eop:localValue>39&amp;amp;deg;32'20.98&amp;quot;N</eop:localValue>
+            </eop:SpecificInformation>
+          </eop:vendorSpecific>
+          <eop:vendorSpecific>
+            <eop:SpecificInformation>
+              <eop:localAttribute>UR Corner Long</eop:localAttribute>
+              <eop:localValue>7&amp;amp;deg;37'14.99&amp;quot;W</eop:localValue>
+            </eop:SpecificInformation>
+          </eop:vendorSpecific>
+          <eop:vendorSpecific>
+            <eop:SpecificInformation>
+              <eop:localAttribute>LL Corner Lat</eop:localAttribute>
+              <eop:localValue>38&amp;amp;deg;15'11.56&amp;quot;N</eop:localValue>
+            </eop:SpecificInformation>
+          </eop:vendorSpecific>
+          <eop:vendorSpecific>
+            <eop:SpecificInformation>
+              <eop:localAttribute>LL Corner Long</eop:localAttribute>
+              <eop:localValue>10&amp;amp;deg;16'57.18&amp;quot;W</eop:localValue>
+            </eop:SpecificInformation>
+          </eop:vendorSpecific>
+          <eop:vendorSpecific>
+            <eop:SpecificInformation>
+              <eop:localAttribute>LR Corner Lat</eop:localAttribute>
+              <eop:localValue>37&amp;amp;deg;56'31.74&amp;quot;N</eop:localValue>
+            </eop:SpecificInformation>
+          </eop:vendorSpecific>
+          <eop:vendorSpecific>
+            <eop:SpecificInformation>
+              <eop:localAttribute>LR Corner Long</eop:localAttribute>
+              <eop:localValue>8&amp;amp;deg;08'14.50&amp;quot;W</eop:localValue>
+            </eop:SpecificInformation>
+          </eop:vendorSpecific>
+          <eop:vendorSpecific>
+            <eop:SpecificInformation>
+              <eop:localAttribute>Center Latitude dec</eop:localAttribute>
+              <eop:localValue>38.90138</eop:localValue>
+            </eop:SpecificInformation>
+          </eop:vendorSpecific>
+          <eop:vendorSpecific>
+            <eop:SpecificInformation>
+              <eop:localAttribute>Center Longitude dec</eop:localAttribute>
+              <eop:localValue>-8.96413</eop:localValue>
+            </eop:SpecificInformation>
+          </eop:vendorSpecific>
+          <eop:vendorSpecific>
+            <eop:SpecificInformation>
+              <eop:localAttribute>UL Corner Lat dec</eop:localAttribute>
+              <eop:localValue>39.85735</eop:localValue>
+            </eop:SpecificInformation>
+          </eop:vendorSpecific>
+          <eop:vendorSpecific>
+            <eop:SpecificInformation>
+              <eop:localAttribute>UL Corner Long dec</eop:localAttribute>
+              <eop:localValue>-9.81402</eop:localValue>
+            </eop:SpecificInformation>
+          </eop:vendorSpecific>
+          <eop:vendorSpecific>
+            <eop:SpecificInformation>
+              <eop:localAttribute>UR Corner Lat dec</eop:localAttribute>
+              <eop:localValue>39.53916</eop:localValue>
+            </eop:SpecificInformation>
+          </eop:vendorSpecific>
+          <eop:vendorSpecific>
+            <eop:SpecificInformation>
+              <eop:localAttribute>UR Corner Long dec</eop:localAttribute>
+              <eop:localValue>-7.62083</eop:localValue>
+            </eop:SpecificInformation>
+          </eop:vendorSpecific>
+          <eop:vendorSpecific>
+            <eop:SpecificInformation>
+              <eop:localAttribute>LL Corner Lat dec</eop:localAttribute>
+              <eop:localValue>38.25321</eop:localValue>
+            </eop:SpecificInformation>
+          </eop:vendorSpecific>
+          <eop:vendorSpecific>
+            <eop:SpecificInformation>
+              <eop:localAttribute>LL Corner Long dec</eop:localAttribute>
+              <eop:localValue>-10.28255</eop:localValue>
+            </eop:SpecificInformation>
+          </eop:vendorSpecific>
+          <eop:vendorSpecific>
+            <eop:SpecificInformation>
+              <eop:localAttribute>LR Corner Lat dec</eop:localAttribute>
+              <eop:localValue>37.94215</eop:localValue>
+            </eop:SpecificInformation>
+          </eop:vendorSpecific>
+          <eop:vendorSpecific>
+            <eop:SpecificInformation>
+              <eop:localAttribute>LR Corner Long dec</eop:localAttribute>
+              <eop:localValue>-8.13736</eop:localValue>
+            </eop:SpecificInformation>
+          </eop:vendorSpecific>
+        </eop:EarthObservationMetaData>
+      </eop:metaDataProperty>
+    </opt:EarthObservation>
+    <identifier xmlns="http://purl.org/dc/elements/1.1/">LE07_L1TP_204033_20171130_20171226_01_T1</identifier>
+  </entry>
+  <debugRequest xmlns="http://purl.org/dc/elements/1.1/"/>
+  <debugResponse xmlns="http://purl.org/dc/elements/1.1/"/>
+  <queryTime xmlns="http://purl.org/dc/elements/1.1/">3</queryTime>
+  <totalResults xmlns="http://a9.com/-/spec/opensearch/1.1/">1</totalResults>
+  <startIndex xmlns="http://a9.com/-/spec/opensearch/1.1/">1</startIndex>
+  <itemsPerPage xmlns="http://a9.com/-/spec/opensearch/1.1/">20</itemsPerPage>
+  <os:Query xmlns:time="http://a9.com/-/opensearch/extensions/time/1.0/" xmlns:eop="http://a9.com/-/opensearch/extensions/eo/1.0/" xmlns:dct="http://purl.org/dc/terms/" xmlns:param="http://a9.com/-/spec/opensearch/extensions/parameters/1.0/" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:t2="http://www.terradue.com/opensearch" xmlns:geo="http://a9.com/-/opensearch/extensions/geo/1.0/" xmlns:os="http://a9.com/-/spec/opensearch/1.1/" role="request" geo:uid="LE07_L1TP_204033_20171130_20171226_01_T1"/>
+</feed>

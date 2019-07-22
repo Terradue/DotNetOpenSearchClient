@@ -9,23 +9,12 @@ using System.Xml;
 namespace Terradue.OpenSearch.Client.Test {
 
     [TestFixture()]
-    public class Sentinel1AuxTests {
+    public class Sentinel1AuxTests : TestBase {
 
-        OpenSearchClient client;
         XmlNamespaceManager nsm;
 
         [SetUp]
         public void SetUpClient() {
-
-            client = new OpenSearchClient();
-            client.Initialize();
-
-            OpenSearchClient.baseUrlArg = new List<string>();
-            OpenSearchClient.metadataPaths = new List<string>();
-            OpenSearchClient.parameterArgs = new List<string>();
-            OpenSearchClient.dataModelParameterArgs = new List<string>();
-            OpenSearchClient.queryModelArg = "GeoTime";
-
             XmlDocument doc = new XmlDocument();
             nsm = new XmlNamespaceManager(doc.NameTable);
             nsm.AddNamespace("gml32", "http://www.opengis.net/gml/3.2");
@@ -38,15 +27,13 @@ namespace Terradue.OpenSearch.Client.Test {
 
         [Test()]
         public void ListTest() {
-
-            OpenSearchClient.baseUrlArg.Add("https://aux.sentinel1.eo.esa.int/");
-            OpenSearchClient.queryModelArg = "EOP";
-            OpenSearchClient.parameterArgs.Add("count=unlimited");
-            OpenSearchClient.parameterArgs.Add("startIndex=1");
-            OpenSearchClient.parameterArgs.Add("start=2019-05-14");
-            OpenSearchClient.parameterArgs.Add("stop=2019-05-15");
-            OpenSearchClient.parameterArgs.Add("auxtype=aux_resorb");
-            OpenSearchClient.metadataPaths.Add("identifier");
+            OpenSearchClient client = CreateTestClient("https://aux.sentinel1.eo.esa.int/", "identifier");
+            client.QueryModel = "EOP";
+            client.Parameters.Add("count=unlimited");
+            client.Parameters.Add("startIndex=1");
+            client.Parameters.Add("start=2019-05-14");
+            client.Parameters.Add("stop=2019-05-15");
+            client.Parameters.Add("auxtype=aux_resorb");
 
             int totalCount;
             string firstExpected = null;
@@ -67,15 +54,13 @@ namespace Terradue.OpenSearch.Client.Test {
             }
             Assert.Greater(totalCount, 100);
 
-            SetUpClient();
-            OpenSearchClient.baseUrlArg.Add("https://aux.sentinel1.eo.esa.int");
-            OpenSearchClient.queryModelArg = "EOP";
-            OpenSearchClient.parameterArgs.Add("count=unlimited");
-            OpenSearchClient.parameterArgs.Add("startIndex=42");
-            OpenSearchClient.parameterArgs.Add("start=2019-05-14");
-            OpenSearchClient.parameterArgs.Add("stop=2019-05-15");
-            OpenSearchClient.parameterArgs.Add("auxtype=aux_resorb");
-            OpenSearchClient.metadataPaths.Add("identifier");
+            client = CreateTestClient("https://aux.sentinel1.eo.esa.int/", "identifier");
+            client.QueryModel = "EOP";
+            client.Parameters.Add("count=unlimited");
+            client.Parameters.Add("startIndex=42");
+            client.Parameters.Add("start=2019-05-14");
+            client.Parameters.Add("stop=2019-05-15");
+            client.Parameters.Add("auxtype=aux_resorb");
 
             string firstActual = null;
             int newCount;
@@ -99,48 +84,28 @@ namespace Terradue.OpenSearch.Client.Test {
 
         [Test()]
         public void RedirectTest() {
+            OpenSearchClient client = CreateTestClient("https://qc.sentinel1.eo.esa.int", "identifier");
+            client.QueryModel = "EOP";
+            client.Parameters.Add("count=unlimited");
+            client.Parameters.Add("startIndex=1");
+            client.Parameters.Add("start=2019-05-14");
+            client.Parameters.Add("stop=2019-05-15");
+            client.Parameters.Add("auxtype=aux_resorb");
 
-            OpenSearchClient.baseUrlArg.Add("https://qc.sentinel1.eo.esa.int");
-            OpenSearchClient.queryModelArg = "EOP";
-            OpenSearchClient.parameterArgs.Add("count=unlimited");
-            OpenSearchClient.parameterArgs.Add("startIndex=1");
-            OpenSearchClient.parameterArgs.Add("start=2019-05-14");
-            OpenSearchClient.parameterArgs.Add("stop=2019-05-15");
-            OpenSearchClient.parameterArgs.Add("auxtype=aux_resorb");
-            OpenSearchClient.metadataPaths.Add("identifier");
-
-            int totalCount;
-
-            using (MemoryStream ms = new MemoryStream()) {
-                client.ProcessQuery(ms);
-                ms.Seek(0, SeekOrigin.Begin);
-                StreamReader sr = new StreamReader(ms);
-                string line;
-                int count = 0;
-                while ((line = sr.ReadLine()) != null) count++;
-                sr.Close();
-                totalCount = count;
-            }
-            Assert.Greater(totalCount, 100);
+            int count = client.GetResultCount();
+            Assert.Greater(count, 100);
 
         }
 
         [Test()]
         public void SingleEntryTest() {
+            OpenSearchClient client = CreateTestClient("https://qc.sentinel1.eo.esa.int", "{}");
+            client.QueryModel = "EOP";
+            client.Parameters.Add("uid=S1A_OPER_AUX_RESORB_OPOD_20190515T024532_V20190514T224004_20190515T015734");
+            client.Parameters.Add("orbits=true");
+            client.Parameters.Add("auxtype=aux_resorb");
 
-            OpenSearchClient.baseUrlArg.Add("https://qc.sentinel1.eo.esa.int");
-            OpenSearchClient.queryModelArg = "EOP";
-            OpenSearchClient.parameterArgs.Add("uid=S1A_OPER_AUX_RESORB_OPOD_20190515T024532_V20190514T224004_20190515T015734");
-            OpenSearchClient.parameterArgs.Add("orbits=true");
-            OpenSearchClient.parameterArgs.Add("auxtype=aux_resorb");
-            OpenSearchClient.metadataPaths.Add("{}");
-
-            XmlDocument doc = new XmlDocument();
-            using (MemoryStream ms = new MemoryStream()) {
-                client.ProcessQuery(ms);
-                ms.Seek(0, SeekOrigin.Begin);
-                doc.Load(ms);
-            }
+            XmlDocument doc = client.GetXmlResult();
 
             XmlNodeList entryNodes = doc.SelectNodes("atom:feed/atom:entry", nsm);
             Assert.AreEqual(1, entryNodes.Count);

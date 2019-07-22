@@ -102,8 +102,8 @@ namespace Terradue.OpenSearch.Model.EarthObservation {
                 if (url.Host == "earthexplorer.usgs.gov") {
 					log.DebugFormat("Usgs source. Trying to get the earthobservation profile");
 
-					// usgsOpenSearchable
-					e = new Terradue.OpenSearch.Usgs.UsgsOpenSearchable(url, settings);
+                    // usgsOpenSearchable
+                    e = new Terradue.OpenSearch.Usgs.UsgsOpenSearchable(url, settings);
                     entities.Add(e);
                     continue;
 				}

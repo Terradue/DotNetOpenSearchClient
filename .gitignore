@@ -13,3 +13,6 @@ Terradue.OpenSearch.Model/Resources
 .idea/
 Terradue.OpenSearch.Client.sln.DotSettings.user
 /.vs
+
+TestResult\.xml
+*auth.txt*

@@ -24,11 +24,11 @@ pipeline {
     stage('Build') {
       steps {
         echo "Build .NET application"
-        sh 'nuget restore -MSBuildVersion 14'
-        sh "xbuild /p:Configuration=${params.DOTNET_CONFIG}"
+        sh "msbuild /t:build /p:Configuration=DEBUG /Restore:true"
         sh 'cp -r Terradue.OpenSearch.Client/bin $WORKSPACE/build/SOURCES/'
         sh 'cp src/main/scripts/opensearch-client $WORKSPACE/build/SOURCES/'
         sh 'cp -r packages $WORKSPACE/build/SOURCES/'
+        sh 'ls -l $WORKSPACE/build/SOURCES/packages/terradue.metadata.earthobservation/*/content/Resources/ne_110m_land'
       }
     }
     stage('Package') {
@@ -48,11 +48,11 @@ pipeline {
       }
       steps {
         sh 'echo "${params.TEST_AUTH}" > Terradue.OpenSearch.Client.Test/auth.txt'
-        sh 'mono packages/NUnit.ConsoleRunner.3.7.0/tools/nunit3-console.exe Terradue.OpenSearch.Client.Test/bin/Terradue.OpenSearch.Client.Test.dll --result build/TestResult.xml'
+        sh 'mono packages/nunit.consolerunner/3.10.0/tools/nunit3-console.exe *.Test/bin/*/net45/*.Test.dll'
       }
       post {
           success {
-             nunit(testResultsPattern: 'build/TestResult.xml')
+             nunit(testResultsPattern: 'TestResult.xml')
           }
       }
     }
