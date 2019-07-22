@@ -14,7 +14,17 @@ namespace Terradue.OpenSearch.Client.Test {
             LoadCredentials();
         }
 
+        public OpenSearchClient CreateTestClient(string baseUrl = null, string metadataPath = null) {
+            OpenSearchClient client = new OpenSearchClient();
+            client.BaseUrls = new List<string>();
+            if (baseUrl != null) client.BaseUrls.Add(baseUrl);
+            client.MetadataPaths = new List<string>();
+            if (metadataPath != null) client.MetadataPaths.Add(metadataPath);
+            client.Timeout = 60000;
+            client.Initialize();
 
+            return client;
+        }
 
         protected void LoadCredentials() {
             if (credentials != null) return;
@@ -22,7 +32,7 @@ namespace Terradue.OpenSearch.Client.Test {
             credentials = new Dictionary<string, Credential>();
 
             string authFile = String.Format("{0}/auth.txt", Regex.Replace(this.GetType().Assembly.Location, "/bin/.+$", String.Empty));
-            Console.WriteLine("AUTHFILE: {0}", authFile);
+            Console.WriteLine("Trying to load credentials from file: {0}", authFile);
 
             if (File.Exists(authFile)) {
                 using (StreamReader sr = new StreamReader(authFile)) {
@@ -33,8 +43,12 @@ namespace Terradue.OpenSearch.Client.Test {
                     }
                     sr.Close();
                 }
+                Console.WriteLine("Credentials loaded");
 
+            } else {
+                Console.WriteLine("File not found (continuing without credentials).");
             }
+
         }
 
 

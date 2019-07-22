@@ -18,7 +18,6 @@ namespace Terradue.OpenSearch.Model.GeoTime {
                             date = DateTime.Parse(date.Split('/')[1]).ToUniversalTime().ToString("O");
                     }
                     if (ext.OuterName == "validTime" && ext.OuterNamespace == "http://www.opengis.net/gml") {
-                        Console.WriteLine("END");
                         using (XmlReader r = ext.GetReader()) {
                             if (r.ReadToFollowing("endPosition", "http://www.opengis.net/gml")) {
                                 date = DateTime.Parse(r.ReadElementContentAsString(), null, System.Globalization.DateTimeStyles.AssumeUniversal).ToUniversalTime().ToString("O");

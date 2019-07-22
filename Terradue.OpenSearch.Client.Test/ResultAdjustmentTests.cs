@@ -11,22 +11,12 @@ namespace Terradue.OpenSearch.Client.Test{
     [TestFixture()]
     public class ResultAdjustmentTests : TestBase {
 
-        OpenSearchClient client;
         XmlNamespaceManager nsm;
         string geometryXPath = "//gml32:posList | //gml:posList | //georss:polygon";
 
         [SetUp]
         public void SetUpClient() {
             
-            client = new OpenSearchClient();
-            client.Initialize();
-
-            OpenSearchClient.baseUrlArg = new List<string>();
-            OpenSearchClient.metadataPaths = new List<string>();
-            OpenSearchClient.parameterArgs = new List<string>();
-            OpenSearchClient.dataModelParameterArgs = new List<string>();
-            OpenSearchClient.queryModelArg = "GeoTime";
-
             XmlDocument doc = new XmlDocument();
             nsm = new XmlNamespaceManager(doc.NameTable);
             nsm.AddNamespace("gml32", "http://www.opengis.net/gml/3.2");
@@ -43,13 +33,10 @@ namespace Terradue.OpenSearch.Client.Test{
 
             Credential credential = GetCredential("SciHubPolygon_01", true);
 
-            OpenSearchClient.baseUrlArg.Add("https://scihub.copernicus.eu/apihub");
-            OpenSearchClient.netCreds = new List<NetworkCredential> { new NetworkCredential(credential.Username, credential.Password) };
-
-            OpenSearchClient.queryModelArg = "Scihub";
-            OpenSearchClient.parameterArgs.Add("uid=S3A_SL_1_RBT____20190414T044653_20190414T044953_20190415T091626_0179_043_290_1440_LN2_O_NT_003");
-
-            OpenSearchClient.metadataPaths.Add("{}");
+            OpenSearchClient client = CreateTestClient("https://scihub.copernicus.eu/apihub", "{}");
+            client.NetCreds = new List<NetworkCredential> { new NetworkCredential(credential.Username, credential.Password) };
+            client.QueryModel = "Scihub";
+            client.Parameters.Add("uid=S3A_SL_1_RBT____20190414T044653_20190414T044953_20190415T091626_0179_043_290_1440_LN2_O_NT_003");
 
             XmlDocument doc = client.GetXmlResult();
 
@@ -79,14 +66,11 @@ namespace Terradue.OpenSearch.Client.Test{
 
             Credential credential = GetCredential("SciHubPolygon_02", true);
 
-            OpenSearchClient.baseUrlArg.Add("https://scihub.copernicus.eu/apihub");
-            OpenSearchClient.netCreds = new List<NetworkCredential> { new NetworkCredential(credential.Username, credential.Password) };
-
-            OpenSearchClient.queryModelArg = "Scihub";
-            OpenSearchClient.parameterArgs.Add("uid=S3A_SY_2_VGP____20190415T074341_20190415T082648_20190416T152039_2587_043_306______LN2_O_NT_002");
-            OpenSearchClient.parameterArgs.Add("psn=Sentinel-3");
-
-            OpenSearchClient.metadataPaths.Add("{}");
+            OpenSearchClient client = CreateTestClient("https://scihub.copernicus.eu/apihub", "{}");
+            client.NetCreds = new List<NetworkCredential> { new NetworkCredential(credential.Username, credential.Password) };
+            client.QueryModel = "Scihub";
+            client.Parameters.Add("uid=S3A_SY_2_VGP____20190415T074341_20190415T082648_20190416T152039_2587_043_306______LN2_O_NT_002");
+            client.Parameters.Add("psn=Sentinel-3");
 
             XmlDocument doc = client.GetXmlResult();
 
@@ -121,14 +105,11 @@ namespace Terradue.OpenSearch.Client.Test{
 
             Credential credential = GetCredential("SciHubPolygon_02", true); // same as other test case
 
-            OpenSearchClient.baseUrlArg.Add("https://scihub.copernicus.eu/apihub");
-            OpenSearchClient.netCreds = new List<NetworkCredential> { new NetworkCredential(credential.Username, credential.Password) };
-
-            OpenSearchClient.queryModelArg = "Scihub";
-            OpenSearchClient.parameterArgs.Add("uid=S3A_SY_2_VGP____20190415T074341_20190415T082648_20190416T152039_2587_043_306______LN2_O_NT_002");
-            OpenSearchClient.parameterArgs.Add("psn=Sentinel-3");
-
-            OpenSearchClient.metadataPaths.Add("{}");
+            OpenSearchClient client = CreateTestClient("https://scihub.copernicus.eu/apihub", "{}");
+            client.NetCreds = new List<NetworkCredential> { new NetworkCredential(credential.Username, credential.Password) };
+            client.QueryModel = "Scihub";
+            client.Parameters.Add("uid=S3A_SY_2_VGP____20190415T074341_20190415T082648_20190416T152039_2587_043_306______LN2_O_NT_002");
+            client.Parameters.Add("psn=Sentinel-3");
 
             XmlDocument doc = client.GetXmlResult();
 
@@ -150,14 +131,12 @@ namespace Terradue.OpenSearch.Client.Test{
         [Test()]
         public void Test_VirtualArchiveIdentifier() {
 
-            OpenSearchClient.baseUrlArg.Add("http://eo-virtual-archive4.esa.int/search/COSMOSKYMED/rdf");
-
-            OpenSearchClient.parameterArgs.Add("count=unlimited");
-            OpenSearchClient.parameterArgs.Add("modified_start=2019-05-01");
-            OpenSearchClient.parameterArgs.Add("modified_stop=2019-05-26");
-            OpenSearchClient.parameterArgs.Add("uid=CSKS1_RAW_B_HI_08_HH_RA_SF_20190524161228_20190524161235");
-            OpenSearchClient.adjustIdentifiers = true;
-            OpenSearchClient.metadataPaths.Add("{}");
+            OpenSearchClient client = CreateTestClient("http://eo-virtual-archive4.esa.int/search/COSMOSKYMED/rdf", "{}");
+            client.Parameters.Add("count=unlimited");
+            client.Parameters.Add("modified_start=2019-05-01");
+            client.Parameters.Add("modified_stop=2019-05-26");
+            client.Parameters.Add("uid=CSKS1_RAW_B_HI_08_HH_RA_SF_20190524161228_20190524161235");
+            client.AdjustIdentifiers = true;
 
             XmlDocument doc = client.GetXmlResult();
 

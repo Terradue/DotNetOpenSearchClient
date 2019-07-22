@@ -8,34 +8,12 @@ using System.Text.RegularExpressions;
 namespace Terradue.OpenSearch.Client.Test {
     
     [TestFixture()]
-    public class GeoTimeModelTests {
-
-        OpenSearchClient client;
-
-        [SetUp]
-        public void SetUpClient(){
-            
-            client = new OpenSearchClient();
-
-            client.Initialize();
-
-            OpenSearchClient.baseUrlArg = new List<string>();
-
-            OpenSearchClient.metadataPaths = new List<string>();
-
-            OpenSearchClient.parameterArgs = new List<string>();
-
-            OpenSearchClient.dataModelParameterArgs = new List<string>();
-
-            OpenSearchClient.queryModelArg = "GeoTime";
-
-        }
+    public class GeoTimeModelTests : TestBase {
 
         [Test()]
         public void WktFromRdf() {
+            OpenSearchClient client = CreateTestClient("http://eo-virtual-archive4.esa.int/search/ASA_IM__0P/ASA_IM__0CNPDE20120407_061242_000000173113_00250_52850_6352.N1/rdf", "wkt");
 
-            OpenSearchClient.baseUrlArg.Add("http://eo-virtual-archive4.esa.int/search/ASA_IM__0P/ASA_IM__0CNPDE20120407_061242_000000173113_00250_52850_6352.N1/rdf");
-            OpenSearchClient.metadataPaths.Add("wkt");
             MemoryStream ms = new MemoryStream();
             client.ProcessQuery(ms);
             ms.Seek(0, SeekOrigin.Begin);
@@ -72,9 +50,8 @@ namespace Terradue.OpenSearch.Client.Test {
 
         [Test()]
         public void EnclosureFromRdf() {
+            OpenSearchClient client = CreateTestClient("http://eo-virtual-archive4.esa.int/search/ASA_IM__0P/ASA_IM__0CNPDE20120407_061242_000000173113_00250_52850_6352.N1/rdf", "enclosure");
 
-            OpenSearchClient.baseUrlArg.Add("http://eo-virtual-archive4.esa.int/search/ASA_IM__0P/ASA_IM__0CNPDE20120407_061242_000000173113_00250_52850_6352.N1/rdf");
-            OpenSearchClient.metadataPaths.Add("enclosure");
             MemoryStream ms = new MemoryStream();
             client.ProcessQuery(ms);
             ms.Seek(0, SeekOrigin.Begin);
@@ -85,9 +62,8 @@ namespace Terradue.OpenSearch.Client.Test {
 
         [Test()]
         public void StartdateFromRdf() {
+            OpenSearchClient client = CreateTestClient("http://eo-virtual-archive4.esa.int/search/ASA_IM__0P/ASA_IM__0CNPDE20120407_061242_000000173113_00250_52850_6352.N1/rdf", "startdate");
 
-            OpenSearchClient.baseUrlArg.Add("http://eo-virtual-archive4.esa.int/search/ASA_IM__0P/ASA_IM__0CNPDE20120407_061242_000000173113_00250_52850_6352.N1/rdf");
-            OpenSearchClient.metadataPaths.Add("startdate");
             MemoryStream ms = new MemoryStream();
             client.ProcessQuery(ms);
             ms.Seek(0, SeekOrigin.Begin);
@@ -100,9 +76,8 @@ namespace Terradue.OpenSearch.Client.Test {
 
         [Test()]
         public void EnddateFromRdf() {
+            OpenSearchClient client = CreateTestClient("http://eo-virtual-archive4.esa.int/search/ASA_IM__0P/ASA_IM__0CNPDE20120407_061242_000000173113_00250_52850_6352.N1/atom", "enddate");
 
-            OpenSearchClient.baseUrlArg.Add("http://eo-virtual-archive4.esa.int/search/ASA_IM__0P/ASA_IM__0CNPDE20120407_061242_000000173113_00250_52850_6352.N1/atom");
-            OpenSearchClient.metadataPaths.Add("enddate");
             MemoryStream ms = new MemoryStream();
             client.ProcessQuery(ms);
             ms.Seek(0, SeekOrigin.Begin);

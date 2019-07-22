@@ -11,21 +11,11 @@ namespace Terradue.OpenSearch.Client.Test {
     [TestFixture()]
     public class NewTests : TestBase {
 
-        OpenSearchClient client;
         XmlNamespaceManager nsm;
         string geometryXPath = "//gml32:posList | //gml:posList | //georss:polygon";
 
         [SetUp]
         public void SetUpClient() {
-
-            client = new OpenSearchClient();
-            client.Initialize();
-
-            OpenSearchClient.baseUrlArg = new List<string>();
-            OpenSearchClient.metadataPaths = new List<string>();
-            OpenSearchClient.parameterArgs = new List<string>();
-            OpenSearchClient.dataModelParameterArgs = new List<string>();
-            OpenSearchClient.queryModelArg = "GeoTime";
 
             XmlDocument doc = new XmlDocument();
             nsm = new XmlNamespaceManager(doc.NameTable);
@@ -44,18 +34,17 @@ namespace Terradue.OpenSearch.Client.Test {
             // opensearch-client --max-retries 0 --time-out 600000 -m EOP -p profile=eop -p count=unlimited --pagination 100 -p start=2018-09-26 -p stop=2018-09-26 -p pi=LANDSAT_8_C1 -o earthexplorer_usgs_gov.list http://earthexplorer.usgs.gov identifier
             Credential credential = GetCredential("Landsat8_01", true);
 
-            OpenSearchClient.baseUrlArg.Add("http://earthexplorer.usgs.gov");
-            OpenSearchClient.netCreds = new List<NetworkCredential> { new NetworkCredential(credential.Username, credential.Password) };
+            OpenSearchClient client = CreateTestClient("http://earthexplorer.usgs.gov", "identifier");
+            client.NetCreds = new List<NetworkCredential> { new NetworkCredential(credential.Username, credential.Password) };
 
-            OpenSearchClient.timeout = 600000;
-            OpenSearchClient.queryModelArg = "EOP";
-            OpenSearchClient.pagination = 100;
-            OpenSearchClient.parameterArgs.Add("count=unlimited");
-            OpenSearchClient.parameterArgs.Add("profile=eop");
-            OpenSearchClient.parameterArgs.Add("pi=LANDSAT_8_C1");
-            OpenSearchClient.parameterArgs.Add("start=2018-09-26");
-            OpenSearchClient.parameterArgs.Add("stop=2018-09-26");
-            OpenSearchClient.metadataPaths.Add("identifier");
+            client.Timeout = 600000;
+            client.QueryModel = "EOP";
+            client.Pagination = 100;
+            client.Parameters.Add("count=unlimited");
+            client.Parameters.Add("profile=eop");
+            client.Parameters.Add("pi=LANDSAT_8_C1");
+            client.Parameters.Add("start=2018-09-26");
+            client.Parameters.Add("stop=2018-09-26");
 
             int count = client.GetResultCount();
             Assert.Greater(count, 700);
@@ -67,20 +56,19 @@ namespace Terradue.OpenSearch.Client.Test {
             // opensearch-client -v --max-retries 0 --time-out 600000 -m EOP -p profile=eop -p count=unlimited --pagination 100 -p start= -p stop= -p modified=2019-06-21 -p pi=LANDSAT_8_C1 -o landsat_datasets.atom http://earthexplorer.usgs.gov {}
             Credential credential = GetCredential("Landsat8_02", true);
 
-            OpenSearchClient.baseUrlArg.Add("http://earthexplorer.usgs.gov");
-            OpenSearchClient.netCreds = new List<NetworkCredential> { new NetworkCredential(credential.Username, credential.Password) };
+            OpenSearchClient client = CreateTestClient("http://earthexplorer.usgs.gov", "{}");
+            client.NetCreds = new List<NetworkCredential> { new NetworkCredential(credential.Username, credential.Password) };
 
-            OpenSearchClient.timeout = 600000;
-            OpenSearchClient.queryModelArg = "EOP";
-            OpenSearchClient.pagination = 100;
-            OpenSearchClient.parameterArgs.Add("count=unlimited");
-            OpenSearchClient.parameterArgs.Add("profile=eop");
-            OpenSearchClient.parameterArgs.Add("pi=LANDSAT_8_C1");
-            OpenSearchClient.parameterArgs.Add("start=");
-            OpenSearchClient.parameterArgs.Add("stop=");
-            OpenSearchClient.parameterArgs.Add("modified=2019-06-21");
-            OpenSearchClient.metadataPaths.Add("{}");
-            OpenSearchClient.outputFilePathArg = "Landsat_Dataset.atom";
+            client.Timeout = 600000;
+            client.QueryModel = "EOP";
+            client.Pagination = 100;
+            client.Parameters.Add("count=unlimited");
+            client.Parameters.Add("profile=eop");
+            client.Parameters.Add("pi=LANDSAT_8_C1");
+            client.Parameters.Add("start=");
+            client.Parameters.Add("stop=");
+            client.Parameters.Add("modified=2019-06-21");
+            client.OutputFilePath = "Landsat_Dataset.atom";
 
             string[] feeds = Directory.GetFiles(".", "Landsat_Dataset.atom*");
 
@@ -101,14 +89,14 @@ namespace Terradue.OpenSearch.Client.Test {
             // opensearch-client --adjust-identifiers -f rdf -p count=unlimited --pagination 100 -p modified_start=2019-06-20T00:00:00Z -p modified_stop=2019-06-21T00:00:00Z http://eo-virtual-archive4.esa.int/search/COSMOSKYMED/rdf {} > query_results.rdf
             // DONE
 
-            OpenSearchClient.baseUrlArg.Add("http://eo-virtual-archive4.esa.int/search/COSMOSKYMED/rdf");
-            OpenSearchClient.adjustIdentifiers = true;
-            OpenSearchClient.queryFormatArg = "rdf";
-            OpenSearchClient.pagination = 100;
-            OpenSearchClient.parameterArgs.Add("count=unlimited");
-            OpenSearchClient.parameterArgs.Add("modified_start=2019-06-20T00:00:00");
-            OpenSearchClient.parameterArgs.Add("modified_stop=2019-06-21T00:00:00Z");
-            OpenSearchClient.metadataPaths.Add("identifier");
+            OpenSearchClient client = CreateTestClient("http://eo-virtual-archive4.esa.int/search/COSMOSKYMED/rdf", "identifier");
+
+            client.AdjustIdentifiers = true;
+            client.QueryFormat = "rdf";
+            client.Pagination = 100;
+            client.Parameters.Add("count=unlimited");
+            client.Parameters.Add("modified_start=2019-06-20T00:00:00");
+            client.Parameters.Add("modified_stop=2019-06-21T00:00:00Z");
 
             int count = client.GetResultCount();
 
@@ -118,23 +106,23 @@ namespace Terradue.OpenSearch.Client.Test {
         public void Test_Fedeo() {
             // opensearch-client  -p count=unlimited -p recordSchema=om -p startDate=2019-06-20T00:00:00Z -p endDate=2019-06-21T00:00:00Z "http://fedeo.esa.int/opensearch/series/urn:eop:DLR:EOWEB:TSX-1.SAR.L1b-ScanSAR/datasets/?httpAccept=application/atom%2Bxml" {} | xmllint --format - >query_results.xml
 
-            OpenSearchClient.baseUrlArg.Add("http://fedeo.esa.int/opensearch/series/urn:eop:DLR:EOWEB:TSX-1.SAR.L1b-ScanSAR/datasets/?httpAccept=application/atom%2Bxml");
-            OpenSearchClient.parameterArgs.Add("count=20");
-            OpenSearchClient.parameterArgs.Add("recordSchema=om");
-            OpenSearchClient.parameterArgs.Add("{http://a9.com/-/opensearch/extensions/time/1.0/}start=2019-06-05T00:00:00Z");
-            OpenSearchClient.parameterArgs.Add("{http://a9.com/-/opensearch/extensions/time/1.0/}end=2019-06-06T00:00:00Z");
-            OpenSearchClient.metadataPaths.Add("identifier");
+            OpenSearchClient client = CreateTestClient("http://fedeo.esa.int/opensearch/series/urn:eop:DLR:EOWEB:TSX-1.SAR.L1b-ScanSAR/datasets/?httpAccept=application/atom%2Bxml", "identifier");
+
+            client.Parameters.Add("count=20");
+            client.Parameters.Add("recordSchema=om");
+            client.Parameters.Add("{http://a9.com/-/opensearch/extensions/time/1.0/}start=2019-06-05T00:00:00Z");
+            client.Parameters.Add("{http://a9.com/-/opensearch/extensions/time/1.0/}end=2019-06-06T00:00:00Z");
 
             int count = client.GetResultCount();
             Assert.AreEqual(7, count);
 
-            SetUpClient();
-            OpenSearchClient.baseUrlArg.Add("http://fedeo.esa.int/opensearch/series/urn:eop:DLR:EOWEB:TSX-1.SAR.L1b-ScanSAR/datasets/?httpAccept=application/atom%2Bxml");
-            OpenSearchClient.parameterArgs.Clear();
-            OpenSearchClient.parameterArgs.Add("count=20");
-            OpenSearchClient.parameterArgs.Add("recordSchema=om");
-            OpenSearchClient.parameterArgs.Add("startDate=2019-06-20T00:00:00Z");
-            OpenSearchClient.parameterArgs.Add("endDate=2019-06-21T00:00:00Z");
+            client = CreateTestClient("http://fedeo.esa.int/opensearch/series/urn:eop:DLR:EOWEB:TSX-1.SAR.L1b-ScanSAR/datasets/?httpAccept=application/atom%2Bxml", "identifier");
+
+            client.Parameters.Clear();
+            client.Parameters.Add("count=20");
+            client.Parameters.Add("recordSchema=om");
+            client.Parameters.Add("startDate=2019-06-20T00:00:00Z");
+            client.Parameters.Add("endDate=2019-06-21T00:00:00Z");
 
             count = client.GetResultCount();
             Assert.AreEqual(7, count);

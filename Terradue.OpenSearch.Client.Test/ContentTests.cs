@@ -12,21 +12,11 @@ namespace Terradue.OpenSearch.Client.Test {
     [TestFixture()]
     public class ContetTests : TestBase {
 
-        OpenSearchClient client;
         XmlNamespaceManager nsm;
         string eoNodePath = "//eop:EarthObservation | //opt:EarthObservation | //sar:EarthObservation";
 
         [SetUp]
         public void SetUpClient() {
-
-            client = new OpenSearchClient();
-            client.Initialize();
-
-            OpenSearchClient.baseUrlArg = new List<string>();
-            OpenSearchClient.metadataPaths = new List<string>();
-            OpenSearchClient.parameterArgs = new List<string>();
-            OpenSearchClient.dataModelParameterArgs = new List<string>();
-            OpenSearchClient.queryModelArg = "GeoTime";
 
             XmlDocument doc = new XmlDocument();
             nsm = new XmlNamespaceManager(doc.NameTable);
@@ -37,10 +27,8 @@ namespace Terradue.OpenSearch.Client.Test {
 
         [Test()]
         public void Test_Sentinel1() {
-            OpenSearchClient.baseUrlArg.Add("https://catalog.terradue.com/sentinel1/search");
-
-            OpenSearchClient.parameterArgs.Add("uid=S1A_WV_OCN__2SSV_20190505T235215_20190506T001205_027099_030DCE_A66C");
-            OpenSearchClient.metadataPaths.Add("{}");
+            OpenSearchClient client = CreateTestClient("https://catalog.terradue.com/sentinel1/search", "{}");
+            client.Parameters.Add("uid=S1A_WV_OCN__2SSV_20190505T235215_20190506T001205_027099_030DCE_A66C");
 
             XmlDocument doc = client.GetXmlResult();
 
@@ -56,10 +44,8 @@ namespace Terradue.OpenSearch.Client.Test {
 
         [Test()]
         public void Test_Sentinel2() {
-            OpenSearchClient.baseUrlArg.Add("https://catalog.terradue.com/sentinel2/search");
-
-            OpenSearchClient.parameterArgs.Add("uid=S2B_MSIL2A_20190505T235629_N0211_R116_T60VVR_20190506T020948");
-            OpenSearchClient.metadataPaths.Add("{}");
+            OpenSearchClient client = CreateTestClient("https://catalog.terradue.com/sentinel2/search", "{}");
+            client.Parameters.Add("uid=S2B_MSIL2A_20190505T235629_N0211_R116_T60VVR_20190506T020948");
 
             XmlDocument doc = client.GetXmlResult();
 
@@ -76,10 +62,8 @@ namespace Terradue.OpenSearch.Client.Test {
 
         [Test()]
         public void Test_Sentinel3() {
-            OpenSearchClient.baseUrlArg.Add("https://catalog.terradue.com/sentinel3/search");
-
-            OpenSearchClient.parameterArgs.Add("uid=S3A_SL_2_LST____20190305T235619_20190306T013718_20190307T104215_6059_042_116______LN2_O_NT_003");
-            OpenSearchClient.metadataPaths.Add("{}");
+            OpenSearchClient client = CreateTestClient("https://catalog.terradue.com/sentinel3/search", "{}");
+            client.Parameters.Add("uid=S3A_SL_2_LST____20190305T235619_20190306T013718_20190307T104215_6059_042_116______LN2_O_NT_003");
 
             XmlDocument doc = client.GetXmlResult();
             doc.Save("s3.doc");
@@ -96,10 +80,8 @@ namespace Terradue.OpenSearch.Client.Test {
 
         [Test()]
         public void Test_Landsat7() {
-            OpenSearchClient.baseUrlArg.Add("https://catalog.terradue.com/landsat7/search");
-
-            OpenSearchClient.parameterArgs.Add("uid=LE07_L1TP_204033_20171130_20171226_01_T1");
-            OpenSearchClient.metadataPaths.Add("{}");
+            OpenSearchClient client = CreateTestClient("https://catalog.terradue.com/landsat7/search", "{}");
+            client.Parameters.Add("uid=LE07_L1TP_204033_20171130_20171226_01_T1");
 
             XmlDocument doc = client.GetXmlResult();
             doc.Save("s3.doc");
@@ -116,10 +98,8 @@ namespace Terradue.OpenSearch.Client.Test {
 
         [Test()]
         public void Test_Landsat8() {
-            OpenSearchClient.baseUrlArg.Add("https://catalog.terradue.com/landsat8/search");
-
-            OpenSearchClient.parameterArgs.Add("uid=LC08_L1GT_095022_20190305_20190309_01_T2");
-            OpenSearchClient.metadataPaths.Add("{}");
+            OpenSearchClient client = CreateTestClient("https://catalog.terradue.com/landsat8/search", "{}");
+            client.Parameters.Add("uid=LC08_L1GT_095022_20190305_20190309_01_T2");
 
             XmlDocument doc = client.GetXmlResult();
             doc.Save("s3.doc");
