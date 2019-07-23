@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <title type="text"/>
+  <id>urn:uuid:7dacedd9-0641-4a6a-b1eb-98c117afed9e</id>
+  <updated>2019-07-23T16:24:37.731074Z</updated>
+  <entry>
+    <id>8ba53dc5-68ef-443b-a7b3-9031699c354a</id>
+    <title type="text">S3A SR_2_LAN___ EO L2 181 Tue, 23 Jul 2019 15:03:27 GMT</title>
+    <summary type="html">&lt;table&gt;
+	&lt;tr&gt;
+		&lt;td&gt;Platform&lt;/td&gt;&lt;td&gt;&lt;strong&gt;S3A&lt;/strong&gt;&lt;/td&gt;
+	&lt;/tr&gt;&lt;tr&gt;
+		&lt;td&gt;Sensor&lt;/td&gt;&lt;td&gt;&lt;strong&gt;SRAL&lt;/strong&gt;&lt;/td&gt;
+	&lt;/tr&gt;&lt;tr&gt;
+		&lt;td&gt;Product Type&lt;/td&gt;&lt;td&gt;&lt;strong&gt;SR_2_LAN___&lt;/strong&gt;&lt;/td&gt;
+	&lt;/tr&gt;&lt;tr&gt;
+		&lt;td&gt;Start Time&lt;/td&gt;&lt;td&gt;&lt;strong&gt;2019-07-23T13:03:27.8220000Z&lt;/strong&gt;&lt;/td&gt;
+	&lt;/tr&gt;&lt;tr&gt;
+		&lt;td&gt;End Time&lt;/td&gt;&lt;td&gt;&lt;strong&gt;2019-07-23T13:08:36.2110000Z&lt;/strong&gt;&lt;/td&gt;
+	&lt;/tr&gt;&lt;tr&gt;
+		&lt;td&gt;Orbit&lt;/td&gt;&lt;td&gt;&lt;strong&gt;17864 ASCENDING&lt;/strong&gt;&lt;/td&gt;
+	&lt;/tr&gt;&lt;tr&gt;
+		&lt;td&gt;Track&lt;/td&gt;&lt;td&gt;&lt;strong&gt;181&lt;/strong&gt;&lt;/td&gt;
+	&lt;/tr&gt;&lt;tr&gt;
+		&lt;td&gt;Mode&lt;/td&gt;&lt;td&gt;&lt;strong&gt;EO&lt;/strong&gt;&lt;/td&gt;
+	&lt;/tr&gt;
+&lt;/table&gt;</summary>
+    <published>2019-07-23T14:29:30.675Z</published>
+    <updated>2019-07-23T14:29:30.675Z</updated>
+    <link rel="enclosure" type="application/octet-stream" title="Sentinels Scientific data hub zip file" href="https://scihub.copernicus.eu/apihub/odata/v1/Products('8ba53dc5-68ef-443b-a7b3-9031699c354a')/$value"/>
+    <link rel="icon" type="image" title="Browse" href="https://store.terradue.com/api/s3/sentinel3/SR_2_LAN___/2019/7/23/quicklooks/v1/S3A_SR_2_LAN____20190723T130328_20190723T130836_20190723T141405_0308_047_181______LN3_O_NR_003.jpg"/>
+    <content type="text"/>
+    <date xmlns="http://purl.org/dc/elements/1.1/">2019-07-23T13:03:27.8220000Z/2019-07-23T13:08:36.2110000Z</date>
+    <identifier xmlns="http://purl.org/dc/elements/1.1/">S3A_SR_2_LAN____20190723T130328_20190723T130836_20190723T141405_0308_047_181______LN3_O_NR_003</identifier>
+    <alt:EarthObservation xmlns:eop="http://www.opengis.net/eop/2.1" xmlns:gml="http://www.opengis.net/gml/3.2" xmlns:om="http://www.opengis.net/om" xmlns:alt="http://www.opengis.net/alt/2.1">
+      <phenomenonTime xmlns="http://www.opengis.net/om/2.0">
+        <gml:TimePeriod>
+          <gml:beginPosition>2019-07-23T13:03:27.8220000Z</gml:beginPosition>
+          <gml:endPosition>2019-07-23T13:08:36.2110000Z</gml:endPosition>
+        </gml:TimePeriod>
+      </phenomenonTime>
+      <resultTime xmlns="http://www.opengis.net/om/2.0">
+        <gml:TimeInstant>
+          <gml:timePosition>2019-07-23T13:03:27.8220000Z</gml:timePosition>
+        </gml:TimeInstant>
+      </resultTime>
+      <procedure xmlns="http://www.opengis.net/om/2.0">
+        <alt:EarthObservationEquipment>
+          <eop:platform>
+            <eop:Platform>
+              <eop:shortName>S3A</eop:shortName>
+              <eop:serialIdentifier>2016-011A</eop:serialIdentifier>
+            </eop:Platform>
+          </eop:platform>
+          <eop:instrument>
+            <eop:Instrument>
+              <eop:shortName>SRAL</eop:shortName>
+              <eop:description>Sar Radar ALtimeter</eop:description>
+            </eop:Instrument>
+          </eop:instrument>
+          <eop:sensor>
+            <eop:Sensor>
+              <eop:sensorType>ALTIMETRIC</eop:sensorType>
+              <eop:operationalMode codeSpace="urn:eop:SEN3:sensorMode">EO</eop:operationalMode>
+            </eop:Sensor>
+          </eop:sensor>
+          <eop:acquisitionParameters>
+            <alt:Acquisition>
+              <eop:orbitNumber>17864</eop:orbitNumber>
+              <eop:orbitDirection>ASCENDING</eop:orbitDirection>
+              <eop:wrsLongitudeGrid>181</eop:wrsLongitudeGrid>
+              <alt:cycleNumber>47</alt:cycleNumber>
+            </alt:Acquisition>
+          </eop:acquisitionParameters>
+        </alt:EarthObservationEquipment>
+      </procedure>
+      <featureOfInterest xmlns="http://www.opengis.net/om/2.0">
+        <eop:Footprint>
+          <eop:multiExtentOf>
+            <gml:MultiSurface>
+              <gml:surfaceMembers>
+                <gml:Polygon>
+                  <gml:exterior>
+                    <gml:LinearRing>
+                      <gml:posList count="21">28.8601 129.403 28.8605 129.405 30.8744 128.857 32.8863 128.291 34.8961 127.706 36.9035 127.099 38.9084 126.467 40.9103 125.807 42.9091 125.115 44.9043 124.386 46.8956 123.615 46.8951 123.613 44.9039 124.384 42.9086 125.113 40.9099 125.805 38.9079 126.465 36.9031 127.097 34.8957 127.704 32.8859 128.289 30.874 128.855 28.8601 129.403</gml:posList>
+                    </gml:LinearRing>
+                  </gml:exterior>
+                </gml:Polygon>
+              </gml:surfaceMembers>
+            </gml:MultiSurface>
+          </eop:multiExtentOf>
+        </eop:Footprint>
+      </featureOfInterest>
+      <result xmlns="http://www.opengis.net/om/2.0">
+        <eop:EarthObservationResult>
+          <eop:browse>
+            <eop:BrowseInformation>
+              <eop:type>IMG</eop:type>
+              <eop:fileName>
+                <ServiceReference xmlns:p11="http://www.w3.org/1999/xlink" xmlns:p10="http://www.opengis.net/ows/2.0" xmlns="http://www.opengis.net/ows/2.0" p10:type="simple" p11:href="https://store.terradue.com/api/s3/sentinel3/SR_2_LAN___/2019/7/23/quicklooks/v1/S3A_SR_2_LAN____20190723T130328_20190723T130836_20190723T141405_0308_047_181______LN3_O_NR_003.jpg"/>
+              </eop:fileName>
+            </eop:BrowseInformation>
+          </eop:browse>
+          <eop:product>
+            <eop:ProductInformation>
+              <eop:fileName>
+                <ServiceReference xmlns:p11="http://www.w3.org/1999/xlink" xmlns:p10="http://www.opengis.net/ows/2.0" xmlns="http://www.opengis.net/ows/2.0" p10:type="application/zip" p11:href="https://scihub.copernicus.eu/apihub/odata/v1/Products('8ba53dc5-68ef-443b-a7b3-9031699c354a')/$value" p11:title="Sentinels Scientific data hub zip file">
+                  <p10:Identifier>8ba53dc5-68ef-443b-a7b3-9031699c354a</p10:Identifier>
+                </ServiceReference>
+              </eop:fileName>
+              <eop:size>0</eop:size>
+              <eop:timeliness>Near Real Time</eop:timeliness>
+            </eop:ProductInformation>
+          </eop:product>
+        </eop:EarthObservationResult>
+      </result>
+      <eop:metaDataProperty>
+        <eop:EarthObservationMetaData>
+          <eop:identifier>S3A_SR_2_LAN____20190723T130328_20190723T130836_20190723T141405_0308_047_181______LN3_O_NR_003</eop:identifier>
+          <eop:acquisitionType>NOMINAL</eop:acquisitionType>
+          <eop:productType>SR_2_LAN___</eop:productType>
+          <eop:status>ARCHIVED</eop:status>
+          <eop:processing>
+            <eop:ProcessingInformation>
+              <eop:processingCenter>Land Surface Topography Mission Processing and Archiving Centre [LN3]</eop:processingCenter>
+              <eop:method>Data Processing</eop:method>
+              <eop:processingLevel>L2</eop:processingLevel>
+              <eop:nativeProductFormat>SAFE</eop:nativeProductFormat>
+            </eop:ProcessingInformation>
+          </eop:processing>
+          <eop:vendorSpecific>
+            <eop:SpecificInformation>
+              <eop:localAttribute>lrmpercentage</eop:localAttribute>
+              <eop:localValue>0</eop:localValue>
+            </eop:SpecificInformation>
+          </eop:vendorSpecific>
+          <eop:vendorSpecific>
+            <eop:SpecificInformation>
+              <eop:localAttribute>sarpercentage</eop:localAttribute>
+              <eop:localValue>100</eop:localValue>
+            </eop:SpecificInformation>
+          </eop:vendorSpecific>
+          <eop:vendorSpecific>
+            <eop:SpecificInformation>
+              <eop:localAttribute>continentalicepercentage</eop:localAttribute>
+              <eop:localValue>0</eop:localValue>
+            </eop:SpecificInformation>
+          </eop:vendorSpecific>
+          <eop:vendorSpecific>
+            <eop:SpecificInformation>
+              <eop:localAttribute>closedseapercentage</eop:localAttribute>
+              <eop:localValue>1</eop:localValue>
+            </eop:SpecificInformation>
+          </eop:vendorSpecific>
+          <eop:vendorSpecific>
+            <eop:SpecificInformation>
+              <eop:localAttribute>landpercentage</eop:localAttribute>
+              <eop:localValue>67</eop:localValue>
+            </eop:SpecificInformation>
+          </eop:vendorSpecific>
+          <eop:vendorSpecific>
+            <eop:SpecificInformation>
+              <eop:localAttribute>openseapercentage</eop:localAttribute>
+              <eop:localValue>32</eop:localValue>
+            </eop:SpecificInformation>
+          </eop:vendorSpecific>
+        </eop:EarthObservationMetaData>
+      </eop:metaDataProperty>
+    </alt:EarthObservation>
+    <georss:polygon xmlns:georss="http://www.georss.org/georss">28.8601 129.403 28.8605 129.405 30.8744 128.857 32.8863 128.291 34.8961 127.706 36.9035 127.099 38.9084 126.467 40.9103 125.807 42.9091 125.115 44.9043 124.386 46.8956 123.615 46.8951 123.613 44.9039 124.384 42.9086 125.113 40.9099 125.805 38.9079 126.465 36.9031 127.097 34.8957 127.704 32.8859 128.289 30.874 128.855 28.8601 129.403</georss:polygon>
+  </entry>
+  <startIndex xmlns="http://a9.com/-/spec/opensearch/1.1/">1</startIndex>
+  <itemsPerPage xmlns="http://a9.com/-/spec/opensearch/1.1/">20</itemsPerPage>
+  <os:Query xmlns:param="http://a9.com/-/spec/opensearch/extensions/parameters/1.0/" xmlns:os="http://a9.com/-/spec/opensearch/1.1/" os:count="20"/>
+</feed>

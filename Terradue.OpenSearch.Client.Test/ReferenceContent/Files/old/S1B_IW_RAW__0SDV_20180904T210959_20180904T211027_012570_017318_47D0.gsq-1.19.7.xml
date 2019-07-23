@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <title type="text">Result for OpenSearch query over type * in index sentinel1</title>
+  <id>https://catalog.terradue.com:443/sentinel1/search?uid=S1B_IW_RAW__0SDV_20180904T210959_20180904T211027_012570_017318_47D0&amp;format=atom</id>
+  <updated>2019-07-23T15:36:22.079117Z</updated>
+  <link rel="self" type="application/atom+xml" title="Reference link" href="https://catalog.terradue.com/sentinel1/search?uid=S1B_IW_RAW__0SDV_20180904T210959_20180904T211027_012570_017318_47D0&amp;format=atom"/>
+  <link rel="search" type="application/opensearchdescription+xml" title="OpenSearch Description link" href="https://catalog.terradue.com/sentinel1/description"/>
+  <entry>
+    <id>https://catalog.terradue.com:443/sentinel1/search?format=atom&amp;uid=S1B_IW_RAW__0SDV_20180904T210959_20180904T211027_012570_017318_47D0</id>
+    <title type="text">S1B RAW IW L0 119 Tue, 04 Sep 2018 23:09:59 GMT</title>
+    <summary type="html">&lt;table&gt;	&lt;tr&gt;		&lt;td&gt;Platform&lt;/td&gt;&lt;td&gt;&lt;strong&gt;S1B&lt;/strong&gt;&lt;/td&gt;	&lt;/tr&gt;&lt;tr&gt;		&lt;td&gt;Sensor&lt;/td&gt;&lt;td&gt;&lt;strong&gt;SAR&lt;/strong&gt;&lt;/td&gt;	&lt;/tr&gt;&lt;tr&gt;		&lt;td&gt;Product Type&lt;/td&gt;&lt;td&gt;&lt;strong&gt;RAW&lt;/strong&gt;&lt;/td&gt;	&lt;/tr&gt;&lt;tr&gt;		&lt;td&gt;Start Time&lt;/td&gt;&lt;td&gt;&lt;strong&gt;2018-09-04T21:09:59.8600000Z&lt;/strong&gt;&lt;/td&gt;	&lt;/tr&gt;&lt;tr&gt;		&lt;td&gt;End Time&lt;/td&gt;&lt;td&gt;&lt;strong&gt;2018-09-04T21:10:27.6130000Z&lt;/strong&gt;&lt;/td&gt;	&lt;/tr&gt;&lt;tr&gt;		&lt;td&gt;Orbit&lt;/td&gt;&lt;td&gt;&lt;strong&gt;12570 DESCENDING&lt;/strong&gt;&lt;/td&gt;	&lt;/tr&gt;&lt;tr&gt;		&lt;td&gt;Track&lt;/td&gt;&lt;td&gt;&lt;strong&gt;119&lt;/strong&gt;&lt;/td&gt;	&lt;/tr&gt;&lt;tr&gt;		&lt;td&gt;Mode&lt;/td&gt;&lt;td&gt;&lt;strong&gt;IW&lt;/strong&gt;&lt;/td&gt;	&lt;/tr&gt;&lt;/table&gt;</summary>
+    <published>2018-09-05T02:36:11.026Z</published>
+    <updated>2018-09-24T14:51:08.30398Z</updated>
+    <link rel="enclosure" type="application/octet-stream" title="Sentinels Scientific data hub zip file" href="https://scihub.copernicus.eu/apihub/odata/v1/Products('fc7af537-2c13-49ef-b412-165ef149a195')/$value"/>
+    <link rel="icon" type="image" title="Browse" href="https://store.terradue.com/api/scihub/sentinel1/RAW/2018/09/04/quicklooks/v1/S1B_IW_RAW__0SDV_20180904T210959_20180904T211027_012570_017318_47D0.jpg"/>
+    <link rel="alternate" type="application/xml" title="EOP profile" href="https://catalog.terradue.com//eop/sentinel1/profile/xml?uid=S1B_IW_RAW__0SDV_20180904T210959_20180904T211027_012570_017318_47D0"/>
+    <link rel="self" type="application/atom+xml" title="Reference link" href="https://catalog.terradue.com/sentinel1/search?format=atom&amp;uid=S1B_IW_RAW__0SDV_20180904T210959_20180904T211027_012570_017318_47D0"/>
+    <content type="html">&lt;table&gt;	&lt;tr&gt;		&lt;td&gt;Platform&lt;/td&gt;&lt;td&gt;&lt;strong&gt;S1B&lt;/strong&gt;&lt;/td&gt;	&lt;/tr&gt;&lt;tr&gt;		&lt;td&gt;Sensor&lt;/td&gt;&lt;td&gt;&lt;strong&gt;SAR&lt;/strong&gt;&lt;/td&gt;	&lt;/tr&gt;&lt;tr&gt;		&lt;td&gt;Product Type&lt;/td&gt;&lt;td&gt;&lt;strong&gt;RAW&lt;/strong&gt;&lt;/td&gt;	&lt;/tr&gt;&lt;tr&gt;		&lt;td&gt;Start Time&lt;/td&gt;&lt;td&gt;&lt;strong&gt;2018-09-04T21:09:59.8600000Z&lt;/strong&gt;&lt;/td&gt;	&lt;/tr&gt;&lt;tr&gt;		&lt;td&gt;End Time&lt;/td&gt;&lt;td&gt;&lt;strong&gt;2018-09-04T21:10:27.6130000Z&lt;/strong&gt;&lt;/td&gt;	&lt;/tr&gt;&lt;tr&gt;		&lt;td&gt;Orbit&lt;/td&gt;&lt;td&gt;&lt;strong&gt;12570 DESCENDING&lt;/strong&gt;&lt;/td&gt;	&lt;/tr&gt;&lt;tr&gt;		&lt;td&gt;Track&lt;/td&gt;&lt;td&gt;&lt;strong&gt;119&lt;/strong&gt;&lt;/td&gt;	&lt;/tr&gt;&lt;tr&gt;		&lt;td&gt;Mode&lt;/td&gt;&lt;td&gt;&lt;strong&gt;IW&lt;/strong&gt;&lt;/td&gt;	&lt;/tr&gt;&lt;/table&gt;</content>
+    <georss:polygon xmlns:georss="http://www.georss.org/georss">-32.716 120.6475 -34.3486 120.0537 -34.8557 122.7032 -33.2083 123.2482 -32.716 120.6475</georss:polygon>
+    <box xmlns="http://www.georss.org/georss">-34.8557 120.0537 -32.716 123.2482</box>
+    <date xmlns="http://purl.org/dc/elements/1.1/">2018-09-04T21:09:59.8600000Z/2018-09-04T21:10:27.6130000Z</date>
+    <spatial xmlns="http://purl.org/dc/terms/">POLYGON((120.6475 -32.716,120.0537 -34.3486,122.7032 -34.8557,123.2482 -33.2083,120.6475 -32.716))</spatial>
+    <productType xmlns="http://www.opengis.net/eop/2.1">RAW</productType>
+    <sar:EarthObservation xmlns:eop="http://www.opengis.net/eop/2.1" xmlns:gml="http://www.opengis.net/gml/3.2" xmlns:om="http://www.opengis.net/om" xmlns:sar="http://www.opengis.net/sar/2.1">
+      <phenomenonTime xmlns="http://www.opengis.net/om/2.0">
+        <gml:TimePeriod>
+          <gml:beginPosition>2018-09-04T21:09:59.8600000Z</gml:beginPosition>
+          <gml:endPosition>2018-09-04T21:10:27.6130000Z</gml:endPosition>
+        </gml:TimePeriod>
+      </phenomenonTime>
+      <procedure xmlns="http://www.opengis.net/om/2.0">
+        <eop:EarthObservationEquipment>
+          <eop:platform>
+            <eop:Platform>
+              <eop:shortName>S1B</eop:shortName>
+              <eop:serialIdentifier>2016-025A</eop:serialIdentifier>
+            </eop:Platform>
+          </eop:platform>
+          <eop:instrument>
+            <eop:Instrument>
+              <eop:shortName>SAR</eop:shortName>
+              <eop:description>Synthetic Aperture Radar (C-band)</eop:description>
+            </eop:Instrument>
+          </eop:instrument>
+          <eop:sensor>
+            <eop:Sensor>
+              <eop:sensorType>RADAR</eop:sensorType>
+              <eop:operationalMode codeSpace="urn:eop:SEN1:sensorMode">IW</eop:operationalMode>
+            </eop:Sensor>
+          </eop:sensor>
+          <eop:acquisitionParameters>
+            <sar:Acquisition>
+              <eop:orbitNumber>12570</eop:orbitNumber>
+              <eop:lastOrbitNumber>12570</eop:lastOrbitNumber>
+              <eop:orbitDirection>DESCENDING</eop:orbitDirection>
+              <eop:wrsLongitudeGrid>119</eop:wrsLongitudeGrid>
+              <sar:polarisationMode>D</sar:polarisationMode>
+              <sar:polarisationChannels>VH VV</sar:polarisationChannels>
+              <sar:antennaLookDirection>RIGHT</sar:antennaLookDirection>
+            </sar:Acquisition>
+          </eop:acquisitionParameters>
+        </eop:EarthObservationEquipment>
+      </procedure>
+      <featureOfInterest xmlns="http://www.opengis.net/om/2.0">
+        <eop:Footprint>
+          <eop:multiExtentOf>
+            <gml:MultiSurface>
+              <gml:surfaceMembers>
+                <gml:Polygon>
+                  <gml:exterior>
+                    <gml:LinearRing>
+                      <gml:posList count="5">-32.716 120.6475 -34.3486 120.0537 -34.8557 122.7032 -33.2083 123.2482 -32.716 120.6475</gml:posList>
+                    </gml:LinearRing>
+                  </gml:exterior>
+                </gml:Polygon>
+              </gml:surfaceMembers>
+            </gml:MultiSurface>
+          </eop:multiExtentOf>
+        </eop:Footprint>
+      </featureOfInterest>
+      <result xmlns="http://www.opengis.net/om/2.0">
+        <eop:EarthObservationResult>
+          <eop:browse>
+            <eop:BrowseInformation>
+              <eop:type>IMG</eop:type>
+              <eop:fileName>
+                <ServiceReference xmlns:p11="http://www.w3.org/1999/xlink" xmlns:p10="http://www.opengis.net/ows/2.0" xmlns="http://www.opengis.net/ows/2.0" p10:type="simple" p11:href="https://store.terradue.com/api/scihub/sentinel1/RAW/2018/09/04/quicklooks/v1/S1B_IW_RAW__0SDV_20180904T210959_20180904T211027_012570_017318_47D0.jpg"/>
+              </eop:fileName>
+            </eop:BrowseInformation>
+          </eop:browse>
+          <eop:product>
+            <eop:ProductInformation>
+              <eop:fileName>
+                <ServiceReference xmlns:p11="http://www.w3.org/1999/xlink" xmlns:p10="http://www.opengis.net/ows/2.0" xmlns="http://www.opengis.net/ows/2.0" p10:type="simple" p11:href="https://scihub.copernicus.eu/apihub/odata/v1/Products('fc7af537-2c13-49ef-b412-165ef149a195')/$value" p11:title="application/zip">
+                  <p10:Identifier>fc7af537-2c13-49ef-b412-165ef149a195</p10:Identifier>
+                </ServiceReference>
+              </eop:fileName>
+              <eop:size>0</eop:size>
+            </eop:ProductInformation>
+          </eop:product>
+        </eop:EarthObservationResult>
+      </result>
+      <eop:metaDataProperty>
+        <eop:EarthObservationMetaData>
+          <eop:identifier>S1B_IW_RAW__0SDV_20180904T210959_20180904T211027_012570_017318_47D0</eop:identifier>
+          <eop:parentIdentifier>IW_RAW__0SDV</eop:parentIdentifier>
+          <eop:acquisitionType>NOMINAL</eop:acquisitionType>
+          <eop:productType>RAW</eop:productType>
+          <eop:status>ARCHIVED</eop:status>
+          <eop:statusSubType>ON-LINE</eop:statusSubType>
+          <eop:imageQualityStatus>NOMINAL</eop:imageQualityStatus>
+          <eop:productQualityStatus>DEGRADED</eop:productQualityStatus>
+          <eop:processing>
+            <eop:ProcessingInformation>
+              <eop:processingLevel>L0</eop:processingLevel>
+              <eop:nativeProductFormat>SAFE</eop:nativeProductFormat>
+            </eop:ProcessingInformation>
+          </eop:processing>
+          <eop:vendorSpecific>
+            <eop:SpecificInformation>
+              <eop:localAttribute>missiondatatakeid</eop:localAttribute>
+              <eop:localValue>95000</eop:localValue>
+            </eop:SpecificInformation>
+          </eop:vendorSpecific>
+        </eop:EarthObservationMetaData>
+      </eop:metaDataProperty>
+    </sar:EarthObservation>
+    <identifier xmlns="http://purl.org/dc/elements/1.1/">S1B_IW_RAW__0SDV_20180904T210959_20180904T211027_012570_017318_47D0</identifier>
+  </entry>
+  <debugRequest xmlns="http://purl.org/dc/elements/1.1/"/>
+  <debugResponse xmlns="http://purl.org/dc/elements/1.1/"/>
+  <queryTime xmlns="http://purl.org/dc/elements/1.1/">3</queryTime>
+  <totalResults xmlns="http://a9.com/-/spec/opensearch/1.1/">1</totalResults>
+  <startIndex xmlns="http://a9.com/-/spec/opensearch/1.1/">1</startIndex>
+  <itemsPerPage xmlns="http://a9.com/-/spec/opensearch/1.1/">20</itemsPerPage>
+  <os:Query xmlns:time="http://a9.com/-/opensearch/extensions/time/1.0/" xmlns:eop="http://a9.com/-/opensearch/extensions/eo/1.0/" xmlns:dct="http://purl.org/dc/terms/" xmlns:param="http://a9.com/-/spec/opensearch/extensions/parameters/1.0/" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:t2="http://www.terradue.com/opensearch" xmlns:geo="http://a9.com/-/opensearch/extensions/geo/1.0/" xmlns:os="http://a9.com/-/spec/opensearch/1.1/" role="request" geo:uid="S1B_IW_RAW__0SDV_20180904T210959_20180904T211027_012570_017318_47D0"/>
+</feed>

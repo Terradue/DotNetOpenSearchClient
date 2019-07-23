@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns:opensearch="http://a9.com/-/spec/opensearch/1.1/" xmlns="http://www.w3.org/2005/Atom">
+  <title>Sentinels Scientific Data Hub search results for: identifier:S3A_SR_2_LAN____20190723T130328_20190723T130836_20190723T141405_0308_047_181______LN3_O_NR_003 AND platformname:Sentinel-3</title>
+  <subtitle>Displaying 1 results. Request done in 0.031 seconds.</subtitle>
+  <updated>2019-07-23T16:37:49.054Z</updated>
+  <author>
+    <name>Sentinels Scientific Data Hub</name>
+  </author>
+  <id>https://scihub.copernicus.eu/apihub/search?q=identifier:S3A_SR_2_LAN____20190723T130328_20190723T130836_20190723T141405_0308_047_181______LN3_O_NR_003 AND platformname:Sentinel-3</id>
+  <opensearch:totalResults>1</opensearch:totalResults>
+  <opensearch:startIndex>0</opensearch:startIndex>
+  <opensearch:itemsPerPage>20</opensearch:itemsPerPage>
+  <opensearch:Query role="request" searchTerms="identifier:S3A_SR_2_LAN____20190723T130328_20190723T130836_20190723T141405_0308_047_181______LN3_O_NR_003 AND platformname:Sentinel-3" startPage="1"/>
+  <link rel="self" type="application/atom+xml" href="https://scihub.copernicus.eu/apihub/search?q=identifier:S3A_SR_2_LAN____20190723T130328_20190723T130836_20190723T141405_0308_047_181______LN3_O_NR_003 AND platformname:Sentinel-3&amp;start=0&amp;rows=20"/>
+  <link rel="first" type="application/atom+xml" href="https://scihub.copernicus.eu/apihub/search?q=identifier:S3A_SR_2_LAN____20190723T130328_20190723T130836_20190723T141405_0308_047_181______LN3_O_NR_003 AND platformname:Sentinel-3&amp;start=0&amp;rows=20"/>
+  <link rel="last" type="application/atom+xml" href="https://scihub.copernicus.eu/apihub/search?q=identifier:S3A_SR_2_LAN____20190723T130328_20190723T130836_20190723T141405_0308_047_181______LN3_O_NR_003 AND platformname:Sentinel-3&amp;start=0&amp;rows=20"/>
+  <link rel="search" type="application/opensearchdescription+xml" href="opensearch_description.xml"/>
+  <entry>
+    <title>S3A_SR_2_LAN____20190723T130328_20190723T130836_20190723T141405_0308_047_181______LN3_O_NR_003</title>
+    <link href="https://scihub.copernicus.eu/apihub/odata/v1/Products('8ba53dc5-68ef-443b-a7b3-9031699c354a')/$value"/>
+    <link rel="alternative" href="https://scihub.copernicus.eu/apihub/odata/v1/Products('8ba53dc5-68ef-443b-a7b3-9031699c354a')/"/>
+    <link rel="icon" href="https://scihub.copernicus.eu/apihub/odata/v1/Products('8ba53dc5-68ef-443b-a7b3-9031699c354a')/Products('Quicklook')/$value"/>
+    <id>8ba53dc5-68ef-443b-a7b3-9031699c354a</id>
+    <summary>Date: 2019-07-23T13:03:27.822Z, Instrument: SRAL, Mode: , Satellite: Sentinel-3, Size: 15.75 MB</summary>
+    <date name="creationdate">2019-07-23T14:14:02Z</date>
+    <date name="beginposition">2019-07-23T13:03:27.822Z</date>
+    <date name="endposition">2019-07-23T13:08:36.211Z</date>
+    <date name="ingestiondate">2019-07-23T14:29:30.675Z</date>
+    <int name="lrmpercentage">0</int>
+    <int name="sarpercentage">100</int>
+    <int name="closedseapercentage">1</int>
+    <int name="continentalicepercentage">0</int>
+    <int name="landpercentage">67</int>
+    <int name="openseapercentage">32</int>
+    <int name="orbitnumber">17864</int>
+    <int name="relativeorbitnumber">181</int>
+    <str name="gmlfootprint">&lt;gml:Polygon srsName="http://www.opengis.net/gml/srs/epsg.xml#4326" xmlns:gml="http://www.opengis.net/gml"&gt;
+   &lt;gml:outerBoundaryIs&gt;
+      &lt;gml:LinearRing&gt;
+         &lt;gml:coordinates&gt;28.8605,129.405 30.8744,128.857 32.8863,128.291 34.8961,127.706 36.9035,127.099 38.9084,126.467 40.9103,125.807 42.9091,125.115 44.9043,124.386 46.8956,123.615 46.8951,123.613 44.9039,124.384 42.9086,125.113 40.9099,125.805 38.9079,126.465 36.9031,127.097 34.8957,127.704 32.8859,128.289 30.874,128.855 28.8601,129.403 28.8605,129.405&lt;/gml:coordinates&gt;
+      &lt;/gml:LinearRing&gt;
+   &lt;/gml:outerBoundaryIs&gt;
+&lt;/gml:Polygon&gt;</str>
+    <str name="format">SAFE</str>
+    <str name="instrumentshortname">SRAL</str>
+    <str name="sensoroperationalmode">Earth Observation</str>
+    <str name="instrumentname">Sar Radar ALtimeter</str>
+    <str name="footprint">MULTIPOLYGON (((129.403 28.8601, 129.405 28.8605, 128.857 30.8744, 128.291 32.8863, 127.706 34.8961, 127.099 36.9035, 126.467 38.9084, 125.807 40.9103, 125.115 42.9091, 124.386 44.9043, 123.615 46.8956, 123.613 46.8951, 124.384 44.9039, 125.113 42.9086, 125.805 40.9099, 126.465 38.9079, 127.097 36.9031, 127.704 34.8957, 128.289 32.8859, 128.855 30.874, 129.403 28.8601)))</str>
+    <str name="mode">EO</str>
+    <str name="platformidentifier">2016-011A</str>
+    <str name="orbitdirection">ascending</str>
+    <str name="pduduration">308</str>
+    <str name="passnumber">35727</str>
+    <str name="passdirection">ascending</str>
+    <str name="procfacilityname">Land Surface Topography Mission Processing and Archiving Centre [LN3]</str>
+    <str name="procfacilityorg">European Space Agency</str>
+    <str name="processinglevel">2</str>
+    <str name="processingname">Data Processing</str>
+    <str name="productlevel">L2</str>
+    <str name="producttype">SR_2_LAN___</str>
+    <str name="relorbitdir">ascending</str>
+    <str name="relpassnumber">361</str>
+    <str name="relpassdirection">ascending</str>
+    <str name="platformname">Sentinel-3</str>
+    <str name="size">15.75 MB</str>
+    <str name="timeliness">Near Real Time</str>
+    <str name="filename">S3A_SR_2_LAN____20190723T130328_20190723T130836_20190723T141405_0308_047_181______LN3_O_NR_003.SEN3</str>
+    <str name="onlinequalitycheck">PASSED</str>
+    <str name="identifier">S3A_SR_2_LAN____20190723T130328_20190723T130836_20190723T141405_0308_047_181______LN3_O_NR_003</str>
+    <str name="uuid">8ba53dc5-68ef-443b-a7b3-9031699c354a</str>
+  </entry>
+</feed>
