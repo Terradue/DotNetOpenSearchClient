@@ -22,9 +22,8 @@ using Terradue.OpenSearch.Result;
 using Terradue.OpenSearch.Schema;
 using Terradue.ServiceModel.Syndication;
 using Terradue.OpenSearch.Benchmarking;
-using System.Xml.Serialization;
-using System.Text;
 using System.Runtime.CompilerServices;
+using NuGet;
 
 [assembly:InternalsVisibleTo("Terradue.OpenSearch.Client.Test")]
 namespace Terradue.OpenSearch.Client {
@@ -362,6 +361,18 @@ namespace Terradue.OpenSearch.Client {
             settings.ParametersKeywordsTable = InitializeParametersKeywordsTable();
 
             LoadOpenSearchEngineExtensions(ose);
+            
+            // check if url contains terradue domain 
+            var terradueDomainPattern = new Regex(@"^.*\.terradue\.com.*");
+            var hasTerradueDomain = BaseUrls.Any(url => terradueDomainPattern.IsMatch(url));
+            
+            // if url contains terradue.com and no credentials has been specified, check for _T2Credentials in HDFS
+            if ( hasTerradueDomain && NetCreds.IsEmpty() ) {
+                var t2Credentials = CiopFunctionsUtils.GetT2Credentials();
+                if (t2Credentials != null) {
+                        NetCreds = new List<NetworkCredential>() {t2Credentials};
+                }
+            }
 
             InitCache();
         }
