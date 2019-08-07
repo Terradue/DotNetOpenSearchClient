@@ -39,6 +39,7 @@
     <ProjectReference Include="..\Terradue.OpenSearch.Model.Base\Terradue.OpenSearch.Model.Base.csproj" />
   </ItemGroup>
   <ItemGroup>
+    <PackageReference Include="Terradue.Metadata.EarthObservation" Version="1.6.1" />
     <PackageReference Include="Terradue.OpenSearch" Version="1.17.0" />
     <PackageReference Include="Terradue.OpenSearch.GeoJson" Version="1.3.21" />
     <PackageReference Include="Terradue.OpenSearch.RdfEO" Version="1.4.3" />
