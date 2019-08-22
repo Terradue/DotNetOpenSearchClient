@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns:opensearch="http://a9.com/-/spec/opensearch/1.1/" xmlns="http://www.w3.org/2005/Atom">
+  <title>Sentinels Scientific Data Hub search results for: identifier:S2A_MSIL1C_20190723T101031_N0208_R022_T35WNR_20190723T110913 AND platformname:Sentinel-2</title>
+  <subtitle>Displaying 1 results. Request done in 0.006 seconds.</subtitle>
+  <updated>2019-07-23T16:36:59.995Z</updated>
+  <author>
+    <name>Sentinels Scientific Data Hub</name>
+  </author>
+  <id>https://scihub.copernicus.eu/apihub/search?q=identifier:S2A_MSIL1C_20190723T101031_N0208_R022_T35WNR_20190723T110913 AND platformname:Sentinel-2</id>
+  <opensearch:totalResults>1</opensearch:totalResults>
+  <opensearch:startIndex>0</opensearch:startIndex>
+  <opensearch:itemsPerPage>20</opensearch:itemsPerPage>
+  <opensearch:Query role="request" searchTerms="identifier:S2A_MSIL1C_20190723T101031_N0208_R022_T35WNR_20190723T110913 AND platformname:Sentinel-2" startPage="1"/>
+  <link rel="self" type="application/atom+xml" href="https://scihub.copernicus.eu/apihub/search?q=identifier:S2A_MSIL1C_20190723T101031_N0208_R022_T35WNR_20190723T110913 AND platformname:Sentinel-2&amp;start=0&amp;rows=20"/>
+  <link rel="first" type="application/atom+xml" href="https://scihub.copernicus.eu/apihub/search?q=identifier:S2A_MSIL1C_20190723T101031_N0208_R022_T35WNR_20190723T110913 AND platformname:Sentinel-2&amp;start=0&amp;rows=20"/>
+  <link rel="last" type="application/atom+xml" href="https://scihub.copernicus.eu/apihub/search?q=identifier:S2A_MSIL1C_20190723T101031_N0208_R022_T35WNR_20190723T110913 AND platformname:Sentinel-2&amp;start=0&amp;rows=20"/>
+  <link rel="search" type="application/opensearchdescription+xml" href="opensearch_description.xml"/>
+  <entry>
+    <title>S2A_MSIL1C_20190723T101031_N0208_R022_T35WNR_20190723T110913</title>
+    <link href="https://scihub.copernicus.eu/apihub/odata/v1/Products('89eac066-3b1f-46f6-ab39-2cfe3ae1140d')/$value"/>
+    <link rel="alternative" href="https://scihub.copernicus.eu/apihub/odata/v1/Products('89eac066-3b1f-46f6-ab39-2cfe3ae1140d')/"/>
+    <link rel="icon" href="https://scihub.copernicus.eu/apihub/odata/v1/Products('89eac066-3b1f-46f6-ab39-2cfe3ae1140d')/Products('Quicklook')/$value"/>
+    <id>89eac066-3b1f-46f6-ab39-2cfe3ae1140d</id>
+    <summary>Date: 2019-07-23T10:10:31.024Z, Instrument: MSI, Mode: , Satellite: Sentinel-2, Size: 751.52 MB</summary>
+    <date name="datatakesensingstart">2019-07-23T10:10:31.024Z</date>
+    <date name="beginposition">2019-07-23T10:10:31.024Z</date>
+    <date name="endposition">2019-07-23T10:10:31.024Z</date>
+    <date name="ingestiondate">2019-07-23T14:14:59.881Z</date>
+    <int name="orbitnumber">21326</int>
+    <int name="relativeorbitnumber">22</int>
+    <double name="cloudcoverpercentage">23.1818</double>
+    <str name="sensoroperationalmode">INS-NOBS</str>
+    <str name="gmlfootprint">&lt;gml:Polygon srsName="http://www.opengis.net/gml/srs/epsg.xml#4326" xmlns:gml="http://www.opengis.net/gml"&gt;
+   &lt;gml:outerBoundaryIs&gt;
+      &lt;gml:LinearRing&gt;
+         &lt;gml:coordinates&gt;68.51263213037203,26.99951074195798 68.49117404059432,29.683704859937148 67.50737709315482,29.57205253587371 67.5278024174204,26.999531124918594 68.51263213037203,26.99951074195798&lt;/gml:coordinates&gt;
+      &lt;/gml:LinearRing&gt;
+   &lt;/gml:outerBoundaryIs&gt;
+&lt;/gml:Polygon&gt;</str>
+    <str name="footprint">MULTIPOLYGON (((29.57205253587371 67.50737709315482, 29.683704859937148 68.49117404059432, 26.99951074195798 68.51263213037203, 26.999531124918594 67.5278024174204, 29.57205253587371 67.50737709315482)))</str>
+    <str name="tileid">35WNR</str>
+    <str name="hv_order_tileid">WR35N</str>
+    <str name="format">SAFE</str>
+    <str name="processingbaseline">02.08</str>
+    <str name="platformname">Sentinel-2</str>
+    <str name="filename">S2A_MSIL1C_20190723T101031_N0208_R022_T35WNR_20190723T110913.SAFE</str>
+    <str name="instrumentname">Multi-Spectral Instrument</str>
+    <str name="instrumentshortname">MSI</str>
+    <str name="size">751.52 MB</str>
+    <str name="s2datatakeid">GS2A_20190723T101031_021326_N02.08</str>
+    <str name="producttype">S2MSI1C</str>
+    <str name="platformidentifier">2015-028A</str>
+    <str name="orbitdirection">DESCENDING</str>
+    <str name="platformserialidentifier">Sentinel-2A</str>
+    <str name="processinglevel">Level-1C</str>
+    <str name="identifier">S2A_MSIL1C_20190723T101031_N0208_R022_T35WNR_20190723T110913</str>
+    <str name="level1cpdiidentifier">S2A_OPER_MSI_L1C_TL_EPAE_20190723T110913_A021326_T35WNR_N02.08</str>
+    <str name="uuid">89eac066-3b1f-46f6-ab39-2cfe3ae1140d</str>
+  </entry>
+</feed>

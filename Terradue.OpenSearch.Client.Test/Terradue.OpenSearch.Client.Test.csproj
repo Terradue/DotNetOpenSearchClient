@@ -25,6 +25,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="out\" />
+    <Folder Include="ReferenceContent\" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Terradue.OpenSearch" Version="1.17.0" />

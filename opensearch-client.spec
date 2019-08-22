@@ -28,7 +28,10 @@ cp -r %{_sourcedir}/bin/Debug/net4.5/* %{buildroot}/usr/lib/opensearch-client
 mkdir -p %{buildroot}/usr/bin/
 cp %{_sourcedir}/opensearch-client %{buildroot}/usr/bin/
 mkdir -p %{buildroot}/usr/local/lib/
-# cp -r %{_sourcedir}/packages/terradue.metadata.earthobservation/*/content/Resources/ne_110m_land %{buildroot}/usr/local/lib/
+
+# temporary commnented 
+#cp -r %{_sourcedir}/packages/terradue.metadata.earthobservation/*/content/Resources/ne_110m_land %{buildroot}/usr/local/lib/
+
 
 
 %post
@@ -43,5 +46,7 @@ rm -rf %{buildroot}
 %files
 /usr/lib/opensearch-client/*
 /usr/bin/opensearch-client
+#/usr/local/lib/*
+
 
 %changelog
