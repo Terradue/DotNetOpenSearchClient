@@ -33,6 +33,7 @@ mkdir -p %{buildroot}/usr/local/lib/
 #cp -r %{_sourcedir}/packages/terradue.metadata.earthobservation/*/content/Resources/ne_110m_land %{buildroot}/usr/local/lib/
 
 
+
 %post
 
 %postun
@@ -46,5 +47,6 @@ rm -rf %{buildroot}
 /usr/lib/opensearch-client/*
 /usr/bin/opensearch-client
 #/usr/local/lib/*
+
 
 %changelog
