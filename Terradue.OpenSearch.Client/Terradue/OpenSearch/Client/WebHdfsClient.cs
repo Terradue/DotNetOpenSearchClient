@@ -88,7 +88,11 @@ namespace Terradue.OpenSearch.Client {
                 optionalparams = string.Join("&", optionalParameters.Select(x => x.Key + "=" + x.Value).ToArray());
             }
 
-            var urlrequest = $"{hdfsUrl}/{folder}/?op={requestType}&{optionalparams}";
+            if (!folder.StartsWith("/")) {
+                folder = "/" + folder;
+            }
+
+            var urlrequest = $"{hdfsUrl}{folder}/?op={requestType}&{optionalparams}";
             
             log.DebugFormat("WebHdfsClient GetRequest to: {0}" ,urlrequest );
             
