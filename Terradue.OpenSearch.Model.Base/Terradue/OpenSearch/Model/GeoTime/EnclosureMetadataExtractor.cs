@@ -130,8 +130,9 @@ namespace Terradue.OpenSearch.Model.GeoTime
 			config.ServiceURL = string.Format("http{0}://{1}", useHttps ? "s" : "", hostBase);
 
 			AmazonS3Client client = new AmazonS3Client(accessKey, secretKey, config);
-
-			Match match = Regex.Match(link.Uri.AbsolutePath, @"^\/(?'bucket'[^\/]*)\/(?'key'.*)$");
+			
+			link.Uri = new Uri(link.Uri, "manifest.safe");
+			Match match = Regex.Match(link.Uri.AbsolutePath , @"^\/(?'bucket'[^\/]*)\/(?'key'.*)$");
 
 			if (!match.Success) return false;
 

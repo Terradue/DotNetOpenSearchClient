@@ -27,8 +27,9 @@ pipeline {
         sh "msbuild /t:build /p:Configuration=DEBUG /Restore:true"
         sh 'cp -r Terradue.OpenSearch.Client/bin $WORKSPACE/build/SOURCES/'
         sh 'cp src/main/scripts/opensearch-client $WORKSPACE/build/SOURCES/'
-        sh 'cp -r packages $WORKSPACE/build/SOURCES/'
-        sh 'ls -l $WORKSPACE/build/SOURCES/packages/terradue.metadata.earthobservation/*/content/Resources/ne_110m_land'
+        sh 'cp -r packages $WORKSPACE/build/SOURCES/'     
+// temporary commnented         
+//         sh 'ls -l $WORKSPACE/build/SOURCES/packages/terradue.metadata.earthobservation/*/content/Resources/ne_110m_land'
       }
     }
     stage('Package') {
