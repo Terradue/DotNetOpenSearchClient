@@ -65,7 +65,7 @@ namespace Terradue.OpenSearch.Client {
                 t2ApiNetCreds = new NetworkCredential(t2ApiUsername, t2ApiKey);
             }
             catch (Exception) {
-                log.Warn("Could not find _T2Credentials in workflow-params.xml.");
+//                log.Warn("Could not find _T2Credentials in workflow-params.xml.");
                 return null;
             }
 

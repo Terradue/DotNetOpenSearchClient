@@ -13,7 +13,7 @@ namespace Terradue.OpenSearch.Client {
         
         private HttpWebRequest client;
         private readonly string hdfsUrl;
-        private static ILog log = LogManager.GetLogger(typeof(WebHdfsClient));
+        private static readonly ILog log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
         // GET OPERATIONS
         public const string GET_OPERATION_OPEN = "OPEN";
@@ -89,6 +89,9 @@ namespace Terradue.OpenSearch.Client {
             }
 
             var urlrequest = $"{hdfsUrl}/{folder}/?op={requestType}&{optionalparams}";
+            
+            log.DebugFormat("WebHdfsClient GetRequest to: {0}" ,urlrequest );
+            
             client = (HttpWebRequest) WebRequest.Create(urlrequest);
             var response = client.GetResponse();
             var stream = response.GetResponseStream();
