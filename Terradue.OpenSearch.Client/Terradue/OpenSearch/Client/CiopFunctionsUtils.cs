@@ -34,8 +34,8 @@ namespace Terradue.OpenSearch.Client {
                 return null;
             }
 
-            string hostname;
-            string workflow_params_xml;
+            string hostname= null;
+            string workflow_params_xml = null;
             try {
                 // retrieving hostname of the machine
                 hostname = Dns.GetHostName();
@@ -47,7 +47,9 @@ namespace Terradue.OpenSearch.Client {
                 workflow_params_xml = client.Open(workflow_params_path);
             }
             catch (WebException) {
-                log.Warn("Could not connect to the webhdfs host");
+                if (hostname != null & workflow_params_xml!=null) {
+                    log.DebugFormat("No T2 credentials found in hdfs. Host: {0} Workflow_params_path: {1}.", hostname, workflow_params_xml);
+                }
                 return null;
             }
 
