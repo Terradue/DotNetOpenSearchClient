@@ -24,6 +24,6 @@
     <Folder Include="Terradue\OpenSearch\Model\" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Terradue.OpenSearch" Version="1.17.0" />
+    <PackageReference Include="Terradue.OpenSearch" Version="1.17.2" />
   </ItemGroup>
 </Project>
