@@ -4,9 +4,10 @@ using System.Collections.Specialized;
 using System.Collections.Generic;
 using Terradue.OpenSearch.Engine;
 using Terradue.OpenSearch.Model.EarthObservation;
-using Terradue.OpenSearch.SciHub;
 using System.Net;
 using System.Linq;
+using Terradue.OpenSearch.DataHub;
+using Terradue.OpenSearch.Sentinel;
 
 namespace Terradue.OpenSearch.Model.Scihub {
     
@@ -37,7 +38,9 @@ namespace Terradue.OpenSearch.Model.Scihub {
 			if (netCreds == null || netCreds.Count() == 0)
 				throw new InvalidOperationException("Missing credentials for access Scihub service");
             settings.Credentials = netCreds.First();
-            DataHubOpenSearchable entity = new DataHubOpenSearchable(baseUrls.First(),settings); 
+            
+            LocalDataWrapper dataWrapper = new LocalDataWrapper(baseUrls.First());
+            DataHubOpenSearchable entity = new DataHubOpenSearchable(dataWrapper,settings); 
             if (queryFormatArg == "eop") {
                 entity.DefaultMimeType = "application/atom+xml; profile=http://earth.esa.int/eop/2.1";
             }
