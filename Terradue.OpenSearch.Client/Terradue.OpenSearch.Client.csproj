@@ -11,7 +11,7 @@
     <Title>DotNetOpenSearchClient</Title>
     <Description>Generic OpenSearch Client</Description>
     <PackageLicenseFile>LICENSE</PackageLicenseFile>
-    <Version>1.9.3</Version>
+    <Version>1.9.4</Version>
     <Authors>Emmanuel Mathot</Authors>
     <Company>Terradue</Company>
     <RepositoryUrl>https://github.com/Terradue/DotNetOpenSearchClient</RepositoryUrl>
@@ -46,7 +46,7 @@
     <PackageReference Include="Terradue.OpenSearch.RdfEO" Version="1.4.3" />
     <Content Include="$(SolutionDir)\LICENSE" Pack="true" PackagePath="" />
     <PackageReference Include="Terradue.OpenSearch.SciHub" Version="1.9.0" />
-    <PackageReference Include="Terradue.OpenSearch.Usgs" Version="1.1.9" />
+    <PackageReference Include="Terradue.OpenSearch.Usgs" Version="1.2.2" />
   </ItemGroup>
   <Import Project="WalkEachTargetPerProject.targets" />
 </Project>
