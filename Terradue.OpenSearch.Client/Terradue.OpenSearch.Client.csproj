@@ -40,13 +40,13 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="HtmlAgilityPack" Version="1.11.12" />
-    <PackageReference Include="Terradue.Metadata.EarthObservation" Version="1.6.2" />
+    <PackageReference Include="Terradue.Metadata.EarthObservation" Version="1.6.3" />
     <PackageReference Include="Terradue.OpenSearch" Version="1.17.2" />
     <PackageReference Include="Terradue.OpenSearch.GeoJson" Version="1.4.0" />
     <PackageReference Include="Terradue.OpenSearch.RdfEO" Version="1.4.3" />
     <Content Include="$(SolutionDir)\LICENSE" Pack="true" PackagePath="" />
     <PackageReference Include="Terradue.OpenSearch.SciHub" Version="1.9.0" />
-    <PackageReference Include="Terradue.OpenSearch.Usgs" Version="1.2.3" />
+    <PackageReference Include="Terradue.OpenSearch.Usgs" Version="1.2.6" />
   </ItemGroup>
   <Import Project="WalkEachTargetPerProject.targets" />
 </Project>
