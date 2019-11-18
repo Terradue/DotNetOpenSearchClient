@@ -139,9 +139,9 @@ namespace Terradue.OpenSearch.Client {
                 this.MetadataPaths = new List<string>();
             }
 
-    }
+        }
 
-    public bool GetArgs(string[] args) {
+        public bool GetArgs(string[] args) {
             if (args.Length == 0)
                 return false;
 

@@ -37,11 +37,11 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Terradue.OpenSearch" Version="1.17.2" />
-    <PackageReference Include="Terradue.Metadata.EarthObservation" Version="1.6.2" />
+    <PackageReference Include="Terradue.Metadata.EarthObservation" Version="1.6.3" />
     <PackageReference Include="Terradue.OpenSearch.SciHub" Version="1.9.0" />
     <PackageReference Include="HtmlAgilityPack" Version="1.11.12" />
     <PackageReference Include="AWSSDK.S3" Version="3.3.18.3" />
     <PackageReference Include="ini-parser" Version="2.5.2" />
-    <PackageReference Include="Terradue.OpenSearch.Usgs" Version="1.2.3" />
+    <PackageReference Include="Terradue.OpenSearch.Usgs" Version="1.2.6" />
   </ItemGroup>
 </Project>
