@@ -41,7 +41,7 @@ pipeline {
         sh 'cp src/main/scripts/opensearch-client $WORKSPACE/build/SOURCES/'
         sh 'cp opensearch-client.spec $WORKSPACE/build/SPECS/opensearch-client.spec'
         sh 'spectool -g -R --directory $WORKSPACE/build/SOURCES $WORKSPACE/build/SPECS/opensearch-client.spec'
-        sh "yum-builddep -y $WORKSPACE/build/SPECS/opensearch-client.spec"
+        sh "/bin/sudo yum-builddep -y $WORKSPACE/build/SPECS/opensearch-client.spec"
         echo "Build package"
         sh "rpmbuild --define \"_topdir $WORKSPACE/build\" -ba --define '_branch ${env.BRANCH_NAME}' --define '_release ${env.release}' $WORKSPACE/build/SPECS/opensearch-client.spec"
         sh "rpm -qpl $WORKSPACE/build/RPMS/*/*.rpm"
