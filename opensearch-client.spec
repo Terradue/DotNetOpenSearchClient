@@ -1,3 +1,7 @@
+
+%define debug_package %{nil}
+%define __jar_repack  %{nil}
+
 Name:           opensearch-client
 Url:            https://github.com/Terradue/DotNetOpenSearchClient
 License:        AGPLv3
@@ -9,13 +13,9 @@ BuildArch:      noarch
 Source:         /usr/bin/opensearch-client
 Requires:       mono
 AutoReqProv:    no
-BuildRequires:  libtool
-
 
 %description
 Generic OpenSearch Client giving the ability to retrieve element values from generic opensearch queries.
-
-%define debug_package %{nil}
 
 %prep
 
