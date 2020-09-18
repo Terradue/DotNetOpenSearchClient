@@ -28,6 +28,7 @@ pipeline {
             } 
         }
       steps {
+        unstash name: 'opensearch-client-build'
         script {
           def sdf = sh(returnStdout: true, script: 'date -u +%Y%m%dT%H%M%S').trim()
           if (env.BRANCH_NAME == 'master') 
