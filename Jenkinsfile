@@ -42,7 +42,7 @@ pipeline {
         sh 'cp opensearch-client.spec $WORKSPACE/build/SPECS/opensearch-client.spec'
         sh 'spectool -g -R --directory $WORKSPACE/build/SOURCES $WORKSPACE/build/SPECS/opensearch-client.spec'
         echo "Build package"
-        sh "sudo rpmbuild --define \"_topdir $WORKSPACE/build\" -ba --define '_branch ${env.BRANCH_NAME}' --define '_release ${env.release}' $WORKSPACE/build/SPECS/opensearch-client.spec"
+        sh "rpmbuild --define \"_topdir $WORKSPACE/build\" -ba --define '_branch ${env.BRANCH_NAME}' --define '_release ${env.release}' $WORKSPACE/build/SPECS/opensearch-client.spec"
         sh "rpm -qpl $WORKSPACE/build/RPMS/*/*.rpm"
         sh "tar -cxzf opensearch-client-1.9.7-${env.release}.tar.gz -C $WORKSPACE/build/BUILD"
         archiveArtifacts artifacts: '$WORKSPACE/build/RPMS/**/*.rpm,opensearch-client-1.9.7-${env.release}.tar.gz', fingerprint: true
