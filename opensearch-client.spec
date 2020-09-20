@@ -24,7 +24,7 @@ Generic OpenSearch Client giving the ability to retrieve element values from gen
 
 %install
 cp -r %{_sourcedir}/* %{buildroot}
-cp -f /usr/bin/opensearch-client %{buildroot}/usr/bin/
+cp -f %{_sourcedir}/usr/bin/opensearch-client %{buildroot}/usr/bin/
 
 
 # temporary commnented 
