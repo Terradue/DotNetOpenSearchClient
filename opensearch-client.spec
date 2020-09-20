@@ -2,7 +2,7 @@
 %define debug_package %{nil}
 %define __jar_repack  %{nil}
 
-Name:           /usr/bin/opensearch-client
+Name:           opensearch-client
 Url:            https://github.com/Terradue/DotNetOpenSearchClient
 License:        AGPLv3
 Group:          Productivity/Networking/Web/Servers
@@ -10,7 +10,7 @@ Version:        1.9.7
 Release:        %{_release}
 Summary:        Terradue Opensearch Client
 BuildArch:      noarch
-Source:         /usr/bin/opensearch-client
+Source0:        /usr/bin/opensearch-client
 Requires:       mono
 AutoReqProv:    no
 
