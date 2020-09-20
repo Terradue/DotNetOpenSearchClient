@@ -35,6 +35,7 @@ pipeline {
             env.release = env.BUILD_NUMBER
           else
             env.release = "SNAPSHOT" + sdf
+          def descriptor = readDescriptor()
         }
         sh 'mkdir -p $WORKSPACE/build/{BUILD,RPMS,SOURCES,SPECS,SRPMS}'
         sh 'mkdir -p $WORKSPACE/build/SOURCES/usr/lib/opensearch-client'
@@ -45,7 +46,6 @@ pipeline {
         sh 'cp opensearch-client.spec $WORKSPACE/build/SPECS/opensearch-client.spec'
         sh 'spectool -g -R --directory $WORKSPACE/build/SOURCES $WORKSPACE/build/SPECS/opensearch-client.spec'
         echo "Build package"
-        def descriptor = readDescriptor()
         sh "rpmbuild --define \"_topdir $WORKSPACE/build\" -ba --define '_branch ${env.BRANCH_NAME}' --define '_version ${descriptor.version}' --define '_release ${env.release}' $WORKSPACE/build/SPECS/opensearch-client.spec"
         sh "rpm -qpl $WORKSPACE/build/RPMS/*/*.rpm"
         sh 'rm -f $WORKSPACE/build/SOURCES/opensearch-client'
