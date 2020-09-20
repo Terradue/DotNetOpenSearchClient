@@ -10,7 +10,7 @@ Version:        1.9.7
 Release:        %{_release}
 Summary:        Terradue Opensearch Client
 BuildArch:      noarch
-Source0:        /usr/bin/opensearch-client
+Source:         /usr/bin/opensearch-client
 Requires:       mono
 AutoReqProv:    no
 
@@ -24,6 +24,8 @@ Generic OpenSearch Client giving the ability to retrieve element values from gen
 
 %install
 cp -r %{_sourcedir}/* %{buildroot}
+cp -f /usr/bin/opensearch-client %{buildroot}/usr/bin/
+
 
 # temporary commnented 
 #cp -r %{_sourcedir}/packages/terradue.metadata.earthobservation/*/content/Resources/ne_110m_land %{buildroot}/usr/local/lib/
