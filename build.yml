@@ -1,0 +1,2 @@
+docker_image_name: terradue/opensearch-client
+version: 1.9.7

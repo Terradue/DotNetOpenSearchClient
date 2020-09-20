@@ -45,10 +45,11 @@ pipeline {
         sh 'cp opensearch-client.spec $WORKSPACE/build/SPECS/opensearch-client.spec'
         sh 'spectool -g -R --directory $WORKSPACE/build/SOURCES $WORKSPACE/build/SPECS/opensearch-client.spec'
         echo "Build package"
-        sh "rpmbuild --define \"_topdir $WORKSPACE/build\" -ba --define '_branch ${env.BRANCH_NAME}' --define '_release ${env.release}' $WORKSPACE/build/SPECS/opensearch-client.spec"
+        def descriptor = readDescriptor()
+        sh "rpmbuild --define \"_topdir $WORKSPACE/build\" -ba --define '_branch ${env.BRANCH_NAME}' --define '_version ${descriptor.version}' --define '_release ${env.release}' $WORKSPACE/build/SPECS/opensearch-client.spec"
         sh "rpm -qpl $WORKSPACE/build/RPMS/*/*.rpm"
         sh 'rm -f $WORKSPACE/build/SOURCES/opensearch-client'
-        sh "tar -cvzf opensearch-client-1.9.7-${env.release}.tar.gz -C $WORKSPACE/build/SOURCES/ ."
+        sh "tar -cvzf opensearch-client-${descriptor.version}-${env.release}.tar.gz -C $WORKSPACE/build/SOURCES/ ."
         archiveArtifacts artifacts: 'build/RPMS/**/*.rpm,opensearch-client-*.tar.gz', fingerprint: true
         stash includes: 'opensearch-client-*.tar.gz', name: 'opensearch-client-tgz'
         stash includes: 'build/RPMS/**/*.rpm', name: 'opensearch-client-rpm'
@@ -79,10 +80,11 @@ pipeline {
             unstash name: 'opensearch-client-tgz'
             script {
               def opensearchclienttgz = findFiles(glob: "opensearch-client-*.tar.gz")
-              def testsuite = docker.build("terradue/opensearch-client", "--build-arg OPENSEARCH_CLIENT_TGZ=${opensearchclienttgz[0].name} .")
+              def descriptor = readDescriptor()
+              def testsuite = docker.build(descriptor.docker_image_name, "--build-arg OPENSEARCH_CLIENT_TGZ=${opensearchclienttgz[0].name} .")
               def mType=getTypeOfVersion(env.BRANCH_NAME)
               docker.withRegistry('https://registry.hub.docker.com', 'dockerhub-emmanuelmathot') {
-                testsuite.push("${mType}1.9.7")
+                testsuite.push("${mType}${descriptor.version}")
                 testsuite.push("${mType}latest")
               }
             }
@@ -98,4 +100,8 @@ def getTypeOfVersion(branchName) {
     return ""
   
   return "dev"
+}
+
+def readDescriptor (){
+    return readYaml(file: 'build.yml')
 }
