@@ -82,7 +82,7 @@ pipeline {
               def testsuite = docker.build("terradue/opensearch-client", "--build-arg OPENSEARCH_CLIENT_TGZ=${opensearchclienttgz[0].name} .")
               def mType=getTypeOfVersion(env.BRANCH_NAME)
               docker.withRegistry('https://registry.hub.docker.com', 'dockerhub-emmanuelmathot') {
-                testsuite.push("${mType}${descriptor.version}")
+                testsuite.push("${mType}1.9.7")
                 testsuite.push("${mType}latest")
               }
             }
