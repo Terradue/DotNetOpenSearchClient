@@ -48,9 +48,9 @@ pipeline {
         sh "rpmbuild --define \"_topdir $WORKSPACE/build\" -ba --define '_branch ${env.BRANCH_NAME}' --define '_release ${env.release}' $WORKSPACE/build/SPECS/opensearch-client.spec"
         sh "rpm -qpl $WORKSPACE/build/RPMS/*/*.rpm"
         sh 'rm -f $WORKSPACE/build/SOURCES/opensearch-client'
-        sh "tar -cvzf opensearch-client-1.9.7-${env.release}.tar.gz -C $WORKSPACE/build/SOURCES/ $WORKSPACE/build/SOURCES/"
-        archiveArtifacts artifacts: 'build/RPMS/**/*.rpm,opensearch-client-1.9.7-${env.release}.tar.gz', fingerprint: true
-        stash includes: 'opensearch-client-1.9.7-${env.release}.tar.gz', name: 'opensearch-client-tgz'
+        sh "tar -cvzf opensearch-client-1.9.7-${env.release}.tar.gz -C $WORKSPACE/build/SOURCES/ ."
+        archiveArtifacts artifacts: 'build/RPMS/**/*.rpm,opensearch-client-*.tar.gz', fingerprint: true
+        stash includes: 'opensearch-client-*.tar.gz', name: 'opensearch-client-tgz'
         stash includes: 'build/RPMS/**/*.rpm', name: 'opensearch-client-rpm'
       }
     }
