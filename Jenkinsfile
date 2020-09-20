@@ -41,11 +41,13 @@ pipeline {
         sh 'cp -r Terradue.OpenSearch.Client/bin/Debug/net4.5/* $WORKSPACE/build/SOURCES/usr/lib/opensearch-client/'
         sh 'mkdir -p $WORKSPACE/build/SOURCES/usr/bin'
         sh 'cp src/main/scripts/opensearch-client $WORKSPACE/build/SOURCES/usr/bin'
+        sh 'cp src/main/scripts/opensearch-client $WORKSPACE/build/SOURCES/'
         sh 'cp opensearch-client.spec $WORKSPACE/build/SPECS/opensearch-client.spec'
         sh 'spectool -g -R --directory $WORKSPACE/build/SOURCES $WORKSPACE/build/SPECS/opensearch-client.spec'
         echo "Build package"
         sh "rpmbuild --define \"_topdir $WORKSPACE/build\" -ba --define '_branch ${env.BRANCH_NAME}' --define '_release ${env.release}' $WORKSPACE/build/SPECS/opensearch-client.spec"
         sh "rpm -qpl $WORKSPACE/build/RPMS/*/*.rpm"
+        sh 'rm -f $WORKSPACE/build/SOURCES/opensearch-client'
         sh "tar -cvzf opensearch-client-1.9.7-${env.release}.tar.gz -C $WORKSPACE/build/SOURCES/ $WORKSPACE/build/SOURCES/"
         archiveArtifacts artifacts: 'build/RPMS/**/*.rpm,opensearch-client-1.9.7-${env.release}.tar.gz', fingerprint: true
         stash includes: 'opensearch-client-1.9.7-${env.release}.tar.gz', name: 'opensearch-client-tgz'
