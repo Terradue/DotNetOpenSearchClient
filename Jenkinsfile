@@ -55,7 +55,7 @@ pipeline {
       }
     }
     stage('Publish') {
-      agent { label 'artifactory' }
+      agent { node { label 'artifactory' } }
       steps {
         echo 'Deploying'
         unstash name: 'opensearch-client-rpm'
