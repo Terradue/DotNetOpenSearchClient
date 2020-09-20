@@ -21,5 +21,5 @@ RUN echo "deb http://download.mono-project.com/repo/debian stable-buster/snapsho
   && rm -rf /var/lib/apt/lists/* /tmp/*
 
 ARG OPENSEARCH_CLIENT_TGZ
-ADD $OPENSEARCH_CLIENT_TGZ /tmp/$OPENSEARCH_CLIENT_TGZ
+COPY $OPENSEARCH_CLIENT_TGZ /tmp/$OPENSEARCH_CLIENT_TGZ
 RUN cd / && tar xvzf /tmp/$OPENSEARCH_CLIENT_TGZ
