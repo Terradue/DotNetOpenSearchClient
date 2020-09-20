@@ -2,7 +2,7 @@
 %define debug_package %{nil}
 %define __jar_repack  %{nil}
 
-Name:           opensearch-client
+Name:           /usr/bin/opensearch-client
 Url:            https://github.com/Terradue/DotNetOpenSearchClient
 License:        AGPLv3
 Group:          Productivity/Networking/Web/Servers
@@ -28,21 +28,18 @@ cp -r %{_sourcedir}/* %{buildroot}
 # temporary commnented 
 #cp -r %{_sourcedir}/packages/terradue.metadata.earthobservation/*/content/Resources/ne_110m_land %{buildroot}/usr/local/lib/
 
-
-
 %post
 
 %postun
 
 
 %clean
-rm -rf %{buildroot}
+# rm -rf %{buildroot}
 
 
 %files
 /usr/lib/opensearch-client/*
 /usr/bin/opensearch-client
-#/usr/local/lib/*
 
 
 %changelog
