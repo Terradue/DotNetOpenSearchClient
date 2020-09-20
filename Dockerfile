@@ -17,7 +17,7 @@ RUN apt-get update \
 
 RUN echo "deb http://download.mono-project.com/repo/debian stable-buster/snapshots/$MONO_VERSION main" > /etc/apt/sources.list.d/mono-official-stable.list \
   && apt-get update \
-  && apt-get install -y mono-runtime mono-web \
+  && apt-get install -y mono-complete \
   && rm -rf /var/lib/apt/lists/* /tmp/*
 
 ARG OPENSEARCH_CLIENT_TGZ
