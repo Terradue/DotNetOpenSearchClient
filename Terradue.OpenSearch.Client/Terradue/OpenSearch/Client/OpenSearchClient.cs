@@ -364,7 +364,7 @@ namespace Terradue.OpenSearch.Client {
             
             // check if url contains terradue domain 
             var terradueDomainPattern = new Regex(@"^.*\.terradue\.com.*");
-            var hasTerradueDomain = BaseUrls.Any(url => terradueDomainPattern.IsMatch(url));
+            var hasTerradueDomain = (BaseUrls == null ? false : BaseUrls.Any(url => terradueDomainPattern.IsMatch(url)));
             
             // if url contains terradue.com and no credentials has been specified, check for _T2Credentials in HDFS
             if ( hasTerradueDomain && NetCreds.IsEmpty() ) {
