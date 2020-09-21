@@ -44,6 +44,14 @@ namespace Terradue.OpenSearch.Model.EarthObservation {
 			metadataExtractors.Add("cc", new CloudCoverMetadataExtractor());
             metadataExtractors.Add("sensorResolution", new SensorResolutionMetadataExtractor());
             metadataExtractors.Add("vs", new VendorSpecificMetadataExtractor());
+            metadataExtractors.Add("instrument", new InstrumentShortNameMetadataExtractor());
+            metadataExtractors.Add("instrumentShortName", new InstrumentShortNameMetadataExtractor());
+            metadataExtractors.Add("instrumentType", new InstrumentTypeMetadataExtractor());
+            metadataExtractors.Add("instrumentDescription", new InstrumentDescriptionMetadataExtractor());
+            metadataExtractors.Add("sensor", new SensorTypeMetadataExtractor());
+            metadataExtractors.Add("sensorType", new SensorTypeMetadataExtractor());
+            metadataExtractors.Add("cycle", new CycleNumberMetadataExtractor());
+            metadataExtractors.Add("cycleNumber", new CycleNumberMetadataExtractor());
         }
 
         public override string Name {
