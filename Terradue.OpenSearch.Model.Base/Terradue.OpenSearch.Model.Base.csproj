@@ -5,7 +5,7 @@
     <OutputType>Library</OutputType>
     <RootNamespace>Terradue.OpenSearch.Model.Base</RootNamespace>
     <AssemblyName>Terradue.OpenSearch.Model.Base</AssemblyName>
-    <TargetFramework>net4.5</TargetFramework>
+    <TargetFramework>net4.7.2</TargetFramework>
     <RuntimeIdentifiers>win;linux-x64</RuntimeIdentifiers>
     <RestorePackagesPath>$(SolutionDir)\packages</RestorePackagesPath>
     <IsPackable>false</IsPackable>
@@ -36,11 +36,11 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Terradue.OpenSearch" Version="1.17.2" />
-    <PackageReference Include="Terradue.Metadata.EarthObservation" Version="1.6.3" />
-    <PackageReference Include="Terradue.OpenSearch.SciHub" Version="1.9.0" />
+    <PackageReference Include="Terradue.OpenSearch" Version="1.17.5" />
+    <PackageReference Include="Terradue.Metadata.EarthObservation" Version="1.6.7" />
+    <PackageReference Include="Terradue.OpenSearch.SciHub" Version="1.13.14" />
     <PackageReference Include="HtmlAgilityPack" Version="1.11.12" />
-    <PackageReference Include="AWSSDK.S3" Version="3.3.18.3" />
+    <PackageReference Include="AWSSDK.S3" Version="3.3.109" />
     <PackageReference Include="ini-parser" Version="2.5.2" />
     <PackageReference Include="Terradue.OpenSearch.Usgs" Version="1.2.6" />
   </ItemGroup>
