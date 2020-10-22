@@ -37,7 +37,7 @@
   <ItemGroup>
     <PackageReference Include="Terradue.OpenSearch" Version="1.17.5"/>
     <PackageReference Include="Terradue.Metadata.EarthObservation" Version="1.6.7"/>
-    <PackageReference Include="Terradue.OpenSearch.SciHub" Version="1.13.14"/>
+    <PackageReference Include="Terradue.OpenSearch.SciHub" Version="1.14.1"/>
     <PackageReference Include="HtmlAgilityPack" Version="1.11.12"/>
     <PackageReference Include="AWSSDK.S3" Version="3.3.109"/>
     <PackageReference Include="ini-parser" Version="2.5.2"/>
