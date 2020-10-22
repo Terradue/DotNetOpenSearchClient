@@ -5,7 +5,7 @@
     <OutputType>Library</OutputType>
     <RootNamespace>Terradue.OpenSearch.Model</RootNamespace>
     <AssemblyName>Terradue.OpenSearch.Model</AssemblyName>
-    <TargetFramework>net4.7.2</TargetFramework>
+    <TargetFramework>net472</TargetFramework>
     <RuntimeIdentifiers>win;linux-x64</RuntimeIdentifiers>
     <RestorePackagesPath>$(SolutionDir)\packages</RestorePackagesPath>
     <IsPackable>false</IsPackable>

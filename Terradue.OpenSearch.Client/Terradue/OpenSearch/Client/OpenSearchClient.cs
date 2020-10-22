@@ -446,7 +446,8 @@ namespace Terradue.OpenSearch.Client {
 
 
         private void LoadOpenSearchEngineExtensions(OpenSearchEngine ose) {
-            ose.LoadPlugins();
+            ose.RegisterExtension(new Terradue.OpenSearch.Engine.Extensions.AtomOpenSearchEngineExtension());
+            ose.RegisterExtension(new Terradue.OpenSearch.GeoJson.Extensions.FeatureCollectionOpenSearchEngineExtension());
         }
 
 
