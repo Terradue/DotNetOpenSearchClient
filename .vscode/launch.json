@@ -56,8 +56,28 @@
                 "-v",
                 "-p",
                 "psn=*Sentinel-3*",
+                "-p",
+                "count=1",
                 "https://catalogue.onda-dias.eu/dias-catalogue",
-                "identifier"
+                "{}"
+            ],
+            "cwd": "${workspaceRoot}"
+        },
+        {
+            "name": "Query Sentinel3 on Sobloo",
+            "type": "mono",
+            "request": "launch",
+            "preLaunchTask": "build",
+            "program": "${workspaceRoot}/Terradue.OpenSearch.Client/bin/Debug/net472/OpenSearchClient.exe",
+            "args": [
+                "-m", "Scihub",
+                "-v",
+                "-p",
+                "psn=*Sentinel-3*",
+                "-p",
+                "count=1",
+                "https://sobloo.eu/api/v1/services/search",
+                "{}"
             ],
             "cwd": "${workspaceRoot}"
         },

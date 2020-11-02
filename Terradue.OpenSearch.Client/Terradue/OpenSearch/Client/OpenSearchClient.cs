@@ -519,11 +519,11 @@ namespace Terradue.OpenSearch.Client
             cacheSettings.Add("SlidingExpiration", "600");
 
             searchCache = new OpenSearchMemoryCache("cache", cacheSettings);
-            ose.RegisterPreSearchFilter(searchCache.TryReplaceWithCacheRequest);
-            ose.RegisterPostSearchFilter(searchCache.CacheResponse);
+            // ose.RegisterPreSearchFilter(searchCache.TryReplaceWithCacheRequest);
+            // ose.RegisterPostSearchFilter(searchCache.CacheResponse);
         }
 
-
+W
 
         public void ProcessQuery(Stream outputStream = null)
         {
