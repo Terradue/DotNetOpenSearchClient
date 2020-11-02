@@ -523,8 +523,6 @@ namespace Terradue.OpenSearch.Client
             // ose.RegisterPostSearchFilter(searchCache.CacheResponse);
         }
 
-W
-
         public void ProcessQuery(Stream outputStream = null)
         {
 

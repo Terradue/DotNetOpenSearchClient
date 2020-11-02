@@ -73,7 +73,7 @@
                 "-m", "Scihub",
                 "-v",
                 "-p",
-                "psn=*Sentinel-3*",
+                "uid=S1A_IW_SLC__1SDV_20201017T170438_20201017T170505_034839_040FAE_2CE2",
                 "-p",
                 "count=1",
                 "https://sobloo.eu/api/v1/services/search",
