@@ -46,6 +46,22 @@
             "cwd": "${workspaceRoot}"
         },
         {
+            "name": "Query Sentinel3 on ONDA",
+            "type": "mono",
+            "request": "launch",
+            "preLaunchTask": "build",
+            "program": "${workspaceRoot}/Terradue.OpenSearch.Client/bin/Debug/net472/OpenSearchClient.exe",
+            "args": [
+                "-m", "Scihub",
+                "-v",
+                "-p",
+                "psn=*Sentinel-3*",
+                "https://catalogue.onda-dias.eu/dias-catalogue",
+                "identifier"
+            ],
+            "cwd": "${workspaceRoot}"
+        },
+        {
             "name": "Attach",
             "type": "mono",
             "request": "attach",
