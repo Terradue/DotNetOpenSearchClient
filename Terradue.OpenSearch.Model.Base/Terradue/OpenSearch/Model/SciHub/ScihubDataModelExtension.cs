@@ -55,7 +55,8 @@ namespace Terradue.OpenSearch.Model.Scihub {
             }
 
             if (topBaseUri.Host == "finder.creodias.eu") {
-                wrapper = new CreoDiasWrapper(topNetworkCredential);
+                string url = topBaseUri.AbsoluteUri.EndsWith("describe.xml") ? topBaseUri.AbsoluteUri : null;
+                wrapper = new CreoDiasWrapper(topNetworkCredential, url);
             }
 
             if (topBaseUri.Host.Contains("mundiwebservices.com")) {
