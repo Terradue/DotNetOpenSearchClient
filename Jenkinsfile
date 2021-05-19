@@ -40,7 +40,7 @@ pipeline {
         }
         sh 'mkdir -p $WORKSPACE/build/{BUILD,RPMS,SOURCES,SPECS,SRPMS}'
         sh 'mkdir -p $WORKSPACE/build/SOURCES/usr/lib/opensearch-client'
-        sh 'cp -r Terradue.OpenSearch.Client/bin/Debug/net4.5/* $WORKSPACE/build/SOURCES/usr/lib/opensearch-client/'
+        sh 'cp -r Terradue.OpenSearch.Client/bin/Debug/net472/* $WORKSPACE/build/SOURCES/usr/lib/opensearch-client/'
         sh 'mkdir -p $WORKSPACE/build/SOURCES/usr/bin'
         sh 'cp src/main/scripts/opensearch-client $WORKSPACE/build/SOURCES/usr/bin'
         sh 'cp src/main/scripts/opensearch-client $WORKSPACE/build/SOURCES/'
