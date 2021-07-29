@@ -111,7 +111,8 @@ namespace Terradue.OpenSearch.Model.EarthObservation {
 					log.DebugFormat("Usgs source. Trying to get the earthobservation profile");
 
                     // usgsOpenSearchable
-                    e = new Terradue.OpenSearch.Usgs.UsgsOpenSearchable(url, settings);
+                    Terradue.OpenSearch.Usgs.UsgsDataWrapper usgsDataWrapper = new Usgs.UsgsDataWrapper(url, settings.Credentials);
+                    e = new Terradue.OpenSearch.Usgs.UsgsOpenSearchable(usgsDataWrapper, settings);
                     entities.Add(e);
                     continue;
 				}

@@ -8,6 +8,7 @@
             "name": "Query sentinel2 index",
             "type": "mono",
             "request": "launch",
+            "preLaunchTask": "build",
             "program": "${workspaceRoot}/Terradue.OpenSearch.Client/bin/Debug/net4.5/OpenSearchClient.exe",
             "args": [
                 "https://catalog.terradue.com/sentinel2/search"
@@ -18,7 +19,8 @@
             "name": "Query sentinel2 specific values",
             "type": "mono",
             "request": "launch",
-            "program": "${workspaceRoot}/Terradue.OpenSearch.Client/bin/Debug/net4.5/OpenSearchClient.exe",
+            "preLaunchTask": "build",
+            "program": "${workspaceRoot}/Terradue.OpenSearch.Client/bin/Debug/net472/OpenSearchClient.exe",
             "args": [
                 "-m", "EOP",
                 "-v",
@@ -31,7 +33,8 @@
             "name": "Query uid",
             "type": "mono",
             "request": "launch",
-            "program": "${workspaceRoot}/Terradue.OpenSearch.Client/bin/Debug/net4.5/OpenSearchClient.exe",
+            "preLaunchTask": "build",
+            "program": "${workspaceRoot}/Terradue.OpenSearch.Client/bin/Debug/net472/OpenSearchClient.exe",
             "args": [
                 "-m", "EOP",
                 "-v",
@@ -39,6 +42,42 @@
                 "uid=ASA_IMS_1PNESA20061204_024611_000000152053_00290_24893_0000",
                 "https://catalog.terradue.com/esar/search",
                 "identifier"
+            ],
+            "cwd": "${workspaceRoot}"
+        },
+        {
+            "name": "Query Sentinel3 on ONDA",
+            "type": "mono",
+            "request": "launch",
+            "preLaunchTask": "build",
+            "program": "${workspaceRoot}/Terradue.OpenSearch.Client/bin/Debug/net472/OpenSearchClient.exe",
+            "args": [
+                "-m", "Scihub",
+                "-v",
+                "-p",
+                "psn=*Sentinel-3*",
+                "-p",
+                "count=1",
+                "https://catalogue.onda-dias.eu/dias-catalogue",
+                "{}"
+            ],
+            "cwd": "${workspaceRoot}"
+        },
+        {
+            "name": "Query Sentinel3 on Sobloo",
+            "type": "mono",
+            "request": "launch",
+            "preLaunchTask": "build",
+            "program": "${workspaceRoot}/Terradue.OpenSearch.Client/bin/Debug/net472/OpenSearchClient.exe",
+            "args": [
+                "-m", "Scihub",
+                "-v",
+                "-p",
+                "uid=S1A_IW_SLC__1SDV_20201017T170438_20201017T170505_034839_040FAE_2CE2",
+                "-p",
+                "count=1",
+                "https://sobloo.eu/api/v1/services/search",
+                "{}"
             ],
             "cwd": "${workspaceRoot}"
         },

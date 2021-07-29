@@ -31,10 +31,10 @@ namespace Terradue.OpenSearch.Model.GeoTime {
                 foreach (SyndicationElementExtension ext in item.ElementExtensions.ToArray()) {
 
                     if (ext.OuterNamespace == "http://www.georss.org/georss/10" )
-                        geom = Terradue.GeoJson.GeoRss10.GeoRss10Extensions.ToGeometry(Terradue.GeoJson.GeoRss10.GeoRss10Helper.Deserialize(ext.GetReader()));
+                        geom = Terradue.ServiceModel.Ogc.GeoRss.GeoRss10.GeoRss10Extensions.ToGeometry(Terradue.ServiceModel.Ogc.GeoRss.GeoRss10.GeoRss10Helper.Deserialize(ext.GetReader()));
 
                     if (ext.OuterNamespace == "http://www.georss.org/georss" )
-                        geom = Terradue.GeoJson.GeoRss.GeoRssExtensions.ToGeometry(Terradue.GeoJson.GeoRss.GeoRssHelper.Deserialize(ext.GetReader()));
+                        geom = Terradue.ServiceModel.Ogc.GeoRss.GeoRss.GeoRssExtensions.ToGeometry(Terradue.ServiceModel.Ogc.GeoRss.GeoRss.GeoRssHelper.Deserialize(ext.GetReader()));
 
                 }
                     
