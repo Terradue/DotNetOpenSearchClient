@@ -5,7 +5,7 @@ pipeline {
       VERSION_TYPE = getTypeOfVersion(env.BRANCH_NAME)
       CONFIGURATION = getConfiguration(env.BRANCH_NAME)
       GITHUB_ORGANIZATION = 'Terradue'
-      GITHUB_REPO = 'DotNetOpensearchClient'
+      GITHUB_REPO = 'DotNetOpenSearchClient'
   }
   stages {
     stage('.Net Core') {
@@ -73,7 +73,7 @@ pipeline {
       steps {
         script {
           unstash name: 'oscli-debs'
-          def starsdeb = findFiles(glob: "Terradue.OpenSearch.Client/bin/**/OpensearchClient.*.linux-x64.deb")
+          def starsdeb = findFiles(glob: "Terradue.OpenSearch.Client/bin/**/OpenSearchClient.*.linux-x64.deb")
           def descriptor = readDescriptor()
           sh "mv ${starsdeb[0].path} ."
           def mType=getTypeOfVersion(env.BRANCH_NAME)
