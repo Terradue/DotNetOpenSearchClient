@@ -9,6 +9,7 @@ using Amazon.S3;
 using IniParser;
 using IniParser.Model;
 using Terradue.ServiceModel.Syndication;
+using System.Threading.Tasks;
 
 namespace Terradue.OpenSearch.Model.GeoTime
 {
@@ -78,7 +79,7 @@ namespace Terradue.OpenSearch.Model.GeoTime
 				switch (link.Uri.Scheme)
 				{
 					case "s3":
-						if (TestS3Link(link)) finalLinks.Add(link);
+						if (TestS3LinkAsync(link).GetAwaiter().GetResult()) finalLinks.Add(link);
 						break;
 					case "file":
                         if (TestFileLink(link)) finalLinks.Add(link);
@@ -98,7 +99,7 @@ namespace Terradue.OpenSearch.Model.GeoTime
 			return File.Exists(link.Uri.AbsolutePath);
 		}
 
-		private bool TestS3Link(SyndicationLink link)
+		private async Task<bool> TestS3LinkAsync(SyndicationLink link)
 		{
 			string accessKey = "";
 			string secretKey = "";
@@ -138,7 +139,7 @@ namespace Terradue.OpenSearch.Model.GeoTime
 
 			try
 			{
-				var list = client.ListObjects(match.Groups["bucket"].Value, match.Groups["key"].Value);
+				var list = await client.ListObjectsAsync(match.Groups["bucket"].Value, match.Groups["key"].Value);
 				log.DebugFormat("S3 reponse: {0} objects: {1}", list.HttpStatusCode, string.Join(",", list.S3Objects.Select(s3 => s3.Key)));
 
 				if (list.HttpStatusCode == System.Net.HttpStatusCode.OK && list.S3Objects.Count() > 0) return true;

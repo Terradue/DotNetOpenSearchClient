@@ -1,0 +1,36 @@
+{
+  "version": 1,
+  "isRoot": true,
+  "tools": {
+    "cake.tool": {
+      "version": "0.38.5",
+      "commands": [
+        "dotnet-cake"
+      ]
+    },
+    "dotnet-rpm": {
+      "version": "0.1.220",
+      "commands": [
+        "dotnet-rpm"
+      ]
+    },
+    "dotnet-deb": {
+      "version": "0.1.220",
+      "commands": [
+        "dotnet-deb"
+      ]
+    },
+    "dotnet-tarball": {
+      "version": "0.1.220",
+      "commands": [
+        "dotnet-tarball"
+      ]
+    },
+    "dotnet-zip": {
+      "version": "0.1.220",
+      "commands": [
+        "dotnet-zip"
+      ]
+    }
+  }
+}

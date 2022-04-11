@@ -6,35 +6,39 @@
     "configurations": [
         {
             "name": "Query sentinel2 index",
-            "type": "mono",
+            "type": "coreclr",
             "request": "launch",
             "preLaunchTask": "build",
-            "program": "${workspaceRoot}/Terradue.OpenSearch.Client/bin/Debug/net4.5/OpenSearchClient.exe",
+            "program": "${workspaceRoot}/Terradue.OpenSearch.Client/bin/Debug/net5.0/OpenSearchClient",
             "args": [
                 "https://catalog.terradue.com/sentinel2/search"
             ],
-            "cwd": "${workspaceRoot}"
+            "cwd": "${workspaceRoot}",
+            "stopAtEntry": false,
+            "console": "internalConsole"
         },
         {
             "name": "Query sentinel2 specific values",
-            "type": "mono",
+            "type": "coreclr",
             "request": "launch",
             "preLaunchTask": "build",
-            "program": "${workspaceRoot}/Terradue.OpenSearch.Client/bin/Debug/net472/OpenSearchClient.exe",
+            "program": "${workspaceRoot}/Terradue.OpenSearch.Client/bin/Debug/net5.0/OpenSearchClient",
             "args": [
                 "-m", "EOP",
                 "-v",
                 "https://catalog.terradue.com/sentinel2/search",
                 "vs:'tileid'"
             ],
-            "cwd": "${workspaceRoot}"
+            "cwd": "${workspaceRoot}",
+            "stopAtEntry": false,
+            "console": "internalConsole"
         },
         {
             "name": "Query uid",
-            "type": "mono",
+            "type": "coreclr",
             "request": "launch",
             "preLaunchTask": "build",
-            "program": "${workspaceRoot}/Terradue.OpenSearch.Client/bin/Debug/net472/OpenSearchClient.exe",
+            "program": "${workspaceRoot}/Terradue.OpenSearch.Client/bin/Debug/net5.0/OpenSearchClient",
             "args": [
                 "-m", "EOP",
                 "-v",
@@ -43,14 +47,16 @@
                 "https://catalog.terradue.com/esar/search",
                 "identifier"
             ],
-            "cwd": "${workspaceRoot}"
+            "cwd": "${workspaceRoot}",
+            "stopAtEntry": false,
+            "console": "internalConsole"
         },
         {
             "name": "Query Sentinel3 on ONDA",
-            "type": "mono",
+            "type": "coreclr",
             "request": "launch",
             "preLaunchTask": "build",
-            "program": "${workspaceRoot}/Terradue.OpenSearch.Client/bin/Debug/net472/OpenSearchClient.exe",
+            "program": "${workspaceRoot}/Terradue.OpenSearch.Client/bin/Debug/net5.0/OpenSearchClient",
             "args": [
                 "-m", "Scihub",
                 "-v",
@@ -61,14 +67,16 @@
                 "https://catalogue.onda-dias.eu/dias-catalogue",
                 "{}"
             ],
-            "cwd": "${workspaceRoot}"
+            "cwd": "${workspaceRoot}",
+            "stopAtEntry": false,
+            "console": "internalConsole"
         },
         {
             "name": "Query Sentinel3 on Sobloo",
-            "type": "mono",
+            "type": "coreclr",
             "request": "launch",
             "preLaunchTask": "build",
-            "program": "${workspaceRoot}/Terradue.OpenSearch.Client/bin/Debug/net472/OpenSearchClient.exe",
+            "program": "${workspaceRoot}/Terradue.OpenSearch.Client/bin/Debug/net472/OpenSearchClient",
             "args": [
                 "-m", "Scihub",
                 "-v",
@@ -79,14 +87,9 @@
                 "https://sobloo.eu/api/v1/services/search",
                 "{}"
             ],
-            "cwd": "${workspaceRoot}"
-        },
-        {
-            "name": "Attach",
-            "type": "mono",
-            "request": "attach",
-            "address": "localhost",
-            "port": 55555
+            "cwd": "${workspaceRoot}",
+            "stopAtEntry": false,
+            "console": "internalConsole"
         }
     ]
 }

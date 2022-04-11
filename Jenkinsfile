@@ -1,66 +1,59 @@
 pipeline {
-  parameters{
-    booleanParam(name: 'RUN_TESTS', defaultValue: false, description: 'If this parameter is set, the tests will run during the build.', )
-    string(name: 'TEST_AUTH', defaultValue: '', description: 'Add &lt;name&gt;=&lt;username&gt;:&lt;password&gt; triples separated by spaces. If not specified, tests requring authentication are skipped.', )
-    choice(name: 'DOTNET_CONFIG', choices: "Debug\nRelease", description: 'Debug will produce symbols in the assmbly to be able to debug it at runtime. This is the recommended option for feature, hotfix testing or release candidate.<br/><strong>For publishing a release from master branch, please choose Release.</strong>', )
-   }
-  agent any
+  agent { node { label 'docker' } }
+  environment {
+      VERSION_TOOL = getVersionFromCsProj('Terradue.OpenSearch.Client/Terradue.OpenSearch.Client.csproj')
+      VERSION_TYPE = getTypeOfVersion(env.BRANCH_NAME)
+      CONFIGURATION = getConfiguration(env.BRANCH_NAME)
+      GITHUB_ORGANIZATION = 'Terradue'
+      GITHUB_REPO = 'DotNetOpenSearchClient'
+  }
   stages {
-    stage('Build') {
+    stage('.Net Core') {
       agent { 
           docker { 
-              image 'mono:6.8' 
+              image 'mcr.microsoft.com/dotnet/sdk:5.0-buster-slim'
+              args '-v /var/run/docker.sock:/var/run/docker.sock --group-add 2057'
           } 
       }
       environment {
-          HOME = '$WORKSPACE'
+        DOTNET_CLI_HOME = "/tmp/DOTNET_CLI_HOME"
       }
-      steps {
-        echo "Build .NET application"
-        sh "msbuild /t:build /p:Configuration=DEBUG /Restore:true"
-        stash includes: 'Terradue.OpenSearch.Client/bin/**', name: 'opensearch-client-build'
+      stages {
+        stage("Build & Test") {
+          steps {
+            echo "Build .NET application"
+            sh "dotnet restore"
+            sh "dotnet build -c ${env.CONFIGURATION} --no-restore"
+          }
+        }
+        stage("Make CLI packages"){
+          steps {
+            script {
+              def sdf = sh(returnStdout: true, script: 'date -u +%Y%m%dT%H%M%S').trim()
+              if (env.BRANCH_NAME == 'master') 
+                env.DOTNET_ARGS = ""
+              else
+                env.DOTNET_ARGS = "--version-suffix SNAPSHOT" + sdf
+            }
+            sh "dotnet tool restore"
+            sh "dotnet rpm -c ${env.CONFIGURATION} -r linux-x64 -f net5.0 ${env.DOTNET_ARGS} Terradue.OpenSearch.Client/Terradue.OpenSearch.Client.csproj"
+            sh "dotnet deb -c ${env.CONFIGURATION} -r linux-x64 -f net5.0 ${env.DOTNET_ARGS} Terradue.OpenSearch.Client/Terradue.OpenSearch.Client.csproj"
+            sh "dotnet zip -c ${env.CONFIGURATION} -r linux-x64 -f net5.0 ${env.DOTNET_ARGS} Terradue.OpenSearch.Client/Terradue.OpenSearch.Client.csproj"
+            sh "dotnet publish -f net5.0 -r linux-x64 -p:PublishSingleFile=true ${env.DOTNET_ARGS} --self-contained true Terradue.OpenSearch.Client/Terradue.OpenSearch.Client.csproj"
+            stash name: 'oscli-packages', includes: 'Terradue.OpenSearch.Client/bin/**/*.rpm'
+            stash name: 'oscli-debs', includes: 'Terradue.OpenSearch.Client/bin/**/*.deb'
+            stash name: 'oscli-exe', includes: 'Terradue.OpenSearch.Client/bin/**/linux**/publish/OpenSearchClient, Terradue.OpenSearch.Client/bin/linux**/publish/*.json'
+            stash name: 'oscli-zips', includes: 'Terradue.OpenSearch.Client/bin/**/linux**/*.zip'
+            archiveArtifacts artifacts: 'Terradue.OpenSearch.Client/bin/linux**/publish/Stars,Terradue.OpenSearch.Client/bin/linux**/publish/*.json,Terradue.OpenSearch.Client/bin/**/*.rpm,Terradue.OpenSearch.Client/bin/**/*.deb, Terradue.OpenSearch.Client/bin/**/*.zip', fingerprint: true
+          }
+        }
       }
     }
-    stage('Package') {
-      agent { 
-            docker { 
-                image 'alectolytic/rpmbuilder:centos-7' 
-            } 
-        }
-      steps {
-        unstash name: 'opensearch-client-build'
-        script {
-          def sdf = sh(returnStdout: true, script: 'date -u +%Y%m%dT%H%M%S').trim()
-          if (env.BRANCH_NAME == 'master') 
-            env.release = env.BUILD_NUMBER
-          else
-            env.release = "SNAPSHOT" + sdf
-          def descriptor = readDescriptor()
-          env.version = descriptor.version
-        }
-        sh 'mkdir -p $WORKSPACE/build/{BUILD,RPMS,SOURCES,SPECS,SRPMS}'
-        sh 'mkdir -p $WORKSPACE/build/SOURCES/usr/lib/opensearch-client'
-        sh 'cp -r Terradue.OpenSearch.Client/bin/Debug/net472/* $WORKSPACE/build/SOURCES/usr/lib/opensearch-client/'
-        sh 'mkdir -p $WORKSPACE/build/SOURCES/usr/bin'
-        sh 'cp src/main/scripts/opensearch-client $WORKSPACE/build/SOURCES/usr/bin'
-        sh 'cp src/main/scripts/opensearch-client $WORKSPACE/build/SOURCES/'
-        sh 'cp opensearch-client.spec $WORKSPACE/build/SPECS/opensearch-client.spec'
-        sh 'spectool -g -R --directory $WORKSPACE/build/SOURCES $WORKSPACE/build/SPECS/opensearch-client.spec'
-        echo "Build package"
-        sh "rpmbuild --define \"_topdir $WORKSPACE/build\" -ba --define '_branch ${env.BRANCH_NAME}' --define '_version ${env.version}' --define '_release ${env.release}' $WORKSPACE/build/SPECS/opensearch-client.spec"
-        sh "rpm -qpl $WORKSPACE/build/RPMS/*/*.rpm"
-        sh 'rm -f $WORKSPACE/build/SOURCES/opensearch-client'
-        sh "tar -cvzf opensearch-client-${env.version}-${env.release}.tar.gz -C $WORKSPACE/build/SOURCES/ ."
-        archiveArtifacts artifacts: 'build/RPMS/**/*.rpm,opensearch-client-*.tar.gz', fingerprint: true
-        stash includes: 'opensearch-client-*.tar.gz', name: 'opensearch-client-tgz'
-        stash includes: 'build/RPMS/**/*.rpm', name: 'opensearch-client-rpm'
-      }
-    }
-    stage('Publish') {
+    stage('Publish Artifacts') {
       agent { node { label 'artifactory' } }
       steps {
         echo 'Deploying'
-        unstash name: 'opensearch-client-rpm'
+        unstash name: 'oscli-packages'
         script {
             // Obtain an Artifactory server instance, defined in Jenkins --> Manage:
             def server = Artifactory.server "repository.terradue.com"
@@ -77,32 +70,82 @@ pipeline {
       }       
     }
     stage('Build & Publish Docker') {
-        steps {
-            unstash name: 'opensearch-client-tgz'
-            script {
-              def opensearchclienttgz = findFiles(glob: "opensearch-client-*.tar.gz")
-              def descriptor = readDescriptor()
-              def testsuite = docker.build(descriptor.docker_image_name, "--build-arg OPENSEARCH_CLIENT_TGZ=${opensearchclienttgz[0].name} .")
-              def mType=getTypeOfVersion(env.BRANCH_NAME)
-              docker.withRegistry('https://registry.hub.docker.com', 'dockerhub-emmanuelmathot') {
-                testsuite.push("${mType}${descriptor.version}")
-                testsuite.push("${mType}latest")
-              }
-            }
+      steps {
+        script {
+          unstash name: 'oscli-debs'
+          def starsdeb = findFiles(glob: "Terradue.OpenSearch.Client/bin/**/OpenSearchClient.*.linux-x64.deb")
+          def descriptor = readDescriptor()
+          sh "mv ${starsdeb[0].path} ."
+          def mType=getTypeOfVersion(env.BRANCH_NAME)
+          def baseImage = docker.image('centos:latest')
+          baseImage.pull()
+          def testsuite = docker.build(descriptor.docker_image_name + ":${mType}${env.VERSION_TOOL}", "--no-cache --build-arg STARS_DEB=${starsdeb[0].name} .")
+          testsuite.tag("${mType}latest")
+          docker.withRegistry('https://registry.hub.docker.com', 'dockerhub') {
+            testsuite.push("${mType}${env.VERSION_TOOL}")
+            testsuite.push("${mType}latest")
+          }
         }
-    }
+      }
+    }  
+    stage('Create Release') {
+      agent { 
+          docker { 
+              image 'golang:1.12'
+              args '-u root'
+          } 
+      }
+      when {
+        branch 'master'
+      }
+      steps {
+        withCredentials([string(credentialsId: '11f06c51-2f47-43be-aef4-3e4449be5cf0', variable: 'GITHUB_TOKEN')]) {
+          unstash name: 'oscli-exe'
+          unstash name: 'oscli-zips'
+          sh "go get github.com/github-release/github-release"
+          // echo "Deleting release from github before creating new one"
+          // sh "github-release delete --user ${env.GITHUB_ORGANIZATION} --repo ${env.GITHUB_REPO} --tag ${env.VERSION_TOOL}"
+
+          echo "Creating a new release in github"
+          sh "github-release release --user ${env.GITHUB_ORGANIZATION} --repo ${env.GITHUB_REPO} --tag ${env.VERSION_TOOL} --name 'Stars v${env.VERSION_TOOL}'"
+
+          echo "Uploading the artifacts into github"
+          sh "github-release upload --user ${env.GITHUB_ORGANIZATION} --repo ${env.GITHUB_REPO} --tag ${env.VERSION_TOOL} --name oscli-${env.VERSION_TOOL}-linux-x64 --file Terradue.OpenSearch.Client/bin/Release/net5.0/linux-x64/publish/Stars"
+          sh "github-release upload --user ${env.GITHUB_ORGANIZATION} --repo ${env.GITHUB_REPO} --tag ${env.VERSION_TOOL} --name oscli-${env.VERSION_TOOL}-linux-x64.zip --file Terradue.OpenSearch.Client/bin/Release/net5.0/linux-x64/Stars.*.linux-x64.zip"
+        }
+      }
+    }  
   }
 }
 
 def getTypeOfVersion(branchName) {
-  
-  def matcher = (env.BRANCH_NAME =~ /master/)
+  def matcher = (branchName =~ /master/)
   if (matcher.matches())
     return ""
   
   return "dev"
 }
 
-def readDescriptor (){
-    return readYaml(file: 'build.yml')
+def getConfiguration(branchName) {
+  def matcher = (branchName =~ /master/)
+  if (matcher.matches())
+    return "Release"
+  
+  return "Debug"
 }
+
+def readDescriptor (){
+  return readYaml(file: 'build.yml')
+}
+
+def getVersionFromCsProj (csProjFilePath){
+  def file = readFile(csProjFilePath) 
+  def xml = new XmlSlurper().parseText(file)
+  def suffix = ""
+  if ( xml.PropertyGroup.VersionSuffix[0].text() != "" )
+    suffix = "-" + xml.PropertyGroup.VersionSuffix[0].text()
+  return xml.PropertyGroup.Version[0].text() + suffix
+}
+
+
+
