@@ -42,7 +42,7 @@ pipeline {
             sh "dotnet publish -f net5.0 -r linux-x64 -p:PublishSingleFile=true ${env.DOTNET_ARGS} --self-contained true Terradue.OpenSearch.Client/Terradue.OpenSearch.Client.csproj"
             stash name: 'oscli-packages', includes: 'Terradue.OpenSearch.Client/bin/**/*.rpm'
             stash name: 'oscli-debs', includes: 'Terradue.OpenSearch.Client/bin/**/*.deb'
-            stash name: 'oscli-exe', includes: 'Terradue.OpenSearch.Client/bin/**/linux**/publish/Stars, Terradue.OpenSearch.Client/bin/linux**/publish/*.json'
+            stash name: 'oscli-exe', includes: 'Terradue.OpenSearch.Client/bin/**/linux**/publish/OpenSearchClient, Terradue.OpenSearch.Client/bin/linux**/publish/*.json'
             stash name: 'oscli-zips', includes: 'Terradue.OpenSearch.Client/bin/**/linux**/*.zip'
             archiveArtifacts artifacts: 'Terradue.OpenSearch.Client/bin/linux**/publish/Stars,Terradue.OpenSearch.Client/bin/linux**/publish/*.json,Terradue.OpenSearch.Client/bin/**/*.rpm,Terradue.OpenSearch.Client/bin/**/*.deb, Terradue.OpenSearch.Client/bin/**/*.zip', fingerprint: true
           }
