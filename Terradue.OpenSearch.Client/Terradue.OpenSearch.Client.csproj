@@ -1,24 +1,22 @@
 <Project ToolsVersion="Current" Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <OutputType>Exe</OutputType>
     <RootNamespace>Terradue.OpenSearch.Client</RootNamespace>
     <AssemblyName>OpenSearchClient</AssemblyName>
-    <TargetFramework>net472</TargetFramework>
+    <TargetFramework>net5.0</TargetFramework>
     <RuntimeIdentifiers>win;linux-x64</RuntimeIdentifiers>
     <PackageId>Terradue.OpenSearch.Client</PackageId>
     <Title>DotNetOpenSearchClient</Title>
     <Description>Generic OpenSearch Client</Description>
     <PackageLicenseFile>LICENSE</PackageLicenseFile>
-    <Version>1.9.9</Version>
+    <Version>2.0.0</Version>
     <Authors>Emmanuel Mathot</Authors>
     <Company>Terradue</Company>
     <RepositoryUrl>https://github.com/Terradue/DotNetOpenSearchClient</RepositoryUrl>
     <PackageTags>OGC;Terradue;Opensearch</PackageTags>
-    <PackageOutputPath>$(SolutionDir)\build</PackageOutputPath>
-    <RestorePackagesPath>$(SolutionDir)\packages</RestorePackagesPath>
     <IsTool>true</IsTool>
+    <InvariantGlobalization>true</InvariantGlobalization>
+    <DebugType>embedded</DebugType>
+    <NoWarn>$(NoWarn);NU1605</NoWarn>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System"/>

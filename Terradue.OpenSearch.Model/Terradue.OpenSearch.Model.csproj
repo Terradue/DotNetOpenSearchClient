@@ -1,29 +1,9 @@
 <Project ToolsVersion="Current" Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <OutputType>Library</OutputType>
-    <RootNamespace>Terradue.OpenSearch.Model</RootNamespace>
-    <AssemblyName>Terradue.OpenSearch.Model</AssemblyName>
-    <TargetFramework>net472</TargetFramework>
-    <RuntimeIdentifiers>win;linux-x64</RuntimeIdentifiers>
-    <RestorePackagesPath>$(SolutionDir)\packages</RestorePackagesPath>
-    <IsPackable>false</IsPackable>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <NoWarn>$(NoWarn);NU1605</NoWarn>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="System" />
-    <Reference Include="System.Net" />
-    <Reference Include="System.Xml" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Core" />
-    <Reference Include="System.Numerics" />
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Terradue\" />
-    <Folder Include="Terradue\OpenSearch\" />
-    <Folder Include="Terradue\OpenSearch\Model\" />
-  </ItemGroup>
-  <ItemGroup>
-    <PackageReference Include="Terradue.OpenSearch" Version="1.17.5" />
+    <PackageReference Include="Terradue.OpenSearch" Version="1.17.*" />
   </ItemGroup>
 </Project>
