@@ -11,3 +11,4 @@ ARG STARS_DEB
 COPY $STARS_DEB /tmp/$STARS_DEB
 RUN apt install -f /tmp/$STARS_DEB \
     && rm -rf /tmp/$STARS_DEB
+RUN chmod +x /usr/bin/opensearch-client
