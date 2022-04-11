@@ -1,3 +1,2 @@
 #!/bin/sh
-export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/lib/opensearch-client
-exec mono $MONO_OPTIONS /usr/lib/opensearch-client/OpenSearchClient.exe "$@"
+exec /usr/local/bin/OpenSearchClient "$@"

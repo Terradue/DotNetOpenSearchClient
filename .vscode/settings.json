@@ -1,3 +1,4 @@
 {
-        "nxunitExplorer.nunit": "packages/nunit.consolerunner/3.10.0/tools/nunit3-console.exe"
+        "nxunitExplorer.nunit": "packages/nunit.consolerunner/3.10.0/tools/nunit3-console.exe",
+        "jira-plugin.workingProject": "DATAAUTHOR"
 }
