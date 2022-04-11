@@ -43,7 +43,7 @@ namespace Terradue.OpenSearch.Model {
             string dirpath = Path.GetDirectoryName((new System.Uri(Assembly.GetExecutingAssembly().CodeBase)).AbsolutePath);
 
             log.Debug(string.Format("Scan {0} for OpenSearch Client plugins", dirpath));
-            foreach (string dll in Directory.GetFiles(dirpath, "*.dll"))
+            foreach (string dll in Directory.GetFiles(dirpath, "Terradue.*.dll"))
                 allAssemblies.Add(Assembly.LoadFile(dll));
 
             foreach (var assembly in allAssemblies) {
