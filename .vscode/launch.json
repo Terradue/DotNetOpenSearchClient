@@ -5,13 +5,14 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "Query sentinel2 index",
+            "name": "Query sentinel1 index",
             "type": "coreclr",
             "request": "launch",
             "preLaunchTask": "build",
             "program": "${workspaceRoot}/Terradue.OpenSearch.Client/bin/Debug/net5.0/OpenSearchClient",
             "args": [
-                "https://catalog.terradue.com/sentinel2/search"
+                "https://catalog.terradue.com/sentinel1/search",
+                "enclosure"
             ],
             "cwd": "${workspaceRoot}",
             "stopAtEntry": false,
