@@ -474,7 +474,7 @@ namespace Terradue.OpenSearch.Client
 
         private ILog ConfigureLog()
         {
-            Hierarchy hierarchy = (Hierarchy)LogManager.GetRepository();
+            Hierarchy hierarchy = (Hierarchy)LogManager.GetRepository(System.Reflection.Assembly.GetAssembly(typeof(OpenSearchClient)));
             hierarchy.Root.RemoveAllAppenders();
 
             PatternLayout patternLayout = new PatternLayout();
@@ -497,8 +497,6 @@ namespace Terradue.OpenSearch.Client
                 hierarchy.Root.Level = Level.Debug;
             }
             hierarchy.Configured = true;
-
-            BasicConfigurator.Configure(new ConsoleAppender[] { consoleErrAppender });
 
             return LogManager.GetLogger(typeof(OpenSearchClient));
         }
