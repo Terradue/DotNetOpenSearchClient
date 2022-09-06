@@ -1,52 +1,65 @@
 <Project ToolsVersion="Current" Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <OutputType>Exe</OutputType>
     <RootNamespace>Terradue.OpenSearch.Client</RootNamespace>
     <AssemblyName>OpenSearchClient</AssemblyName>
-    <TargetFramework>net472</TargetFramework>
-    <RuntimeIdentifiers>win;linux-x64</RuntimeIdentifiers>
+    <TargetFramework>net5.0</TargetFramework>
+    <RuntimeIdentifiers>win-x64;linux-x64;osx-x64;centos.7-x64</RuntimeIdentifiers>
     <PackageId>Terradue.OpenSearch.Client</PackageId>
     <Title>DotNetOpenSearchClient</Title>
     <Description>Generic OpenSearch Client</Description>
     <PackageLicenseFile>LICENSE</PackageLicenseFile>
-    <Version>1.9.8</Version>
+    <Version>2.0.1</Version>
     <Authors>Emmanuel Mathot</Authors>
     <Company>Terradue</Company>
     <RepositoryUrl>https://github.com/Terradue/DotNetOpenSearchClient</RepositoryUrl>
     <PackageTags>OGC;Terradue;Opensearch</PackageTags>
-    <PackageOutputPath>$(SolutionDir)\build</PackageOutputPath>
-    <RestorePackagesPath>$(SolutionDir)\packages</RestorePackagesPath>
+    <OutputType>Exe</OutputType>
     <IsTool>true</IsTool>
+    <InvariantGlobalization>true</InvariantGlobalization>
+    <DebugType>embedded</DebugType>
+    <NoWarn>$(NoWarn);NU1605</NoWarn>
   </PropertyGroup>
-  <ItemGroup>
-    <Reference Include="System"/>
-    <Reference Include="System.Xml"/>
-    <Reference Include="System.Data"/>
-    <Reference Include="System.ServiceModel"/>
-    <Reference Include="System.Net"/>
-    <Reference Include="System.Core"/>
-    <Reference Include="System.Numerics"/>
-    <Reference Include="System.Reflection"/>
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Terradue\OpenSearch\"/>
-    <Folder Include="Terradue\OpenSearch\Client\"/>
-  </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Terradue.OpenSearch.Model\Terradue.OpenSearch.Model.csproj"/>
     <ProjectReference Include="..\Terradue.OpenSearch.Model.Base\Terradue.OpenSearch.Model.Base.csproj"/>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="../src/main/scripts/opensearch-client" CopyToOutputDirectory="Always" CopyToPublishDirectory="Always">
+      <LinuxPath>/usr/bin/opensearch-client</LinuxPath>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
     <PackageReference Include="HtmlAgilityPack" Version="1.11.12"/>
-    <PackageReference Include="Terradue.Metadata.EarthObservation" Version="1.6.7"/>
-    <PackageReference Include="Terradue.OpenSearch" Version="1.17.5"/>
-    <PackageReference Include="Terradue.OpenSearch.GeoJson" Version="1.4.4"/>
+    <PackageReference Include="Terradue.Metadata.EarthObservation" Version="1.6.*"/>
+    <PackageReference Include="Terradue.OpenSearch" Version="1.17.*"/>
+    <PackageReference Include="Terradue.OpenSearch.GeoJson" Version="1.4.*"/>
     <!-- <PackageReference Include="Terradue.OpenSearch.RdfEO" Version="1.4.3"/> -->
-    <PackageReference Include="Terradue.OpenSearch.SciHub" Version="1.14.3"/>
-    <PackageReference Include="Terradue.OpenSearch.Usgs" Version="1.3.1"/>
+    <PackageReference Include="Terradue.OpenSearch.SciHub" Version="1.18.*"/>
+    <PackageReference Include="Terradue.OpenSearch.Usgs" Version="1.3.*"/>
     <Content Include="$(SolutionDir)\LICENSE" Pack="true" PackagePath=""/>
   </ItemGroup>
-  <Import Project="WalkEachTargetPerProject.targets"/>
+  <ItemGroup Condition="$(RuntimeIdentifier.StartsWith('rhel')) OR $(RuntimeIdentifier.StartsWith('fedora')) OR $(RuntimeIdentifier.StartsWith('ol'))">
+    <RpmDotNetDependency Include="libstdc++" Version="" />
+    <RpmDotNetDependency Include="libunwind" Version="" />
+    <RpmDotNetDependency Include="libicu" Version="" />
+  </ItemGroup>
+  <ItemGroup Condition="$(RuntimeIdentifier.StartsWith('rhel-x64')) OR $(RuntimeIdentifier.StartsWith('fedora'))">
+    <RpmDotNetDependency Include="compat-openssl10" Version="" />
+  </ItemGroup>
+  <ItemGroup Condition="$(RuntimeIdentifier.StartsWith('ol'))">
+    <RpmDotNetDependency Include="openssl-libs" Version="" />
+  </ItemGroup>
+  <ItemGroup Condition="$(RuntimeIdentifier.StartsWith('centos'))">
+    <RpmDotNetDependency Include="libcurl" Version="" />
+    <RpmDotNetDependency Include="openssl-libs" Version="" />
+    <RpmDotNetDependency Include="krb5-libs" Version="" />
+    <RpmDotNetDependency Include="libicu" Version="" />
+    <RpmDotNetDependency Include="zlib" Version="" />
+    <RpmDotNetDependency Include="libunwind" Version="" Condition="'$(TargetFramework)'=='netcoreapp2.0'" />
+    <RpmDotNetDependency Include="libuuid" Version="" Condition="'$(TargetFramework)'=='netcoreapp2.0'" />
+  </ItemGroup>
+  <Target Name="PackageZip" DependsOnTargets="CreateZip" Outputs="$(ZipPath)" />
+  <Target Name="PackageTarball" DependsOnTargets="CreateTarball" Outputs="$(TarballPath)" />
+  <Target Name="PackageDebian" DependsOnTargets="CreateDeb" Outputs="$(DebPath)" />
+  <Target Name="PackageRpm" DependsOnTargets="CreateRpm" Outputs="$(RpmPath)" />
 </Project>
