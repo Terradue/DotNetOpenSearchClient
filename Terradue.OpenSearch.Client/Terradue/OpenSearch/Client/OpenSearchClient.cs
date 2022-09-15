@@ -683,7 +683,7 @@ namespace Terradue.OpenSearch.Client
                         }
                         foreach (Exception e in ae.InnerExceptions)
                         {
-                            log.Warn("Exception " + e.Message);
+                            log.Warn("Exception: " + e.Message);
                         }
                         retry--;
                         searchCache.ClearCache(".*", DateTime.Now);
@@ -714,7 +714,7 @@ namespace Terradue.OpenSearch.Client
                             throw;
                         }
 
-                        log.Warn("Exception " + e.Message);
+                        log.Warn("Exception: " + e.Message + "\n" + e.StackTrace);
                         retry--;
                         searchCache.ClearCache(".*", DateTime.Now);
                     }

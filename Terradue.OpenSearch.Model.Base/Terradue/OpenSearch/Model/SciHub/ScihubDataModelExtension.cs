@@ -55,11 +55,13 @@ namespace Terradue.OpenSearch.Model.Scihub {
             }
 
             if (topBaseUri.Host == "finder.creodias.eu") {
-                wrapper = new CreoDiasWrapper(topNetworkCredential);
+                string url = topBaseUri.AbsoluteUri.EndsWith("describe.xml") ? topBaseUri.AbsoluteUri : null;
+                wrapper = new CreoDiasWrapper(topNetworkCredential, url);
             }
 
             if (topBaseUri.Host.Contains("mundiwebservices.com")) {
-                var mundiDiasWrapper = new MundiDiasWrapper(topNetworkCredential);
+                string url = topBaseUri.AbsoluteUri.EndsWith("search") || topBaseUri.AbsoluteUri.EndsWith("opensearch") ? topBaseUri.AbsoluteUri : null;
+                var mundiDiasWrapper = new MundiDiasWrapper(topNetworkCredential, url);
 
                 if (topNetworkCredential == null) {
                     throw new Exception("Credentials needed (<s3-key-id>:<s3-secret-key>)");
