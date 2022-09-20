@@ -42,9 +42,9 @@ pipeline {
             sh "dotnet publish -f net5.0 -r linux-x64 -p:PublishSingleFile=true ${env.DOTNET_ARGS} --self-contained true Terradue.OpenSearch.Client/Terradue.OpenSearch.Client.csproj"
             stash name: 'oscli-packages', includes: 'Terradue.OpenSearch.Client/bin/**/*.rpm'
             stash name: 'oscli-debs', includes: 'Terradue.OpenSearch.Client/bin/**/*.deb'
-            stash name: 'oscli-exe', includes: 'Terradue.OpenSearch.Client/bin/**/linux**/publish/OpenSearchClient, Terradue.OpenSearch.Client/bin/linux**/publish/*.json'
-            stash name: 'oscli-zips', includes: 'Terradue.OpenSearch.Client/bin/**/linux**/*.zip'
-            archiveArtifacts artifacts: 'Terradue.OpenSearch.Client/bin/linux**/publish/Stars,Terradue.OpenSearch.Client/bin/linux**/publish/*.json,Terradue.OpenSearch.Client/bin/**/*.rpm,Terradue.OpenSearch.Client/bin/**/*.deb, Terradue.OpenSearch.Client/bin/**/*.zip', fingerprint: true
+            stash name: 'oscli-exe', includes: 'Terradue.OpenSearch.Client/bin/**/linux*/publish/OpenSearchClient'
+            stash name: 'oscli-zips', includes: 'Terradue.OpenSearch.Client/bin/**/linux*/*.zip'
+            archiveArtifacts artifacts: 'Terradue.OpenSearch.Client/bin/linux**/publish/OpenSearchClient,Terradue.OpenSearch.Client/bin/linux**/publish/*.json,Terradue.OpenSearch.Client/bin/**/*.rpm,Terradue.OpenSearch.Client/bin/**/*.deb, Terradue.OpenSearch.Client/bin/**/*.zip', fingerprint: true
           }
         }
       }
@@ -77,8 +77,6 @@ pipeline {
           def descriptor = readDescriptor()
           sh "mv ${starsdeb[0].path} ."
           def mType=getTypeOfVersion(env.BRANCH_NAME)
-          def baseImage = docker.image('centos:latest')
-          baseImage.pull()
           def testsuite = docker.build(descriptor.docker_image_name + ":${mType}${env.VERSION_TOOL}", "--no-cache --build-arg STARS_DEB=${starsdeb[0].name} .")
           testsuite.tag("${mType}latest")
           docker.withRegistry('https://registry.hub.docker.com', 'dockerhub') {
