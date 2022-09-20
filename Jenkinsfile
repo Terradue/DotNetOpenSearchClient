@@ -73,7 +73,7 @@ pipeline {
       steps {
         script {
           unstash name: 'oscli-debs'
-          def starsdeb = findFiles(glob: "Terradue.OpenSearch.Client/bin/**/OpenSearchClient.*.linux-x64.deb")
+          def starsdeb = findFiles(glob: "Terradue.OpenSearch.Client/bin/**/opensearch-client.*.linux-x64.deb")
           def descriptor = readDescriptor()
           sh "mv ${starsdeb[0].path} ."
           def mType=getTypeOfVersion(env.BRANCH_NAME)
