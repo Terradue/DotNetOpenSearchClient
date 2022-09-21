@@ -5,6 +5,7 @@
     <TargetFramework>net5.0</TargetFramework>
     <RuntimeIdentifiers>win-x64;linux-x64;osx-x64;centos.7-x64</RuntimeIdentifiers>
     <PackageId>Terradue.OpenSearch.Client</PackageId>
+    <PackagePrefix>opensearch-client</PackagePrefix>
     <Title>DotNetOpenSearchClient</Title>
     <Description>Generic OpenSearch Client</Description>
     <PackageLicenseFile>LICENSE</PackageLicenseFile>

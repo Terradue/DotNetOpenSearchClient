@@ -1,34 +1,39 @@
 {
   "files": [
     {
-      "pattern": ".*-SNAPSHOT\.rhel\.6-x64.rpm",
+      "pattern": ".*-SNAPSHOT\.linux-x64.rpm",
       "regexp" : true,
       "target": "yum-terradue-testing/el6/x86_64/"
     },
     {
-      "pattern": ".*(?!.*SNAPSHOT)\.rhel\.6-x64.rpm",
+      "pattern": ".*(?!.*SNAPSHOT)\.linux-x64.rpm",
       "regexp" : true,
       "target": "yum-terradue-stable/el6/x86_64/"
     },
     {
-      "pattern": ".*-SNAPSHOT\.centos\.7-x64.rpm",
+      "pattern": ".*-SNAPSHOT\.linux-x64.rpm",
       "regexp" : true,
       "target": "yum-terradue-testing/el7/x86_64/"
     },
     {
-      "pattern":  ".*(?!.*SNAPSHOT)\.centos\.7-x64.rpm",
+      "pattern":  ".*(?!.*SNAPSHOT)\.linux-x64.rpm",
       "regexp" : true,
       "target": "yum-terradue-stable/el7/x86_64/"
     },
     {
-      "pattern": ".*-SNAPSHOT\.rhel-x64.rpm",
+      "pattern": ".*-SNAPSHOT\.linux-x64.rpm",
       "regexp" : true,
       "target": "yum-terradue-testing/el8/x86_64/"
     },
     {
-      "pattern":  ".*(?!.*SNAPSHOT)\.rhel-x64.rpm",
+      "pattern":  ".*(?!.*SNAPSHOT)\.linux-x64.rpm",
       "regexp" : true,
       "target": "yum-terradue-stable/el8/x86_64/"
+    },
+    {
+      "pattern":  ".*(?!.*SNAPSHOT)\.linux-x64.rpm",
+      "regexp" : true,
+      "target": "yum-ciop-stable/el7/x86_64/"
     }
   ]
 }
