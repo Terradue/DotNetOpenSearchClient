@@ -29,11 +29,6 @@
       "pattern":  ".*(?!.*SNAPSHOT)\.linux-x64.rpm",
       "regexp" : true,
       "target": "yum-terradue-stable/el8/x86_64/"
-    },
-    {
-      "pattern":  ".*(?!.*SNAPSHOT)\.linux-x64.rpm",
-      "regexp" : true,
-      "target": "yum-ciop-stable/el7/x86_64/"
     }
   ]
 }
