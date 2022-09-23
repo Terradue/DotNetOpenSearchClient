@@ -9,7 +9,7 @@
     <Title>DotNetOpenSearchClient</Title>
     <Description>Generic OpenSearch Client</Description>
     <PackageLicenseFile>LICENSE</PackageLicenseFile>
-    <Version>2.1.1</Version>
+    <Version>2.1.2</Version>
     <Authors>Emmanuel Mathot</Authors>
     <Company>Terradue</Company>
     <RepositoryUrl>https://github.com/Terradue/DotNetOpenSearchClient</RepositoryUrl>
