@@ -11,11 +11,9 @@ using IniParser.Model;
 using Terradue.ServiceModel.Syndication;
 using System.Threading.Tasks;
 
-namespace Terradue.OpenSearch.Model.GeoTime
-{
+namespace Terradue.OpenSearch.Model.GeoTime {
 
-	class EnclosureMetadataExtractor : IMetadataExtractor
-	{
+	class EnclosureMetadataExtractor : IMetadataExtractor {
 
 		private static readonly ILog log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 

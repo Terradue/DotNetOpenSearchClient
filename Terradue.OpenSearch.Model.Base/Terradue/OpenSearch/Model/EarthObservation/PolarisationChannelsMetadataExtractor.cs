@@ -2,8 +2,8 @@ using System;
 using Terradue.OpenSearch.Model.GeoTime;
 using Terradue.OpenSearch.Result;
 
-namespace Terradue.OpenSearch.Model.EarthObservation
-{
+namespace Terradue.OpenSearch.Model.EarthObservation {
+
     class PolarisationChannelsMetadataExtractor : IMetadataExtractor {
 
         #region IMetadataExtractor implementation

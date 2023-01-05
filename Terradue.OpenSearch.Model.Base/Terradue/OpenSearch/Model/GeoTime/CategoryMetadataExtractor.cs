@@ -7,11 +7,9 @@ using System.Text.RegularExpressions;
 using log4net;
 using Terradue.ServiceModel.Syndication;
 
-namespace Terradue.OpenSearch.Model.GeoTime
-{
+namespace Terradue.OpenSearch.Model.GeoTime {
 
-	class CategoryMetadataExtractor : IMetadataExtractor
-	{
+	class CategoryMetadataExtractor : IMetadataExtractor {
 
 		private static readonly ILog log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 

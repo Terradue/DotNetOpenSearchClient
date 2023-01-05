@@ -3,7 +3,9 @@ using Terradue.OpenSearch.Model.GeoTime;
 using Terradue.OpenSearch.Result;
 
 namespace Terradue.OpenSearch.Model.EarthObservation {
-    class OrbitNumberMetadataExtractor: IMetadataExtractor {
+
+    class OrbitNumberMetadataExtractor : IMetadataExtractor {
+
         #region IMetadataExtractor implementation
 
         public string GetMetadata(IOpenSearchResultItem item, string specifier) {

@@ -4,8 +4,7 @@ using log4net;
 
 namespace Terradue.OpenSearch.Model.GeoTime {
 
-    class ExtensionMetadataExtractor : IMetadataExtractor
-	{
+    class ExtensionMetadataExtractor : IMetadataExtractor {
 
 		private static readonly ILog log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 

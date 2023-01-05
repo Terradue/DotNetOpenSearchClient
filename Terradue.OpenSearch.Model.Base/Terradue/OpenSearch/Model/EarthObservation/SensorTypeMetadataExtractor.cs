@@ -9,6 +9,7 @@ using Terradue.ServiceModel.Syndication;
 namespace Terradue.OpenSearch.Model.EarthObservation {
 
     class SensorTypeMetadataExtractor : IMetadataExtractor {
+
         #region IMetadataExtractor implementation
 
         public string GetMetadata(IOpenSearchResultItem item, string specifier) {
