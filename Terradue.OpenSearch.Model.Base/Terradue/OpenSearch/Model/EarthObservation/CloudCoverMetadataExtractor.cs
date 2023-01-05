@@ -2,10 +2,10 @@ using System;
 using Terradue.OpenSearch.Model.GeoTime;
 using Terradue.OpenSearch.Result;
 
-namespace Terradue.OpenSearch.Model.EarthObservation
-{
-    class CloudCoverMetadataExtractor : IMetadataExtractor
-    {
+namespace Terradue.OpenSearch.Model.EarthObservation {
+
+    class CloudCoverMetadataExtractor : IMetadataExtractor {
+
         #region IMetadataExtractor implementation
 
         public string GetMetadata(IOpenSearchResultItem item, string specifier) {

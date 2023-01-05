@@ -5,10 +5,10 @@ using Terradue.OpenSearch.Result;
 using Terradue.ServiceModel.Ogc;
 using Terradue.ServiceModel.Ogc.Eop21;
 
-namespace Terradue.OpenSearch.Model.EarthObservation
-{
-    class VendorSpecificMetadataExtractor : IMetadataExtractor
-    {
+namespace Terradue.OpenSearch.Model.EarthObservation {
+
+    class VendorSpecificMetadataExtractor : IMetadataExtractor {
+
         #region IMetadataExtractor implementation
 
         public string GetMetadata(IOpenSearchResultItem item, string specifier)

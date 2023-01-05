@@ -7,7 +7,9 @@ using Terradue.ServiceModel.Syndication;
 namespace Terradue.OpenSearch.Model.GeoTime {
 
     public class EndDateMetadataExtractor : IMetadataExtractor {
+
         #region IMetadataExtractor implementation
+
         public virtual string GetMetadata(Terradue.OpenSearch.Result.IOpenSearchResultItem item, string specifier) {
             string date = null;
             if (date == null) {

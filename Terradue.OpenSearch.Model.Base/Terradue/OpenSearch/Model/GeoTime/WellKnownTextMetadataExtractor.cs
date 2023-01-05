@@ -11,6 +11,7 @@ using Terradue.Metadata.EarthObservation.OpenSearch.Extensions;
 namespace Terradue.OpenSearch.Model.GeoTime {
     
     public class WellKnownTextMetadataExtractor : IMetadataExtractor {
+
         #region IMetadataExtractor implementation
 
         public virtual string Description {
