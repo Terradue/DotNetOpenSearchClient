@@ -6,6 +6,7 @@ using Terradue.ServiceModel.Ogc;
 namespace Terradue.OpenSearch.Model.EarthObservation {
 
     class CycleNumberMetadataExtractor : IMetadataExtractor {
+
         #region IMetadataExtractor implementation
 
         public string GetMetadata(IOpenSearchResultItem item, string specifier) {

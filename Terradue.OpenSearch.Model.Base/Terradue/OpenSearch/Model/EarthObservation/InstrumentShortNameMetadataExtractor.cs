@@ -3,6 +3,7 @@
 namespace Terradue.OpenSearch.Model.EarthObservation {
 
     class InstrumentShortNameMetadataExtractor : IMetadataExtractor {
+
         #region IMetadataExtractor implementation
 
         public string GetMetadata(IOpenSearchResultItem item, string specifier) {
