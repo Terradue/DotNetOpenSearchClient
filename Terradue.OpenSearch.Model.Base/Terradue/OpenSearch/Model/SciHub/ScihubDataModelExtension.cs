@@ -81,7 +81,11 @@ namespace Terradue.OpenSearch.Model.Scihub {
                 wrapper = new AsfApiWrapper(topBaseUri, topNetworkCredential);
             }*/
 
-            if (topBaseUri.Host.EndsWith("copernicus.eu")) {
+            if (topBaseUri.Host == "catalogue.dataspace.copernicus.eu") {
+                CopernicusOdataWrapper cdsWrapper = new CopernicusOdataWrapper(topNetworkCredential, topBaseUri.AbsoluteUri);
+                //  cdsWrapper.ForceTotalResults = true;
+                wrapper = cdsWrapper;
+            } else if (topBaseUri.Host.EndsWith("copernicus.eu")) {
                 wrapper = new DHuSWrapper(topBaseUri, topNetworkCredential);
             }
                 
