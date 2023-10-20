@@ -30,12 +30,14 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
+    <PackageReference Include="Microsoft.TestPlatform.ObjectModel" Version="15.0.0.0"/>
+    <PackageReference Include="nunit" Version="3.13.3" />
     <PackageReference Include="HtmlAgilityPack" Version="1.11.12"/>
     <PackageReference Include="Terradue.Metadata.EarthObservation" Version="1.6.*"/>
-    <PackageReference Include="Terradue.OpenSearch" Version="1.17.*"/>
+    <PackageReference Include="Terradue.OpenSearch" Version="1.21.*"/>
     <PackageReference Include="Terradue.OpenSearch.GeoJson" Version="1.4.*"/>
     <!-- <PackageReference Include="Terradue.OpenSearch.RdfEO" Version="1.4.3"/> -->
-    <PackageReference Include="Terradue.OpenSearch.SciHub" Version="1.18.*"/>
+    <PackageReference Include="Terradue.OpenSearch.SciHub" Version="1.28.*"/>
     <PackageReference Include="Terradue.OpenSearch.Usgs" Version="1.6.*"/>
     <Content Include="$(SolutionDir)\LICENSE" Pack="true" PackagePath=""/>
   </ItemGroup>
