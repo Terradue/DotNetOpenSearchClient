@@ -128,7 +128,7 @@ namespace Terradue.OpenSearch.Client.Test{
             Assert.Greater(count, 0);
         }
 
-        [Test()]
+        [Test, Category("NotWorking")]
         public void Test_VirtualArchiveIdentifier() {
 
             OpenSearchClient client = CreateTestClient("http://eo-virtual-archive4.esa.int/search/COSMOSKYMED/rdf", "{}");

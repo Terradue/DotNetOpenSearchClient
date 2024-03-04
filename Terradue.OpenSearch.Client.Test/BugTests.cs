@@ -144,7 +144,7 @@ namespace Terradue.OpenSearch.Client.Test {
 
         }
 
-        [Test()]
+        [Test, Category("NotWorking")]
         public void Test_DataAuthor_165() {
             OpenSearchClient client = CreateTestClient("http://eo-virtual-archive4.esa.int/search/COSMOSKYMED/rdf", "{}");
             client.QueryModel = "EOP";

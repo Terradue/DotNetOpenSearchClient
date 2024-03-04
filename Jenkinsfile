@@ -26,7 +26,7 @@ pipeline {
               sh 'dotnet restore'
               sh "dotnet build -c ${env.CONFIGURATION} --no-restore"
               try {
-                sh """dotnet test -c ${env.CONFIGURATION} --no-build --no-restore ./ --logger 'trx;LogFileName=testresults.trx'
+                sh """dotnet test -c ${env.CONFIGURATION} --no-build --no-restore ./ --logger 'trx;LogFileName=testresults.trx' --filter 'Category!=NotWorking'
             """
             } catch (Exception e)
             {

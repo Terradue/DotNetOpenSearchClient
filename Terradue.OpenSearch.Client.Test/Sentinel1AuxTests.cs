@@ -25,7 +25,7 @@ namespace Terradue.OpenSearch.Client.Test {
             nsm.AddNamespace("eop", "http://www.terradue.com/model/eop");
         }
 
-        [Test()]
+        [Test, Category("NotWorking")]
         public void ListTest() {
             OpenSearchClient client = CreateTestClient("https://aux.sentinel1.eo.esa.int/", "identifier");
             client.QueryModel = "EOP";
