@@ -24,6 +24,15 @@ pipeline {
             echo "Build .NET application"
             sh "dotnet restore"
             sh "dotnet build -c ${env.CONFIGURATION} --no-restore"
+            try {
+            sh """dotnet test -c ${env.CONFIGURATION} --no-build --no-restore ./ --logger 'trx;LogFileName=testresults.trx'
+            """
+            } catch (Exception e) 
+            {
+             sh "cat Terradue.OpenSearch.Client.Test/TestResults/testresults.trx"
+             currentBuild.result = 'FAILURE'
+             throw e
+            }
           }
         }
         stage("Make CLI packages"){
