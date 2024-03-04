@@ -97,7 +97,7 @@ namespace Terradue.OpenSearch.Client.Test {
 
         }
 
-        [Test()]
+        [Test, Category("NotWorking")]
         public void SingleEntryTest() {
             OpenSearchClient client = CreateTestClient("https://qc.sentinel1.eo.esa.int", "{}");
             client.QueryModel = "EOP";

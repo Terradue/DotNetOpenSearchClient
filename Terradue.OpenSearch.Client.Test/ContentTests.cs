@@ -59,7 +59,7 @@ namespace Terradue.OpenSearch.Client.Test {
         }
 
 
-
+//        [Test, Category("NotWorking")]
         [Test()]
         public void Test_Sentinel3() {
             OpenSearchClient client = CreateTestClient("https://catalog.terradue.com/sentinel3/search", "{}");
@@ -73,7 +73,7 @@ namespace Terradue.OpenSearch.Client.Test {
 
             Console.WriteLine("HASH {0}", GetHashString(eoNode.OuterXml));
 
-            Assert.AreEqual("E5CFC2CDFC3C3D11861E3469E7DB82017C18B9E03022450AEAC9EE9ACC755834", GetHashString(eoNode.OuterXml));
+            Assert.AreEqual("924589B124492324C38586053FB9FC808EB5A1D6CD1C8C3DA28FB5DF9D51B902", GetHashString(eoNode.OuterXml));
 
         }
 

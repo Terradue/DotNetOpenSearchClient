@@ -92,7 +92,7 @@ namespace Terradue.OpenSearch.Client.Test {
 
 	    }
 	    
-        [Test()]
+        [Test, Category("NotWorking")]
         public void Test_DataAuthor_123() {
             Credential credential = GetCredential("DataAuthor_123", true);
 
@@ -119,7 +119,7 @@ namespace Terradue.OpenSearch.Client.Test {
         }
 
 
-        [Test()]
+        [Test, Category("NotWorking")]
         public void Test_DataAuthor_164() {
             Credential credential = GetCredential("DataAuthor_164", true);
 

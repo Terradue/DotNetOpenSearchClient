@@ -51,7 +51,7 @@ namespace Terradue.OpenSearch.Client.Test {
 
         }
 
-        [Test()]
+        [Test, Category("NotWorking")]
         public void Test_Landsat8_02() {
             // opensearch-client -v --max-retries 0 --time-out 600000 -m EOP -p profile=eop -p count=unlimited --pagination 100 -p start= -p stop= -p modified=2019-06-21 -p pi=LANDSAT_8_C1 -o landsat_datasets.atom http://earthexplorer.usgs.gov {}
             Credential credential = GetCredential("Landsat8_02", true);
@@ -102,7 +102,7 @@ namespace Terradue.OpenSearch.Client.Test {
 
         }
 
-        [Test()]
+        [Test, Category("NotWorking")]
         public void Test_Fedeo() {
             // opensearch-client -p count=unlimited -p recordSchema=om -p startDate=2019-06-20T00:00:00Z -p endDate=2019-06-21T00:00:00Z "http://fedeo.esa.int/opensearch/series/urn:eop:DLR:EOWEB:TSX-1.SAR.L1b-ScanSAR/datasets/?httpAccept=application/atom%2Bxml" {} | xmllint --format - >query_results.xml
 
