@@ -99,33 +99,28 @@ pipeline {
         }
       }
     }
-    // stage('Create Release') { Disable till fixed
-    //   agent {
-    //       docker {
-    //           image 'golang:1.12'
-    //           args '-u root'
-    //       }
-    //   }
-    //   when {
-    //     branch 'master'
-    //   }
-    //   steps {
-    //     withCredentials([string(credentialsId: '11f06c51-2f47-43be-aef4-3e4449be5cf0', variable: 'GITHUB_TOKEN')]) {
-    //       unstash name: 'oscli-exe'
-    //       unstash name: 'oscli-zips'
-    //       sh "go get github.com/github-release/github-release"
-    //       // echo "Deleting release from github before creating new one"
-    //       // sh "github-release delete --user ${env.GITHUB_ORGANIZATION} --repo ${env.GITHUB_REPO} --tag ${env.VERSION_TOOL}"
+    stage('Create Release') { Disable till fixed
+      when{
+          branch pattern: "(release\\/[\\d.]+|master)", comparator: "REGEXP"
+        }
+      steps {
+        withCredentials([string(credentialsId: '11f06c51-2f47-43be-aef4-3e4449be5cf0', variable: 'GITHUB_TOKEN')]) {
+          unstash name: 'oscli-exe'
+          unstash name: 'oscli-zips'
+          sh "cat /etc/*release"
+          sh "go get github.com/github-release/github-release"
+          // echo "Deleting release from github before creating new one"
+          // sh "github-release delete --user ${env.GITHUB_ORGANIZATION} --repo ${env.GITHUB_REPO} --tag ${env.VERSION_TOOL}"
 
-    //       echo "Creating a new release in github"
-    //       sh "github-release release --user ${env.GITHUB_ORGANIZATION} --repo ${env.GITHUB_REPO} --tag ${env.VERSION_TOOL} --name 'OpenSearch Client v${env.VERSION_TOOL}'"
+          echo "Creating a new release in github"
+          sh "github-release release --user ${env.GITHUB_ORGANIZATION} --repo ${env.GITHUB_REPO} --tag ${env.VERSION_TOOL} --name 'OpenSearch Client v${env.VERSION_TOOL}'"
 
-  //       echo "Uploading the artifacts into github"
-  //       sh "github-release upload --user ${env.GITHUB_ORGANIZATION} --repo ${env.GITHUB_REPO} --tag ${env.VERSION_TOOL} --name oscli-${env.VERSION_TOOL}-linux-x64 --file Terradue.OpenSearch.Client/bin/Release/net5.0/linux-x64/publish/OpenSearchClient"
-  //       sh "github-release upload --user ${env.GITHUB_ORGANIZATION} --repo ${env.GITHUB_REPO} --tag ${env.VERSION_TOOL} --name oscli-${env.VERSION_TOOL}-linux-x64.zip --file Terradue.OpenSearch.Client/bin/Release/net5.0/linux-x64/opensearch-client.*.linux-x64.zip"
-  //     }
-  //   }
-  // }
+        echo "Uploading the artifacts into github"
+        sh "github-release upload --user ${env.GITHUB_ORGANIZATION} --repo ${env.GITHUB_REPO} --tag ${env.VERSION_TOOL} --name oscli-${env.VERSION_TOOL}-linux-x64 --file Terradue.OpenSearch.Client/bin/Release/net5.0/linux-x64/publish/OpenSearchClient"
+        sh "github-release upload --user ${env.GITHUB_ORGANIZATION} --repo ${env.GITHUB_REPO} --tag ${env.VERSION_TOOL} --name oscli-${env.VERSION_TOOL}-linux-x64.zip --file Terradue.OpenSearch.Client/bin/Release/net5.0/linux-x64/opensearch-client.*.linux-x64.zip"
+      }
+    }
+  }
   }
 }
 
