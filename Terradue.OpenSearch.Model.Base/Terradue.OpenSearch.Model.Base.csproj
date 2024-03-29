@@ -15,7 +15,7 @@
     <PackageReference Include="Google.Cloud.Storage.V1" Version="3.3.0"/>
     <PackageReference Include="Google.Cloud.BigQuery.V2" Version="2.3.0" />
     <PackageReference Include="ini-parser" Version="2.5.2"/>
-    <PackageReference Include="Terradue.OpenSearch.Usgs" Version="1.6.*"/>
+    <PackageReference Include="Terradue.OpenSearch.Usgs" Version="1.6.6"/>
     <PackageReference Include="Terradue.ServiceModel.Ogc" Version="2.2.*"/>
     <PackageReference Include="NetTopologySuite" Version="2.0.*"/>
   </ItemGroup>
