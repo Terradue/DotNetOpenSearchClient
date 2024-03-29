@@ -86,7 +86,7 @@ pipeline {
           """
           sh "cat /etc/*release"
           sh """
-          export PATH=\$PATH:~/bin 
+          export PATH=\$PATH:~/bin/go/bin
           go get github.com/github-release/github-release
           echo 'Creating a new release in github'
           github-release release --user ${env.GITHUB_ORGANIZATION} --repo ${env.GITHUB_REPO} --tag ${env.VERSION_TOOL} --name 'OpenSearch Client v${env.VERSION_TOOL}'
@@ -100,7 +100,7 @@ pipeline {
       }
     }
   }
-  
+
     stage('Publish Artifacts') {
       agent { node { label 'artifactory' } }
       steps {
