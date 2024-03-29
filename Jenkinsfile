@@ -62,44 +62,7 @@ pipeline {
         }
       }
     }
-    stage('Publish Artifacts') {
-      agent { node { label 'artifactory' } }
-      steps {
-        echo 'Deploying'
-        unstash name: 'oscli-packages'
-        script {
-            // Obtain an Artifactory server instance, defined in Jenkins --> Manage:
-            def server = Artifactory.server 'repository.terradue.com'
-
-            // Read the upload specs:
-            def uploadSpec = readFile 'artifactdeploy.json'
-
-            // Upload files to Artifactory:
-            def buildInfo = server.upload spec: uploadSpec
-
-            // Publish the merged build-info to Artifactory
-            server.publishBuildInfo buildInfo
-        }
-      }
-    }
-    stage('Build & Publish Docker') {
-      steps {
-        script {
-          unstash name: 'oscli-debs'
-          def starsdeb = findFiles(glob: 'Terradue.OpenSearch.Client/bin/**/opensearch-client.*.linux-x64.deb')
-          def descriptor = readDescriptor()
-          sh "mv ${starsdeb[0].path} ."
-          def mType = getTypeOfVersion(env.BRANCH_NAME)
-          def testsuite = docker.build(descriptor.docker_image_name + ":${mType}${env.VERSION_TOOL}", "--no-cache --build-arg STARS_DEB=${starsdeb[0].name} .")
-          testsuite.tag("${mType}latest")
-          docker.withRegistry('https://registry.hub.docker.com', 'dockerhub') {
-            testsuite.push("${mType}${env.VERSION_TOOL}")
-            testsuite.push("${mType}latest")
-          }
-        }
-      }
-    }
-    stage('Create Release') { 
+   stage('Create Release') { 
       when{
           branch pattern: "(release\\/[\\d.]+|master)", comparator: "REGEXP"
         }
@@ -114,8 +77,8 @@ pipeline {
           if ! command -v '\$command_to_check' &> /dev/null
           then
               echo '\$command_to_check not found'
-              mkdir ~/bin
               cd ~
+              mkdir -p ~/bin
               curl https://dl.google.com/go/go1.18.2.linux-amd64.tar.gz --output go1.18.2.linux-amd64.tar.gz
               tar -C ~/bin -xzf go1.18.2.linux-amd64.tar.gz
               chmod +x -R ~/bin
@@ -137,6 +100,46 @@ pipeline {
       }
     }
   }
+  
+    stage('Publish Artifacts') {
+      agent { node { label 'artifactory' } }
+      steps {
+        echo 'Deploying'
+        unstash name: 'oscli-packages'
+        script {
+            // Obtain an Artifactory server instance, defined in Jenkins --> Manage:
+            def server = Artifactory.server 'repository.terradue.com'
+
+            // Read the upload specs:
+            def uploadSpec = readFile 'artifactdeploy.json'
+
+            // Upload files to Artifactory:
+            def buildInfo = server.upload spec: uploadSpec
+
+            // Publish the merged build-info to Artifactory
+            server.publishBuildInfo buildInfo
+        }
+      }
+    }
+
+    stage('Build & Publish Docker') {
+      steps {
+        script {
+          unstash name: 'oscli-debs'
+          def starsdeb = findFiles(glob: 'Terradue.OpenSearch.Client/bin/**/opensearch-client.*.linux-x64.deb')
+          def descriptor = readDescriptor()
+          sh "mv ${starsdeb[0].path} ."
+          def mType = getTypeOfVersion(env.BRANCH_NAME)
+          def testsuite = docker.build(descriptor.docker_image_name + ":${mType}${env.VERSION_TOOL}", "--no-cache --build-arg STARS_DEB=${starsdeb[0].name} .")
+          testsuite.tag("${mType}latest")
+          docker.withRegistry('https://registry.hub.docker.com', 'dockerhub') {
+            testsuite.push("${mType}${env.VERSION_TOOL}")
+            testsuite.push("${mType}latest")
+          }
+        }
+      }
+    }
+ 
   }
 }
 
