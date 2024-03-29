@@ -110,10 +110,10 @@ pipeline {
           unstash name: 'oscli-zips'
           sh """
           whoami
-          command_to_check="go"
-          if ! command -v "\$command_to_check" &> /dev/null
+          command_to_check='go'
+          if ! command -v '\$command_to_check' &> /dev/null
           then
-              echo "$command_to_check not found"
+              echo '\$command_to_check not found'
               curl https://dl.google.com/go/go1.18.2.linux-amd64.tar.gz --output go1.18.2.linux-amd64.tar.gz
               tar -C /usr/local -xzf go1.18.2.linux-amd64.tar.gz
           fi
