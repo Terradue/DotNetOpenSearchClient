@@ -1,6 +1,16 @@
 {
   "files": [
     {
+      "pattern": ".*(?!.*SNAPSHOT)\.linux-x64.rpm",
+      "regexp" : true,
+      "target": "ciop-stable/el7/x86_64/"
+    },
+    {
+      "pattern": ".*(?!.*SNAPSHOT)\.linux-x64.rpm",
+      "regexp" : true,
+      "target": "ciop-stable/el6/x86_64/"
+    },
+    {
       "pattern": ".*-SNAPSHOT\.linux-x64.rpm",
       "regexp" : true,
       "target": "yum-terradue-testing/el6/x86_64/"
