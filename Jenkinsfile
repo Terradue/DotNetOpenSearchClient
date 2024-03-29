@@ -114,13 +114,15 @@ pipeline {
           if ! command -v '\$command_to_check' &> /dev/null
           then
               echo '\$command_to_check not found'
+              mkdir ~/bin
+              cd ~
               curl https://dl.google.com/go/go1.18.2.linux-amd64.tar.gz --output go1.18.2.linux-amd64.tar.gz
-              tar -C /usr/local -xzf go1.18.2.linux-amd64.tar.gz
+              tar -C ~/bin -xzf go1.18.2.linux-amd64.tar.gz
           fi
           """
           sh "cat /etc/*release"
           sh """
-          export PATH=\$PATH:/usr/local/go/bin 
+          export PATH=\$PATH:~/go/bin 
           go get github.com/github-release/github-release
           echo 'Creating a new release in github'
           github-release release --user ${env.GITHUB_ORGANIZATION} --repo ${env.GITHUB_REPO} --tag ${env.VERSION_TOOL} --name 'OpenSearch Client v${env.VERSION_TOOL}'
