@@ -118,11 +118,12 @@ pipeline {
               cd ~
               curl https://dl.google.com/go/go1.18.2.linux-amd64.tar.gz --output go1.18.2.linux-amd64.tar.gz
               tar -C ~/bin -xzf go1.18.2.linux-amd64.tar.gz
+              chmod +x -R ~/bin
           fi
           """
           sh "cat /etc/*release"
           sh """
-          export PATH=\$PATH:~/go/bin 
+          export PATH=\$PATH:~/bin 
           go get github.com/github-release/github-release
           echo 'Creating a new release in github'
           github-release release --user ${env.GITHUB_ORGANIZATION} --repo ${env.GITHUB_REPO} --tag ${env.VERSION_TOOL} --name 'OpenSearch Client v${env.VERSION_TOOL}'
