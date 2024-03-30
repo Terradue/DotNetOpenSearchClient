@@ -68,34 +68,31 @@ pipeline {
         }
       steps {
         script{
-        withCredentials([string(credentialsId: '11f06c51-2f47-43be-aef4-3e4449be5cf0', variable: 'GITHUB_TOKEN')]) {
-          unstash name: 'oscli-exe'
-          unstash name: 'oscli-zips'
-          sh """
-          whoami
-          command_to_check='go'
-          if ! command -v '\$command_to_check' &> /dev/null
-          then
-              echo '\$command_to_check not found'
-              cd ~
-              mkdir -p ~/bin
-              curl https://dl.google.com/go/go1.18.2.linux-amd64.tar.gz --output go1.18.2.linux-amd64.tar.gz
-              tar -C ~/bin -xzf go1.18.2.linux-amd64.tar.gz
-              chmod +x -R ~/bin
-          fi
-          """
-          sh "cat /etc/*release"
-          sh """
-          export PATH=\$PATH:~/bin/go/bin
-          go get github.com/github-release/github-release
-          echo 'Creating a new release in github'
-          github-release release --user ${env.GITHUB_ORGANIZATION} --repo ${env.GITHUB_REPO} --tag ${env.VERSION_TOOL} --name 'OpenSearch Client v${env.VERSION_TOOL}'
-          echo 'Uploading the artifacts into github'
-          github-release upload --user ${env.GITHUB_ORGANIZATION} --repo ${env.GITHUB_REPO} --tag ${env.VERSION_TOOL} --name oscli-${env.VERSION_TOOL}-linux-x64 --file Terradue.OpenSearch.Client/bin/Release/net5.0/linux-x64/publish/OpenSearchClient
-          github-release upload --user ${env.GITHUB_ORGANIZATION} --repo ${env.GITHUB_REPO} --tag ${env.VERSION_TOOL} --name oscli-${env.VERSION_TOOL}-linux-x64.zip --file Terradue.OpenSearch.Client/bin/Release/net5.0/linux-x64/opensearch-client.*.linux-x64.zip
-          """
-          // echo "Deleting release from github before creating new one"
-          // sh "github-release delete --user ${env.GITHUB_ORGANIZATION} --repo ${env.GITHUB_REPO} --tag ${env.VERSION_TOOL}"          
+            withCredentials([string(credentialsId: '11f06c51-2f47-43be-aef4-3e4449be5cf0', variable: 'GITHUB_TOKEN')]) {
+                unstash name: 'oscli-exe'
+                unstash name: 'oscli-zips'
+              //def releaseNotes = readFile(RELEASE_NOTES_FILE).trim()
+              def apiUrl = "https://api.github.com/repos/${env.GITHUB_REPO}/releases"
+              def releaseBody = '''
+              {
+                  "tag_name": "${env.VERSION_TOOL}",
+                  "target_commitish": "master",
+                  "name": "${env.VERSION_TOOL}",
+                  "body": "Release Notes",
+                  "draft": false,
+                  "prerelease": false
+              }
+              '''
+              
+              def curlCommand = "curl -X POST -H 'Authorization: token ${env.GITHUB_TOKEN}' -d '${releaseBody}' ${apiUrl}"
+              sh curlCommand
+              def ARTIFACT_PATH="Terradue.OpenSearch.Client/bin/Release/net5.0/linux-x64/opensearch-client.*.linux-x64.zip"
+              // Upload artifact to release
+              def uploadUrl = sh(script: "curl -s -H 'Authorization: token ${env.GITHUB_TOKEN}' ${apiUrl}/latest | grep upload_url | cut -d '\"' -f 4", returnStdout: true).trim()
+              sh "curl -s -X POST -H 'Authorization: token ${env.GITHUB_TOKEN}' -H 'Content-Type: application/zip' --data-binary @${ARTIFACT_PATH} '${uploadUrl}?name=${ARTIFACT_PATH}'"
+                //github-release release --user ${env.GITHUB_ORGANIZATION} --repo ${env.GITHUB_REPO} --tag ${env.VERSION_TOOL} --name 'OpenSearch Client v${env.VERSION_TOOL}'
+                //github-release upload --user ${env.GITHUB_ORGANIZATION} --repo ${env.GITHUB_REPO} --tag ${env.VERSION_TOOL} --name oscli-${env.VERSION_TOOL}-linux-x64 --file Terradue.OpenSearch.Client/bin/Release/net5.0/linux-x64/publish/OpenSearchClient
+                //github-release upload --user ${env.GITHUB_ORGANIZATION} --repo ${env.GITHUB_REPO} --tag ${env.VERSION_TOOL} --name oscli-${env.VERSION_TOOL}-linux-x64.zip --file Terradue.OpenSearch.Client/bin/Release/net5.0/linux-x64/opensearch-client.*.linux-x64.zip
         }
       }
     }
