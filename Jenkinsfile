@@ -72,7 +72,8 @@ pipeline {
                 unstash name: 'oscli-exe'
                 unstash name: 'oscli-zips'
               //def releaseNotes = readFile(RELEASE_NOTES_FILE).trim()
-              def apiUrl = "https://api.github.com/repos/${env.GITHUB_REPO}/releases"
+              def apiUrl = "https://api.github.com/repos/Terradue/DotnetOpenSearchClient/releases"
+              //https://api.github.com/repos/Terradue/DotnetOpenSearchClient/releases
               def releaseBody = '''
               {
                   "tag_name": "${env.VERSION_TOOL}",
