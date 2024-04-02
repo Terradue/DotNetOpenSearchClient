@@ -22,7 +22,7 @@ pipeline {
       }
       stages {
         stage('Build & Test') {
-          steps {
+          steps { 
             script {
               VERSION_TOOL = getVersionFromCsProj('Terradue.OpenSearch.Client/Terradue.OpenSearch.Client.csproj')
               echo 'Build .NET application'
