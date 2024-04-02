@@ -95,7 +95,9 @@ pipeline {
                 def ARTIFACT_PATH="Terradue.OpenSearch.Client/bin/Release/net5.0/linux-x64/opensearch-client.*.linux-x64.zip"
                 // Upload artifact to release
                 def uploadUrl = sh(script: "curl -s -H 'Authorization: token ${env.GITHUB_TOKEN}' ${apiUrl}/latest | grep upload_url | cut -d '\"' -f 4", returnStdout: true).trim()
-                sh "curl -s -X POST -H 'Authorization: token ${env.GITHUB_TOKEN}' -H 'Content-Type: application/zip' --data-binary @\$(ls ${ARTIFACT_PATH}) '${uploadUrl}?name=\$(ls ${ARTIFACT_PATH})'"
+                def ARTIFACT_NAME = sh(script: "ls ${ARTIFACT_PATH}", returnStdout: true).trim().split("/")
+                ARTIFACT_NAME=ARTIFACT_NAME[-1]
+                sh "curl -s -X POST -H 'Authorization: token ${env.GITHUB_TOKEN}' -H 'Content-Type: application/zip' --data-binary @\$(ls ${ARTIFACT_PATH}) '${uploadUrl}?name=${ARTIFACT_NAME}'"
                   //github-release release --user ${env.GITHUB_ORGANIZATION} --repo ${env.GITHUB_REPO} --tag ${VERSION_TOOL} --name 'OpenSearch Client v${VERSION_TOOL}'
                   //github-release upload --user ${env.GITHUB_ORGANIZATION} --repo ${env.GITHUB_REPO} --tag ${VERSION_TOOL} --name oscli-${VERSION_TOOL}-linux-x64 --file Terradue.OpenSearch.Client/bin/Release/net5.0/linux-x64/publish/OpenSearchClient
                   //github-release upload --user ${env.GITHUB_ORGANIZATION} --repo ${env.GITHUB_REPO} --tag ${VERSION_TOOL} --name oscli-${VERSION_TOOL}-linux-x64.zip --file Terradue.OpenSearch.Client/bin/Release/net5.0/linux-x64/opensearch-client.*.linux-x64.zip
