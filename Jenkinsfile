@@ -43,7 +43,7 @@ pipeline {
               def sdf = sh(returnStdout: true, script: 'date -u +%Y%m%dT%H%M%S').trim()
               if (getConfiguration(env.BRANCH_NAME) == 'Release') {
                 env.DOTNET_ARGS = ''
-              }
+              } 
               else {
                 env.DOTNET_ARGS = '--version-suffix SNAPSHOT' + sdf
               }
