@@ -1,3 +1,5 @@
+VERSION_TOOL=""
+
 pipeline {
   agent { node { label 'docker' } }
   environment {
@@ -22,6 +24,7 @@ pipeline {
         stage('Build & Test') {
           steps {
             script {
+              VERSION_TOOL = getVersionFromCsProj('Terradue.OpenSearch.Client/Terradue.OpenSearch.Client.csproj')
               echo 'Build .NET application'
               sh 'dotnet restore'
               sh "dotnet build -c ${env.CONFIGURATION} --no-restore"
@@ -76,9 +79,9 @@ pipeline {
               //https://api.github.com/repos/Terradue/DotnetOpenSearchClient/releases
               def releaseBody = '''
               {
-                  "tag_name": "${env.VERSION_TOOL}",
+                  "tag_name": "${VERSION_TOOL}",
                   "target_commitish": "master",
-                  "name": "${env.VERSION_TOOL}",
+                  "name": "${VERSION_TOOL}",
                   "body": "Release Notes",
                   "draft": false,
                   "prerelease": false
@@ -90,10 +93,10 @@ pipeline {
               def ARTIFACT_PATH="Terradue.OpenSearch.Client/bin/Release/net5.0/linux-x64/opensearch-client.*.linux-x64.zip"
               // Upload artifact to release
               def uploadUrl = sh(script: "curl -s -H 'Authorization: token ${env.GITHUB_TOKEN}' ${apiUrl}/latest | grep upload_url | cut -d '\"' -f 4", returnStdout: true).trim()
-              sh "curl -s -X POST -H 'Authorization: token ${env.GITHUB_TOKEN}' -H 'Content-Type: application/zip' --data-binary @${ARTIFACT_PATH} '${uploadUrl}?name=${ARTIFACT_PATH}'"
-                //github-release release --user ${env.GITHUB_ORGANIZATION} --repo ${env.GITHUB_REPO} --tag ${env.VERSION_TOOL} --name 'OpenSearch Client v${env.VERSION_TOOL}'
-                //github-release upload --user ${env.GITHUB_ORGANIZATION} --repo ${env.GITHUB_REPO} --tag ${env.VERSION_TOOL} --name oscli-${env.VERSION_TOOL}-linux-x64 --file Terradue.OpenSearch.Client/bin/Release/net5.0/linux-x64/publish/OpenSearchClient
-                //github-release upload --user ${env.GITHUB_ORGANIZATION} --repo ${env.GITHUB_REPO} --tag ${env.VERSION_TOOL} --name oscli-${env.VERSION_TOOL}-linux-x64.zip --file Terradue.OpenSearch.Client/bin/Release/net5.0/linux-x64/opensearch-client.*.linux-x64.zip
+              sh "curl -s -X POST -H 'Authorization: token ${env.GITHUB_TOKEN}' -H 'Content-Type: application/zip' --data-binary @\$(ls ${ARTIFACT_PATH}) '${uploadUrl}?name=${ARTIFACT_PATH}'"
+                //github-release release --user ${env.GITHUB_ORGANIZATION} --repo ${env.GITHUB_REPO} --tag ${VERSION_TOOL} --name 'OpenSearch Client v${VERSION_TOOL}'
+                //github-release upload --user ${env.GITHUB_ORGANIZATION} --repo ${env.GITHUB_REPO} --tag ${VERSION_TOOL} --name oscli-${VERSION_TOOL}-linux-x64 --file Terradue.OpenSearch.Client/bin/Release/net5.0/linux-x64/publish/OpenSearchClient
+                //github-release upload --user ${env.GITHUB_ORGANIZATION} --repo ${env.GITHUB_REPO} --tag ${VERSION_TOOL} --name oscli-${VERSION_TOOL}-linux-x64.zip --file Terradue.OpenSearch.Client/bin/Release/net5.0/linux-x64/opensearch-client.*.linux-x64.zip
         }
       }
     }
@@ -128,10 +131,10 @@ pipeline {
           def descriptor = readDescriptor()
           sh "mv ${starsdeb[0].path} ."
           def mType = getTypeOfVersion(env.BRANCH_NAME)
-          def testsuite = docker.build(descriptor.docker_image_name + ":${mType}${env.VERSION_TOOL}", "--no-cache --build-arg STARS_DEB=${starsdeb[0].name} .")
+          def testsuite = docker.build(descriptor.docker_image_name + ":${mType}${VERSION_TOOL}", "--no-cache --build-arg STARS_DEB=${starsdeb[0].name} .")
           testsuite.tag("${mType}latest")
           docker.withRegistry('https://registry.hub.docker.com', 'dockerhub') {
-            testsuite.push("${mType}${env.VERSION_TOOL}")
+            testsuite.push("${mType}${VERSION_TOOL}")
             testsuite.push("${mType}latest")
           }
         }
