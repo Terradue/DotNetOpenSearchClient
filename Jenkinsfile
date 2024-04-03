@@ -17,7 +17,7 @@ pipeline {
               args '-v /var/run/docker.sock:/var/run/docker.sock --group-add 2057'
           }
       }
-      environment {
+      environment { 
         DOTNET_CLI_HOME = '/tmp/DOTNET_CLI_HOME'
       }
       stages {
