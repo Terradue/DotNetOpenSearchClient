@@ -104,7 +104,7 @@ pipeline {
   //       }
   //     }
   //   }
-  }
+  //}
 
     stage('Publish Artifacts') {
       agent { node { label 'artifactory' } }
