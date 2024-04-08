@@ -10,7 +10,7 @@ namespace Terradue.OpenSearch.Client.Test {
     [TestFixture()]
     public class GeoTimeModelTests : TestBase {
 
-        [Test()]
+        [Test, Category("NotWorking")]
         public void WktFromRdf() {
             OpenSearchClient client = CreateTestClient("http://eo-virtual-archive4.esa.int/search/ASA_IM__0P/ASA_IM__0CNPDE20120407_061242_000000173113_00250_52850_6352.N1/rdf", "wkt");
 
@@ -48,7 +48,7 @@ namespace Terradue.OpenSearch.Client.Test {
 
         }
 
-        [Test()]
+        [Test, Category("NotWorking")]
         public void EnclosureFromRdf() {
             OpenSearchClient client = CreateTestClient("http://eo-virtual-archive4.esa.int/search/ASA_IM__0P/ASA_IM__0CNPDE20120407_061242_000000173113_00250_52850_6352.N1/rdf", "enclosure");
 
@@ -60,7 +60,7 @@ namespace Terradue.OpenSearch.Client.Test {
 
         }
 
-        [Test()]
+        [Test, Category("NotWorking")]
         public void StartdateFromRdf() {
             OpenSearchClient client = CreateTestClient("http://eo-virtual-archive4.esa.int/search/ASA_IM__0P/ASA_IM__0CNPDE20120407_061242_000000173113_00250_52850_6352.N1/rdf", "startdate");
 
@@ -74,7 +74,7 @@ namespace Terradue.OpenSearch.Client.Test {
 
         }
 
-        [Test()]
+        [Test, Category("NotWorking")]
         public void EnddateFromRdf() {
             OpenSearchClient client = CreateTestClient("http://eo-virtual-archive4.esa.int/search/ASA_IM__0P/ASA_IM__0CNPDE20120407_061242_000000173113_00250_52850_6352.N1/atom", "enddate");
 

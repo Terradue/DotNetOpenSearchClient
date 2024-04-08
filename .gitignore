@@ -18,3 +18,4 @@ TestResult\.xml
 *auth.txt*
 .*.swp
 .directory
+*.trx

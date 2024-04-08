@@ -1,0 +1,6 @@
+FROM rockylinux:8
+
+ARG STARS_RPM
+COPY $STARS_RPM /tmp/$STARS_RPM
+RUN cd /tmp && yum localinstall -y $STARS_RPM && \
+chmod +x /usr/bin/opensearch-client
