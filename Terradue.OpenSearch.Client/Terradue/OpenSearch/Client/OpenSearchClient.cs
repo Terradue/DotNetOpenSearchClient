@@ -545,6 +545,7 @@ namespace Terradue.OpenSearch.Client
             bool[] canceled = new bool[alternativeCount]; // is used to avoid multiple output
             for (int i = 0; i < alternativeCount; i++)
             {
+                if (altBaseUrlLists[i] == null) continue;
                 log.DebugFormat("Alternative #{0} : {1} (timeout = {2} ms)", i, string.Join(",", altBaseUrlLists[i]), Timeout);
 
                 bool alternativeSuccess = false;
@@ -671,9 +672,13 @@ namespace Terradue.OpenSearch.Client
                     log.Debug("Launching query...");
                     try
                     {
-                        osr = QueryOpenSearch(ose, entity, parametersNvc);
-                        isAtomFeedPartial = false;
-                        break;
+                        if (ose != null && entity != null) {
+                            osr = QueryOpenSearch(ose, entity, parametersNvc);
+                            if (osr != null) {
+                            isAtomFeedPartial = false;
+                            break;
+                        }
+                        }
                     }
                     catch (AggregateException ae)
                     {
@@ -722,7 +727,9 @@ namespace Terradue.OpenSearch.Client
 
                 if (canceled) return false;
 
-                int count = CountResults(osr);
+                int count = 0;
+                if (osr != null)
+                    count = CountResults(osr);
                 if (totalCount == 0 && count == 0)
                 {
                     LogInfo("No entries found");
@@ -1219,13 +1226,15 @@ namespace Terradue.OpenSearch.Client
 
         private IOpenSearchResultCollection QueryOpenSearch(OpenSearchEngine ose, IOpenSearchable entity, NameValueCollection parameters)
         {
-            IOpenSearchResultCollection osr;
-
-            if (string.IsNullOrEmpty(QueryFormat))
-                osr = ose.Query(entity, parameters);
-            else
-                osr = ose.Query(entity, parameters, QueryFormat);
-
+            IOpenSearchResultCollection osr = null;
+            try {
+                if (string.IsNullOrEmpty(QueryFormat))
+                    osr = ose.Query(entity, parameters);
+                else
+                    osr = ose.Query(entity, parameters, QueryFormat);
+            } catch (Exception e) {
+                log.Warn("Exception QueryOpenSearch: " + e.Message + "\n" + e.StackTrace);
+            }
             return osr;
         }
 
