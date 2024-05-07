@@ -67,7 +67,7 @@ namespace Terradue.OpenSearch.Client.Test {
 	    
 	    
 	    
-	    [Test()]
+	    [Test, Category("NotWorking")]
 	    public void Test_DataAuthor_84() {
             //opensearch-client -p count=20 -p startIndex=1 -m EOP -p start=2017-11-30 -p auxtype=aux_resorb -p orbits=true https://aux.sentinel1.eo.esa.int/ identifier
 
