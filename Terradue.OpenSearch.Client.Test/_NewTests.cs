@@ -29,7 +29,7 @@ namespace Terradue.OpenSearch.Client.Test {
             LoadCredentials();
         }
 
-        [Test()]
+        [Test, Category("NotWorking")]
         public void Test_Landsat8_01() {
             // opensearch-client --max-retries 0 --time-out 600000 -m EOP -p profile=eop -p count=unlimited --pagination 100 -p start=2018-09-26 -p stop=2018-09-26 -p pi=LANDSAT_8_C1 -o earthexplorer_usgs_gov.list http://earthexplorer.usgs.gov identifier
             Credential credential = GetCredential("Landsat8_01", true);
@@ -51,7 +51,7 @@ namespace Terradue.OpenSearch.Client.Test {
 
         }
 
-        [Test()]
+        [Test, Category("NotWorking")]
         public void Test_Landsat8_02() {
             // opensearch-client -v --max-retries 0 --time-out 600000 -m EOP -p profile=eop -p count=unlimited --pagination 100 -p start= -p stop= -p modified=2019-06-21 -p pi=LANDSAT_8_C1 -o landsat_datasets.atom http://earthexplorer.usgs.gov {}
             Credential credential = GetCredential("Landsat8_02", true);
@@ -84,7 +84,7 @@ namespace Terradue.OpenSearch.Client.Test {
 
         }
 
-        [Test()]
+        [Test, Category("NotWorking")]
         public void Test_CosmoSkyMed() {
             // opensearch-client --adjust-identifiers -f rdf -p count=unlimited --pagination 100 -p modified_start=2019-06-20T00:00:00Z -p modified_stop=2019-06-21T00:00:00Z http://eo-virtual-archive4.esa.int/search/COSMOSKYMED/rdf {} > query_results.rdf
             // DONE
@@ -102,7 +102,7 @@ namespace Terradue.OpenSearch.Client.Test {
 
         }
 
-        [Test()]
+        [Test, Category("NotWorking")]
         public void Test_Fedeo() {
             // opensearch-client -p count=unlimited -p recordSchema=om -p startDate=2019-06-20T00:00:00Z -p endDate=2019-06-21T00:00:00Z "http://fedeo.esa.int/opensearch/series/urn:eop:DLR:EOWEB:TSX-1.SAR.L1b-ScanSAR/datasets/?httpAccept=application/atom%2Bxml" {} | xmllint --format - >query_results.xml
 

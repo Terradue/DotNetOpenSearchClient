@@ -12,8 +12,9 @@ namespace Terradue.OpenSearch.Client.Test {
     [TestFixture()]
     public class CwicTests : TestBase {
 
-        [Test()]
+        [Test, Category("NotWorking")]
         public void Landsat8EOP() {
+            //Timeout
             OpenSearchClient client = CreateTestClient("http://cwic.wgiss.ceos.org/opensearch/datasets/Landsat_8/osdd.xml?clientId=foo", "{}");
             client.Parameters.Add("count=1");
             client.Parameters.Add("timeStart=2016-05-03T00:27:10Z");

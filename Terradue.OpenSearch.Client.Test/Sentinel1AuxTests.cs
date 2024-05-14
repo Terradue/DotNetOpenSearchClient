@@ -25,7 +25,7 @@ namespace Terradue.OpenSearch.Client.Test {
             nsm.AddNamespace("eop", "http://www.terradue.com/model/eop");
         }
 
-        [Test()]
+        [Test, Category("NotWorking")]
         public void ListTest() {
             OpenSearchClient client = CreateTestClient("https://aux.sentinel1.eo.esa.int/", "identifier");
             client.QueryModel = "EOP";
@@ -82,9 +82,9 @@ namespace Terradue.OpenSearch.Client.Test {
 
         }
 
-        [Test()]
+        [Test, Category("NotWorking")]
         public void RedirectTest() {
-            OpenSearchClient client = CreateTestClient("https://qc.sentinel1.eo.esa.int", "identifier");
+            OpenSearchClient client = CreateTestClient("https://qc.sentinel1.copernicus.eu", "identifier");
             client.QueryModel = "EOP";
             client.Parameters.Add("count=unlimited");
             client.Parameters.Add("startIndex=1");
@@ -97,9 +97,9 @@ namespace Terradue.OpenSearch.Client.Test {
 
         }
 
-        [Test()]
+        [Test, Category("NotWorking")]
         public void SingleEntryTest() {
-            OpenSearchClient client = CreateTestClient("https://qc.sentinel1.eo.esa.int", "{}");
+            OpenSearchClient client = CreateTestClient("https://qc.sentinel1.copernicus.eu", "{}");
             client.QueryModel = "EOP";
             client.Parameters.Add("uid=S1A_OPER_AUX_RESORB_OPOD_20190515T024532_V20190514T224004_20190515T015734");
             client.Parameters.Add("orbits=true");
