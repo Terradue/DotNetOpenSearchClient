@@ -9,13 +9,13 @@
   <ItemGroup>
     <PackageReference Include="Terradue.OpenSearch" Version="1.21.*"/>
     <PackageReference Include="Terradue.Metadata.EarthObservation" Version="1.6.*"/>
-    <PackageReference Include="Terradue.OpenSearch.SciHub" Version="1.28.*"/>
+    <PackageReference Include="Terradue.OpenSearch.SciHub" Version="1.46.*"/>
     <PackageReference Include="HtmlAgilityPack" Version="1.11.12"/>
     <PackageReference Include="AWSSDK.S3" Version="3.7.9.*"/>
     <PackageReference Include="Google.Cloud.Storage.V1" Version="3.3.0"/>
     <PackageReference Include="Google.Cloud.BigQuery.V2" Version="2.3.0" />
     <PackageReference Include="ini-parser" Version="2.5.2"/>
-    <PackageReference Include="Terradue.OpenSearch.Usgs" Version="1.6.7"/>
+    <PackageReference Include="Terradue.OpenSearch.Usgs" Version="1.7.*" />
     <PackageReference Include="Terradue.ServiceModel.Ogc" Version="2.2.*"/>
     <PackageReference Include="NetTopologySuite" Version="2.0.*"/>
   </ItemGroup>
