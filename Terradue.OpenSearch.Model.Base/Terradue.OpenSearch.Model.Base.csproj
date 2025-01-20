@@ -9,7 +9,7 @@
   <ItemGroup>
     <PackageReference Include="Terradue.OpenSearch" Version="1.21.*"/>
     <PackageReference Include="Terradue.Metadata.EarthObservation" Version="1.6.*"/>
-    <PackageReference Include="Terradue.OpenSearch.SciHub" Version="1.46.*"/>
+    <PackageReference Include="Terradue.OpenSearch.SciHub" Version="1.48.*"/>
     <PackageReference Include="HtmlAgilityPack" Version="1.11.12"/>
     <PackageReference Include="AWSSDK.S3" Version="3.7.9.*"/>
     <PackageReference Include="Google.Cloud.Storage.V1" Version="3.3.0"/>
