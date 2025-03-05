@@ -37,7 +37,7 @@ jobs:
           }
 
       - name: Upload Test Results
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: test-results
           path: Terradue.OpenSearch.Client/TestResults/testresults.trx
@@ -69,7 +69,7 @@ jobs:
           dotnet publish -f net5.0 -r linux-x64 -p:PublishSingleFile=true $DOTNET_ARGS --self-contained true Terradue.OpenSearch.Client/Terradue.OpenSearch.Client.csproj
 
       - name: Upload Packages
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: packages
           path: Terradue.OpenSearch.Client/bin/**
