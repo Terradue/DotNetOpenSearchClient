@@ -109,8 +109,8 @@ jobs:
         run: |
           M_TYPE=$(if [[ "${{ github.ref }}" =~ refs/heads/release/.* || "${{ github.ref }}" == refs/heads/master ]]; then echo ""; else echo "dev"; fi)
           ls -la 
-          docker build --no-cache --build-arg STARS_DEB=$(basename "$STARS_DEB") -t "${{ secrets.DOCKER_IMAGE_NAME }}:$M_TYPE$VERSION_TOOL" .
-          docker build --no-cache --build-arg STARS_RPM=$(basename "$STARS_RPM") -t "${{ secrets.DOCKER_IMAGE_NAME }}:rocky-$M_TYPE$VERSION_TOOL" -f Dockerfile-rocky .
+          docker build --no-cache --build-arg STARS_DEB=$(basename "$STARS_DEB") -t opensearch-client .
+          docker build --no-cache --build-arg STARS_RPM=$(basename "$STARS_RPM") -t opensearch-client:rocky -f Dockerfile-rocky .
 
       - name: Log in to DockerHub
         run: echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
