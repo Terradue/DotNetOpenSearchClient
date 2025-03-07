@@ -105,11 +105,11 @@ jobs:
         run: |
           echo "STARS_DEB=$(find . -name "opensearch-client.*.linux-x64.deb" | head -n1)" >> $GITHUB_ENV
           echo "STARS_RPM=$(find . -name "opensearch-client.*.linux-x64.rpm" | head -n1)" >> $GITHUB_ENV
-
       - name: Build Docker Images
         run: |
           M_TYPE=$(if [[ "${{ github.ref }}" =~ refs/heads/release/.* || "${{ github.ref }}" == refs/heads/master ]]; then echo ""; else echo "dev"; fi)
           echo $PWD
+          find . -name "opensearch-client.*.linux-x64.*"
           ls -la && ls -la DotNetOpenSearchClient/DotNetOpenSearchClient/Terradue.OpenSearch.Client && DotNetOpenSearchClient/DotNetOpenSearchClient/Terradue.OpenSearch.Client/bin
           docker build --no-cache --build-arg STARS_DEB=$(basename "$STARS_DEB") -t opensearch-client .
           docker build --no-cache --build-arg STARS_RPM=$(basename "$STARS_RPM") -t opensearch-client:rocky -f Dockerfile-rocky .
