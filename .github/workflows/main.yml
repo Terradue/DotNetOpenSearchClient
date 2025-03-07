@@ -103,8 +103,8 @@ jobs:
           path: ${{ github.workspace }}/Terradue.OpenSearch.Client/bin
       - name: Set up Docker
         run: |
-          echo "STARS_DEB=$(find Terradue.OpenSearch.Client/bin/ -name "opensearch-client.*.linux-x64.deb" | head -n1)" >> $GITHUB_ENV
-          echo "STARS_RPM=$(find Terradue.OpenSearch.Client/bin/ -name "opensearch-client.*.linux-x64.rpm" | head -n1)" >> $GITHUB_ENV
+          echo "STARS_DEB=$(find . -name "opensearch-client.*.linux-x64.deb" | head -n1)" >> $GITHUB_ENV
+          echo "STARS_RPM=$(find . -name "opensearch-client.*.linux-x64.rpm" | head -n1)" >> $GITHUB_ENV
 
       - name: Build Docker Images
         run: |
