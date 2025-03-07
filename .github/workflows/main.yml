@@ -1,0 +1,123 @@
+name: .NET CI/CD
+
+on:
+  push:
+    branches:
+      - master
+      - 'release/**'
+  pull_request:
+    branches:
+      - master
+      - 'release/**'
+
+jobs:
+  build_test:
+    name: Build & Test
+    runs-on: ubuntu-latest
+    container:
+      image: mcr.microsoft.com/dotnet/sdk:5.0-buster-slim
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Restore dependencies
+        run: dotnet restore
+
+      - name: Build
+        run: dotnet build -c Release --no-restore
+
+      - name: Test
+        run: |
+          dotnet test -c Release --no-build --no-restore ./ --logger "trx;LogFileName=testresults.trx" --filter "Category!=NotWorking" || {
+            cat Terradue.OpenSearch.Client.Test/TestResults/testresults.trx
+            exit 1
+          }
+
+      - name: Upload Test Results
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-results
+          path: Terradue.OpenSearch.Client/TestResults/testresults.trx
+
+  package:
+    name: Package Artifacts
+    runs-on: ubuntu-latest
+    container:
+      image: mcr.microsoft.com/dotnet/sdk:5.0-buster-slim
+    needs: build_test
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Define Version
+        run: |
+          echo "VERSION_TOOL=$(grep -oP '(?<=<Version>).*?(?=</Version>)' Terradue.OpenSearch.Client/Terradue.OpenSearch.Client.csproj)" >> $GITHUB_ENV
+          echo "DOTNET_ARGS=$(if [[ "${{ github.ref }}" =~ refs/heads/release/.* || "${{ github.ref }}" == refs/heads/master ]]; then echo ""; else echo "--version-suffix SNAPSHOT$(date -u +%Y%m%dT%H%M%S)"; fi)" >> $GITHUB_ENV
+
+      - name: Build & Package
+        run: |
+          dotnet tool restore
+          dotnet rpm -c Release -r linux-x64 -f net5.0 $DOTNET_ARGS Terradue.OpenSearch.Client/Terradue.OpenSearch.Client.csproj
+          dotnet deb -c Release -r linux-x64 -f net5.0 $DOTNET_ARGS Terradue.OpenSearch.Client/Terradue.OpenSearch.Client.csproj
+          dotnet zip -c Release -r linux-x64 -f net5.0 $DOTNET_ARGS Terradue.OpenSearch.Client/Terradue.OpenSearch.Client.csproj
+          dotnet publish -f net5.0 -r linux-x64 -p:PublishSingleFile=true $DOTNET_ARGS --self-contained true Terradue.OpenSearch.Client/Terradue.OpenSearch.Client.csproj
+
+      - name: Upload Packages
+        uses: actions/upload-artifact@v4
+        with:
+          name: packages
+          path: Terradue.OpenSearch.Client/bin/**
+          overwrite: true
+          retention-days: 3
+
+  # publish_artifacts:
+  #   name: Publish Artifacts
+  #   runs-on: ubuntu-latest
+  #   needs: package
+  #   steps:
+  #     - name: Download Packages
+  #       uses: actions/download-artifact@v3
+  #       with:
+  #         name: packages
+  #         path: Terradue.OpenSearch.Client/bin
+
+  #     - name: Deploy to Artifactory
+  #       env:
+  #         ARTIFACTORY_USER: ${{ secrets.ARTIFACTORY_USER }}
+  #         ARTIFACTORY_PASSWORD: ${{ secrets.ARTIFACTORY_PASSWORD }}
+  #         ARTIFACTORY_URL: ${{ secrets.ARTIFACTORY_URL }}
+  #       run: |
+  #         curl -u "$ARTIFACTORY_USER:$ARTIFACTORY_PASSWORD" -X PUT "$ARTIFACTORY_URL" -T "artifactdeploy.json"
+
+  build_docker:
+    name: Build & Publish Docker
+    runs-on: ubuntu-latest
+    needs: package
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+      - name: Download Packages Artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: packages
+          path: ${{ github.workspace }}/Terradue.OpenSearch.Client/bin
+      - name: Set up Docker
+        run: |
+          echo "STARS_DEB=$(find . -name "opensearch-client.*.linux-x64.deb" | head -n1)" >> $GITHUB_ENV
+          echo "STARS_RPM=$(find . -name "opensearch-client.*.linux-x64.rpm" | head -n1)" >> $GITHUB_ENV
+      - name: Build Docker Images
+        run: |
+          M_TYPE=$(if [[ "${{ github.ref }}" =~ refs/heads/release/.* || "${{ github.ref }}" == refs/heads/master ]]; then echo ""; else echo "dev"; fi)
+          echo $PWD
+          find . -name "opensearch-client.*.linux-x64.*"
+          ls -la && ls -la DotNetOpenSearchClient/DotNetOpenSearchClient/Terradue.OpenSearch.Client && DotNetOpenSearchClient/DotNetOpenSearchClient/Terradue.OpenSearch.Client/bin
+          docker build --no-cache --build-arg STARS_DEB=$(basename "$STARS_DEB") -t opensearch-client .
+          docker build --no-cache --build-arg STARS_RPM=$(basename "$STARS_RPM") -t opensearch-client:rocky -f Dockerfile-rocky .
+
+      - name: Log in to DockerHub
+        run: echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
+
+      - name: Push Docker Images
+        run: |
+          docker push "${{ secrets.DOCKER_IMAGE_NAME }}:$M_TYPE$VERSION_TOOL"
+          docker push "${{ secrets.DOCKER_IMAGE_NAME }}:rocky-$M_TYPE$VERSION_TOOL"
